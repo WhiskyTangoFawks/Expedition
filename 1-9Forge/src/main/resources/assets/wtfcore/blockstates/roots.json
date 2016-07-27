@@ -1,0 +1,40 @@
+
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cross",
+        "uvlock": true,
+        "textures" : { "cross" : "wtfcore:blocks/oak_roots"}
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory0": [{
+			"textures" : { "cross" : "wtfcore:blocks/root_oak"}
+        }],
+        "inventory1": [{
+			"textures" : { "cross" : "wtfcore:blocks/root_spruce"}
+        }],
+        "inventory2": [{
+			"textures" : { "cross" : "wtfcore:blocks/root_birch"}
+        }],
+        "inventory3": [{
+			"textures" : { "cross" : "wtfcore:blocks/root_jungle"}
+        }],
+        "inventory4": [{
+			"textures" : { "cross" : "wtfcore:blocks/root_big_oak"}
+        }],
+        "inventory5": [{
+			"textures" : { "cross" : "wtfcore:blocks/root_acacia"}
+        }],
+        "type" : {
+        	"oak" 	: { "textures" : { "cross" : "wtfcore:blocks/root_oak"} },
+       		"spruce" 	: { "textures" : { "cross" : "wtfcore:blocks/root_spruce"	} },
+        	"birch" 	: { "textures" : { "cross" : "wtfcore:blocks/root_birch" 	} },
+        	"jungle" 			: { "textures" : { "cross" : "wtfcore:blocks/root_jungle" 			} },
+	        "big_oak" 	: { "textures" : { "cross" : "wtfcore:blocks/root_big_oak"} },
+    	    "acacia"	: { "textures" : { "cross" : "wtfcore:blocks/root_acacia" } }
+		}	
+    }
+}

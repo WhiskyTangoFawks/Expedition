@@ -1,0 +1,92 @@
+itemGroup.WTFBlocks=WTF's Blocks
+
+tile.oreNitre.name=Nitre Ore
+item.itemNitre.name=Saltpetre
+tile.lit_torch.name=Torch
+tile.icePatch.name=Ice Patch
+tile.icicle.0.name=Icicle
+tile.icicle.1.name=Icicle
+tile.icicle.2.name=Icicle
+tile.icicle.3.name=Icicle
+tile.foxfire.name=Fox Fire
+
+tile.roots.0.name=Oak Roots
+tile.roots.1.name=Spruce Roots
+tile.roots.2.name=Birch Roots
+tile.roots.3.name=Jungle Roots
+tile.roots.4.name=Big Oak Roots
+tile.roots.5.name=Acacia Roots
+tile.roots.6.name=Frozen Oak Roots
+tile.roots.7.name=Frozen Spruce Roots
+tile.roots.8.name=Frozen Birch Roots
+tile.roots.9.name=Frozen Jungle Roots
+tile.roots.10.name=Frozen Big Oak Roots
+tile.roots.11name=Frozen Acacia Roots
+
+tile.stoneSpeleothem.0.name=Stone Stalactite Small
+tile.stoneSpeleothem.1.name=Stone Stalactite Base
+tile.stoneSpeleothem.2.name=Stone Small Stalactite Tip
+tile.stoneSpeleothem.3.name=Stone Column
+tile.stoneSpeleothem.4.name=Stone Stalagmite Small
+tile.stoneSpeleothem.5.name=Stone Stalagmite Base
+tile.stoneSpeleothem.6.name=Stone Stalagmite Tip
+
+tile.frozen_stoneSpeleothem.0.name=Frozen Stone Stalactite Small
+tile.frozen_stoneSpeleothem.1.name=Frozen Stone Stalactite Base
+tile.frozen_stoneSpeleothem.2.name=Frozen Stone Small Stalactite Tip
+tile.frozen_stoneSpeleothem.3.name=Frozen Stone Column
+tile.frozen_stoneSpeleothem.4.name=Frozen Stone Stalagmite Small
+tile.frozen_stoneSpeleothem.5.name=Frozen Stone Stalagmite Base
+tile.frozen_stoneSpeleothem.6.name=Frozen Stone Stalagmite Tip
+
+tile.sandstoneSpeleothem.0.name=Sandstone Stalactite Small
+tile.sandstoneSpeleothem.1.name=Sandstone Stalactite Base
+tile.sandstoneSpeleothem.2.name=Sandstone Small Stalactite Tip
+tile.sandstoneSpeleothem.3.name=Sandstone Column
+tile.sandstoneSpeleothem.4.name=Sandstone Stalagmite Small
+tile.sandstoneSpeleothem.5.name=Sandstone Stalagmite Base
+tile.sandstoneSpeleothem.6.name=Sandstone Stalagmite Tip
+
+tile.frozen_sandstoneSpeleothem.0.name=Frozen Sandstone Stalactite Small
+tile.frozen_sandstoneSpeleothem.1.name=Frozen Sandstone Stalactite Base
+tile.frozen_sandstoneSpeleothem.2.name=Frozen Sandstone Small Stalactite Tip
+tile.frozen_sandstoneSpeleothem.3.name=Frozen Sandstone Column
+tile.frozen_sandstoneSpeleothem.4.name=Frozen Sandstone Stalagmite Small
+tile.frozen_sandstoneSpeleothem.5.name=Frozen Sandstone Stalagmite Base
+tile.frozen_sandstoneSpeleothem.6.name=Frozen Sandstone Stalactite Tip
+
+tile.animStone.0.name=Stone Lava Crust
+tile.animStone.1.name=Water Dripping Stone
+tile.animStone.2.name=Lava Dripping Stone
+
+tile.overlayStone.name=Mossy Stone
+tile.overlayDirt.name=Mossy Dirt
+
+tile.patchIce.name=Ice Patch
+tile.patchWater.name=Water
+tile.patchWaterStatic.name=Water
+tile.patchLava.name=Lava
+tile.patchLavaStatic.name=Lava
+
+tile.dense_coal_ore.name=Coal Ore
+tile.dense_iron_ore.name=Iron Ore
+tile.dense_gold_ore.name=Gold Ore
+tile.dense_lapis_ore.name=Lapis Lazuli Ore
+tile.dense_redstone_ore.name=Redstone Ore
+tile.dense_emerald_ore.name=Emerald Ore
+tile.dense_diamond_ore.name=Diamond Ore
+tile.dense_oreNitre.name=Nitre Ore
+
+
+item.itemSulfur.name=Sulphur
+item.home_scroll.name=Home Scroll
+
+item.mummy_helmet.name=Mummy Wrap Helmet
+item.mummy_chestplate.name=Mummy Wrap Chestplate
+item.mummy_leggings.name=Mummy Wrap Leggings
+item.mummy_boots.name=Mummy Wrap Boots
+
+item.pharaoh_helmet.name=Pharaoh Helmet
+item.pharaoh_chestplate.name=Pharaoh Chestplate
+item.pharaoh_leggings.name=Pharaoh Leggings
+item.pharaoh_boots.name=Pharaoh Boots

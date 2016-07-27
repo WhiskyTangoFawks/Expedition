@@ -1,0 +1,27 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "wtfcore:cube_overlay",
+        "textures": {
+           	 "all": "blocks/stone"
+        }
+        
+    },
+    "variants": {
+        "normal": [{
+			"textures" : { "mask" : "wtfcore:overlays/emerald_ore0"}
+        	
+        }],
+        "inventory": [{
+        	"textures" : { "mask" : "wtfcore:overlays/emerald_ore0"}
+     
+        }],
+
+		"density" : {
+			"0" : { "textures" : { "mask" : "wtfcore:overlays/emerald_ore0"}},
+			"1" : { "textures" : { "mask" : "wtfcore:overlays/emerald_ore1"}},
+			"2" : { "textures" : { "mask" : "wtfcore:overlays/emerald_ore2"}}	
+
+    	}
+    }
+}

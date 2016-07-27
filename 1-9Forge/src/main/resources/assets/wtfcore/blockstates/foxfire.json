@@ -1,0 +1,39 @@
+
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+            "cross": "wtfcore:blocks/foxfire"
+        },
+        "model": "cross",
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory": [{
+        
+        }],
+		"active=false,hanging=false" : [{
+			"textures": {
+					"cross": "wtfcore:blocks/foxfire"
+				}
+		}],
+		"active=false,hanging=true" : [{
+			"textures": {
+					"cross": "wtfcore:blocks/foxfire_hanging"
+				}
+		}],
+		"active=true,hanging=false" : [{
+			"textures": {
+					"cross": "wtfcore:blocks/lit_foxfire"
+				}
+		}],
+		"active=true,hanging=true" : [{
+			"textures": {
+					"cross": "wtfcore:blocks/lit_foxfire_hanging"
+				}
+		}]
+    }
+}

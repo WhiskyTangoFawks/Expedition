@@ -1,0 +1,29 @@
+
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cross",
+        "uvlock": true,
+        "textures" : { "cross" : "wtfcore:blocks/icicle_small"}
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory0": [{
+			"textures" : { "cross" : "wtfcore:blocks/icicle_small"}
+        }],
+        "inventory1": [{
+			"textures" : { "cross" : "wtfcore:blocks/icicle_base"}
+        }],
+        "inventory2": [{
+			"textures" : { "cross" : "wtfcore:blocks/icicle_tip"}
+        }],
+
+        "type" : {
+        	"stalactite_small" 	: { "textures" : { "cross" : "wtfcore:blocks/icicle_small"} },
+       		"stalactite_base" 	: { "textures" : { "cross" : "wtfcore:blocks/icicle_base"	} },
+        	"stalactite_tip" 	: { "textures" : { "cross" : "wtfcore:blocks/icicle_tip" 	} }
+		}	
+    }
+}

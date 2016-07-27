@@ -1,0 +1,25 @@
+
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "wtfcore:cube_overlay",
+        "textures": {
+           	 "all": "blocks/stone",
+           	 "mask": "wtfcore:blocks/moss_overlay_16"
+           	 
+        }
+        
+    },
+    "variants": {
+        "normal": [{
+		
+     
+        	
+        }],
+        "inventory": [{
+        
+     
+        }]
+
+    }
+}
