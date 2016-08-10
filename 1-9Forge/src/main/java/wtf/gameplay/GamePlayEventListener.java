@@ -1,4 +1,4 @@
-package wtf.core.gameplay;
+package wtf.gameplay;
 
 import java.util.Random;
 
@@ -104,7 +104,7 @@ public class GamePlayEventListener {
 				}
 
 			}
-			else*/ if (StoneFractureMethods.fracStone(event.getWorld(), event.getPos())){
+			else*/ if (StoneFractureMethods.fracStone(event.getWorld(), event.getPos(), event.getState())){
 				event.setCanceled(true);
 				if (tool != null){
 					tool.attemptDamageItem(1, random);
@@ -129,7 +129,7 @@ public class GamePlayEventListener {
 	@SubscribeEvent
 	public void BlockHarvestEvent(HarvestDropsEvent event){
 		if (event.getState().getBlock() instanceof BlockLeaves){
-			if (random.nextFloat() < GameplayConfig.stickDrop){
+			if (random.nextInt(100) < GameplayConfig.stickDrop){
 
 				event.getDrops().add(new ItemStack(Items.STICK, 1));
 			}
@@ -153,7 +153,7 @@ public class GamePlayEventListener {
 
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event) {
-		if (!event.getEntity().worldObj.isRemote && (event.getEntity() instanceof EntityChicken)){
+		if (GameplayConfig.featherDrop != 0 && !event.getEntity().worldObj.isRemote && (event.getEntity() instanceof EntityChicken)){
 			EntityChicken chicken = (EntityChicken) event.getEntity();
 			if (!chicken.isChild()){
 

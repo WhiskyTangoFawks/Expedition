@@ -12,6 +12,7 @@ import wtf.cavebiomes.worldgeneration.cavetypes.caves.CaveTypeIceRocky;
 import wtf.cavebiomes.worldgeneration.cavetypes.caves.CaveTypeDefault;
 import wtf.cavebiomes.worldgeneration.cavetypes.caves.CaveTypeDirtWater;
 import wtf.cavebiomes.worldgeneration.cavetypes.caves.CaveTypeFungal;
+import wtf.cavebiomes.worldgeneration.cavetypes.caves.CaveTypeHell;
 import wtf.cavebiomes.worldgeneration.cavetypes.caves.CaveTypeIce;
 import wtf.cavebiomes.worldgeneration.cavetypes.caves.CaveTypeJungleVolcano;
 import wtf.cavebiomes.worldgeneration.cavetypes.caves.CaveTypeMossy;
@@ -51,7 +52,7 @@ public class CaveTypeRegister {
 	public static final AbstractCaveType mossy = new CaveTypeMossy("mossy", floorChance, ceilingChance, Blocks.DIRT.getDefaultState());
 	public static final AbstractCaveType iceRocky = new CaveTypeIceRocky ("iceRocky", floorChance*2, ceilingChance*2);
 	public static final AbstractCaveType volcanic = new CaveTypeVolcanic ("volcanic", floorChance*2, ceilingChance*2);
-
+	public static final AbstractCaveType nether = new CaveTypeHell ("nether", floorChance, ceilingChance);
 
 
 	public static CaveProfile getCaveProfile(Biome biome){
@@ -152,6 +153,12 @@ public class CaveTypeRegister {
 			dungeonShallow.addAll(DungeonTypeRegister.desertList());
 		}
 
+		if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.NETHER)){
+			shallow = nether;
+			mid = nether;
+			deep = nether;
+		}
+		
 		CaveProfile profile = new CaveProfile(deep, mid, shallow);
 		//CaveProfile profile = new CaveProfile(plains, plains, plains);
 		profile.dungeonDeep = dungeonDeep;

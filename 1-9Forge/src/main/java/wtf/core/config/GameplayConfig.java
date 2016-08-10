@@ -10,7 +10,7 @@ import wtf.core.init.BlockSets;
 
 public class GameplayConfig {
 
-	public static boolean customExplosion;
+	
 	
 	public static boolean oreFractures;
 	public static boolean stoneFracturesBeforeBreaking;
@@ -22,18 +22,23 @@ public class GameplayConfig {
 	
 	public static float hammerBreakSpeed;
 	
-	public static boolean denseOres;
+	
 
 	public static String[] oreList;
 	public static boolean fallingBlocksDamage;
+	
+	public static boolean customExplosion;
 	public static boolean explosionFractures;
+	public static double expLvlAatomize;
+	public static double expLvlDrop;
+	
 	
 	public static boolean homescroll;
 
 	//public static boolean enableQuickCrafting;
 
 	public static int featherDrop;
-	public static float stickDrop;
+	public static int stickDrop;
 
 	public static Configuration config = new Configuration(new File("config/WTFGameplay.cfg"));
 
@@ -52,7 +57,6 @@ public class GameplayConfig {
 	stoneFracturesBeforeBreaking = config.get("Mining", "Stone fractures before breaking", true).getBoolean();
 	hammerBreakSpeed = 0.01F * config.get("Mining", "TCon Hammer break speed % modifier on non-stone blocks", 10).getInt();
 	
-	denseOres = config.get("Mining", "Req. WTFOres: Use WTFOre's dense ores", true).getBoolean();
 
 	String oreString = config.get("Mining", "Ores to add for fracturing- modname:blockname", "minecraft:emerald_ore").getString();
 	ConfigUtils.parseOreFrac(oreString);
@@ -61,8 +65,13 @@ public class GameplayConfig {
 	 * Explosions Options
 	 */
 	
-	customExplosion = config.get("Explosives", "TNT uses custom exploives", true).getBoolean();
+	customExplosion = config.get("Explosives", "Override explosions with custom explosions", true).getBoolean();
+	
 	explosionFractures = config.get("Explosives", "Explosions fracture stone", true).getBoolean();
+	
+	expLvlAatomize = config.get("Explosives", "Explosion level above which blocks atomize, and below which they drop", 5).getDouble();
+	expLvlDrop = config.get("Explosives", "Explosion level above which blocks drop, and below which they fracture (if fracturing on- if off nothing happens below)", 1).getDouble();
+	
 
 	/**
 	 * Gravity Options
@@ -96,7 +105,7 @@ public class GameplayConfig {
 	 * Drops Options
 	 */
 	featherDrop = config.get("Drops", "1 chance in X per tick that a chicken drops a feather, 0 disables", 3000).getInt();
-	stickDrop = config.get("Drops", "Percentage of leaf blocks that drop sticks", 50).getInt()/100;
+	stickDrop = config.get("Drops", "Percentage of leaf blocks that drop sticks", 50).getInt();
 
 	
 	config.save();

@@ -1,27 +1,33 @@
 package wtf.ores.config;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockFalling;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import wtf.api.OreGenAbstract;
 import wtf.core.Core;
 import wtf.core.blocks.BlockDenseOre;
+import wtf.core.blocks.BlockDenseOreFalling;
 import wtf.core.config.GameplayConfig;
 import wtf.core.init.BlockSets;
 import wtf.core.init.WTFBlocks;
 import wtf.core.utilities.wrappers.StoneAndOre;
-import wtf.core.worldgen.oregenerators.OreGenCaveFloor;
-import wtf.core.worldgen.oregenerators.OreGenCloud;
-import wtf.core.worldgen.oregenerators.OreGenCluster;
-import wtf.core.worldgen.oregenerators.OreGenSingle;
-import wtf.core.worldgen.oregenerators.OreGenVanilla;
-import wtf.core.worldgen.oregenerators.OreGenVein;
+import wtf.ores.OreGenAbstract;
 import wtf.ores.OreGenerator;
+import wtf.ores.oregenerators.OreGenCaveFloor;
+import wtf.ores.oregenerators.OreGenCloud;
+import wtf.ores.oregenerators.OreGenCluster;
+import wtf.ores.oregenerators.OreGenSingle;
+import wtf.ores.oregenerators.OreGenUnderWater;
+import wtf.ores.oregenerators.OreGenVanilla;
+import wtf.ores.oregenerators.OreGenVein;
 
 public class ParseOre {
 
@@ -31,11 +37,12 @@ public class ParseOre {
 		cloud,
 		cluster,
 		single,
-		cave;
+		cave,
+		underwater;
 	}
 
 	public static enum ARGUMENT{
-		oreperchunk, genheightpercentsurface, size, veindimensions, pitch, densitypercent, dimension, genpercentinbiometype, stone;
+		oreperchunk, genheightpercentsurface, size, veindimensions, pitch, densitypercent, dimension, genpercentinbiometype, stone, denseore, surfaces, reqbiometype;
 	}
 
 
@@ -50,11 +57,11 @@ public class ParseOre {
 		Core.coreLog.info ("WTF-ores: loading from "+  orestring);
 
 		String[] stringArray = orestring.split(",");
-
+		String[] genTypeArray = stringArray[0].split("@");
 		GENTYPE gentype;
 
 		try {
-			gentype = GENTYPE.valueOf(stringArray[0].toLowerCase());
+			gentype = GENTYPE.valueOf(genTypeArray[0].toLowerCase());
 		}
 		catch (IllegalArgumentException e){
 			GENTYPE[] types = GENTYPE.values();
@@ -67,7 +74,15 @@ public class ParseOre {
 
 
 		IBlockState blockstate = getBlockState(stringArray[1]);
+		if (!stringArray[1].contains(":")){
+			throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " expected a block argument, got this instead " + stringArray[1] + " The second argument of each string MUST be the block and metadata, in the format modID:block@metadata");
+		}
 		String blockName = stringArray[1].split(":")[1].split("@")[0];
+		int metadata = Integer.parseInt(stringArray[1].split(":")[1].split("@")[1]);
+		if (metadata > 0){
+			blockName += 1;
+		}
+		
 		if (blockstate == null){
 			throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " ***** cound not find block for " + stringArray[1] + " Turn on the block name getter in the core config, and place the block whose name you want in the world to get the blocks registry name");
 		}
@@ -82,8 +97,11 @@ public class ParseOre {
 		int length = -1;
 		int width = -1;
 		int size = -1;
+		ArrayList<OreGenCaveFloor.surface> surfacelist = new ArrayList<OreGenCaveFloor.surface>();
+		ArrayList<BiomeDictionary.Type> reqBiomeTypes = new ArrayList<BiomeDictionary.Type>();
 
-		IBlockState stone = Blocks.STONE.getDefaultState();
+		boolean denseOres = false;
+		ArrayList<IBlockState> stones = new ArrayList<IBlockState>();
 		
 		float pitch = -99F; 
 
@@ -93,7 +111,8 @@ public class ParseOre {
 
 		for (int loop = 2; loop < stringArray.length; loop++){
 			String[] subStringArray = stringArray[loop].toLowerCase().split("=");
-
+			String[] uncleaned = stringArray[loop].split("=");
+			
 			ARGUMENT argument;
 
 			try {
@@ -169,6 +188,44 @@ public class ParseOre {
 				biomeMap.put(biometype, f);
 				break;
 			case stone:
+				IBlockState stoneBlockState = getBlockState(uncleaned[1]);
+				if (blockstate == null){
+					throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " ***** cound not find block for " + stringArray[1] + " int the stone section of the config.  Turn on the block name getter in the core config, and place the block whose name you want in the world to get the blocks registry name");
+				}
+				stones.add(stoneBlockState);
+				break;
+			case denseore:
+				denseOres = Boolean.parseBoolean(subStringArray[1]);
+				break;
+			case surfaces:
+				String[] surfacestrings = subStringArray[1].split("&");
+				for (String string : surfacestrings){
+				
+					try {
+						surfacelist.add(OreGenCaveFloor.surface.valueOf(string.toLowerCase()));
+						}
+					catch (IllegalArgumentException e){
+						OreGenCaveFloor.surface[] types = OreGenCaveFloor.surface.values();
+						String gentypestring = "";
+						for (OreGenCaveFloor.surface type : types){
+							gentypestring += type.toString() + ", " ;
+						}
+						throw new Exception("Ore Config Parsing Exception while trying to parse  : " + orestring + " ***** "  + stringArray[0]+" is not a recognised surface type.  Accepted surface types are: " + gentypestring );
+					}
+				}
+			break;
+			case reqbiometype:
+				try {
+					biometype = BiomeDictionary.Type.valueOf(subStringArray[1].toUpperCase());
+				} catch (IllegalArgumentException e){
+					Type[] types = BiomeDictionary.Type.values();
+					String string = "";
+					for (Type type : types){
+						string += type.toString() + ", " ;
+					}
+					throw new Exception("Ore Config Parsing Exception while trying to parse reqBiomeType : " + orestring + " ***** "  + "Unrecognised Forge BiomeDictionary BiomeType, the available biome types are : " + string);
+				}
+				reqBiomeTypes.add(biometype);
 				
 				break;
 			default:
@@ -192,55 +249,69 @@ public class ParseOre {
 
 		OreGenAbstract oregenerator = null;
 		
-		switch (gentype){
-		case cave:
-			oregenerator = new OreGenCaveFloor(blockstate, spawnmin, spawnmax, maxperchunk, minperchunk);
-			break;
-		case cloud:
-			if (size == -1){
-				throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " ***** "  + "missing Size argument");
+		
+		//I need to add a secondary type- so add a split at the @, and then make a new method to call, which has a switch (because I'm gonig to use it on sea floor and riverbed too-
+		//		actually-- I can use it size check, anythnig without a secondary specification I can set with the method
+		
+		if (genTypeArray.length > 1){
+			GENTYPE secondaryGenType = null;
+			try {
+				secondaryGenType = GENTYPE.valueOf(genTypeArray[1].toLowerCase());
 			}
-			oregenerator = new OreGenCloud(blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, size);
-			break;
-		case cluster:
-			oregenerator = new OreGenCluster(blockstate, spawnmax, spawnmin, maxperchunk, minperchunk);
-			break;
-		case single:
-			oregenerator = new OreGenSingle(blockstate, spawnmax, spawnmin, maxperchunk, minperchunk);
-			break;
-		case vanilla:
-			if (size == -1){
-				throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " ***** "  + "missing Size argument");
+			catch (IllegalArgumentException e){
+				GENTYPE[] types = GENTYPE.values();
+				String gentypestring = "";
+				for (GENTYPE type : types){
+					gentypestring += type.toString() + ", " ;
+				}
+				throw new Exception("Ore Config Parsing Exception while trying to parse secondary generation type for : " + orestring + " ***** "  + stringArray[0]+" is not a recognised generation type.  Accepted generation types are: " + gentypestring );
 			}
-			oregenerator = new OreGenVanilla(blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, size);
-			break;
-		case vein:
-			if (length == -1){
-				throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " ***** "  + "missing VeinDimensions argument");
+
+			
+			OreGenAbstract secondaryGen=null;
+			switch (gentype){
+			
+			case cave:
+				if (surfacelist.size() == 0){
+					throw new Exception("Ore Config Parsing Exception while trying to parse string for " + blockstate.getBlock().getLocalizedName()  +  "No surfaces have been set- use the surface=ceiling & wall & floor argument to set a surface of the cave to generate on");
+				}
+				 secondaryGen = getGenerator(secondaryGenType, blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, length, width, thickness, pitch, denseOres, size);
+				oregenerator = new OreGenCaveFloor(secondaryGen, blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, denseOres, surfacelist);
+				break;
+			case underwater:
+				secondaryGen = getGenerator(secondaryGenType, blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, length, width, thickness, pitch, denseOres, size);
+				oregenerator = new OreGenUnderWater(secondaryGen, blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, denseOres);
+			default:
+				break;
+			
 			}
-			if (pitch == -99F){
-				throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " ***** "  + "missing Pitch argument");
-			}
-			oregenerator = new OreGenVein(blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, length, width, thickness, pitch);
-			break;
-		default:
-			break;
+		}
+		else {
+			oregenerator = getGenerator(gentype, blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, length, width, thickness, pitch, denseOres, size);
 		}
 		
-		//set up to only do stone background currently, add more here later
-		
-		Block block = WTFBlocks.registerBlock(new BlockDenseOre(stone, blockstate), "dense_"+blockName);
-		if (!GameplayConfig.denseOres){
-			BlockSets.stoneAndOre.put(new StoneAndOre(stone, blockstate), block.getDefaultState());
+		if (stones.size() == 0){
+			stones.add(Blocks.STONE.getDefaultState());
 		}
-		
+		for (IBlockState stone : stones){
+			if (denseOres){
+				
+				Block block = stone.getBlock() instanceof BlockFalling ? WTFBlocks.registerBlock(new BlockDenseOreFalling(stone, blockstate), "dense_"+blockName) : WTFBlocks.registerBlock(new BlockDenseOre(stone, blockstate), "dense_"+blockName);
+				
+				BlockSets.stoneAndOre.put(new StoneAndOre(stone, blockstate), block.getDefaultState());
+			}
+			else {
+				BlockSets.stoneAndOre.put(new StoneAndOre(stone, blockstate), blockstate);
+			}
+		}
 		//Optional arguments
 		oregenerator.biomeModifier = biomeMap; 
 		oregenerator.setVeinDensity(density);
 		if (!dimensions.isEmpty()){
 			oregenerator.dimension = dimensions;
 		}
-		
+		oregenerator.reqBiomeTypes.addAll(reqBiomeTypes);
+
 		OreGenerator.oreGenRegister.add(oregenerator);
 	}
 
@@ -253,4 +324,41 @@ public class ParseOre {
 		return block == null ? null : block.getStateFromMeta(Integer.parseInt(stringArray[1]));
 	}
 
+	public static OreGenAbstract getGenerator(GENTYPE gentype, IBlockState blockstate, float spawnmax, float spawnmin, int maxperchunk, int minperchunk, int length, 
+			int width, int thickness, float pitch, boolean denseOres, int size) throws Exception{
+		switch (gentype){
+	case cloud:
+		if (size == -1){
+			throw new Exception("Ore Config Parsing Exception while trying to parse string for " + blockstate.getBlock().getLocalizedName()  + "missing Size argument");
+		}
+		return new OreGenCloud(blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, size, denseOres);
+		
+	case cluster:
+		return new OreGenCluster(blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, denseOres);
+
+	case single:
+		return new OreGenSingle(blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, denseOres);
+
+	case vanilla:
+		if (size == -1){
+			throw new Exception("Ore Config Parsing Exception while trying to parse string for " + blockstate.getBlock().getLocalizedName()  +  "missing Size argument");
+		}
+		return new OreGenVanilla(blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, size, denseOres);
+
+	case vein:
+		if (length == -1){
+			throw new Exception("Ore Config Parsing Exception while trying to parse string for " + blockstate.getBlock().getLocalizedName()  +  "missing VeinDimensions argument");
+		}
+		if (pitch == -99F){
+			throw new Exception("Ore Config Parsing Exception while trying to parse string for " + blockstate.getBlock().getLocalizedName()  +  "missing Pitch argument");
+		}
+		return new OreGenVein(blockstate, spawnmax, spawnmin, maxperchunk, minperchunk, length, width, thickness, pitch, denseOres);
+	
+	default:
+		// the gen type error is thrown when attempting to parse it
+		return null;
+		
+	}
+	}
+	
 }

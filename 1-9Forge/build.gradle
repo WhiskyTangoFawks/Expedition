@@ -21,11 +21,11 @@ plugins {
 }
 */
 version = "1.0"
-group= "WTF.ExpeditionEdition.WTF" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "WTFExpeditionEdition"
+group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "modid"
 
 minecraft {
-    version = "1.10.2-12.18.1.2016-failtests"
+    version = "1.10.2-12.18.1.2042"
     runDir = "run"
     
     // the mappings can be changed at any time, and must be in the following format.

@@ -10,7 +10,11 @@ public class OrePos extends BlockPos{
 		super(xpos, ypos, zpos);
 		this.density = density;
 	}
-
+	
+	public OrePos(BlockPos pos, int density){
+		super(pos);
+		this.density = density;
+	}
 
 
 }

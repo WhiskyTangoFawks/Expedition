@@ -44,24 +44,28 @@ public class CaveBiomeGenMethods{
 	 * Used to get a block in the world.  Checks the hashmap of blocks to be set
 	 */
 	public IBlockState getBlockState(BlockPos pos){
-		IBlockState returnable = blocksToSet.get(pos); 
+		//first it checks if the hashmap already has a block to be set in it
+		IBlockState returnable = blocksToSet.get(pos); //so if there's nothing in the hashmap for the pos, =null
 		if (returnable != null){
 			return returnable;
 		}
 		
+		//if it doesn't, then it goes to get the block in the world
 		returnable = chunk.getBlockState(pos);
-		
-		ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[pos.getY() >> 4];
+		int y = pos.getY() >> 4;
+		if (y < chunk.getBlockStorageArray().length){
+			ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y];
 
-		if (extendedblockstorage != Chunk.NULL_BLOCK_STORAGE)
-		{
-			returnable = extendedblockstorage.get(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15);
-			if (returnable == null){
-				returnable = Blocks.AIR.getDefaultState();
+			if (extendedblockstorage != Chunk.NULL_BLOCK_STORAGE)
+			{
+				returnable = extendedblockstorage.get(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15);
+				if (returnable == null){
+					returnable = Blocks.AIR.getDefaultState();
+				}
 			}
 		}
 		//System.out.println("Returnable = " + returnable.getBlock().getLocalizedName());
-		
+
 		return returnable;
 	}
 

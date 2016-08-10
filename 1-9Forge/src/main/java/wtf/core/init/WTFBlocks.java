@@ -13,24 +13,24 @@ import wtf.core.Core;
 import wtf.core.blocks.BlockLitTorch;
 import wtf.core.blocks.BlockMossy;
 import wtf.core.blocks.AnimatedBlock;
-import wtf.core.blocks.BlockDenseOre;
+import wtf.core.blocks.BlockCrackedStone;
 import wtf.core.blocks.BlockFoxfire;
 import wtf.core.blocks.BlockPatchIce;
 import wtf.core.blocks.BlockIcicle;
-import wtf.core.blocks.BlockNitreOre;
+import wtf.core.blocks.OreNitre;
+import wtf.core.blocks.OreSandGoldNugget;
 import wtf.core.blocks.BlockRoots;
 import wtf.core.blocks.BlockSpeleothem;
 import wtf.core.blocks.BlockPatchFluid;
 import wtf.core.config.CoreConfig;
-import wtf.core.init.BlockSets.Modifier;
 import wtf.core.items.ItemBlockState;
-import wtf.core.utilities.wrappers.StateAndModifier;
 import wtf.core.worldgen.replacers.TorchReplacer;
 
 public class WTFBlocks {
 
 	public static HashMap<IBlockState, BlockSpeleothem> speleothemMap = new HashMap<IBlockState, BlockSpeleothem>();
 	
+	public static Block oreSandGold;
 	public static Block oreNitre;
 	public static Block litTorch;
 	
@@ -40,6 +40,7 @@ public class WTFBlocks {
 	public static Block mossyStone;
 	public static Block decoStone;
 	public static BlockRoots roots;
+	public static Block crackedStone;
 	
 	public static BlockPatchFluid waterPatch;
 	public static BlockPatchFluid lavaPatch;
@@ -47,11 +48,13 @@ public class WTFBlocks {
 	public static BlockPatchFluid lavaPatchStatic;
 	
 	public static void initBlocks(){	
-		oreNitre =  registerBlock(new BlockNitreOre(), "oreNitre");
+		oreNitre =  registerBlock(new OreNitre(), "oreNitre");
 		icePatch =  registerBlock(new BlockPatchIce(), "patchIce");
 		icicle = (BlockIcicle) registerBlockItemSubblocks(new BlockIcicle(Blocks.ICE.getDefaultState()), 2, "icicle");
 		foxfire = registerBlock(new BlockFoxfire(), "foxfire");
 		roots = (BlockRoots) registerBlockItemSubblocks(new BlockRoots(), 4, "roots");
+		oreSandGold = registerBlock(new OreSandGoldNugget(), "oreSandGold");
+		crackedStone = registerBlock(new BlockCrackedStone(Blocks.STONE.getDefaultState()), "cracked_stone");
 		
 		waterPatch = (BlockPatchFluid) registerBlock(new BlockPatchFluid(Material.WATER), "patchWater");
 		lavaPatch = (BlockPatchFluid) registerBlock(new BlockPatchFluid(Material.LAVA), "patchLava");

@@ -32,7 +32,7 @@ public class BlockLitTorch extends BlockTorch
 	public BlockLitTorch(){
 		this.setCreativeTab(Core.wtfTab);
 		this.lightValue = 14;
-		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ISLIT, true));
+		this.setDefaultState(this.blockState.getBaseState().withProperty(FACING, EnumFacing.UP).withProperty(ISLIT, false));
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class BlockLitTorch extends BlockTorch
 			if(GameplayConfig.enableFiniteTorch ==1) {
 				return world.setBlockState(pos, state.withProperty(ISLIT, true));
 			}
-			else if (GameplayConfig.enableFiniteTorch ==2 && heldItem.getItem() == Items.FLINT_AND_STEEL){
+			else if (GameplayConfig.enableFiniteTorch ==2 && heldItem != null && heldItem.getItem() == Items.FLINT_AND_STEEL){
 				return world.setBlockState(pos, state.withProperty(ISLIT, true));
 			}			
 		}

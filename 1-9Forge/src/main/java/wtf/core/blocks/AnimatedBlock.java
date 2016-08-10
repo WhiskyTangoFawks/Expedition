@@ -20,10 +20,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import wtf.core.gameplay.GravityMethods;
 import wtf.core.init.BlockSets;
 import wtf.core.init.WTFBlocks;
 import wtf.core.utilities.wrappers.StateAndModifier;
+import wtf.gameplay.GravityMethods;
 
 public class AnimatedBlock extends AbstractBlockDerivative{
 
@@ -185,6 +185,12 @@ public class AnimatedBlock extends AbstractBlockDerivative{
 			meta -=7;
 			fast = true;
 		}
+		
+		//temp fix because there are only 3 values
+		if (meta > 2){
+			meta = 0;
+		}
+		
 		IBlockState state = this.getDefaultState().withProperty(TYPE, ANIMTYPE.values()[meta]).withProperty(FAST, fast);
 		return state;
 	}

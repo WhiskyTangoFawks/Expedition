@@ -9,6 +9,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import wtf.biomes.TreeVars;
 import wtf.core.worldgen.CoreWorldGenListener;
 import wtf.core.worldgen.WorldScanner;
@@ -26,6 +27,8 @@ public class ChunkScan {
 	
 	
 	public final ArrayList<CaveListWrapper> caveset;
+	
+	private ArrayList<BlockPos> underwater = null;
 	
 	public ChunkScan(World world, SurfacePos[][] var, int x, int z, int avg, ArrayList<CaveListWrapper> caveareas){
 		this.surface = var;
@@ -165,6 +168,22 @@ public class ChunkScan {
 		if (setX < 16 && setX > -1 && setZ < 16 && setZ > -1){
 			surface[setX][setZ].generated=true;
 		}
+	}
+	
+	public ArrayList<BlockPos> getWaterList(){
+		if (underwater == null){
+			underwater = new ArrayList<BlockPos>();
+			Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
+			int waterHash = Material.WATER.hashCode();
+			for (int xloop = 0; xloop < 16; xloop++){
+				for (int zloop = 0; zloop < 16; zloop++){
+					if (chunk.getBlockState(surface[xloop][zloop].up()).getMaterial().hashCode() == waterHash){
+						underwater.add(surface[xloop][zloop]);
+					}
+				}
+			}
+		}
+		return underwater;
 	}
 	
 	public boolean posInChunk(int x, int z){

@@ -1,5 +1,7 @@
 package wtf.core.blocks;
 
-public class BlockCinderShroom {
+import net.minecraft.block.BlockNewLeaf;
+
+public class BlockCinderShroom extends BlockNewLeaf{
 
 }

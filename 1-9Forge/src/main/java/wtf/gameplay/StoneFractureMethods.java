@@ -1,4 +1,4 @@
-package wtf.core.gameplay;
+package wtf.gameplay;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import wtf.core.blocks.AnimatedBlock;
 import wtf.core.blocks.BlockDenseOre;
 import wtf.core.init.BlockSets;
+import wtf.core.init.WTFBlocks;
 import wtf.core.init.BlockSets.Modifier;
 import wtf.core.utilities.Simplex;
 import wtf.core.utilities.wrappers.Vec;
@@ -84,7 +85,8 @@ public class StoneFractureMethods {
 	
 	public static void hammerFrac(World world, int x, int y, int z, int harvestLevel) {
 		HashSet<BlockPos> hashset= new HashSet<BlockPos>();
-		if (fracStone(world, new BlockPos(x, y, z))){
+		BlockPos pos = new BlockPos(x, y, z);
+		if (fracStone(world, pos, world.getBlockState(pos) )){
 		for (int loop = 0; loop < 12*harvestLevel; loop++){
 			
 			int xmod = random.nextInt(3)-1;
@@ -92,7 +94,7 @@ public class StoneFractureMethods {
 			int zmod = random.nextInt(3)-1;
 
 			hashset.add(new BlockPos(x, y, z));
-			BlockPos pos = new BlockPos(x+xmod, y+ymod, z+zmod);
+			pos = new BlockPos(x+xmod, y+ymod, z+zmod);
 			Block blockToFracture = world.getBlockState(pos).getBlock();
 			int count = 1;
 			
@@ -103,7 +105,7 @@ public class StoneFractureMethods {
 			}
 			
 			hashset.add(pos);
-			fracStone(world, pos);
+			fracStone(world, pos, world.getBlockState(pos));
 			for (BlockPos drop : hashset){
 				//if there isn't a block fractured below this one, drop it
 				if (!hashset.contains(pos.down())){
@@ -176,10 +178,10 @@ public class StoneFractureMethods {
 
 	public static HashSet<BlockPos> fracCrack(World world, BlockPos pos, int n){
 		HashSet<BlockPos> hashset = new HashSet<BlockPos>();
-		System.out.println("FracCrack called with " + n);
+		//System.out.println("FracCrack called with " + n);
 		Random posRandom = new Random(pos.hashCode());
 		for (int loop = 0; loop < n; loop++){
-			System.out.println("frac high iterating " + loop );
+			//System.out.println("frac high iterating " + loop );
 			//setup a frac vector
 			Vec fracVec = new Vec(pos, posRandom);
 			BlockPos fracPos = fracVec.next();
@@ -210,18 +212,36 @@ public class StoneFractureMethods {
 	}
 
 
-
+	final static int crackedHash = WTFBlocks.crackedStone.hashCode();
+	
 	public static void FracIterator(World world, HashSet<BlockPos> hashset){
-		BlockPos chunkposition;
+		BlockPos pos;
+		
+		HashSet<BlockPos> hashset2 = new HashSet<BlockPos>();
+		
 		Iterator<BlockPos> iterator = hashset.iterator();
 		while (iterator.hasNext()){
-			chunkposition = iterator.next();
-			fracStone(world, chunkposition);
+			pos = iterator.next();
+			IBlockState state = world.getBlockState(pos);
+			
+			if (state.getBlock().hashCode() == crackedHash){
+				hashset2.add(pos.up());
+				hashset2.add(pos.down());
+				hashset2.add(pos.east());
+				hashset2.add(pos.west());
+				hashset2.add(pos.north());
+				hashset2.add(pos.south());
+			}
+			
+			fracStone(world, pos, state);
+		}
+		if (hashset2.size() > 0){
+			FracIterator(world, hashset2);
 		}
 	}
 
-	public static boolean fracStone(World world, BlockPos pos){
-		IBlockState state = world.getBlockState(pos);
+	public static boolean fracStone(World world, BlockPos pos, IBlockState state){
+		
 		IBlockState stateToSet = BlockSets.getTransformedState(state, BlockSets.Modifier.COBBLE);
 		
 		if (stateToSet != null) { 

@@ -21,9 +21,12 @@ public class WorldScanner {
 	public WorldScanner(){
 
 	}
-
+	
+	
 	public HashMap<BlockPos, CaveListWrapper> airBlocks = new HashMap<BlockPos, CaveListWrapper>();
 
+
+	
 	public ChunkScan getChunkScan(World world, ChunkCoords coords)
 	{		
 		ArrayList<CaveListWrapper> caveareas = new ArrayList<CaveListWrapper>();
@@ -226,11 +229,12 @@ public class WorldScanner {
 		}
 
 		surfaceaverage /= 256;
-
+		//System.out.println("surface average" + surfaceaverage);
 		return new ChunkScan(world, surfacepositions, coords.getWorldX(), coords.getWorldZ(), surfaceaverage, caveareas);
 	}
 
-	public static int scanForSurface(Chunk chunk, int x, int y, int z) {
+	
+	public int scanForSurface(Chunk chunk, int x, int y, int z) {
 		while (!chunk.canSeeSky(new BlockPos(x & 15, y, z & 15)) && y<256){
 			y+=10;
 		}	
@@ -246,7 +250,7 @@ public class WorldScanner {
 	}
 
 
-	public static boolean isAirAndCheck(Chunk chunk, int x, int y, int z){
+	public boolean isAirAndCheck(Chunk chunk, int x, int y, int z){
 
 		Block block = chunk.getBlockState(x & 15, y, z & 15).getBlock();
 		Replacer replacer = BlockSets.isNonSolidAndCheckReplacement.get(block);
@@ -273,7 +277,7 @@ public class WorldScanner {
 		return BlockSets.nonSolidBlockSet.contains(world.getBlockState(pos).getBlock());
 	}
 
-	public static boolean isSurfaceAndCheck(Chunk chunk, int x, int y, int z){
+	public boolean isSurfaceAndCheck(Chunk chunk, int x, int y, int z){
 		//BlockPos pos = ;
 		Block block = chunk.getBlockState(new BlockPos(x & 15, y, z & 15)).getBlock();
 

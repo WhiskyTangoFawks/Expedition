@@ -13,11 +13,11 @@ import wtf.cavebiomes.worldgeneration.DungeonPopulator;
 import wtf.core.config.CaveBiomesConfig;
 import wtf.core.config.CoreConfig;
 
-@Mod(modid = CaveBiomes.modid, name = "WhiskyTangoFox's Cave Biomes", version = "2.0", dependencies = "required-after:WTFCore@[1.9v0.1,)")
+@Mod(modid = CaveBiomes.modid, name = "WhiskyTangoFox's Cave Biomes", version = "2.0")
 
 
 public class CaveBiomes {
-	public static  final String modid = "CaveBiomes";
+	public static  final String modid = "cavebiomes";
 
 
 

@@ -1,4 +1,4 @@
-package wtf.core.gameplay;
+package wtf.gameplay;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;

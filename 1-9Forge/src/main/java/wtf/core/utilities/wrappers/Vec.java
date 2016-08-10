@@ -4,7 +4,6 @@ import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import wtf.core.utilities.Simplex;
 
 public class Vec {
 	
@@ -15,11 +14,14 @@ public class Vec {
 	public final double vecY;
 	public int n = 1;
 	
-	
-	private BlockPos currentpos;
+	private double currentX;
+	private double currentY;
+	private double currentZ;
 	
 	public Vec(BlockPos pos, double pitchX, double pitchY){
-		currentpos = pos;
+		currentX = pos.getX();
+		currentZ = pos.getZ();
+		currentY = pos.getY();
 		ori = pos;
 		float sinY =  MathHelper.sin((float) pitchY);
 		vecY = MathHelper.cos((float) pitchY);
@@ -31,7 +33,9 @@ public class Vec {
 	
 	public Vec(BlockPos pos, Random random){
 		ori = new BlockPos(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5);
-		currentpos = ori;
+		currentX = pos.getX();
+		currentZ = pos.getZ();
+		currentY = pos.getY();
 		float pitchX = random.nextFloat()*pi;
 		float pitchY = random.nextFloat()*pi;
 		float sinY = MathHelper.sin(pitchY);
@@ -45,27 +49,50 @@ public class Vec {
 	
 	public Vec(BlockPos pos, double x, double y, double z){
 		ori = new BlockPos(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5);
-		currentpos = ori;
+		currentX = pos.getX();
+		currentZ = pos.getZ();
+		currentY = pos.getY();
 		vecX = x;
 		vecY = y;
 		vecZ = z;
 	}
 	
 	public BlockPos next(){
-		currentpos = new BlockPos(currentpos.getX()+vecX, currentpos.getY()+vecY, currentpos.getZ() + vecZ);
-		return currentpos;
+		currentX += vecX;
+		currentY += vecY;
+		currentZ += vecZ;
+		return pos();
+	}
+
+	public BlockPos pos() {
+		// TODO Auto-generated method stub
+		return new BlockPos(currentX, currentY, currentZ);
 	}
 
 
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((currentpos == null) ? 0 : currentpos.hashCode());
-		result = prime * result + n;
+		long temp;
+		temp = Double.doubleToLongBits(currentX);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(currentY);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(currentZ);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		result = prime * result + ((ori == null) ? 0 : ori.hashCode());
+		temp = Double.doubleToLongBits(vecX);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(vecY);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(vecZ);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
+
+
 
 	@Override
 	public boolean equals(Object obj) {
@@ -76,13 +103,25 @@ public class Vec {
 		if (getClass() != obj.getClass())
 			return false;
 		Vec other = (Vec) obj;
-		if (currentpos == null) {
-			if (other.currentpos != null)
-				return false;
-		} else if (!currentpos.equals(other.currentpos))
+		if (Double.doubleToLongBits(currentX) != Double.doubleToLongBits(other.currentX))
 			return false;
-		if (n != other.n)
+		if (Double.doubleToLongBits(currentY) != Double.doubleToLongBits(other.currentY))
+			return false;
+		if (Double.doubleToLongBits(currentZ) != Double.doubleToLongBits(other.currentZ))
+			return false;
+		if (ori == null) {
+			if (other.ori != null)
+				return false;
+		} else if (!ori.equals(other.ori))
+			return false;
+		if (Double.doubleToLongBits(vecX) != Double.doubleToLongBits(other.vecX))
+			return false;
+		if (Double.doubleToLongBits(vecY) != Double.doubleToLongBits(other.vecY))
+			return false;
+		if (Double.doubleToLongBits(vecZ) != Double.doubleToLongBits(other.vecZ))
 			return false;
 		return true;
 	}
+	
+
 }

@@ -17,8 +17,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import wtf.core.Core;
-import wtf.core.gameplay.StoneFractureMethods;
 import wtf.core.init.BlockSets;
+import wtf.gameplay.StoneFractureMethods;
 
 public class BlockPatchFluid extends BlockLiquid{
 

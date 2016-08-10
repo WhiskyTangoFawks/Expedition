@@ -131,6 +131,8 @@ public class BlockSets {
 			}
 		}
 
+
+		explosiveBlocks.put(Blocks.TNT, 4F);
 		explosiveBlocks.put(Blocks.REDSTONE_ORE, 2F);
 		explosiveBlocks.put(Blocks.LIT_REDSTONE_ORE, 3F);
 		explosiveBlocks.put(Blocks.REDSTONE_TORCH, 1F);
@@ -140,7 +142,9 @@ public class BlockSets {
 		//
 
 		blockTransformer.put(new StateAndModifier(Blocks.STONE.getDefaultState(), Modifier.COBBLE), Blocks.COBBLESTONE.getDefaultState());
+		blockTransformer.put(new StateAndModifier(Blocks.SANDSTONE.getDefaultState(), Modifier.COBBLE), Blocks.SAND.getDefaultState());
 		blockTransformer.put(new StateAndModifier(Blocks.COBBLESTONE.getDefaultState(), Modifier.MOSSY), Blocks.MOSSY_COBBLESTONE.getDefaultState());
+		
 
 		for (Entry<StateAndModifier, IBlockState> entry : blockTransformer.entrySet()){
 			if (entry.getKey().modifier == Modifier.COBBLE){
@@ -150,10 +154,5 @@ public class BlockSets {
 
 		new LavaReplacer(Blocks.LAVA); //replaces lava below y=11 in a biome specific manner
 
-		if (!GameplayConfig.denseOres){
-			for (IBlockState state : defOreStates){
-				stoneAndOre.put(new StoneAndOre(Blocks.STONE.getDefaultState(), state), state);
-			}
-		}
 	}
 }

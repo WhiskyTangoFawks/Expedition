@@ -20,7 +20,6 @@ import wtf.biomes.WorldGenEventListener;
 import wtf.core.config.CoreConfig;
 import wtf.core.config.GameplayConfig;
 import wtf.core.entities.EntitySpawnListener;
-import wtf.core.gameplay.GamePlayEventListener;
 import wtf.core.init.BlockSets;
 import wtf.core.init.WTFArmor;
 import wtf.core.init.WTFBlocks;
@@ -28,6 +27,7 @@ import wtf.core.init.WTFEntities;
 import wtf.core.init.WTFItems;
 import wtf.core.proxy.CommonProxy;
 import wtf.core.worldgen.CoreWorldGenListener;
+import wtf.gameplay.GamePlayEventListener;
 import wtf.ores.OreGenerator;
 import wtf.ores.VanillOreGenCatcher;
 import wtf.ores.config.WTFOreConfig;
@@ -35,7 +35,7 @@ import wtf.ores.config.WTFOreConfig;
 @Mod (modid = Core.coreID, name = Core.coreID, version = Core.version)
 
 public class Core {
-	public static  final String coreID = "WTFCore";
+	public static  final String coreID = "wtfcore";
 	public static final String version = "1.9v0.1";
 	
 	@SidedProxy(clientSide="wtf.core.proxy.ClientProxy", serverSide="wtf.core.proxy.CommonProxy")

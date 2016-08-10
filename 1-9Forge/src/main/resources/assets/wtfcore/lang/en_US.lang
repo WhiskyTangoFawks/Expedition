@@ -2,6 +2,8 @@ itemGroup.WTFBlocks=WTF's Blocks
 
 tile.oreNitre.name=Nitre Ore
 item.itemNitre.name=Saltpetre
+tile.oreSandGold.name=Gold Ore
+tile.cracked_stone.name=Cracked Stone
 tile.lit_torch.name=Torch
 tile.icePatch.name=Ice Patch
 tile.icicle.0.name=Icicle
@@ -68,6 +70,7 @@ tile.patchWaterStatic.name=Water
 tile.patchLava.name=Lava
 tile.patchLavaStatic.name=Lava
 
+tile.dense_oreSandGold.name=Gold Ore
 tile.dense_coal_ore.name=Coal Ore
 tile.dense_iron_ore.name=Iron Ore
 tile.dense_gold_ore.name=Gold Ore
@@ -76,6 +79,7 @@ tile.dense_redstone_ore.name=Redstone Ore
 tile.dense_emerald_ore.name=Emerald Ore
 tile.dense_diamond_ore.name=Diamond Ore
 tile.dense_oreNitre.name=Nitre Ore
+tile.dense_quartz_ore.name=Nether Quartz Ore
 
 
 item.itemSulfur.name=Sulphur
