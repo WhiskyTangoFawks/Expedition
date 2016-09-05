@@ -1,4 +1,4 @@
-package wtf.core.worldgen;
+package wtf.worldscan;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -11,8 +11,8 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import wtf.api.PopulationGenerator;
 import wtf.api.WTFWorldGen;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkScan;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkScan;
 
 public class CoreWorldGenListener {
 

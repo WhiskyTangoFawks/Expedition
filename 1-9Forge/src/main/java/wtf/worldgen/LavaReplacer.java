@@ -10,9 +10,9 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.BiomeDictionary;
 import wtf.api.Replacer;
 import wtf.blocks.AnimatedBlock;
-import wtf.core.utilities.GenMethods;
-import wtf.core.utilities.Simplex;
 import wtf.init.WTFBlocks;
+import wtf.utilities.GenMethods;
+import wtf.utilities.Simplex;
 
 public class LavaReplacer extends Replacer{
 

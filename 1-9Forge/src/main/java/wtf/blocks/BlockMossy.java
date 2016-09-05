@@ -5,9 +5,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import wtf.core.utilities.wrappers.StateAndModifier;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
+import wtf.utilities.wrappers.StateAndModifier;
 
 public class BlockMossy extends AbstractBlockDerivative{
 

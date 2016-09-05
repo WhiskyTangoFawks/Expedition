@@ -9,10 +9,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import wtf.core.utilities.wrappers.StateAndModifier;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
 import wtf.init.BlockSets.Modifier;
+import wtf.utilities.wrappers.StateAndModifier;
 
 public class BlockCrackedStone extends AbstractBlockDerivative{
 

@@ -5,7 +5,7 @@ import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import wtf.core.Core;
+import wtf.Core;
 
 public class CustomArmor extends ItemArmor{
 

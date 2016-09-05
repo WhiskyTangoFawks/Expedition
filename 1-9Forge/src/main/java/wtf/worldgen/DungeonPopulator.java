@@ -6,11 +6,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import wtf.api.PopulationGenerator;
 import wtf.config.CaveBiomesConfig;
-import wtf.core.utilities.wrappers.AdjPos;
-import wtf.core.utilities.wrappers.CaveListWrapper;
-import wtf.core.utilities.wrappers.CavePosition;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkScan;
+import wtf.utilities.wrappers.AdjPos;
+import wtf.utilities.wrappers.CaveListWrapper;
+import wtf.utilities.wrappers.CavePosition;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkScan;
 
 public class DungeonPopulator extends PopulationGenerator{
 

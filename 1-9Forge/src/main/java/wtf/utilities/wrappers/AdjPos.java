@@ -1,4 +1,4 @@
-package wtf.core.utilities.wrappers;
+package wtf.utilities.wrappers;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,7 +1,7 @@
 package wtf.init;
 
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import wtf.core.Core;
+import wtf.Core;
 import wtf.entities.skeletons.SkeletonMage;
 import wtf.entities.zombies.EntityMummy;
 

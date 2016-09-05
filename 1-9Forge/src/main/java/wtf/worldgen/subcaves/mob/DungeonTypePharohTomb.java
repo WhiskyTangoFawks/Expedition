@@ -6,10 +6,10 @@ import net.minecraft.block.BlockRedSandstone;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import wtf.core.Core;
-import wtf.core.utilities.wrappers.CaveListWrapper;
-import wtf.core.utilities.wrappers.CavePosition;
+import wtf.Core;
 import wtf.entities.zombies.EntityMummy;
+import wtf.utilities.wrappers.CaveListWrapper;
+import wtf.utilities.wrappers.CavePosition;
 import wtf.worldgen.AbstractDungeonType;
 import wtf.worldgen.CaveBiomeGenMethods;
 

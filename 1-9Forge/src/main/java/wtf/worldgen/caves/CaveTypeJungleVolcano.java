@@ -6,8 +6,8 @@ import net.minecraft.block.BlockTallGrass;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import wtf.core.utilities.wrappers.AdjPos;
 import wtf.init.BlockSets.Modifier;
+import wtf.utilities.wrappers.AdjPos;
 import wtf.worldgen.AbstractCaveType;
 import wtf.worldgen.CaveBiomeGenMethods;
 

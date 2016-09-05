@@ -5,11 +5,11 @@ import java.util.Random;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import wtf.core.utilities.Simplex;
-import wtf.core.utilities.wrappers.AdjPos;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkScan;
-import wtf.core.utilities.wrappers.SurfacePos;
+import wtf.utilities.Simplex;
+import wtf.utilities.wrappers.AdjPos;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkScan;
+import wtf.utilities.wrappers.SurfacePos;
 import wtf.worldgen.trees.TreeTypeGetter;
 import wtf.worldgen.trees.TreeVars;
 

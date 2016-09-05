@@ -11,7 +11,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import wtf.core.Core;
+import wtf.Core;
 
 
 public class HomeScroll extends Item{

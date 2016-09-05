@@ -15,11 +15,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import wtf.blocks.AnimatedBlock;
 import wtf.blocks.BlockDenseOre;
-import wtf.core.utilities.Simplex;
-import wtf.core.utilities.wrappers.Vec;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
 import wtf.init.BlockSets.Modifier;
+import wtf.utilities.Simplex;
+import wtf.utilities.wrappers.Vec;
 
 public class StoneFractureMethods {
 

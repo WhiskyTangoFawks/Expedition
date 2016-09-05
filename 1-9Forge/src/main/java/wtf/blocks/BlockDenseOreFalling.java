@@ -11,8 +11,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import wtf.core.utilities.wrappers.StoneAndOre;
 import wtf.init.BlockSets;
+import wtf.utilities.wrappers.StoneAndOre;
 
 public class BlockDenseOreFalling extends AbstractBlockDerivativeFalling {
 	public static final PropertyInteger DENSITY = PropertyInteger.create("density", 0, 2);

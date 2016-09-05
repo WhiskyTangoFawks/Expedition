@@ -13,8 +13,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import wtf.core.utilities.GenMethods;
 import wtf.entities.zombies.EntityMummy;
+import wtf.utilities.GenMethods;
 
 public class SpawnHandlerZombie {
 

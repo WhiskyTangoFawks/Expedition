@@ -2,7 +2,7 @@ package wtf.init;
 
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import wtf.core.Core;
+import wtf.Core;
 import wtf.items.HomeScroll;
 import wtf.items.SimpleItem;
 

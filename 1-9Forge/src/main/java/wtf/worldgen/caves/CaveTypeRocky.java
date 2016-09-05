@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 import wtf.config.OverworldGenConfig;
-import wtf.core.utilities.wrappers.SurfacePos;
 import wtf.init.BlockSets.Modifier;
+import wtf.utilities.wrappers.SurfacePos;
 import wtf.worldgen.AbstractCaveType;
 import wtf.worldgen.CaveBiomeGenMethods;
 

@@ -1,4 +1,4 @@
-package wtf.core.worldgen;
+package wtf.worldscan;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,13 +8,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import wtf.api.Replacer;
-import wtf.core.utilities.wrappers.AdjPos;
-import wtf.core.utilities.wrappers.CaveListWrapper;
-import wtf.core.utilities.wrappers.CavePosition;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.SurfacePos;
 import wtf.init.BlockSets;
-import wtf.core.utilities.wrappers.ChunkScan;
+import wtf.utilities.wrappers.AdjPos;
+import wtf.utilities.wrappers.CaveListWrapper;
+import wtf.utilities.wrappers.CavePosition;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkScan;
+import wtf.utilities.wrappers.SurfacePos;
 
 public class WorldScanner {
 

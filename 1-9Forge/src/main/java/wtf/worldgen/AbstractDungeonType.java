@@ -2,8 +2,8 @@ package wtf.worldgen;
 
 import java.util.Random;
 
-import wtf.core.utilities.wrappers.CaveListWrapper;
-import wtf.core.utilities.wrappers.CavePosition;
+import wtf.utilities.wrappers.CaveListWrapper;
+import wtf.utilities.wrappers.CavePosition;
 
 public abstract class AbstractDungeonType extends AbstractCaveType{
 

@@ -7,7 +7,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import wtf.core.utilities.wrappers.ChunkScan;
+import wtf.utilities.wrappers.ChunkScan;
 import wtf.worldgen.AbstractCaveType;
 import wtf.worldgen.CaveBiomeGenMethods;
 import wtf.worldgen.trees.TreeTypeGetter;

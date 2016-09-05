@@ -10,8 +10,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import wtf.core.utilities.GenMethods;
 import wtf.init.BlockSets;
+import wtf.utilities.GenMethods;
 
 
 public abstract class Replacer {

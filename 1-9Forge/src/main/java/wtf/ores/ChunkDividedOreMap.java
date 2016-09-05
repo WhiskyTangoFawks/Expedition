@@ -11,10 +11,10 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import wtf.blocks.BlockDenseOre;
 import wtf.config.GameplayConfig;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.OrePos;
-import wtf.core.utilities.wrappers.StoneAndOre;
 import wtf.init.BlockSets;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.OrePos;
+import wtf.utilities.wrappers.StoneAndOre;
 
 public class ChunkDividedOreMap{
 

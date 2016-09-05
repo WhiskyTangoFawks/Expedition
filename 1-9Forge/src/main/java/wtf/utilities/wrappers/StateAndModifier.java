@@ -1,4 +1,4 @@
-package wtf.core.utilities.wrappers;
+package wtf.utilities.wrappers;
 
 import net.minecraft.block.state.IBlockState;
 import wtf.init.BlockSets;

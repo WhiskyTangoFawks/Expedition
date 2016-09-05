@@ -1,4 +1,4 @@
-package wtf.core.worldgen.replacers;
+package wtf.worldscan;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.math.BlockPos;

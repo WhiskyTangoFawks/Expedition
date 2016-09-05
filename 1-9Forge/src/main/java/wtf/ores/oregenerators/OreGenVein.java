@@ -6,11 +6,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkScan;
-import wtf.core.utilities.wrappers.OrePos;
 import wtf.ores.ChunkDividedOreMap;
 import wtf.ores.OreGenAbstract;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkScan;
+import wtf.utilities.wrappers.OrePos;
 
 public class OreGenVein extends OreGenAbstract {
 

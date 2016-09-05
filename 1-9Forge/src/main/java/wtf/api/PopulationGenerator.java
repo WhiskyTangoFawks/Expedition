@@ -9,10 +9,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.Chunk;
-import wtf.core.utilities.GenMethods;
-import wtf.core.utilities.wrappers.BlockToPlace;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkScan;
+import wtf.utilities.GenMethods;
+import wtf.utilities.wrappers.BlockToPlace;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkScan;
 
 
 public abstract class PopulationGenerator {

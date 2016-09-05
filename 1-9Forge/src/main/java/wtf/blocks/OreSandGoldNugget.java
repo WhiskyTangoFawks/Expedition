@@ -14,7 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import wtf.core.Core;
+import wtf.Core;
 
 public class OreSandGoldNugget extends BlockFalling{
 

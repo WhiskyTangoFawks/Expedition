@@ -8,7 +8,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 
 import net.minecraft.world.World;
-import wtf.core.utilities.Simplex;
+import wtf.utilities.Simplex;
 
 public abstract class TreeVars {
 	

@@ -11,9 +11,9 @@ import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import net.minecraft.world.gen.feature.WorldGenShrub;
 import wtf.api.PopulationGenerator;
 import wtf.config.OverworldGenConfig;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkScan;
-import wtf.core.utilities.wrappers.SurfacePos;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkScan;
+import wtf.utilities.wrappers.SurfacePos;
 
 public class TreePopulator {
 

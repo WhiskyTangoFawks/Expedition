@@ -1,4 +1,4 @@
-package wtf.core.utilities;
+package wtf.utilities;
 
 import java.util.HashSet;
 

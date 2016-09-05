@@ -29,8 +29,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import wtf.config.GameplayConfig;
-import wtf.core.utilities.wrappers.ExpVec;
 import wtf.init.BlockSets;
+import wtf.utilities.wrappers.ExpVec;
 
 public class CustomExplosion extends Explosion{
 

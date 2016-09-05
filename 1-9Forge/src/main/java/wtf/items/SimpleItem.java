@@ -1,7 +1,7 @@
 package wtf.items;
 
 import net.minecraft.item.Item;
-import wtf.core.Core;
+import wtf.Core;
 
 public class SimpleItem extends Item{
 

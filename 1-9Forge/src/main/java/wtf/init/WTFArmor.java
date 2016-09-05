@@ -8,7 +8,7 @@ import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import wtf.core.Core;
+import wtf.Core;
 import wtf.entities.CustomArmor;
 
 public class WTFArmor {

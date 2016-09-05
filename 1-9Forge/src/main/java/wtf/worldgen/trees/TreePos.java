@@ -12,10 +12,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import wtf.core.utilities.Simplex;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkDividedHashMap;
-import wtf.core.utilities.wrappers.ChunkScan;
+import wtf.utilities.Simplex;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkDividedHashMap;
+import wtf.utilities.wrappers.ChunkScan;
 
 public class TreePos {
 

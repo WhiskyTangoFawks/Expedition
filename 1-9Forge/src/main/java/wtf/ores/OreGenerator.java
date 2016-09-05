@@ -5,8 +5,8 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 import wtf.api.PopulationGenerator;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkScan;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkScan;
 
 public class OreGenerator extends PopulationGenerator{
 	

@@ -9,8 +9,8 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import wtf.core.utilities.GenMethods;
 import wtf.entities.skeletons.SkeletonMage;
+import wtf.utilities.GenMethods;
 
 public class SpawnHandlerSkeleton {
 	

@@ -18,8 +18,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import wtf.Core;
 import wtf.config.GameplayConfig;
-import wtf.core.Core;
 
 public class BlockWTFTorch extends BlockTorch
 {

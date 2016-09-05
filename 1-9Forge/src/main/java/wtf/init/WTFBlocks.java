@@ -16,6 +16,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import wtf.Core;
 import wtf.blocks.AnimatedBlock;
 import wtf.blocks.BlockCrackedStone;
 import wtf.blocks.BlockFoxfire;
@@ -31,7 +32,6 @@ import wtf.blocks.OreSandGoldNugget;
 import wtf.blocks.redstone.RedstoneStalactite;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
-import wtf.core.Core;
 import wtf.crafting.WCICTable;
 import wtf.items.ItemBlockState;
 

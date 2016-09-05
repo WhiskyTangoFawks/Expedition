@@ -12,11 +12,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import wtf.core.utilities.Simplex;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkDividedHashMap;
-import wtf.core.utilities.wrappers.ChunkScan;
 import wtf.ores.config.WTFOreConfig;
+import wtf.utilities.Simplex;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkDividedHashMap;
+import wtf.utilities.wrappers.ChunkScan;
 
 public abstract class OreGenAbstract{
 	

@@ -2,7 +2,6 @@ package wtf.gameplay;
 
 import com.google.common.collect.Lists;
 import java.util.List;
-import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockAnvil;
 import net.minecraft.block.BlockFalling;
@@ -19,7 +18,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import wtf.config.GameplayConfig;
 
@@ -29,19 +27,34 @@ public class WTFSlidingBlock extends EntityFallingBlock
 	private int fallHurtMax = 40;
 	private float fallHurtAmount = 2.0F;
 	private final BlockPos origin;
-	boolean fallen = false;
+	private boolean fallen = false;
+	private final boolean sliding;
 
-	public WTFSlidingBlock(World worldIn, BlockPos pos, BlockPos targetpos)
+	public WTFSlidingBlock(World worldIn, BlockPos pos, BlockPos targetpos, IBlockState state, boolean sliding)
 	{
-		super(worldIn, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, worldIn.getBlockState(pos));
-		this.fallTile = worldIn.getBlockState(pos);
-
+		super(worldIn, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, state);
+		this.fallTile = state;
+		this.fallen = !sliding;
+		this.sliding = sliding;
+		
 		this.origin = pos;
 
 		double motx = pos.getX() - targetpos.getX();
 		double motz = pos.getZ() - targetpos.getZ();
 
 		addVelocity(0.1D * motx, -0.1D, 0.1D * motz);
+		worldIn.spawnEntityInWorld(this);
+	}
+	
+	public WTFSlidingBlock(World worldIn, BlockPos pos)
+	{
+		super(worldIn, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, worldIn.getBlockState(pos));
+		this.fallTile = worldIn.getBlockState(pos);
+		this.fallen = true;
+		this.sliding = false;
+		
+		this.origin = pos;
+		addVelocity(0, -0.1D,0);
 		worldIn.spawnEntityInWorld(this);
 	}
 
@@ -57,6 +70,7 @@ public class WTFSlidingBlock extends EntityFallingBlock
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
+		
 		if (this.fallTime++ == 0)
 		{
 			BlockPos blockpos = new BlockPos(this);
@@ -70,6 +84,7 @@ public class WTFSlidingBlock extends EntityFallingBlock
 				return;
 			}
 		}
+		
 		BlockPos blockpos1 = new BlockPos(this);
 		if ((!this.fallen) && (this.posY < this.origin.getY()))
 		{
@@ -83,7 +98,7 @@ public class WTFSlidingBlock extends EntityFallingBlock
 		this.motionX *= 0.9800000190734863D;
 		this.motionY *= 0.9800000190734863D;
 		this.motionZ *= 0.9800000190734863D;
-		if (this.fallen)
+		if (this.fallen && this.sliding)
 		{
 			this.motionX *= 0.2D;
 			this.motionZ *= 0.2D;

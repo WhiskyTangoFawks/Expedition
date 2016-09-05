@@ -6,7 +6,7 @@ import java.util.Iterator;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import wtf.core.Core;
+import wtf.Core;
 import wtf.init.BlockSets;
 
 

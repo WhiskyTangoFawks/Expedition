@@ -3,8 +3,8 @@ package wtf.worldgen;
 import java.util.ArrayList;
 import java.util.Random;
 
-import wtf.core.utilities.wrappers.CaveListWrapper;
-import wtf.core.utilities.wrappers.CavePosition;
+import wtf.utilities.wrappers.CaveListWrapper;
+import wtf.utilities.wrappers.CavePosition;
 
 public class CaveProfile {
 

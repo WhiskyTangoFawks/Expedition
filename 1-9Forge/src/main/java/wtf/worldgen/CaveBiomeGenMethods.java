@@ -23,11 +23,11 @@ import wtf.blocks.BlockSpeleothem;
 import wtf.blocks.BlockIcicle.IcicleType;
 import wtf.blocks.BlockRoots.RootType;
 import wtf.blocks.BlockSpeleothem.SpType;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkDividedHashMap;
-import wtf.core.utilities.wrappers.StateAndModifier;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkDividedHashMap;
+import wtf.utilities.wrappers.StateAndModifier;
 
 
 public class CaveBiomeGenMethods{

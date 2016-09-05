@@ -1,4 +1,4 @@
-package wtf.core.worldgen;
+package wtf.worldscan;
 
 
 import net.minecraft.world.chunk.Chunk;

@@ -1,4 +1,4 @@
-package wtf.core;
+package wtf;
 
 import org.apache.logging.log4j.Logger;
 
@@ -23,14 +23,13 @@ import wtf.config.CaveBiomesConfig;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
 import wtf.config.OverworldGenConfig;
-import wtf.core.proxy.CommonProxy;
-import wtf.core.worldgen.CoreWorldGenListener;
 import wtf.crafting.GuiHandler;
 import wtf.crafting.RecipeParser;
 import wtf.entities.EntitySpawnListener;
 import wtf.gameplay.AppleCoreEvents;
 import wtf.gameplay.GamePlayEventListener;
 import wtf.init.BlockSets;
+import wtf.init.LootEventListener;
 import wtf.init.WTFArmor;
 import wtf.init.WTFBlocks;
 import wtf.init.WTFEntities;
@@ -39,9 +38,11 @@ import wtf.init.WTFRecipes;
 import wtf.ores.OreGenerator;
 import wtf.ores.VanillOreGenCatcher;
 import wtf.ores.config.WTFOreConfig;
+import wtf.proxy.CommonProxy;
 import wtf.worldgen.DungeonPopulator;
 import wtf.worldgen.PopulationDecorator;
 import wtf.worldgen.trees.WorldGenTreeCancel;
+import wtf.worldscan.CoreWorldGenListener;
 
 @Mod (modid = Core.coreID, name = Core.coreID, version = Core.version)
 
@@ -49,7 +50,7 @@ public class Core {
 	public static  final String coreID = "wtfcore";
 	public static final String version = "1.10_BetaX";
 
-	@SidedProxy(clientSide="wtf.core.proxy.ClientProxy", serverSide="wtf.core.proxy.CommonProxy")
+	@SidedProxy(clientSide="wtf.proxy.ClientProxy", serverSide="wtf.proxy.CommonProxy")
 	public static CommonProxy proxy;
 
 	public static Logger coreLog;
@@ -118,6 +119,10 @@ public class Core {
 		if (CoreConfig.enableOreGen){
 			MinecraftForge.ORE_GEN_BUS.register(new VanillOreGenCatcher());
 			WTFWorldGen.addGen(new OreGenerator());
+		}
+		
+		if (CoreConfig.gameplaytweaks){
+			MinecraftForge.EVENT_BUS.register(new LootEventListener());
 		}
 
 		if (CoreConfig.enableOverworldGeneration){

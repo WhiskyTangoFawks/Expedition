@@ -12,12 +12,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import wtf.Core;
 import wtf.blocks.BlockDenseOre;
 import wtf.blocks.BlockDenseOreFalling;
 import wtf.blocks.redstone.DenseRedstoneOre;
 import wtf.config.GameplayConfig;
-import wtf.core.Core;
-import wtf.core.utilities.wrappers.StoneAndOre;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
 import wtf.ores.OreGenAbstract;
@@ -29,6 +28,7 @@ import wtf.ores.oregenerators.OreGenSingle;
 import wtf.ores.oregenerators.OreGenUnderWater;
 import wtf.ores.oregenerators.OreGenVanilla;
 import wtf.ores.oregenerators.OreGenVein;
+import wtf.utilities.wrappers.StoneAndOre;
 
 public class ParseOre {
 

@@ -8,9 +8,8 @@ import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import wtf.core.utilities.wrappers.ChunkCoords;
-import wtf.core.utilities.wrappers.ChunkScan;
-import wtf.core.worldgen.CoreWorldGenListener;
+import wtf.utilities.wrappers.ChunkCoords;
+import wtf.utilities.wrappers.ChunkScan;
 import wtf.worldgen.trees.TreeVars.LeafStyle;
 import wtf.worldgen.trees.types.AcaciaTree;
 import wtf.worldgen.trees.types.Mangrove;
@@ -20,6 +19,7 @@ import wtf.worldgen.trees.types.SimpleTree;
 import wtf.worldgen.trees.types.SwampTree;
 import wtf.worldgen.trees.types.Taiga1Tree;
 import wtf.worldgen.trees.types.Taiga2Tree;
+import wtf.worldscan.CoreWorldGenListener;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class WorldGenTreeCancel {

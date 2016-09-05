@@ -16,7 +16,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import wtf.core.Core;
+import wtf.Core;
 import wtf.gameplay.StoneFractureMethods;
 import wtf.init.BlockSets;
 

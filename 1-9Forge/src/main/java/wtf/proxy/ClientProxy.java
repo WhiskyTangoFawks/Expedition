@@ -1,4 +1,4 @@
-package wtf.core.proxy;
+package wtf.proxy;
 
 
 import net.minecraft.block.Block;
@@ -6,7 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
-import wtf.core.Core;
+import wtf.Core;
 import wtf.init.WTFBlocks;
 
 

@@ -14,10 +14,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import wtf.api.Replacer;
 import wtf.config.GameplayConfig;
-import wtf.core.utilities.wrappers.StoneAndOre;
-import wtf.core.worldgen.replacers.NonSolidNoReplace;
+import wtf.utilities.wrappers.StateAndModifier;
+import wtf.utilities.wrappers.StoneAndOre;
 import wtf.worldgen.LavaReplacer;
-import wtf.core.utilities.wrappers.StateAndModifier;
+import wtf.worldscan.NonSolidNoReplace;
 
 
 public class BlockSets {

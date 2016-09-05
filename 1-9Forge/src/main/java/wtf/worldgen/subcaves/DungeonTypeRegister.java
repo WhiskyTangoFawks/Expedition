@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import net.minecraft.block.BlockSandStone;
 import net.minecraft.init.Blocks;
+import wtf.Core;
 import wtf.config.CaveBiomesConfig;
-import wtf.core.Core;
 import wtf.init.BlockSets.Modifier;
 import wtf.worldgen.AbstractDungeonType;
 import wtf.worldgen.subcaves.ambient.DungeonSpeleothemGrotto;

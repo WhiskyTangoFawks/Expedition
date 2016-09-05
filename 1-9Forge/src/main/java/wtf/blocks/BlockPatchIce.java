@@ -15,10 +15,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import wtf.core.Core;
-import wtf.core.utilities.wrappers.StateAndModifier;
+import wtf.Core;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
+import wtf.utilities.wrappers.StateAndModifier;
 
 public class BlockPatchIce extends BlockBreakable{
 

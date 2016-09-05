@@ -1,4 +1,4 @@
-package wtf.core.proxy;
+package wtf.proxy;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;

@@ -3,6 +3,7 @@ package wtf.config;
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 import wtf.init.BlockSets;
 
 
@@ -26,6 +27,7 @@ public class GameplayConfig {
 
 	public static String[] oreList;
 	public static boolean fallingBlocksDamage;
+	public static boolean antiNerdPole;
 	
 	public static boolean customExplosion;
 	public static boolean explosionFractures;
@@ -42,6 +44,9 @@ public class GameplayConfig {
 	
 	public static int appleCoreConstant;
 	
+	public static boolean wcictable;
+	
+	public static boolean removeVanillaTools;
 	
 	public static Configuration config = new Configuration(new File("config/WTFGameplay.cfg"));
 	
@@ -86,8 +91,8 @@ public class GameplayConfig {
 	String fallingBlockString = config.get("Gravity", "Block name and number of identical blocks above requried to prevent falling if disturbed by player", defaultFall).getString();
 	ConfigUtils.parseFallingBlocks(fallingBlockString);
 		
-	fallingBlocksDamage = config.get("Gravity", "Enable damage from falling cobblestone and dirt", true).getBoolean();
-
+	fallingBlocksDamage = config.get("Gravity", "Enable damage from blocks", true).getBoolean();
+	antiNerdPole = config.get("Gravity", "NerdPole Prevention: Prevent indefinite stacking of non-stable blocks (causes them to slide off)", true).getBoolean();
 	
 	/**
 	 * Torches Options
@@ -97,15 +102,6 @@ public class GameplayConfig {
 	torchRange = config.get(torch, "Number of blocks a player must be within to prevent a torch from going out", 20).getInt();
 	relightTorchByHand = config.get(torch, "Torches can be relit by hand (true), or require flint and steel (false)", true).getBoolean();
 	
-	/**
-	 * Item Options
-	 */
-	homescroll = config.get("Items", "Enable home scrolls", true).getBoolean();
-	
-	/**
-	 * Crafting Options
-	 */
-	//enableQuickCrafting = config.get("Crafting", "Enable quick crafting", true).getBoolean();
 	
 	/**
 	 * Drops Options
@@ -118,6 +114,14 @@ public class GameplayConfig {
 	 */
 	
 	appleCoreConstant = config.get("AppleCore", "Growth rate percent for crops (requires AppleCore)", 10).getInt();
+	
+	/*
+	 * Loot & Crafting
+	 */
+	homescroll = config.get("Loot and Crafting", "Enable home scrolls", true).getBoolean();
+	wcictable = config.get("Loot and Crafting", "Enable Crafting Recipe Table", true).getBoolean();
+	
+	removeVanillaTools = config.get("Loot and Crafting", "Remove recipes for vanilla tools (Requires Tinkers Construct to be installed)", true).getBoolean(); 
 	
 	
 	config.save();

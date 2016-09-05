@@ -2,6 +2,7 @@ package wtf.gameplay;
 
 import java.util.Random;
 
+import akka.routing.Pool;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.passive.EntityChicken;
@@ -13,6 +14,15 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.loot.LootEntry;
+import net.minecraft.world.storage.loot.LootEntryItem;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.LootTableList;
+import net.minecraft.world.storage.loot.RandomValueRange;
+import net.minecraft.world.storage.loot.conditions.LootCondition;
+import net.minecraft.world.storage.loot.functions.LootFunction;
+import net.minecraft.world.storage.loot.functions.SetCount;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -24,11 +34,12 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import squeek.applecore.api.plants.PlantGrowthEvent;
+import wtf.Core;
 import wtf.blocks.BlockDenseOre;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
-import wtf.core.Core;
 import wtf.init.BlockSets;
+import wtf.init.WTFItems;
 
 
 public class GamePlayEventListener {
@@ -178,6 +189,8 @@ public class GamePlayEventListener {
 		return stack.getItem().getItemStackDisplayName(stack).contains("ammer");
 		
 	}
+	
+
 	
 
 
