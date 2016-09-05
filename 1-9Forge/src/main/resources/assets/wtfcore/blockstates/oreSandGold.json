@@ -1,0 +1,26 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "wtfcore:cube_overlay",
+        "textures": {
+           	 "all": "blocks/sand"
+           	 
+        }
+        
+    },
+    "variants": {
+        "normal": [{
+			"textures" : { "mask" : "wtfcore:overlays/gold_ore0"}
+        	
+        }],
+        "inventory": [{
+     		"textures" : { "mask" : "wtfcore:overlays/gold_ore0"}
+     
+        }],
+		"variant" : {
+			"sand" : { "textures" : { "mask" : "wtfcore:overlays/gold_ore0"}},
+			"red_sand" : { "textures" : { "mask" : "wtfcore:overlays/gold_ore0"}}
+
+    	}
+    }
+}
