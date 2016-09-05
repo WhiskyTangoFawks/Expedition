@@ -12,13 +12,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import wtf.blocks.BlockDenseOre;
+import wtf.blocks.BlockDenseOreFalling;
+import wtf.blocks.redstone.DenseRedstoneOre;
+import wtf.config.GameplayConfig;
 import wtf.core.Core;
-import wtf.core.blocks.BlockDenseOre;
-import wtf.core.blocks.BlockDenseOreFalling;
-import wtf.core.config.GameplayConfig;
-import wtf.core.init.BlockSets;
-import wtf.core.init.WTFBlocks;
 import wtf.core.utilities.wrappers.StoneAndOre;
+import wtf.init.BlockSets;
+import wtf.init.WTFBlocks;
 import wtf.ores.OreGenAbstract;
 import wtf.ores.OreGenerator;
 import wtf.ores.oregenerators.OreGenCaveFloor;
@@ -80,7 +81,7 @@ public class ParseOre {
 		String blockName = stringArray[1].split(":")[1].split("@")[0];
 		int metadata = Integer.parseInt(stringArray[1].split(":")[1].split("@")[1]);
 		if (metadata > 0){
-			blockName += 1;
+			blockName += metadata;
 		}
 		
 		if (blockstate == null){
@@ -295,9 +296,15 @@ public class ParseOre {
 		}
 		for (IBlockState stone : stones){
 			if (denseOres){
-				
-				Block block = stone.getBlock() instanceof BlockFalling ? WTFBlocks.registerBlock(new BlockDenseOreFalling(stone, blockstate), "dense_"+blockName) : WTFBlocks.registerBlock(new BlockDenseOre(stone, blockstate), "dense_"+blockName);
-				
+				Block block = null;
+				if (blockstate.getBlock() != Blocks.REDSTONE_ORE){
+					block = stone.getBlock() instanceof BlockFalling ? WTFBlocks.registerBlock(new BlockDenseOreFalling(stone, blockstate), "dense_"+blockName) : WTFBlocks.registerBlock(new BlockDenseOre(stone, blockstate), "dense_"+blockName);
+				}
+				else {
+					block = WTFBlocks.registerBlock(new DenseRedstoneOre(false), "dense_"+blockName);
+					DenseRedstoneOre.denseRedstone_off = block;
+					DenseRedstoneOre.denseRedstone_on = WTFBlocks.registerBlock(new DenseRedstoneOre(true), "dense_"+blockName+"_on");
+				}
 				BlockSets.stoneAndOre.put(new StoneAndOre(stone, blockstate), block.getDefaultState());
 			}
 			else {

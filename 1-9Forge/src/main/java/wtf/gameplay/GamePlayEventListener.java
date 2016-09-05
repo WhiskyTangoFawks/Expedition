@@ -5,9 +5,11 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -21,10 +23,12 @@ import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import wtf.core.blocks.BlockDenseOre;
-import wtf.core.config.CoreConfig;
-import wtf.core.config.GameplayConfig;
-import wtf.core.init.BlockSets;
+import squeek.applecore.api.plants.PlantGrowthEvent;
+import wtf.blocks.BlockDenseOre;
+import wtf.config.CoreConfig;
+import wtf.config.GameplayConfig;
+import wtf.core.Core;
+import wtf.init.BlockSets;
 
 
 public class GamePlayEventListener {
@@ -37,17 +41,13 @@ public class GamePlayEventListener {
 	{
 		Block block = event.getState().getBlock();
 		if (!event.getEntityPlayer().capabilities.isCreativeMode){
-			/*//Tinkers Construct hammer speed changer
-			if (event.getEntityPlayer().getHeldItem() != null && Loader.isModLoaded("TConstruct") &&  event.getEntityPlayer().getHeldItem().getItem() instanceof Hammer){
-				if (BlockSets.stoneAndCobble.containsKey(event.block) && speedMod.containsKey(event.block)){
-					event.newSpeed = (speedMod.get(event.block) + ((1-speedMod.get(event.block))/2)) * event.originalSpeed;
-				}
-				else {
-					event.newSpeed =  WTFTweaksConfig.hammerBreakSpeed* event.originalSpeed;
+			//Tinkers Construct hammer speed changer
+			if (isHammer(event.getEntityPlayer().getHeldItemMainhand())){
+				if (BlockSets.blockMiningSpeed.containsKey(block)){
+					event.setNewSpeed(BlockSets.blockMiningSpeed.get(block) * event.getOriginalSpeed());
 				}
 			}
-
-			else*/ if (BlockSets.blockMiningSpeed.containsKey(block)){
+			else if (BlockSets.blockMiningSpeed.containsKey(block)){
 				event.setNewSpeed(BlockSets.blockMiningSpeed.get(block) * event.getOriginalSpeed());
 			}
 		}
@@ -65,13 +65,14 @@ public class GamePlayEventListener {
 		}
 
 		Block block = event.getState().getBlock();
-		if (!event.getPlayer().capabilities.isCreativeMode && BlockSets.fallingBlocks.containsKey(block)){
-
-			GravityMethods.dropBlock(event.getWorld(), event.getPos().getX(), event.getPos().getY(), event.getPos().getZ(), true);
+		//if (!event.getPlayer().capabilities.isCreativeMode && BlockSets.fallingBlocks.containsKey(block)){
+		if (BlockSets.fallingBlocks.containsKey(block)){
+			GravityMethods.checkPos(event.getWorld(), event.getPos());
 		}
 
 	}
 
+	
 	@SubscribeEvent
 	public void rightClick(RightClickBlock event)
 	{
@@ -82,7 +83,9 @@ public class GamePlayEventListener {
 
 			}
 		}
+
 	}
+	
 	@SubscribeEvent
 	public void BlockBreakEvent(BreakEvent event)
 	{
@@ -91,39 +94,44 @@ public class GamePlayEventListener {
 		Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
 
 
-		if (!event.getPlayer().capabilities.isCreativeMode && BlockSets.hasCobble(event.getState()) && GameplayConfig.stoneFracturesBeforeBreaking)	{
+		//Check if the block we're trying to break should fracture
+		if (!event.getPlayer().capabilities.isCreativeMode){
+			if (BlockSets.hasCobble(event.getState()) && GameplayConfig.stoneFracturesBeforeBreaking)	{
 
 
-			/*if (Loader.isModLoaded("TConstruct") && event.getPlayer().getHeldItem().getItem() instanceof Hammer){
-	//Just have the hammer treat all blocks like they're ores
-				//Hammer tool = (Hammer)event.getPlayer().getHeldItem().getItem();
-				event.setCanceled(true);
-				if (BlockSets.stoneAndCobble.containsKey(world.getBlock(x, y, z))){
-					FracMethods.hammerFrac(world, x, y, z, event.getPlayer().getHeldItem().getItem().getHarvestLevel(event.getPlayer().getHeldItem(), "pickaxe"));
-					event.getPlayer().getHeldItem().attemptDamageItem(1, random);
+				if (isHammer(event.getPlayer().getHeldItemMainhand()) && GameplayConfig.modifyHammer){
+					event.setCanceled(true);
+					StoneFractureMethods.fracStone(event.getWorld(), event.getPos(), event.getState());
+					StoneFractureMethods.hammerFrac(event.getWorld(), event.getPos(), toolLevel);
+					event.setCanceled(true);
+					if (tool != null){
+						tool.attemptDamageItem(1, random);
+						event.getPlayer().addStat(StatList.getBlockStats(block));
+						event.getPlayer().addExhaustion(0.025F);
+
+					}
+
 				}
 
-			}
-			else*/ if (StoneFractureMethods.fracStone(event.getWorld(), event.getPos(), event.getState())){
-				event.setCanceled(true);
-				if (tool != null){
-					tool.attemptDamageItem(1, random);
-					event.getPlayer().addStat(StatList.getBlockStats(block));
-					event.getPlayer().addExhaustion(0.025F);
+				//if it's a stone to be fractured, cancel the event, damage tools, and frac the stone
+				else if (StoneFractureMethods.fracStone(event.getWorld(), event.getPos(), event.getState())){
+					event.setCanceled(true);
+					if (tool != null){
+						tool.attemptDamageItem(1, random);
+						event.getPlayer().addStat(StatList.getBlockStats(block));
+						event.getPlayer().addExhaustion(0.025F);
+					}
+
 				}
 			}
+			else if (BlockSets.oreAndFractures.contains(block) && GameplayConfig.oreFractures)
+			{
+				StoneFractureMethods.tryFrac(event.getWorld(), event.getPos(), block, toolLevel);
+			}
 
-
+			//checks for fall of the block above the block thats been broken
+			GravityMethods.checkPos(event.getWorld(), event.getPos().up());
 		}
-		//This checks if the block is an ore block, then calls the fracture method associated with it in the ore blocks hashmap if it is
-		if (BlockSets.oreAndFractures.contains(block) && GameplayConfig.oreFractures)
-		{
-			StoneFractureMethods.tryFrac(event.getWorld(), event.getPos(), block, toolLevel);
-		}
-
-		//checks for fall of the block above the block thats been broken
-		GravityMethods.disturbBlock(event.getWorld(), event.getPos().getX(), event.getPos().getY()+1, event.getPos().getZ());
-
 	}
 
 	@SubscribeEvent
@@ -137,19 +145,6 @@ public class GamePlayEventListener {
 
 	}
 
-
-	/*//QuickCrafting Events
-	 * 	@SubscribeEvent
-	public void PlayerCrafting(PlayerInteractEvent event){
-		//metadata changer
-		//event.world.setBlockMetadataWithNotify(event.x, event.y, event.z, event.world.getBlockMetadata(event.x,event.y,event.z)+1, 2);
-		if (!event.world.isRemote && WTFTweaksConfig.enableQuickCrafting &&
-				event.action == net.minecraftforge.event.entity.player.PlayerInteractEvent.Action.RIGHT_CLICK_BLOCK &&
-				event.world.getBlock(event.x,  event.y,  event.z) == Blocks.crafting_table) {
-			event.setCanceled (true);
-			event.entityPlayer.openGui(WTFtweaks.instance, 0, event.world, 0, 0, 0);
-		}
-	}*/
 
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event) {
@@ -166,12 +161,24 @@ public class GamePlayEventListener {
 
 	@SubscribeEvent
 	public void explosion(ExplosionEvent.Start event){
-		Explosion explosion = event.getExplosion();
-		float size = ObfuscationReflectionHelper.getPrivateValue(Explosion.class, explosion, 8);
-		new CustomExplosion(explosion.getExplosivePlacedBy(), event.getWorld(), explosion.getPosition(), size);
+		if (GameplayConfig.customExplosion){
+			Explosion explosion = event.getExplosion();
+			float size = ObfuscationReflectionHelper.getPrivateValue(Explosion.class, explosion, 8);
+			//System.out.println(explosion.getExplosivePlacedBy() + " " + explosion.getPosition() + " " + size);
+			new CustomExplosion(explosion.getExplosivePlacedBy(), event.getWorld(), explosion.getPosition(), size);
 		event.setCanceled(true);
+		}
 
 	}
+
+	public static boolean isHammer(ItemStack stack){
+		if (stack == null){
+			return false;
+		}
+		return stack.getItem().getItemStackDisplayName(stack).contains("ammer");
+		
+	}
+	
 
 
 }

@@ -10,9 +10,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import wtf.biomes.TreeVars;
 import wtf.core.worldgen.CoreWorldGenListener;
 import wtf.core.worldgen.WorldScanner;
+import wtf.worldgen.trees.TreeVars;
 
 
 

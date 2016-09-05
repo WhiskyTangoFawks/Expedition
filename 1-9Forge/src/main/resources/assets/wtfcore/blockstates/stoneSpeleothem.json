@@ -2,45 +2,82 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "cross",
-        "uvlock": true,
-        "textures" : { "cross" : "wtfcore:blocks/stone_stalactite_small"}
+        "textures": {
+    		"texture": "blocks/stone"
+		}
+
+        
+        
     },
     "variants": {
         "normal": [{
-
+			
         }],
         "inventory0": [{
-			"textures" : { "cross" : "wtfcore:blocks/stone_stalactite_small"}
+			"model": "wtfcore:stalactite_small"
         }],
         "inventory1": [{
-			"textures" : { "cross" : "wtfcore:blocks/stone_stalactite_base"}
+			"model": "wtfcore:stalactite_base"
         }],
         "inventory2": [{
-			"textures" : { "cross" : "wtfcore:blocks/stone_stalactite_tip"}
+		"model": "wtfcore:stalactite_tip"
         }],
         "inventory3": [{
-			"textures" : { "cross" : "wtfcore:blocks/stone_column"}
+			"model": "wtfcore:speleothem_column"
         }],
         "inventory4": [{
-			"textures" : { "cross" : "wtfcore:blocks/stone_stalagmite_small"}
+		"model": "wtfcore:stalagmite_small"
         }],
         "inventory5": [{
-			"textures" : { "cross" : "wtfcore:blocks/stone_stalagmite_base"}
+		"model": "wtfcore:stalagmite_base"
         }],
         "inventory6": [{
-			"textures" : { "cross" : "wtfcore:blocks/stone_stalagmite_tip"}
+			"model": "wtfcore:stalagmite_tip"
         }],
 
-        "type" : {
-        	"stalactite_small" 	: { "textures" : { "cross" : "wtfcore:blocks/stone_stalactite_small"} },
-       		"stalactite_base" 	: { "textures" : { "cross" : "wtfcore:blocks/stone_stalactite_base"	} },
-        	"stalactite_tip" 	: { "textures" : { "cross" : "wtfcore:blocks/stone_stalactite_tip" 	} },
-        	"column" 			: { "textures" : { "cross" : "wtfcore:blocks/stone_column" 			} },
-	        "stalagmite_small" 	: { "textures" : { "cross" : "wtfcore:blocks/stone_stalagmite_small"} },
-    	    "stalagmite_base"	: { "textures" : { "cross" : "wtfcore:blocks/stone_stalagmite_base" } },
-        	"stalagmite_tip"	: { "textures" : { "cross" : "wtfcore:blocks/stone_stalagmite_tip" 	} }
-		}
-
+        "type=stalactite_small" : [
+        		{"model": "wtfcore:stalactite_small"},
+        		{"model": "wtfcore:stalactite_small", "y":90},
+        		{"model": "wtfcore:stalactite_small", "y":180},
+        		{"model": "wtfcore:stalactite_small", "y":270}
+        ],
+       	"type=stalactite_base" 	:[
+       		{"model": "wtfcore:stalactite_base"},
+       		{"model": "wtfcore:stalactite_base", "y":90},
+       		{"model": "wtfcore:stalactite_base", "y":180},
+       		{"model": "wtfcore:stalactite_base", "y":270}
+       	],
+        "type=stalactite_tip" 	: [
+        	{"model": "wtfcore:stalactite_tip"},
+        	{"model": "wtfcore:stalactite_tip", "y":90},
+        	{"model": "wtfcore:stalactite_tip", "y":180},
+        	{"model": "wtfcore:stalactite_tip", "y":270}
+        ],
+        "type=column" : [
+        	{"model": "wtfcore:speleothem_column"},
+        	{"model": "wtfcore:speleothem_column", "y":90},
+        	{"model": "wtfcore:speleothem_column", "y":180},
+        	{"model": "wtfcore:speleothem_column", "y":270}
+        	
+        ],
+	    "type=stalagmite_small" :[ 
+	         {"model": "wtfcore:stalagmite_small"},
+	         {"model": "wtfcore:stalagmite_small", "y":90},
+	         {"model": "wtfcore:stalagmite_small", "y":180},
+	         {"model": "wtfcore:stalagmite_small", "y":270}
+	    ],
+    	"type=stalagmite_base"	: [
+    	    {"model": "wtfcore:stalagmite_base"},
+    	    {"model": "wtfcore:stalagmite_base", "y":90},
+    	    {"model": "wtfcore:stalagmite_base", "y":180},
+    	    {"model": "wtfcore:stalagmite_base", "y":270}
+    	    
+    	],
+        "type=stalagmite_tip"	: [
+        	{"model": "wtfcore:stalagmite_tip"},
+        	{"model": "wtfcore:stalagmite_tip", "y":90},
+        	{"model": "wtfcore:stalagmite_tip", "y":180},
+        	{"model": "wtfcore:stalagmite_tip", "y":270}
+        ]
     }
 }

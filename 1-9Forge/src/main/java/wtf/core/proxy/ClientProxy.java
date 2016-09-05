@@ -2,9 +2,12 @@ package wtf.core.proxy;
 
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
+import wtf.core.Core;
+import wtf.init.WTFBlocks;
 
 
 public class ClientProxy extends CommonProxy {
@@ -25,6 +28,10 @@ public class ClientProxy extends CommonProxy {
 	public void registerItemRenderer(Item item){
 		ModelLoader.setCustomModelResourceLocation(item, 0, new ModelResourceLocation(item.getRegistryName().toString()));
 	}
+
 	
+
+
+
 
 }

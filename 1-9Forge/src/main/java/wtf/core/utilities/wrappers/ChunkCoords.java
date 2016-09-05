@@ -69,6 +69,8 @@ public class ChunkCoords {
 		return ((ChunkProviderServer)world.getChunkProvider()).chunkExists(x, z) && getChunk(world).isTerrainPopulated();
 	}
 	
+	
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

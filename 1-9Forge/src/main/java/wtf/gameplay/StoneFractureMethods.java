@@ -13,13 +13,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.core.blocks.AnimatedBlock;
-import wtf.core.blocks.BlockDenseOre;
-import wtf.core.init.BlockSets;
-import wtf.core.init.WTFBlocks;
-import wtf.core.init.BlockSets.Modifier;
+import wtf.blocks.AnimatedBlock;
+import wtf.blocks.BlockDenseOre;
 import wtf.core.utilities.Simplex;
 import wtf.core.utilities.wrappers.Vec;
+import wtf.init.BlockSets;
+import wtf.init.WTFBlocks;
+import wtf.init.BlockSets.Modifier;
 
 public class StoneFractureMethods {
 
@@ -82,40 +82,20 @@ public class StoneFractureMethods {
 		FracIterator(world, hashset);
 	}
 
-	
-	public static void hammerFrac(World world, int x, int y, int z, int harvestLevel) {
+	public static void hammerFrac(World world, BlockPos pos, int tool) {
 		HashSet<BlockPos> hashset= new HashSet<BlockPos>();
-		BlockPos pos = new BlockPos(x, y, z);
-		if (fracStone(world, pos, world.getBlockState(pos) )){
-		for (int loop = 0; loop < 12*harvestLevel; loop++){
-			
-			int xmod = random.nextInt(3)-1;
-			int ymod = random.nextInt(3)-1;
-			int zmod = random.nextInt(3)-1;
 
-			hashset.add(new BlockPos(x, y, z));
-			pos = new BlockPos(x+xmod, y+ymod, z+zmod);
-			Block blockToFracture = world.getBlockState(pos).getBlock();
-			int count = 1;
-			
-			while (BlockSets.hasCobble(world.getBlockState(pos)) && hashset.contains(pos)  && count < 1+harvestLevel*1.5){
-				count++;
-				pos = new BlockPos(x+xmod*count, y+ymod*count, z+zmod*count);
-				blockToFracture = (world.getBlockState(pos).getBlock());
-			}
-			
-			hashset.add(pos);
-			fracStone(world, pos, world.getBlockState(pos));
-			for (BlockPos drop : hashset){
-				//if there isn't a block fractured below this one, drop it
-				if (!hashset.contains(pos.down())){
-					GravityMethods.dropBlock(world, drop.getX(), drop.getY(), drop.getZ(), false);
-				}
-			}
-		}
-		}
+		//each one fracs n number of times
+		//at the end, if number to frac < minimum number, it adds a few more rounds of iteration
+		
+		int blockLevel = world.getBlockState(pos).getBlock().getHarvestLevel(world.getBlockState(pos)); 
+		
+		
+		//System.out.println("frac high found");
+		hashset.addAll(fracCrack(world, pos, (tool+1)*4));
+		
 
-		//FracIterator(world, hashset);
+		FracIterator(world, hashset);
 	}
 
 	public static ArrayList<BlockPos> getAdjPos(BlockPos pos){
@@ -178,11 +158,8 @@ public class StoneFractureMethods {
 
 	public static HashSet<BlockPos> fracCrack(World world, BlockPos pos, int n){
 		HashSet<BlockPos> hashset = new HashSet<BlockPos>();
-		//System.out.println("FracCrack called with " + n);
 		Random posRandom = new Random(pos.hashCode());
 		for (int loop = 0; loop < n; loop++){
-			//System.out.println("frac high iterating " + loop );
-			//setup a frac vector
 			Vec fracVec = new Vec(pos, posRandom);
 			BlockPos fracPos = fracVec.next();
 
@@ -246,7 +223,7 @@ public class StoneFractureMethods {
 		
 		if (stateToSet != null) { 
 			world.setBlockState(pos, stateToSet);
-			GravityMethods.dropBlock(world, pos.getX(), pos.getY(), pos.getZ(), false);
+			GravityMethods.dropBlock(world, pos, false);
 			return true;
 		}
 		else if (world.getBlockState(pos) instanceof AnimatedBlock && state.getValue(AnimatedBlock.TYPE) == AnimatedBlock.ANIMTYPE.LAVA_CRUST) {

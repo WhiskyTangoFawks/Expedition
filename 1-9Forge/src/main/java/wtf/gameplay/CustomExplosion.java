@@ -10,10 +10,13 @@ import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentProtection;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.network.play.server.SPacketExplosion;
 import net.minecraft.util.DamageSource;
@@ -25,8 +28,9 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import wtf.core.init.BlockSets;
+import wtf.config.GameplayConfig;
 import wtf.core.utilities.wrappers.ExpVec;
+import wtf.init.BlockSets;
 
 public class CustomExplosion extends Explosion{
 
@@ -36,12 +40,12 @@ public class CustomExplosion extends Explosion{
 	public Entity sourceEntity;
 	boolean isSmoking = false;
 
-	int top;
-	int bottom;
-	int north;
-	int south;
-	int east;
-	int west;
+	//int top;
+	//int bottom;
+	//int north;
+	//int south;
+	//int east;
+	//int west;
 
 	int counterMod;
 
@@ -55,17 +59,11 @@ public class CustomExplosion extends Explosion{
 		super(world, entity, vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, str, false, false);
 		this.world = world;
 		BlockPos origin = new BlockPos(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
-		
 		this.sourceEntity = entity;
 		this.counterMod = 0;
-
-		
 		populateVectorList(new BlockPos(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord), str);
 		doExplosionB(origin, str);
 		incrementVectorList();
-		affectEntitiesWithin(origin);
-		
-		//this.notifyClients();
 
 	}
 
@@ -75,24 +73,17 @@ public class CustomExplosion extends Explosion{
 	 */
 	protected void populateVectorList(BlockPos origin, float baseStr) {
 
-		// These define the boundaries of the cube that the explosion happens
-		// within- and are set based on the actual explosion
-		top = 0;
-		bottom = 0;
-		north = 0;
-		south = 0;
-		east = 0;
-		west = 0;
-
-		float xpos = getModifier(world.getBlockState(origin.east()).getBlock());
-		float xneg = getModifier(world.getBlockState(origin.west()).getBlock());
-		float ypos = getModifier(world.getBlockState(origin.up()).getBlock());
-		float yneg = getModifier(world.getBlockState(origin.down()).getBlock());
-		float zpos = getModifier(world.getBlockState(origin.north()).getBlock());
-		float zneg = getModifier(world.getBlockState(origin.south()).getBlock());
+		float xpos = getModifier(origin.east());
+		float xneg = getModifier(origin.west());
+		float ypos = getModifier(origin.up());
+		float yneg = this.sourceEntity instanceof EntityCreeper ? (float) (getModifier(origin.down())/GameplayConfig.creeperUpConstant) :  getModifier(origin.down()); 
+		float zpos = getModifier(origin.north());
+		float zneg = getModifier(origin.south());
 
 		float ftotal = xpos + xneg + ypos + yneg + zpos + zneg;
 
+		System.out.println(" y neg = " + yneg);
+		
 		xpos = setModifier(xpos, ftotal) * baseStr;
 		xneg = setModifier(xneg, ftotal) * baseStr;
 		ypos = setModifier(ypos, ftotal) * baseStr;
@@ -100,13 +91,14 @@ public class CustomExplosion extends Explosion{
 		zpos = setModifier(zpos, ftotal) * baseStr;
 		zneg = setModifier(zneg, ftotal) * baseStr;
 
+		System.out.println("y+ " + ypos + " y- " + yneg);
 
-		int xMin = MathHelper.clamp_int(MathHelper.floor_float(-4 * xneg), -8, -4);
-		int xMax = MathHelper.clamp_int(MathHelper.floor_float(4 * xpos), 4, 8);
-		int yMin = MathHelper.clamp_int(MathHelper.floor_float(-4 * yneg),-8, -4);
-		int yMax = MathHelper.clamp_int(MathHelper.floor_float(4 * ypos), 4, 8);
-		int zMin = MathHelper.clamp_int(MathHelper.floor_float(-4 * zneg),-8, -4);
-		int zMax = MathHelper.clamp_int(MathHelper.floor_float(4 * zpos), 4, 8);
+		int xMin = MathHelper.clamp_int(MathHelper.floor_float(-4 * xneg), -12, -4);
+		int xMax = MathHelper.clamp_int(MathHelper.floor_float(4 * xpos), 4, 12);
+		int yMin = MathHelper.clamp_int(MathHelper.floor_float(-4 * yneg),-12, -4);
+		int yMax = MathHelper.clamp_int(MathHelper.floor_float(4 * ypos), 4, 12);
+		int zMin = MathHelper.clamp_int(MathHelper.floor_float(-4 * zneg),-12, -4);
+		int zMax = MathHelper.clamp_int(MathHelper.floor_float(4 * zpos), 4, 12);
 
 		for (int xloop = xMin; xloop < xMax + 1; xloop++) {
 			for (int yloop = yMin; yloop < yMax + 1; yloop++) {
@@ -162,21 +154,28 @@ public class CustomExplosion extends Explosion{
 				ExpVec vec = vecList.get(loop);
 				if (vec.increment()){
 					this.getAffectedBlockPositions().add(vec.pos());
+					BlockPos end = vec.pos();
+					List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(end));
+
+						float damage = (float)vec.getStr()*7.5F;
+					if (list.size() > 0 && vec.getStr() > 0){
+						
+						for (Entity entity : list){
+							double d11 = 1;
+							if (entity instanceof EntityLivingBase){
+								d11 = EnchantmentProtection.getBlastDamageReduction((EntityLivingBase)entity, damage);
+							}
+							if (vec.getStr() > 0.5){
+								entity.attackEntityFrom(DamageSource.causeExplosionDamage(this), (float) (d11*damage));
+							}							
+							entity.addVelocity(vec.strX()/10, vec.strY()/10, vec.strZ()/10);
+							entity.velocityChanged=true;
+
+						}
+
+					}
 				}
 				else {
-					// this set checks where this ray ends, against the
-					// current max value in that direction
-					// this is used later to set the bounding box in which
-					// to check for entities
-					BlockPos end = vec.pos();
-					north = (end.getZ() > north) ? end.getZ() : north;
-					south = (end.getZ() < south) ? end.getZ() : south;
-
-					top = (end.getY() > top) ? end.getY() : top;
-					bottom = (end.getY() < top) ? end.getY() : bottom;
-
-					east = (end.getX() > east) ? end.getX() : east;
-					west = (end.getX() < west) ? end.getX() : west;
 					vecList.remove(loop);
 				}
 			}
@@ -188,58 +187,7 @@ public class CustomExplosion extends Explosion{
 	 * do so
 	 */
 	
-	protected void affectEntitiesWithin(BlockPos origin) {
-
-		List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(sourceEntity, new AxisAlignedBB(north, top, east, south, bottom, west));
-		if (sourceEntity instanceof EntityPlayer){
-			list.add(sourceEntity);
-		}
-
-		//I have a variable box for explosin strength... but not one for damage???  or do I???
-
-		Vec3d vec3d = new Vec3d(origin.getX(), origin.getY(), origin.getZ());
-
-
-		int diameter = (MathHelper.abs_int(top - bottom) + MathHelper.abs_int(north - south)
-		+ MathHelper.abs_int(east - west)) / 3;
-
-		for (int k2 = 0; k2 < list.size(); ++k2) {
-			Entity entity = list.get(k2);
-			double d7 = entity.getDistance(origin.getX(), origin.getY(), origin.getZ()) / diameter;
-
-			if (d7 <= 1.0D) {
-				double d0 = entity.posX - origin.getX();
-				double d1 = entity.posY + entity.getEyeHeight() - origin.getY();
-				double d2 = entity.posZ - origin.getZ();
-				double d8 = MathHelper.sqrt_double(d0 * d0 + d1 * d1 + d2 * d2);
-
-				if (d8 != 0.0D) {
-					d0 /= d8;
-					d1 /= d8;
-					d2 /= d8;
-					double d9 = world.getBlockDensity(vec3d, entity.getEntityBoundingBox());
-					double d10 = (1.0D - d7) * d9;
-					float damage = ((int) ((d10 * d10 + d10) / 2.0D * 8.0D * diameter + 1.0D));
-					entity.attackEntityFrom(DamageSource.causeExplosionDamage(this), damage);
-
-					if (entity instanceof EntityLivingBase){
-						double d11 = EnchantmentProtection.getBlastDamageReduction((EntityLivingBase)entity, d10);
-						entity.motionX += d0 * motionFactor*d11;
-						entity.motionY += d1 * motionFactor*d11;
-						entity.motionZ += d2 * motionFactor*d11;
-					}
-					if (entity instanceof EntityPlayer){
-						EntityPlayer entityplayer = (EntityPlayer) entity;
-						if (!entityplayer.isSpectator() && (!entityplayer.isCreative() || !entityplayer.capabilities.isFlying))
-						{
-							this.getPlayerKnockbackMap().put(entityplayer, new Vec3d(d0 * d10, d7 * d10, d9 * d10));
-						}
-					}
-				}
-			}
-		}
-	}
-
+	
 	/**
 	 * Does the second part of the explosion (sound, particles, drop spawn)
 	 */
@@ -292,8 +240,9 @@ public class CustomExplosion extends Explosion{
 	}
 
 
-	private float getModifier(Block block) {
-		float mod = MathHelper.sqrt_float(MathHelper.sqrt_float(1 / (1 + block.getExplosionResistance(null) * 5F * block.getBlockHardness(null, world, null))));
+	private float getModifier(BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		float mod = MathHelper.sqrt_float(MathHelper.sqrt_float(1 / (1 + state.getBlock().getExplosionResistance(this.sourceEntity) * 5F * state.getBlockHardness(world, pos))));
 		if (mod < 1) {
 			counterMod++;
 			return mod;

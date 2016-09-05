@@ -1,7 +1,7 @@
 package wtf.core.utilities.wrappers;
 
 import net.minecraft.block.state.IBlockState;
-import wtf.core.init.BlockSets;
+import wtf.init.BlockSets;
 
 public class StateAndModifier {
 

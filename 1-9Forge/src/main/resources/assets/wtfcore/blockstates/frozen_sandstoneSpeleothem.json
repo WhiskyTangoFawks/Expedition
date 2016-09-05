@@ -2,55 +2,59 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "wtfcore:block_cross",
-        "uvlock": true,
-        "textures" : { "cross" : "wtfcore:blocks/sandstone_stalactite_small",
-        				"all" : "blocks/ice"
-        			
-        }
+         "model": "forge:multi-layer",
+    	"transform": "forge:default-block"
+                
     },
     "variants": {
         "normal": [{
-
+			
         }],
         "inventory0": [{
-			"textures" : { "cross" : "wtfcore:blocks/sandstone_stalactite_small"}
-        
+			"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalactite_small", "Translucent": "ice#normal" }
         }],
         "inventory1": [{
-			"textures" : { "cross" : "wtfcore:blocks/sandstone_stalactite_base"}
+			"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalactite_base", "Translucent": "ice#normal" }
         }],
         "inventory2": [{
-			"textures" : { "cross" : "wtfcore:blocks/sandstone_stalactite_tip"}
+			"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalactite_tip", "Translucent": "ice#normal" }
         }],
         "inventory3": [{
-			"textures" : { "cross" : "wtfcore:blocks/sandstone_column"}
+			"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=column", "Translucent": "ice#normal" }
         }],
         "inventory4": [{
-			"textures" : { "cross" : "wtfcore:blocks/sandstone_stalagmite_small"}
+			"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalagmite_small", "Translucent": "ice#normal" }
         }],
         "inventory5": [{
-			"textures" : { "cross" : "wtfcore:blocks/sandstone_stalagmite_base"}
+			"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalagmite_base", "Translucent": "ice#normal" }
         }],
         "inventory6": [{
-			"textures" : { "cross" : "wtfcore:blocks/sandstone_stalagmite_tip"}
+			"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalagmite_tip", "Translucent": "ice#normal" }
         }],
-        "type" : {
-        	"stalactite_small" 	: { "textures" : { "cross" : "wtfcore:blocks/sandstone_stalactite_small"} },
-        
-       		"stalactite_base" 	: { "textures" : { "cross" : "wtfcore:blocks/sandstone_stalactite_base"	} },
-        
-        	"stalactite_tip" 	: { "textures" : { "cross" : "wtfcore:blocks/sandstone_stalactite_tip" 	} },
-        
-        	"column" 			: { "textures" : { "cross" : "wtfcore:blocks/sandstone_column" 			} },
-        
-	        "stalagmite_small" 	: { "textures" : { "cross" : "wtfcore:blocks/sandstone_stalagmite_small"} },
-        
-    	    "stalagmite_base"	: { "textures" : { "cross" : "wtfcore:blocks/sandstone_stalagmite_base" } },
-        
-        	"stalagmite_tip"	: { "textures" : { "cross" : "wtfcore:blocks/sandstone_stalagmite_tip" 	} }
-        	
-		}
-			
+
+        "type=stalactite_small" : [
+        		{"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalactite_small", "Translucent": "ice#normal" }}
+    
+        ],
+       	"type=stalactite_base" 	:[
+			{"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalactite_base", "Translucent": "ice#normal" }}
+       	],
+        "type=stalactite_tip" 	: [
+        	{"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalactite_tip", "Translucent": "ice#normal" }}
+        ],
+        "type=column" : [
+        	{"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=column", "Translucent": "ice#normal" }}
+        ],
+	    "type=stalagmite_small" :[
+	    	 {"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalagmite_small", "Translucent": "ice#normal" }}
+	    ],
+    	"type=stalagmite_base"	: [
+    		{"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalagmite_base", "Translucent": "ice#normal" }}
+    	],
+        "type=stalagmite_tip"	: [
+        	{"custom": { "base": "ice#normal", "Solid": "wtfcore:sandstoneSpeleothem#type=stalagmite_tip", "Translucent": "ice#normal" }}
+        ]
+		
+
     }
 }

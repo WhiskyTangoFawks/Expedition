@@ -8,12 +8,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import wtf.api.Replacer;
-import wtf.core.init.BlockSets;
 import wtf.core.utilities.wrappers.AdjPos;
 import wtf.core.utilities.wrappers.CaveListWrapper;
 import wtf.core.utilities.wrappers.CavePosition;
 import wtf.core.utilities.wrappers.ChunkCoords;
 import wtf.core.utilities.wrappers.SurfacePos;
+import wtf.init.BlockSets;
 import wtf.core.utilities.wrappers.ChunkScan;
 
 public class WorldScanner {

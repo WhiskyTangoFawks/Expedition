@@ -9,12 +9,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import wtf.core.blocks.BlockDenseOre;
-import wtf.core.config.GameplayConfig;
-import wtf.core.init.BlockSets;
+import wtf.blocks.BlockDenseOre;
+import wtf.config.GameplayConfig;
 import wtf.core.utilities.wrappers.ChunkCoords;
 import wtf.core.utilities.wrappers.OrePos;
 import wtf.core.utilities.wrappers.StoneAndOre;
+import wtf.init.BlockSets;
 
 public class ChunkDividedOreMap{
 
@@ -50,11 +50,8 @@ public class ChunkDividedOreMap{
 	public void setBlockSet(){
 
 		Iterator<Entry<ChunkCoords, HashMap<OrePos, IBlockState>>> master = hashmap.entrySet().iterator();
-		//System.out.println("Iterating tree in chunks " + hashmap.size());
-		//int count = 1;
+		
 		while (master.hasNext()){
-			//System.out.println("Count = " + count);
-			//count++;
 			Entry<ChunkCoords, HashMap<OrePos, IBlockState>> subMap = master.next();
 
 			Chunk chunk = subMap.getKey().getChunk(world);

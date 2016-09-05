@@ -43,6 +43,15 @@ public class ChunkDividedHashMap {
 		}
 	}
 
+	public IBlockState get(BlockPos pos){
+		ChunkCoords coords = new ChunkCoords(pos);
+		if (hashmap.containsKey(coords)){
+			return hashmap.get(new ChunkCoords(pos)).get(pos);	
+		}
+		return null;
+		
+	}
+	
 	public void setBlockSet(){
 
 		Iterator<Entry<ChunkCoords, HashMap<BlockPos, IBlockState>>> master = hashmap.entrySet().iterator();
@@ -85,11 +94,8 @@ public class ChunkDividedHashMap {
 					else {
 						chunk.setBlockState(entry.getKey(), entry.getValue());
 					}
-
+					world.markAndNotifyBlock(pos, chunk, state, state, 2);
 				}
-			}
-			if (entry != null){
-				world.setBlockState(entry.getKey(), entry.getValue());
 			}
 		}
 	}

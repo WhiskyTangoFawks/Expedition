@@ -12,6 +12,11 @@ public class WTFWorldGen {
 		return generators.add(generator);
 	}
 	
+	public static boolean addGen(PopulationGenerator generator, int spot){
+		generators.add(spot, generator);
+		return generators.get(spot)==generator;
+	}
+	
 	public static ArrayList<PopulationGenerator> getGenerators(){
 		return generators;
 	}

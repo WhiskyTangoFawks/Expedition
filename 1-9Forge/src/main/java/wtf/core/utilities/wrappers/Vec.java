@@ -49,9 +49,9 @@ public class Vec {
 	
 	public Vec(BlockPos pos, double x, double y, double z){
 		ori = new BlockPos(pos.getX()+0.5, pos.getY()+0.5, pos.getZ()+0.5);
-		currentX = pos.getX();
-		currentZ = pos.getZ();
-		currentY = pos.getY();
+		currentX = pos.getX()+0.5;
+		currentZ = pos.getZ()+0.5;
+		currentY = pos.getY()+0.5;
 		vecX = x;
 		vecY = y;
 		vecZ = z;
@@ -62,6 +62,13 @@ public class Vec {
 		currentY += vecY;
 		currentZ += vecZ;
 		return pos();
+	}
+	
+	public BlockPos checkNext(){
+		currentX += vecX;
+		currentY += vecY;
+		currentZ += vecZ;
+		return new BlockPos(currentX + vecX, currentY + vecY, currentZ + vecZ);
 	}
 
 	public BlockPos pos() {

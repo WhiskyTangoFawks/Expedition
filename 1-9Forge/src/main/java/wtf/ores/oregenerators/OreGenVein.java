@@ -18,6 +18,7 @@ public class OreGenVein extends OreGenAbstract {
 	public final int veinWidth;
 	public final int veinHeight;
 	public final float veinPitch;
+	public static final float pi8 = (float) (Math.PI/8);
 	public static final float pi2 = (float) (Math.PI/2);
 	public static final float pi4 = (float) (Math.PI/4);
 	public static final float pi = (float) (Math.PI);
@@ -58,10 +59,10 @@ public class OreGenVein extends OreGenAbstract {
 	public int genVein(World world, ChunkDividedOreMap map, Random random, ChunkScan scan, BlockPos pos)
 			throws Exception {
 		
-		int length = veinLength ;//* (surface.surfaceAvg/chunk.getWorld().getSeaLevel() + random.nextInt(5)-2);
+		int length = veinLength *  + random.nextInt(5)-2;
 		int blocksSet = 0;
 		
-		float pitchY = veinPitch + (random.nextFloat()*pi2)-pi4;
+		float pitchY = veinPitch + (random.nextFloat()*pi4)-pi8;
 		float pitchX = random.nextFloat()*pi;
 		float vecY = MathHelper.cos(pitchY);
 		float vecX = MathHelper.cos(pitchX) * MathHelper.sin(pitchY);
