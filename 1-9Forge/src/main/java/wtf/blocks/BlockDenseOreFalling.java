@@ -63,5 +63,10 @@ public class BlockDenseOreFalling extends AbstractBlockDerivativeFalling {
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, DENSITY);
 	}
+	
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
+    {
+        return false;
+    }
     
 }

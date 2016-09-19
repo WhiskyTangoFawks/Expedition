@@ -49,7 +49,8 @@ public class PoplarTree extends TreeVars{
 
 	@Override
 	public double getTrunkHeight(double scale) {
-		return 6 + random.nextInt(6) + 6*scale;
+		
+		return 12 + random.nextInt(12) + 12*scale;
 	}
 
 	@Override

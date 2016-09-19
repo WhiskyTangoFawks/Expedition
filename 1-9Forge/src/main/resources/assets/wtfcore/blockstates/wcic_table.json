@@ -7,7 +7,7 @@
         	"top": "blocks/crafting_table_top",
         	"side": "blocks/crafting_table_side"
         },
-        "model": "enchanting_table_base"
+        "model": "wtfcore:shortBlock"
         
     },
     "variants": {

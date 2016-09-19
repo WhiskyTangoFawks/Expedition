@@ -8,6 +8,8 @@ import wtf.Core;
 import wtf.config.CaveBiomesConfig;
 import wtf.init.BlockSets.Modifier;
 import wtf.worldgen.AbstractDungeonType;
+import wtf.worldgen.subcaves.ambient.DungeonJungleTemple;
+import wtf.worldgen.subcaves.ambient.DungeonMine;
 import wtf.worldgen.subcaves.ambient.DungeonSpeleothemGrotto;
 import wtf.worldgen.subcaves.ambient.DungeonTypeBatCave;
 import wtf.worldgen.subcaves.ambient.DungeonTypeCaveIn;
@@ -41,10 +43,12 @@ public class DungeonTypeRegister {
 	
 	public static AbstractDungeonType CaveIn = new DungeonTypeCaveIn("Cavein");
 	public static AbstractDungeonType Grotto = new DungeonSpeleothemGrotto("SpeleothemGrotto", 50, 50);
+	public static AbstractDungeonType Mine = new DungeonMine("Mine");
 
 	private static AbstractDungeonType Foxfire = new DungeonTypeFoxfire("Foxfire", 10, 10);
 	private static AbstractDungeonType Frozen = new DungeonTypeFrozenSolid("FrozenSolid");
 	private static AbstractDungeonType Rainstone = new DungeonTypeRain("Rain", 5, 5);
+	private static AbstractDungeonType JungleTemple = new DungeonJungleTemple("JungleTemple");
 	
 
 	private static AbstractDungeonType Soulsand = new DungeonTypeSoulsand("SoulSand", 5, 5);
@@ -60,6 +64,7 @@ public class DungeonTypeRegister {
 			list.add(CaveIn);
 			list.add(Grotto);
 			list.add(Bat);
+			list.add(Mine);					
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
 			list.add(Skeleton);
@@ -107,7 +112,7 @@ public class DungeonTypeRegister {
 	public static ArrayList<AbstractDungeonType> volcanicList(){
 		ArrayList<AbstractDungeonType> list = new ArrayList<AbstractDungeonType>();
 		if (CaveBiomesConfig.enableAmbientDungeons){
-			
+			list.add(JungleTemple);
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
 			list.add(MagmaSlime);

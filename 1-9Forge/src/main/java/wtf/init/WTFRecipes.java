@@ -15,7 +15,7 @@ public class WTFRecipes {
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.DYE, 1, 15), new Object[]{WTFItems.nitre});
 		GameRegistry.addShapelessRecipe(new ItemStack(WTFItems.sulfur, 1), new Object[]{Blocks.NETHERRACK});
 		
-		GameRegistry.addRecipe(new ItemStack(WTFBlocks.wcicTable), " ","y","x",'x', new ItemStack(Items.BOOK), 'y', new ItemStack(Blocks.CRAFTING_TABLE));
+		GameRegistry.addRecipe(new ItemStack(WTFBlocks.wcicTable), " ","y","x",'y', new ItemStack(Items.BOOK), 'x', new ItemStack(Blocks.CRAFTING_TABLE));
 	}
 	
 }

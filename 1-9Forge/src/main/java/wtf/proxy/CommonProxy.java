@@ -18,6 +18,11 @@ public class CommonProxy {
 		
 	}
 
+	public void initWCICRender() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

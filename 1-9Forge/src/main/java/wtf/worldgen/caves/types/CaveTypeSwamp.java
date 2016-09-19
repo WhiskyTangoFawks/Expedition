@@ -1,4 +1,4 @@
-package wtf.worldgen.caves;
+package wtf.worldgen.caves.types;
 
 import java.util.Random;
 
@@ -13,7 +13,7 @@ import wtf.utilities.wrappers.AdjPos;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
 import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 import wtf.worldgen.trees.TreeTypeGetter;
 import wtf.worldgen.trees.TreeVars;
 import wtf.worldgen.trees.types.Mangrove;
@@ -111,13 +111,15 @@ public class CaveTypeSwamp extends AbstractCaveType {
 	TreeVars mangrove= null;
 	@Override
 	public TreeVars getTreeType(World world, ChunkScan scan, WorldGenAbstractTree oldTree){
-		if (getNoise(scan.surface[8][8], 0.05, 1) < OverworldGenConfig.mangroveChunkPercent){
-
-			if (mangrove == null){
-				mangrove = new Mangrove(world);
-			}
-			return mangrove;
-		}
+		double noise = getNoise(scan.surface[8][8], 1, 0.1F);
+		 
+		//if (simplex.noise(pos.x()/160, pos.getZ()) < OverworldGenConfig.mangroveChunkPercent){
+			
+			//if (mangrove == null){
+				//mangrove = new Mangrove(world);
+			//}
+			//return mangrove;
+		//}
 		return super.getTreeType(world, scan, oldTree);
 	}
 }

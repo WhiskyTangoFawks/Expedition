@@ -2,6 +2,8 @@ package wtf.crafting;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemAxe;
@@ -18,6 +20,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import wtf.Core;
+import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
 
 public class RecipeParser {
@@ -28,17 +31,21 @@ public class RecipeParser {
 
 	public static void init(){
 
-		for (IRecipe recipe : CraftingManager.getInstance().getRecipeList()) {
-
+		List<IRecipe> recipeList = CraftingManager.getInstance().getRecipeList();
+		Iterator<IRecipe> iterator = recipeList.iterator();
+		while (iterator.hasNext()){
+			IRecipe recipe = iterator.next();
+		
 			ItemStack stack = recipe != null ? recipe.getRecipeOutput() : null;
 			Item output = stack != null ? stack.getItem() : null;
-			if ((GameplayConfig.removeVanillaTools && Loader.isModLoaded("tconstruct")) 
-					&&  (output instanceof ItemAxe || output instanceof ItemHoe || output instanceof ItemPickaxe|| output instanceof ItemSpade || output instanceof ItemSword)) {
-				toremove.add(recipe);
-				Core.coreLog.info("Removing recipe for " + recipe.getRecipeOutput());
+			if (CoreConfig.gameplaytweaks && GameplayConfig.removeVanillaTools && Loader.isModLoaded("tconstruct") && 
+					  (output instanceof ItemAxe || output instanceof ItemHoe || output instanceof ItemPickaxe|| output instanceof ItemSpade || output instanceof ItemSword)) {
+				Core.coreLog.info("Removing recipe for " + recipe.getRecipeOutput().getUnlocalizedName());
+				iterator.remove();
+				
 			}
 
-			else {
+			else if (GameplayConfig.wcictable && CoreConfig.gameplaytweaks){
 
 				RecipeWrapper wrappedRecipe = null;
 				if (recipe.getRecipeOutput() != null){
@@ -53,7 +60,7 @@ public class RecipeParser {
 						wrappedRecipe = new RecipeWrapper((ShapedOreRecipe)recipe);
 					}
 					else {
-						System.out.println("Unsupported recipe type for " + recipe.getClass());
+						System.out.println("Skipping unsupported recipe type for " + recipe.getClass());
 					}
 
 					if (wrappedRecipe != null){
@@ -61,8 +68,6 @@ public class RecipeParser {
 					}
 				}
 			}
-			
-			CraftingManager.getInstance().getRecipeList().removeAll(toremove);
 			
 		}
 	}

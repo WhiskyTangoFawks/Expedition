@@ -65,8 +65,16 @@ public class WorldScanner {
 
 				//First, we find the surface for the block position
 				int y = scanForSurface(chunk, x, lastY, z);
-
-				surfacepositions[xloop][zloop] = new SurfacePos(x, y, z);
+				if (y < 0){
+					y=y*-1;
+					surfacepositions[xloop][zloop] = new SurfacePos(x, y, z).setGenerated();
+					
+				}
+				else {
+					surfacepositions[xloop][zloop] = new SurfacePos(x, y, z);
+				}
+				
+				
 				lastY = y;
 				surfaceaverage += y;
 
@@ -235,6 +243,7 @@ public class WorldScanner {
 
 	
 	public int scanForSurface(Chunk chunk, int x, int y, int z) {
+		int generated = 1;
 		while (!chunk.canSeeSky(new BlockPos(x & 15, y, z & 15)) && y<256){
 			y+=10;
 		}	
@@ -244,9 +253,10 @@ public class WorldScanner {
 			y--;
 		}
 		while (!isSurfaceAndCheck(chunk, x, y, z) && y > 10){
+			generated = -1;
 			y--;
 		}
-		return y;
+		return y*generated;
 	}
 
 

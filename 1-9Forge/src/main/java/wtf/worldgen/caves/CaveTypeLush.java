@@ -1,4 +1,4 @@
-package wtf.worldgen;
+package wtf.worldgen.caves;
 
 public class CaveTypeLush {
 

@@ -33,6 +33,7 @@ import wtf.blocks.redstone.RedstoneStalactite;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
 import wtf.crafting.WCICTable;
+import wtf.crafting.render.WCICTileEntity;
 import wtf.items.ItemBlockState;
 
 public class WTFBlocks {
@@ -45,7 +46,7 @@ public class WTFBlocks {
 	public static Block icePatch;
 	public static BlockIcicle icicle;
 	public static Block foxfire;
-	public static Block mossyStone;
+	public static Block mossyDirt;
 	public static Block decoStone;
 	public static BlockRoots roots;
 	public static Block crackedStone;
@@ -85,16 +86,18 @@ public class WTFBlocks {
 		
 		//All Speleothems must be registered prior to decorative blocks
 		//switch this over to a block transformation placement map
-		mossyStone = registerBlock(new BlockMossy(Blocks.STONE.getDefaultState()), "overlayStone");
+		registerBlock(new BlockMossy(Blocks.STONE.getDefaultState()), "overlayStone");
 		
 		decoStone = registerBlockItemSubblocks(new AnimatedBlock(Blocks.STONE.getDefaultState()), 2, "animStone");
 
-		registerBlock(new BlockMossy(Blocks.DIRT.getDefaultState()), "overlayDirt");
+		mossyDirt = registerBlock(new BlockMossy(Blocks.DIRT.getDefaultState()), "overlayDirt");
 		
 		BlockWTFTorch.torch_on = registerBlock(new BlockWTFTorch(true), "torch_on");
 		
 		wcicTable = registerBlock(new WCICTable(), "wcic_table");
+		GameRegistry.registerTileEntity(WCICTileEntity.class, "WCICTable");
 		
+		/*
 		if (CoreConfig.gameplaytweaks && GameplayConfig.torchLifespan > -1){
 			
 			BlockWTFTorch.torch_off = new BlockWTFTorch(false);
@@ -111,6 +114,7 @@ public class WTFBlocks {
 			
 		
 		}
+		*/
 
 
 	}

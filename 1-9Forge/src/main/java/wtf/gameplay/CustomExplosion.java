@@ -1,5 +1,6 @@
 package wtf.gameplay;
 
+import java.lang.Thread.State;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.network.play.server.SPacketExplosion;
 import net.minecraft.util.DamageSource;
@@ -40,12 +42,7 @@ public class CustomExplosion extends Explosion{
 	public Entity sourceEntity;
 	boolean isSmoking = false;
 
-	//int top;
-	//int bottom;
-	//int north;
-	//int south;
-	//int east;
-	//int west;
+	public HashMap<BlockPos, Block> fluids = new HashMap<BlockPos, Block>(); 
 
 	int counterMod;
 
@@ -64,6 +61,8 @@ public class CustomExplosion extends Explosion{
 		populateVectorList(new BlockPos(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord), str);
 		doExplosionB(origin, str);
 		incrementVectorList();
+		update();
+
 
 	}
 
@@ -82,8 +81,8 @@ public class CustomExplosion extends Explosion{
 
 		float ftotal = xpos + xneg + ypos + yneg + zpos + zneg;
 
-		System.out.println(" y neg = " + yneg);
-		
+		//System.out.println(" y neg = " + yneg);
+
 		xpos = setModifier(xpos, ftotal) * baseStr;
 		xneg = setModifier(xneg, ftotal) * baseStr;
 		ypos = setModifier(ypos, ftotal) * baseStr;
@@ -91,7 +90,10 @@ public class CustomExplosion extends Explosion{
 		zpos = setModifier(zpos, ftotal) * baseStr;
 		zneg = setModifier(zneg, ftotal) * baseStr;
 
-		System.out.println("y+ " + ypos + " y- " + yneg);
+		System.out.println("north = " + zpos + " south " + zneg);
+		System.out.println("east = " + xpos + " west " + xneg);
+
+		//System.out.println("y+ " + ypos + " y- " + yneg);
 
 		int xMin = MathHelper.clamp_int(MathHelper.floor_float(-4 * xneg), -12, -4);
 		int xMax = MathHelper.clamp_int(MathHelper.floor_float(4 * xpos), 4, 12);
@@ -144,22 +146,28 @@ public class CustomExplosion extends Explosion{
 			}
 		}
 	}
-	
+
 	private void incrementVectorList() {
 		while (!vecList.isEmpty()){
 			Collections.shuffle(vecList);
 			//System.out.println("List shuffled");
 			for (int loop = 0; loop < vecList.size(); loop++){
-				
+
 				ExpVec vec = vecList.get(loop);
 				if (vec.increment()){
 					this.getAffectedBlockPositions().add(vec.pos());
+					this.getAffectedBlockPositions().add(vec.pos().up());
+					this.getAffectedBlockPositions().add(vec.pos().down());
+					this.getAffectedBlockPositions().add(vec.pos().east());
+					this.getAffectedBlockPositions().add(vec.pos().west());
+					this.getAffectedBlockPositions().add(vec.pos().north());
+					this.getAffectedBlockPositions().add(vec.pos().south());
 					BlockPos end = vec.pos();
 					List<Entity> list = world.getEntitiesWithinAABBExcludingEntity(null, new AxisAlignedBB(end));
 
-						float damage = (float)vec.getStr()*7.5F;
+					float damage = (float)vec.getStr()*7.5F;
 					if (list.size() > 0 && vec.getStr() > 0){
-						
+
 						for (Entity entity : list){
 							double d11 = 1;
 							if (entity instanceof EntityLivingBase){
@@ -181,16 +189,6 @@ public class CustomExplosion extends Explosion{
 			}
 		}		
 	}
-
-	/**
-	 * Affects all entities within the explosion, causing damage if flagged to
-	 * do so
-	 */
-	
-	
-	/**
-	 * Does the second part of the explosion (sound, particles, drop spawn)
-	 */
 
 	public void doExplosionB(BlockPos origin, float baseStr) {
 		this.world.playSound((EntityPlayer)null, origin.getX(), origin.getY(), origin.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
@@ -255,6 +253,18 @@ public class CustomExplosion extends Explosion{
 		float ret  = dir / (totalAssigned/6F);
 		return ret;
 
+
 	}
+
+	int airHash = Blocks.AIR.hashCode();
+	private void update(){
+		for (BlockPos pos: this.getAffectedBlockPositions()){
+			//System.out.println("neightbor changed");
+			IBlockState iblockstate = world.getBlockState(pos);
+			iblockstate.neighborChanged(world, pos, iblockstate.getBlock());
+		}
+	}
+
+
 
 }

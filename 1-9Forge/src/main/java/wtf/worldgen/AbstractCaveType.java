@@ -10,6 +10,7 @@ import wtf.utilities.wrappers.AdjPos;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
 import wtf.utilities.wrappers.SurfacePos;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 import wtf.worldgen.trees.TreeTypeGetter;
 import wtf.worldgen.trees.TreeVars;
 
@@ -18,7 +19,7 @@ public abstract class AbstractCaveType
 
 	public int dungeonPercentChance = 5;
 	final public String name;
-	private static Simplex simplex = new Simplex(5000);
+	protected static Simplex simplex = new Simplex(5000);
 	
 	public final int ceilingaddonchance;
 	public final int flooraddonchance;

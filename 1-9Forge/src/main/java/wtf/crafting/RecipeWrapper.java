@@ -6,6 +6,7 @@ import java.util.List;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
@@ -25,7 +26,7 @@ public class RecipeWrapper {
 
 	public RecipeWrapper(ShapelessRecipes rawRecipe){
 		for (ItemStack stack: rawRecipe.recipeItems){
-			wrappedRecipe.add(getSublist(stack));
+			wrappedRecipe.add(getSublist(rawRecipe, stack));
 		}
 		output = rawRecipe.getRecipeOutput();
 	}
@@ -36,7 +37,7 @@ public class RecipeWrapper {
 		//int width = ObfuscationReflectionHelper.getPrivateValue(ShapedRecipes.class, rawRecipe, "recipeWidth");
 		//int height = ObfuscationReflectionHelper.getPrivateValue(ShapedRecipes.class, rawRecipe, "recipeHeight");
 		for (ItemStack stack : rawRecipe.recipeItems){
-			wrappedRecipe.add(getSublist(stack));
+			wrappedRecipe.add(getSublist(rawRecipe, stack));
 		}
 		output = rawRecipe.getRecipeOutput();
 
@@ -45,7 +46,7 @@ public class RecipeWrapper {
 	public RecipeWrapper(ShapelessOreRecipe rawRecipe){
 		
 		for (Object obj : rawRecipe.getInput()){
-			wrappedRecipe.add(getSublist(obj));
+			wrappedRecipe.add(getSublist(rawRecipe, obj));
 		}
 		output = rawRecipe.getRecipeOutput();
 	}
@@ -64,7 +65,7 @@ public class RecipeWrapper {
 		for (int hloop = 0; hloop < 3; hloop++){
 			for (int vloop = 0; vloop < 3; vloop++){
 				if (hloop < height && vloop < width && count < ingrediants.length){
-					wrappedRecipe.add(getSublist(ingrediants[count]));
+					wrappedRecipe.add(getSublist(rawRecipe, ingrediants[count]));
 					count++;
 				}
 				else {
@@ -82,27 +83,29 @@ public class RecipeWrapper {
 	}
 
 	
-	private ArrayList<ItemStack> getSublist(Object obj){
+	private ArrayList<ItemStack> getSublist(IRecipe recipe, Object obj){
 		ArrayList<ItemStack> subList = new ArrayList<ItemStack>();
 		if (obj instanceof ItemStack){
-			subList = parseItemStack(subList, (ItemStack)obj);
+			subList = parseItemStack(recipe, subList, (ItemStack)obj);
 		}
 		else if (obj instanceof List){
 			for (Object subObj : (List<?>)obj){
-				subList = parseItemStack(subList, (ItemStack)subObj);
+				subList = parseItemStack(recipe, subList, (ItemStack)subObj);
 			}
 		}
 		else if (obj == null){
 			//do nothing, this is a placeholder null in a shaped recipe
 		}
 		else {
-			Core.coreLog.info("Unrecognised object in a recipe " + obj);
+			Core.coreLog.info("Skipping unrecognised object in a recipe " + obj);
 		}
 		return subList;
 	}
 
-		public ArrayList<ItemStack> parseItemStack(ArrayList<ItemStack> subList, ItemStack stack){
-			if (stack.getItemDamage() < 0 || stack.getItemDamage() > 15){
+	public ArrayList<ItemStack> parseItemStack(IRecipe recipe, ArrayList<ItemStack> subList, ItemStack stack){
+
+		try {
+			if (stack != null && (stack.getItemDamage() < 0 || stack.getItemDamage() > 15)){
 				for (int loop = 0; loop < 15 ; loop ++){
 					ItemStack newStack =new ItemStack(stack.getItem(), stack.stackSize, loop); 
 					subList.add(newStack);
@@ -111,6 +114,13 @@ public class RecipeWrapper {
 			else {
 				subList.add(stack);
 			}
-			return subList;
+
 		}
+		catch (NullPointerException e){
+			if (recipe != null){
+				Core.coreLog.info("Ignoring bad itemstack while trying to parse recipe ingrediant for recipe " + recipe.getRecipeOutput());
+			}
+		}
+		return subList;
+	}
 	}

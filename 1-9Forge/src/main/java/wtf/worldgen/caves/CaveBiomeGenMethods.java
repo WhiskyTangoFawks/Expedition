@@ -1,9 +1,11 @@
-package wtf.worldgen;
+package wtf.worldgen.caves;
 
 import java.util.HashMap;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockNewLog;
+import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockVine;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -20,6 +22,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import wtf.blocks.BlockRoots;
 import wtf.blocks.BlockSpeleothem;
+import wtf.blocks.BlockFoxfire;
 import wtf.blocks.BlockIcicle.IcicleType;
 import wtf.blocks.BlockRoots.RootType;
 import wtf.blocks.BlockSpeleothem.SpType;
@@ -208,12 +211,14 @@ public class CaveBiomeGenMethods{
 		return true;
 	}
 
-
+	int darkStateHash = Blocks.LOG2.getDefaultState().withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.DARK_OAK).hashCode();
+	
 	public boolean genStalactite(BlockPos pos, float depth, boolean frozen){
 		if (chunk.getBlockState(pos).getBlock().hashCode() != airHash){ return false;}
 		IBlockState oldState= getBlockState(pos.up());
 		BlockSpeleothem block = WTFBlocks.speleothemMap.get(oldState);
 		if (block == null){
+			
 			if (oldState.getBlock().hashCode() == Blocks.DIRT.hashCode() && depth > 0.8){
 				genRoot(pos);
 			}

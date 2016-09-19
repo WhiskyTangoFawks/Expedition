@@ -1,7 +1,7 @@
 {
     "forge_marker": 1,
     "defaults": {
-			"model": "cube_all"
+			"model": "stone"
     },
     "variants": {
         "normal": [{
@@ -9,12 +9,11 @@
         }],
 		
         "inventory0": [{
-			"model": "wtfcore:lava_crust_overlay",
+			"submodel": "wtfcore:cube_overlay",
 			"textures": {
-    			"particle": "blocks/cobblestone",
-    			"texture": "blocks/cobblestone",
-    			"mask": "blocks/lava_still"
-				}
+			"all" : "blocks/lava_still",
+			"mask": "wtfcore:blocks/lava_crust_overlay"}
+				
         }],
         "inventory1": [{
 			"textures": {"all" : "blocks/stone"}
@@ -25,11 +24,10 @@
 
         "type" : {
         	"lava_crust" 	: { 
-				"model": "wtfcore:lava_crust_overlay"},
+				"submodel": "wtfcore:cube_overlay",
 				"textures": {
-    				"particle": "blocks/cobblestone",
-    				"texture": "blocks/cobblestone",
-    				"mask": "blocks/lava_still"
+				 	"all" : "blocks/lava_still",
+				 	"mask": "wtfcore:blocks/lava_crust_overlay"}
 				},
            	 
            	"drip_water": {"textures": {"all" : "blocks/stone"}},

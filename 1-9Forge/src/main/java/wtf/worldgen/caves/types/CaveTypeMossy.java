@@ -1,4 +1,4 @@
-package wtf.worldgen.caves;
+package wtf.worldgen.caves.types;
 
 import java.util.Random;
 
@@ -7,10 +7,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import wtf.config.OverworldGenConfig;
 import wtf.init.BlockSets;
+import wtf.init.WTFBlocks;
 import wtf.init.BlockSets.Modifier;
 import wtf.utilities.wrappers.SurfacePos;
 import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class CaveTypeMossy extends AbstractCaveType{
 
@@ -78,6 +79,9 @@ public class CaveTypeMossy extends AbstractCaveType{
 			//and if the blockpos simplex is > than the frac frequency
 			
 			if (getNoise(pos, 1, 1F) < OverworldGenConfig.ForestMossFreq){
+				if (gen.getBlockState(pos).getBlock().hashCode() == Blocks.GRASS.hashCode()){
+					gen.replaceBlock(pos, WTFBlocks.mossyDirt.getDefaultState());
+				}
 				gen.transformBlock(pos, Modifier.MOSSY);
 			}
 		}

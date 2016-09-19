@@ -11,7 +11,7 @@ import wtf.entities.zombies.EntityMummy;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
 import wtf.worldgen.AbstractDungeonType;
-import wtf.worldgen.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class DungeonTypePharohTomb extends AbstractDungeonType{
 

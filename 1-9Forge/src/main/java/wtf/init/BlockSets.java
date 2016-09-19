@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockCrops;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -41,7 +42,7 @@ public class BlockSets {
 
 	public static HashMap<Item, Item> itemReplacer = new HashMap<Item, Item>();
 
-	
+
 
 
 
@@ -52,10 +53,10 @@ public class BlockSets {
 
 	private static Block[] listSurfaceBlocks = {Blocks.DIRT, Blocks.SAND, Blocks.GRASS, Blocks.STONE, Blocks.GRAVEL, Blocks.CLAY, Blocks.HARDENED_CLAY, Blocks.STAINED_HARDENED_CLAY};
 	public static HashSet<Block> surfaceBlocks = new HashSet<Block>(Arrays.asList(listSurfaceBlocks));
-	
+
 	public static HashSet<Block> treeReplaceableBlocks = new HashSet<Block>();
 
-	
+
 	public static HashSet<Block> nonSolidBlockSet = new HashSet<Block>();
 
 
@@ -83,10 +84,11 @@ public class BlockSets {
 
 	public static void initBlockSets(){
 
-		
+
 		Iterator<Block> blockIterator = Block.REGISTRY.iterator();
 		while (blockIterator.hasNext()){
 			Block block = blockIterator.next();
+
 			if (!block.getDefaultState().isBlockNormalCube()){
 				nonSolidBlockSet.add(block);
 				if (!isNonSolidAndCheckReplacement.containsKey(block)){
@@ -117,19 +119,30 @@ public class BlockSets {
 					new NonSolidNoReplace(block);
 				}
 			}
-			
-			try{
-				if (block.isReplaceable(null, null)){
+
+			if (block instanceof BlockCrops || block == Blocks.FARMLAND){
+
+			}
+			else {
+
+				try{
+					if (block.isReplaceable(null, null)){
+						treeReplaceableBlocks.add(block);
+					}
+				}
+				catch (Exception e){
+					treeReplaceableBlocks.add(block);
+				}
+				if (block.getDefaultState().getMaterial() == Material.PLANTS){
 					treeReplaceableBlocks.add(block);
 				}
 			}
-			catch (Exception e){
-				treeReplaceableBlocks.add(block);
-			}
-			if (block.getDefaultState().getMaterial() == Material.PLANTS){
-				treeReplaceableBlocks.add(block);
-			}
 		}
+
+		//new NonSolidNoReplace(Blocks.BROWN_MUSHROOM_BLOCK);
+		//new NonSolidNoReplace(Blocks.RED_MUSHROOM_BLOCK);
+		new NonSolidNoReplace(Blocks.LEAVES);
+		new NonSolidNoReplace(Blocks.LEAVES2);
 
 
 		explosiveBlocks.put(Blocks.TNT, 4F);
@@ -144,7 +157,7 @@ public class BlockSets {
 		blockTransformer.put(new StateAndModifier(Blocks.STONE.getDefaultState(), Modifier.COBBLE), Blocks.COBBLESTONE.getDefaultState());
 		blockTransformer.put(new StateAndModifier(Blocks.SANDSTONE.getDefaultState(), Modifier.COBBLE), Blocks.SAND.getDefaultState());
 		blockTransformer.put(new StateAndModifier(Blocks.COBBLESTONE.getDefaultState(), Modifier.MOSSY), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		
+
 
 		for (Entry<StateAndModifier, IBlockState> entry : blockTransformer.entrySet()){
 			if (entry.getKey().modifier == Modifier.COBBLE){

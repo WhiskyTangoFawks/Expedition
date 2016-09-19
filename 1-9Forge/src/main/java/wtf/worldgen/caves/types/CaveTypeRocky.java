@@ -1,4 +1,4 @@
-package wtf.worldgen.caves;
+package wtf.worldgen.caves.types;
 
 import java.util.Random;
 
@@ -7,7 +7,7 @@ import wtf.config.OverworldGenConfig;
 import wtf.init.BlockSets.Modifier;
 import wtf.utilities.wrappers.SurfacePos;
 import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class CaveTypeRocky extends AbstractCaveType{
 

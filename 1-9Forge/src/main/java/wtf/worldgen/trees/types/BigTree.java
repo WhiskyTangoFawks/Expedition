@@ -10,6 +10,7 @@ public class BigTree extends TreeVars{
 	public BigTree(World world, IBlockState wood, IBlockState branch, IBlockState leaf) {
 		super(world, wood, branch, leaf);
 		topLimitDown = Math.PI/2;
+		this.genBuffer = 1;
 	}
 	@Override
 	public double getBranchLength(double scale, double trunkHeight, double nodeHeight) {

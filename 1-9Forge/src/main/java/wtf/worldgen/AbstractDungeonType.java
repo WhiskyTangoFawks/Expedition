@@ -4,6 +4,7 @@ import java.util.Random;
 
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public abstract class AbstractDungeonType extends AbstractCaveType{
 

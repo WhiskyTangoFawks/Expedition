@@ -11,6 +11,9 @@ import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveProfile;
+import wtf.worldgen.caves.CaveTypeRegister;
 
 public class DungeonPopulator extends PopulationGenerator{
 

@@ -1,4 +1,4 @@
-package wtf.worldgen.caves;
+package wtf.worldgen.caves.types;
 
 import java.util.Random;
 
@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import wtf.utilities.wrappers.ChunkScan;
 import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 import wtf.worldgen.trees.TreeTypeGetter;
 import wtf.worldgen.trees.TreeVars;
 import wtf.worldgen.trees.types.PoplarTree;
@@ -63,14 +63,6 @@ public class CaveTypeDirtWater extends AbstractCaveType{
 
 	}
 
-	TreeVars poplar = null;
-	@Override
-	public TreeVars getTreeType(World world, ChunkScan scan, WorldGenAbstractTree oldTree){
-		if (poplar == null){
-			poplar = new PoplarTree(world);
-		}
-		return poplar;
-	}
 
 
 }

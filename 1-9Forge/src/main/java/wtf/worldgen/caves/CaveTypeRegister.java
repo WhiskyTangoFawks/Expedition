@@ -1,4 +1,4 @@
-package wtf.worldgen;
+package wtf.worldgen.caves;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,19 +7,21 @@ import net.minecraft.block.BlockDirt;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
-import wtf.worldgen.caves.CaveTypeDefault;
-import wtf.worldgen.caves.CaveTypeDirtWater;
-import wtf.worldgen.caves.CaveTypeFungal;
-import wtf.worldgen.caves.CaveTypeHell;
-import wtf.worldgen.caves.CaveTypeIce;
-import wtf.worldgen.caves.CaveTypeIceRocky;
-import wtf.worldgen.caves.CaveTypeJungleVolcano;
-import wtf.worldgen.caves.CaveTypeMossy;
-import wtf.worldgen.caves.CaveTypeRocky;
-import wtf.worldgen.caves.CaveTypeSandy;
-import wtf.worldgen.caves.CaveTypeSwamp;
-import wtf.worldgen.caves.CaveTypeVolcanic;
-import wtf.worldgen.caves.CaveTypeWet;
+import wtf.worldgen.AbstractCaveType;
+import wtf.worldgen.AbstractDungeonType;
+import wtf.worldgen.caves.types.CaveTypeDefault;
+import wtf.worldgen.caves.types.CaveTypeDirtWater;
+import wtf.worldgen.caves.types.CaveTypeFungal;
+import wtf.worldgen.caves.types.CaveTypeHell;
+import wtf.worldgen.caves.types.CaveTypeIce;
+import wtf.worldgen.caves.types.CaveTypeIceRocky;
+import wtf.worldgen.caves.types.CaveTypeJungleVolcano;
+import wtf.worldgen.caves.types.CaveTypeMossy;
+import wtf.worldgen.caves.types.CaveTypeRocky;
+import wtf.worldgen.caves.types.CaveTypeSandy;
+import wtf.worldgen.caves.types.CaveTypeSwamp;
+import wtf.worldgen.caves.types.CaveTypeVolcanic;
+import wtf.worldgen.caves.types.CaveTypeWet;
 import wtf.worldgen.subcaves.DungeonTypeRegister;
 
 

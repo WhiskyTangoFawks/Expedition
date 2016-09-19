@@ -1,11 +1,11 @@
-package wtf.worldgen.caves;
+package wtf.worldgen.caves.types;
 
 import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class CaveTypeFungal extends AbstractCaveType{
 

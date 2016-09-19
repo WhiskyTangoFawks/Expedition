@@ -42,7 +42,7 @@ public class GameplayConfig {
 	public static int featherDrop;
 	public static int stickDrop;
 	
-	public static int appleCoreConstant;
+	public static double appleCoreConstant;
 	
 	public static boolean wcictable;
 	
@@ -113,7 +113,7 @@ public class GameplayConfig {
 	 * AppleCore options
 	 */
 	
-	appleCoreConstant = config.get("AppleCore", "Growth rate percent for crops (requires AppleCore)", 10).getInt();
+	appleCoreConstant = config.get("AppleCore", "Growth rate percent for crops (requires AppleCore)", 10).getDouble()/100;
 	
 	/*
 	 * Loot & Crafting

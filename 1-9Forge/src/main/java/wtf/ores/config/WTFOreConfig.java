@@ -29,7 +29,7 @@ public class WTFOreConfig {
 		simplexGen = config.get("Gen Options", "Use simplex noise instead of random for ore generation", true).getBoolean();
 		
 		String vanilla = "Generation of Vanilla Ore";
-		String cancel = "Catch and cancel vanilla ore generation, and use custom generation instead";
+		String cancel = "Enable Ore Gen: Vanilla";
 		
 		cancelVanillaCoal = config.get(cancel, "Coal", true).getBoolean();
 		String coal = config.get(vanilla, "Vanilla Coal Generation", "vein, minecraft:coal_ore@0, denseOre=true, orePerChunk=60 & 220, GenHeightPercentSurface=20 & 120,"
@@ -88,21 +88,21 @@ public class WTFOreConfig {
 			ParseOre.parse(quartz);
 		}
 		
-		String modOre = "Mod Added Ores Generation Config strings";
-		String enableMod = "Mod Added Ores : Enable";
+		String defModOre = "Default Mod Added Ores Generation Config strings";
+		String defEnableMod = "Enable Ore Gen : Default Mod Added Ores";
 		
-		genNitreOre = config.get(enableMod, "Mod Added Ore # 1", true).getBoolean();
-		String nitre = config.get(modOre, "# 1", "cave@single, wtfcore:oreNitre@0, surfaces=floor, orePerChunk=-10 & 10, denseOre=true, GenHeightPercentSurface=15 & 95").getString();
+		genNitreOre = config.get(defEnableMod, "Mod Added Ore : WTF's Nitre", true).getBoolean();
+		String nitre = config.get(defModOre, "WTF's Nitre", "cave@single, wtfcore:oreNitre@0, surfaces=floor, orePerChunk=-10 & 10, denseOre=true, GenHeightPercentSurface=15 & 95").getString();
 		if (genNitreOre){
 			ParseOre.parse(nitre);
 		}
-		genSandGold = config.get(enableMod, "Mod Added Ore # 2", true).getBoolean();
-		String sandgold = config.get(modOre, "# 2", "underwater@single, wtfcore:oreSandGold@0, orePerChunk=-10 & 10, stone=minecraft:sand@0, reqBiomeType=river, denseOre=true, GenHeightPercentSurface=90 & 110").getString();
+		genSandGold = config.get(defEnableMod, "Mod Added Ore: WTF's Gold in Sand", true).getBoolean();
+		String sandgold = config.get(defModOre, "WTF's Gold in Sand", "underwater@single, wtfcore:oreSandGold@0, orePerChunk=-10 & 10, stone=minecraft:sand@0, reqBiomeType=river, denseOre=true, GenHeightPercentSurface=90 & 110").getString();
 		if (genSandGold){
 			ParseOre.parse(sandgold);
 		}
-		genCrackedStone = config.get(enableMod, "Mod Added Ore # 3", true).getBoolean();
-		String crackedStone = config.get(modOre, "# 3", "cave@vein, wtfcore:cracked_stone@0, surfaces=ceiling, orePerChunk=-25 & 45, GenHeightPercentSurface=10 & 110, VeinDimensions=6 & 2 & 2, pitch=1.5").getString();
+		genCrackedStone = config.get(defEnableMod, "Mod Added Ore: WTF's Cracked Stone", true).getBoolean();
+		String crackedStone = config.get(defModOre, "WTF's Cracked Stone", "cave@vein, wtfcore:cracked_stone@0, surfaces=ceiling, orePerChunk=-25 & 45, GenHeightPercentSurface=10 & 110, VeinDimensions=6 & 2 & 2, pitch=1.5").getString();
 		if (genCrackedStone){
 			ParseOre.parse(crackedStone);
 		}
@@ -110,9 +110,9 @@ public class WTFOreConfig {
 		
 		int extralines = config.get("Mod Added Ores", "Generate extra lines to add custom ores, requires restarting minecraft to generate ", 2).getInt()-2;
 		
-		for (int loop = 3; loop < extralines+3; loop++){
-			Boolean gen = config.get(enableMod, "Mod Added Ore # " + loop, false).getBoolean();
-			String ore = config.get(modOre, "# " + loop, "GenerationType, ModID:RegistryName@metadata, orePerChunk= min & max, GenHeightPercentSurface= min & max").getString();
+		for (int loop = 1; loop < extralines+3; loop++){
+			Boolean gen = config.get("Enable Ore Gen : Custom User Added Ores", "Mod Added Ore # " + loop, false).getBoolean();
+			String ore = config.get("User added ore ", "# " + loop, "GenerationType, ModID:RegistryName@metadata, orePerChunk= min & max, GenHeightPercentSurface= min & max").getString();
 			if (gen) {
 				ParseOre.parse(ore);
 			}

@@ -20,6 +20,7 @@ public class AcaciaTree extends TreeVars{
 		this.topLimitUp = 0.4;
 		this.topLimitDown = 1;
 		this.topLimitIncrement = 0.5;
+		this.genBuffer = 6;
 	
 	
 	

@@ -9,7 +9,7 @@ import wtf.init.WTFBlocks;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
 import wtf.worldgen.AbstractDungeonType;
-import wtf.worldgen.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class DungeonTypeFoxfire extends AbstractDungeonType {
 
@@ -21,7 +21,7 @@ public class DungeonTypeFoxfire extends AbstractDungeonType {
 
 	@Override
 	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 7) && isHeight(cave, 6);
+		return isSize(cave, 7) && isHeight(cave, 4);
 	}
 
 	@Override

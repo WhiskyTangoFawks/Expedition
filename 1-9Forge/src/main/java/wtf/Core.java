@@ -1,10 +1,22 @@
 package wtf;
 
+import javax.annotation.Nullable;
+
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockOldLeaf;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ColorizerFoliage;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -15,10 +27,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 import wtf.api.WTFWorldGen;
-import wtf.blocks.BlockWTFTorch;
 import wtf.config.CaveBiomesConfig;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
@@ -31,6 +40,7 @@ import wtf.gameplay.GamePlayEventListener;
 import wtf.init.BlockSets;
 import wtf.init.LootEventListener;
 import wtf.init.WTFArmor;
+import wtf.init.WTFBiomes;
 import wtf.init.WTFBlocks;
 import wtf.init.WTFEntities;
 import wtf.init.WTFItems;
@@ -40,7 +50,9 @@ import wtf.ores.VanillOreGenCatcher;
 import wtf.ores.config.WTFOreConfig;
 import wtf.proxy.CommonProxy;
 import wtf.worldgen.DungeonPopulator;
+import wtf.worldgen.OverworldGen;
 import wtf.worldgen.PopulationDecorator;
+import wtf.worldgen.RTGOverworldGen;
 import wtf.worldgen.trees.WorldGenTreeCancel;
 import wtf.worldscan.CoreWorldGenListener;
 
@@ -82,10 +94,14 @@ public class Core {
 
 		BlockSets.initBlockSets();
 		WTFBlocks.initBlocks(preEvent);
+		proxy.initWCICRender();
 		WTFItems.initItems();
 		WTFArmor.initArmor();
 		WTFEntities.initEntites();
 		WTFRecipes.initRecipes();
+		if (CoreConfig.enableOverworldGeneration){
+			WTFBiomes.init();
+		}
 		
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
@@ -97,23 +113,20 @@ public class Core {
 	}
 	@EventHandler public void load(FMLInitializationEvent event) throws Exception
 	{
-		//this was where the texture overlay stuff got called
-		//proxy.clientRegister();
 		MinecraftForge.EVENT_BUS.register(new CoreWorldGenListener());
 		MinecraftForge.TERRAIN_GEN_BUS.register(new CoreWorldGenListener());
 
 		if (CoreConfig.dungeonGeneration){
 			WTFWorldGen.addGen(new DungeonPopulator());
 		}
-		
-		WTFWorldGen.addGen(new PopulationDecorator());
-		
+	
 		if (CoreConfig.mobReplacement){
 			MinecraftForge.EVENT_BUS.register(new EntitySpawnListener());
 		}
 
 		if (CoreConfig.gameplaytweaks){
 			MinecraftForge.EVENT_BUS.register(new GamePlayEventListener());
+			MinecraftForge.EVENT_BUS.register(new LootEventListener());
 		}
 
 		if (CoreConfig.enableOreGen){
@@ -121,23 +134,32 @@ public class Core {
 			WTFWorldGen.addGen(new OreGenerator());
 		}
 		
-		if (CoreConfig.gameplaytweaks){
-			MinecraftForge.EVENT_BUS.register(new LootEventListener());
-		}
-
 		if (CoreConfig.enableOverworldGeneration){
 			if (OverworldGenConfig.genTrees){
-				MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenTreeCancel());
-				//WTFWorldGen.addGen(new TreePopulator());
+			MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenTreeCancel());
 				MinecraftForge.EVENT_BUS.register(new WorldGenTreeCancel());
 			}
-
 		}
 		
 		if (Loader.isModLoaded("AppleCore")){
 			coreLog.info("AppleCore detected, registering integration");
+			AppleCoreEvents.initGrowthMap();
 			MinecraftForge.EVENT_BUS.register(new AppleCoreEvents());
 		}
+		
+		if (CoreConfig.enableOverworldGeneration){
+			if (Loader.isModLoaded("RTG")){
+				coreLog.info(";RTG detected, enabling integration");
+				WTFWorldGen.addGen(new RTGOverworldGen());
+			}
+			else {
+				
+				WTFWorldGen.addGen(new OverworldGen());
+			}
+		}
+		
+		WTFWorldGen.addGen(new PopulationDecorator());
+		
 
 	}
 	@EventHandler
@@ -148,6 +170,21 @@ public class Core {
 		System.out.println("Torch class is now " + Blocks.TORCH.getClass());
 		
 		RecipeParser.init();
+	
+		/*
+		if (CoreConfig.enableOverworldGeneration && OverworldGenConfig.fixBirchLeaves){
+			Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
+			{
+				@Override
+				public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex)
+				{
+					BlockPlanks.EnumType blockplanks$enumtype = state.getValue(BlockOldLeaf.VARIANT);
+					return blockplanks$enumtype == BlockPlanks.EnumType.SPRUCE ? ColorizerFoliage.getFoliageColorPine() :  (worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic());
+				}
+			}, new Block[] {Blocks.LEAVES});
+		coreLog.info("Birch leaves registered to the colour handler");
+		}
+		*/
 		
 	}	
 

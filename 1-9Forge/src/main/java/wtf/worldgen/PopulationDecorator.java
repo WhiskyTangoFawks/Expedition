@@ -1,14 +1,9 @@
 package wtf.worldgen;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import net.minecraft.world.gen.feature.WorldGenShrub;
 import wtf.api.PopulationGenerator;
 import wtf.config.CoreConfig;
 import wtf.config.OverworldGenConfig;
@@ -18,9 +13,9 @@ import wtf.utilities.wrappers.CavePosition;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
 import wtf.utilities.wrappers.SurfacePos;
-import wtf.worldgen.trees.GenTree;
-import wtf.worldgen.trees.TreePos;
-import wtf.worldgen.trees.TreeVars;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveProfile;
+import wtf.worldgen.caves.CaveTypeRegister;
 
 public class PopulationDecorator extends PopulationGenerator{
 
@@ -40,10 +35,7 @@ public class PopulationDecorator extends PopulationGenerator{
 		//the tree populator has it's own setblockset, so we run setblockset now
 		gen.blocksToSet.setBlockSet();
 
-		if (OverworldGenConfig.genTrees){
-			genTrees(world, profile, chunkscan);
-		}
-
+	
 
 		
 	}
@@ -113,74 +105,17 @@ public class PopulationDecorator extends PopulationGenerator{
 		}
 	}
 
-	public void genTrees(World world, CaveProfile profile, ChunkScan chunkscan) throws Exception {
-
-		Biome biome = world.getBiomeGenForCoords(new BlockPos(chunkscan.chunkX, 100, chunkscan.chunkZ));
-		int numTrees = MathHelper.ceiling_double_int(biome.theBiomeDecorator.treesPerChunk);
-
-		
-		ArrayList<WorldGenAbstractTree> shrubgenerators  = new ArrayList<WorldGenAbstractTree>();
-
-		for (int n = 0; n < numTrees; n++){ 
-
-			WorldGenAbstractTree oldTree = biome.genBigTreeChance(world.rand);
-			if (oldTree==null){return;} //not sure where this would be getting a null from, but cancel generation if it does, because biome has no trees
-			
-			if (oldTree instanceof WorldGenShrub){
-				shrubgenerators.add(oldTree);
-			}
-			else {
-			TreeVars treeType = profile.caveShallow.getTreeType(world, chunkscan, oldTree);
-			if (treeType != null){
-				SurfacePos pos = chunkscan.getPosForTreeGeneration(world, treeType);
-				
-				if (pos != null){
-					TreePos	tree = new TreePos(world, world.rand, chunkscan, pos, treeType);
-					
-					if (GenTree.generate(tree)){
-						//success++;
-						//System.out.println("generated");
-					}
-					else {
-						//System.out.println("Generation failed");
-						//failGen++;
-					}
-				}
-				else {
-					//System.out.println("No positions found");
-					//no more suitable positions left in the chunk
-					//failPos++;
-					break;
-				}
-			}
-			
-			else if (oldTree != null){
-				SurfacePos pos = chunkscan.getRandomNotGenerated(world.rand);
-				if (pos != null){
-					oldTree.generate(world, world.rand, pos);
-				}
-				else {
-					//no more suitable positions left in the chunk
-					break;
-				}
-				//other ++;
-			}
-
-			}
-			
-			for (WorldGenAbstractTree shrub : shrubgenerators){
-				SurfacePos pos = chunkscan.getRandomNotGenerated(world.rand);
-				if (pos != null){
-					shrub.generate(world, world.rand, pos);
-				}
-				else {
-					break;
-				}
-			}
-		}
-
-
-
-	}
+	//Need to recode and clean up and simplify the tree generation
+	//I would also like to get tree selection and restriction out of caves
+	//and into sub-biomes
+	//Doing tree control via sub-biomes inherently means having a subbiome instance for each parent biome
+	
+	//And in the end- what I need is actually just the best way to do sub biomes and trees
+	//Can I do biome replacement and trees at the same time?
+	//Or otherwise store the original biome information, and pass it along to the tree populator
+	//with a conditional check on replacement?
+	//Should be possible
+	
+	
 	
 }

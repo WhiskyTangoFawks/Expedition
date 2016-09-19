@@ -1,10 +1,12 @@
-package wtf.worldgen;
+package wtf.worldgen.caves;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
+import wtf.worldgen.AbstractCaveType;
+import wtf.worldgen.AbstractDungeonType;
 
 public class CaveProfile {
 
