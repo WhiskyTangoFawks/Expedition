@@ -9,7 +9,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import rtg.world.gen.feature.tree.rtg.TreeRTGBetulaPapyrifera;
 import wtf.config.OverworldGenConfig;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
@@ -20,7 +19,7 @@ import wtf.worldgen.trees.TreePos;
 import wtf.worldgen.trees.types.RootsOnly;
 
 public class RTGOverworldGen extends OverworldGen{
-	
+
 	@Override
 	public void genTrees(World world, ChunkCoords chunkcoords, Random random, ChunkScan chunkscan) throws Exception {
 		RTG = RTGCompat.RTG(world);
@@ -31,14 +30,14 @@ public class RTGOverworldGen extends OverworldGen{
 		if (OverworldGenConfig.addRoots){
 			IBlockState state = world.getBlockState(pos.up());
 			Block block = state.getBlock();
-						if (block instanceof BlockLog){
+			if (block instanceof BlockLog){
 				GenTree.genRootsOnly(new TreePos(world, random, scan, pos, new RootsOnly(world, state, size)));
 
 
 			}
 		}
 	}	
-	
+
 	@Override
 	public WorldGenerator getTree(Random random, Biome biome, ChunkScan chunkscan, boolean doReplace){
 		if (biome instanceof SubBiome){
@@ -53,17 +52,19 @@ public class RTGOverworldGen extends OverworldGen{
 
 	@Override
 	public void doGen(WorldGenerator tree, World world, ChunkScan chunkscan, BlockPos pos, Random random, ChunkScan scan) throws Exception{
-		if (chunkscan.checkGenerated(pos, 2) && chunkscan.canGrowOnCheck(pos, 1) && tree != null){
+		if (chunkscan.checkGenerated(pos, 3) && chunkscan.canGrowOnCheck(pos, 1) && tree != null){
 
 			tree.generate(world, world.rand, pos);
-			chunkscan.setGenerated(pos, 2);
-			if (RTGCompat.tryRTGRoots(world, pos, random, chunkscan, tree)){
-												
-			}
-			else {
-				addRoots(world, pos, random, chunkscan);
+			chunkscan.setGenerated(pos, random.nextInt(2)+2);
+			if (OverworldGenConfig.addRoots){
+				if (RTGCompat.tryRTGRoots(world, pos, random, chunkscan, tree)){
+					//try rtg roots- if that fails do basic roots								
+				}
+				else {
+					addRoots(world, pos, random, chunkscan);
+				}
 			}
 		}
 	}
-	
+
 }

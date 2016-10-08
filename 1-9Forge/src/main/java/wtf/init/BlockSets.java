@@ -14,6 +14,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import wtf.api.Replacer;
+import wtf.blocks.BlockDecoAnim;
+import wtf.blocks.BlockDecoStatic;
+import wtf.blocks.BlockSpeleothem;
+import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
 import wtf.utilities.wrappers.StateAndModifier;
 import wtf.utilities.wrappers.StoneAndOre;
@@ -81,6 +85,8 @@ public class BlockSets {
 	public static boolean isFractured(IBlockState state){
 		return cobble.contains(state.getBlock());
 	}
+	
+	public static HashSet<Block> riverBlocks = new HashSet<Block>();
 
 	public static void initBlockSets(){
 
@@ -89,6 +95,10 @@ public class BlockSets {
 		while (blockIterator.hasNext()){
 			Block block = blockIterator.next();
 
+			if (block.getRegistryName().toString().contains("streams:river")){
+				riverBlocks.add(block);
+			}
+			
 			if (!block.getDefaultState().isBlockNormalCube()){
 				nonSolidBlockSet.add(block);
 				if (!isNonSolidAndCheckReplacement.containsKey(block)){
@@ -120,12 +130,7 @@ public class BlockSets {
 				}
 			}
 
-			if (block instanceof BlockCrops || block == Blocks.FARMLAND){
-
-			}
-			else {
-
-				try{
+			try{
 					if (block.isReplaceable(null, null)){
 						treeReplaceableBlocks.add(block);
 					}
@@ -136,7 +141,7 @@ public class BlockSets {
 				if (block.getDefaultState().getMaterial() == Material.PLANTS){
 					treeReplaceableBlocks.add(block);
 				}
-			}
+
 		}
 
 		//new NonSolidNoReplace(Blocks.BROWN_MUSHROOM_BLOCK);
@@ -154,10 +159,15 @@ public class BlockSets {
 		explosiveBlocks.put(Blocks.REDSTONE_WIRE, 0.9F);
 		//
 
-		blockTransformer.put(new StateAndModifier(Blocks.STONE.getDefaultState(), Modifier.COBBLE), Blocks.COBBLESTONE.getDefaultState());
-		blockTransformer.put(new StateAndModifier(Blocks.SANDSTONE.getDefaultState(), Modifier.COBBLE), Blocks.SAND.getDefaultState());
+		for(Entry<IBlockState, IBlockState> entry : CoreConfig.StoneCobble.entrySet()){
+			if(entry.getKey() != entry.getValue()){
+				blockTransformer.put(new StateAndModifier(entry.getKey(), Modifier.COBBLE), entry.getValue());
+			}
+			
+		}
+		
 		blockTransformer.put(new StateAndModifier(Blocks.COBBLESTONE.getDefaultState(), Modifier.MOSSY), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-
+		blockTransformer.put(new StateAndModifier(blockTransformer.get(new StateAndModifier(Blocks.STONE.getDefaultState(), Modifier.MOSSY)), Modifier.COBBLE), Blocks.MOSSY_COBBLESTONE.getDefaultState());
 
 		for (Entry<StateAndModifier, IBlockState> entry : blockTransformer.entrySet()){
 			if (entry.getKey().modifier == Modifier.COBBLE){

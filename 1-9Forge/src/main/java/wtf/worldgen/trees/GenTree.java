@@ -39,7 +39,8 @@ public class GenTree {
 			//System.out.println("roots generated");
 			tree.placeBlocks();
 			//System.out.println("blocks placed in world");
-			tree.chunkscan.setGenerated(tree.pos, (int)(tree.type.genBuffer + tree.trunkRadius + tree.type.getBranchLength(tree.scale, tree.trunkHeight, tree.trunkHeight/2) + tree.type.leafRad/2));
+			int rad = (int)(tree.type.genBuffer + tree.trunkRadius + tree.type.getBranchLength(tree.scale, tree.trunkHeight, tree.trunkHeight/2));
+			tree.chunkscan.setGenerated(tree.pos, rad > tree.trunkRadius ? rad : (int)tree.trunkRadius);
 			return true;
 		}
 		else{
@@ -265,11 +266,14 @@ public class GenTree {
 				if (branch.length-branch.count > 3){
 					tree.setBranch(pos, branch.axis);
 				}
+				
 				tree.setLeaf(pos.up());
-				tree.setLeaf(pos.east());
-				tree.setLeaf(pos.west());
-				tree.setLeaf(pos.north());
-				tree.setLeaf(pos.south());
+				for (int loop = 1; loop < tree.type.leafRad+1; loop++){
+					tree.setLeaf(pos.east(loop));
+					tree.setLeaf(pos.west(loop));
+					tree.setLeaf(pos.north(loop));
+					tree.setLeaf(pos.south(loop));
+				}
 				break;
 			default:
 				break;
@@ -341,13 +345,6 @@ public class GenTree {
 						}
 					}
 				}
-
-
-				//Set icicles in snowy biomes: problem- making sure that it doesn't set just a base or just a tip of a large one-
-				//Possibly seperate out the deco blocks from the generation hash, and do them seperately afterwards
-				//if (random.nextBoolean ())
-				//tree.setDeco(xpos+xloop, ypos-1, zpos+zloop, BlockIcicle.IcicleSmall, 1);
-
 			}
 		}
 	}	

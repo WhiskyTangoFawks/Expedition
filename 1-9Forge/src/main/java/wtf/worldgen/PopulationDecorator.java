@@ -28,16 +28,9 @@ public class PopulationDecorator extends PopulationGenerator{
 			genCaves(world, gen, coords, random, chunkscan);
 		}
 		//get cave profile for a block roughlyh in the center of the chunk's surface
-		CaveProfile profile = CaveTypeRegister.getCaveProfile(world.getBiomeForCoordsBody(chunkscan.surface[8][8]));
-		if (OverworldGenConfig.modifySurface){
-			genSurfaceBlocks(profile, gen, random, chunkscan);
-		}
+
 		//the tree populator has it's own setblockset, so we run setblockset now
 		gen.blocksToSet.setBlockSet();
-
-	
-
-		
 	}
 	
 	public static void genCaves(World world, CaveBiomeGenMethods gen, ChunkCoords coords, Random random, ChunkScan chunkscan){
@@ -97,13 +90,7 @@ public class PopulationDecorator extends PopulationGenerator{
 		}
 	}
 
-	public static void genSurfaceBlocks(CaveProfile profile, CaveBiomeGenMethods gen, Random random, ChunkScan scan){
-		for (SurfacePos[] arrayZ : scan.surface){
-			for (SurfacePos pos : arrayZ){
-				profile.caveShallow.setTopBlock(gen, random, pos);
-			}
-		}
-	}
+
 
 	//Need to recode and clean up and simplify the tree generation
 	//I would also like to get tree selection and restriction out of caves

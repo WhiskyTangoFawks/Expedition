@@ -12,6 +12,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import wtf.init.WTFBlocks;
 import wtf.utilities.Simplex;
 import wtf.utilities.wrappers.ChunkCoords;
@@ -38,6 +40,8 @@ public class TreePos {
 
 	public final double scale;
 	public static Simplex simplex;
+	
+	public final boolean snow;
 
 	public ChunkScan chunkscan;
 
@@ -49,6 +53,7 @@ public class TreePos {
 		this.oriX =(pos.getX() & 1) == 0 ? pos.getX()+0.5 : pos.getX();
 		this.y = pos.getY();
 		this.oriZ = (pos.getZ() & 1) == 0 ? pos.getZ()+0.5 : pos.getZ();
+		this.snow = BiomeDictionary.isBiomeOfType(world.getBiomeGenForCoords(pos), Type.SNOWY);
 		
 		this.type = tree;
 		if (simplex == null){
@@ -68,12 +73,7 @@ public class TreePos {
 		else {
 			rootLevel = tree.airGenHeight; // +1 because generation height is cut off at > airGenHeight
 		}
-
-		
-
 		this.chunkscan = chunkscan;
-
-
 	}
 
 	Block[] groundArray = {Blocks.DIRT, Blocks.GRASS, Blocks.GRAVEL, WTFBlocks.mossyDirt};
@@ -101,7 +101,14 @@ public class TreePos {
 	public void setLeaf(BlockPos pos){
 		if (world.getBlockState(pos).getBlock().hashCode() == airHash){
 			leafBlocks.put(pos, type.leaf.withProperty(BlockLeaves.CHECK_DECAY, false));
+			if (snow){
+				setDeco(pos.up(), Blocks.SNOW_LAYER.getDefaultState());
+				if (random.nextInt(100) < 0){
+					setDeco(pos.down(), WTFBlocks.icicle.getDefaultState());
+				}
+			}
 		}
+		
 	}
 	
 	public void setDeco(BlockPos pos, IBlockState state){	
@@ -124,17 +131,5 @@ public class TreePos {
 		//System.out.println(relPosZ(zpos) - z);
 		return trunkBlocks.containsKey(pos);
 	}
-
-/*
-	public void setBlockSetWithoutNotify(HashMap<BlockPos, IBlockState> set){
-		Iterator<Entry<BlockPos, IBlockState>> iterator = set.entrySet().iterator();
-		while (iterator.hasNext()){
-			Entry<BlockPos, IBlockState> entry = iterator.next();
-			//GenMethods.setBlockState(world, entry.getKey(), entry.getValue());	
-			//world.setBlockState(entry.getKey(), entry.getValue());
-		}
-	}
-*/
-	
 
 }

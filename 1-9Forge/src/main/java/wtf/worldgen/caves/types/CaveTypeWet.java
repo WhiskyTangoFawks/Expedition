@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.biome.Biome;
 import wtf.config.OverworldGenConfig;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
@@ -15,7 +16,7 @@ import wtf.worldgen.AbstractCaveType;
 import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class CaveTypeWet extends AbstractCaveType {
-	
+
 	public CaveTypeWet(String name, int ceilingAddonPercentChance, int floorAddonPercentChance) {
 		super(name, ceilingAddonPercentChance, floorAddonPercentChance);
 		// TODO Auto-generated constructor stub
@@ -47,13 +48,13 @@ public class CaveTypeWet extends AbstractCaveType {
 	@Override
 	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 		gen.genStalactite(pos, depth, false);
-		
+
 	}
 
 	@Override
 	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 		gen.genStalagmite(pos, depth, false);
-		
+
 	}
 
 	@Override
@@ -63,14 +64,22 @@ public class CaveTypeWet extends AbstractCaveType {
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
 	}
-	
+
+	int gravelHash = Blocks.GRAVEL.hashCode();
 	public void setTopBlock(CaveBiomeGenMethods gen, Random random, SurfacePos pos){
-		
-		if (gen.chunk.getWorld().getBiomeGenForCoords(pos).hashCode() == Biomes.RIVER.hashCode() &&
-				getNoise(pos, 1, 1F) < OverworldGenConfig.mountainFracFreq){
+
+		if (Biome.getIdForBiome(gen.chunk.getWorld().getBiomeGenForCoords(pos)) == 7
+				&& getNoise(pos, 1, 0.05F) < OverworldGenConfig.riverFracChunkPercent && getNoise(pos, 1, 1) < OverworldGenConfig.riverFracFreq){
+			if (gen.getBlockState(pos).getBlock().hashCode() == gravelHash){
+				gen.replaceBlock(pos, Blocks.COBBLESTONE.getDefaultState());
+			}
+			else {
 				gen.transformBlock(pos, Modifier.COBBLE);
-		
+			}
+
+
 		}
+
 	}
 
 }

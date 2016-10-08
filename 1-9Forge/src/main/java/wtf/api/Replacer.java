@@ -20,7 +20,7 @@ public abstract class Replacer {
 		BlockSets.isNonSolidAndCheckReplacement.put(block,  this);
 	}
 	
-	public abstract boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, Block oldBlock);
+	public abstract boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, IBlockState oldState);
 	
 
 	/*

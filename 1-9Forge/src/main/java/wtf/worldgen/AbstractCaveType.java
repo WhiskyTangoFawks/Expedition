@@ -68,9 +68,5 @@ public abstract class AbstractCaveType
 	public void setTopBlock(CaveBiomeGenMethods gen, Random random, SurfacePos pos){
 		
 	}
-	
-	public TreeVars getTreeType(World world, ChunkScan scan, WorldGenAbstractTree oldTree){
-		return TreeTypeGetter.getTree(world, oldTree);
-	}
 
 }

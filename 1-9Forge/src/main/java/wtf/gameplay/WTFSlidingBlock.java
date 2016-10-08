@@ -16,6 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
@@ -28,41 +29,28 @@ public class WTFSlidingBlock extends EntityFallingBlock
 	private float fallHurtAmount = 2.0F;
 	private final BlockPos origin;
 	private boolean fallen = false;
-	private final boolean sliding;
 
-	public WTFSlidingBlock(World worldIn, BlockPos pos, BlockPos targetpos, IBlockState state, boolean sliding)
+	public WTFSlidingBlock(World worldIn, BlockPos pos, BlockPos targetpos, IBlockState state)
 	{
 		super(worldIn, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, state);
 		this.fallTile = state;
-		this.fallen = !sliding;
-		this.sliding = sliding;
-		
 		this.origin = pos;
-
 		double motx = pos.getX() - targetpos.getX();
 		double motz = pos.getZ() - targetpos.getZ();
 
-		addVelocity(0.1D * motx, -0.1D, 0.1D * motz);
+		addVelocity(0.05D * motx, -0.1D, 0.05D * motz);
+		this.setEntityBoundingBox(new AxisAlignedBB(origin));
 		worldIn.spawnEntityInWorld(this);
 	}
 	
-	public WTFSlidingBlock(World worldIn, BlockPos pos)
-	{
-		super(worldIn, pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D, worldIn.getBlockState(pos));
-		this.fallTile = worldIn.getBlockState(pos);
-		this.fallen = true;
-		this.sliding = false;
-		
-		this.origin = pos;
-		addVelocity(0, -0.1D,0);
-		worldIn.spawnEntityInWorld(this);
-	}
 
+	@Override
 	public boolean canBeCollidedWith()
 	{
 		return true;
 	}
 
+	@Override
 	public void onUpdate()
 	{
 		Block block = this.fallTile.getBlock();
@@ -89,27 +77,30 @@ public class WTFSlidingBlock extends EntityFallingBlock
 		if ((!this.fallen) && (this.posY < this.origin.getY()))
 		{
 			this.fallen = true;
+			this.motionX *= 0D;
+			this.motionZ *= 0D;
+			BlockPos pos = new BlockPos(this);
+			this.setPosition(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
 			GravityMethods.checkPos(this.worldObj, this.origin.down());
 		}
 		if (!func_189652_ae()) {
 			this.motionY -= 0.03999999910593033D;
 		}
+
 		moveEntity(this.motionX, this.motionY, this.motionZ);
 		this.motionX *= 0.9800000190734863D;
 		this.motionY *= 0.9800000190734863D;
 		this.motionZ *= 0.9800000190734863D;
-		if (this.fallen && this.sliding)
-		{
-			this.motionX *= 0.2D;
-			this.motionZ *= 0.2D;
-		}
-		if ((this.onGround) && (this.fallen))
-		{
+		
+		if (this.onGround && this.fallen){// && this.isAligned()){
 			if (BlockFalling.canFallThrough(this.worldObj.getBlockState(new BlockPos(this.posX, this.posY - 0.009999999776482582D, this.posZ))))
 			{
 				this.onGround = false;
 				return;
 			}
+			setBlock();
+		}
+		else if (Math.abs(this.motionX) + Math.abs(motionY) + Math.abs(this.motionZ) < 0.0001){
 			setBlock();
 		}
 		else if (((this.fallTime > 100) && (!this.worldObj.isRemote) && ((blockpos1.getY() < 1) || (blockpos1.getY() > 256))) || (this.fallTime > 600))
@@ -119,15 +110,14 @@ public class WTFSlidingBlock extends EntityFallingBlock
 			}
 			setDead();
 		}
-		else if (Math.abs(this.motionX) + Math.abs(this.motionZ) + Math.abs(this.motionY) < 0.1D)
-		{
-			setBlock();
-		}
+		
 	}
 
 	private void setBlock()
 	{
 		Block block = this.fallTile.getBlock();
+		
+		
 		BlockPos blockpos1 = new BlockPos(this);
 		if ((this.worldObj.canBlockBePlaced(block, blockpos1, true, EnumFacing.UP, (Entity)null, (ItemStack)null)) && 
 				(!BlockFalling.canFallThrough(this.worldObj.getBlockState(blockpos1.down()))) && 
@@ -161,7 +151,17 @@ public class WTFSlidingBlock extends EntityFallingBlock
 		this.worldObj.removeEntity(this);
 		GravityMethods.checkPos(this.worldObj, blockpos1);
 	}
-
+/*
+	private boolean isAligned(){
+		BlockPos pos = new BlockPos(this);
+		
+		double diff = Math.abs(pos.getX()+0.5-this.posX) + Math.abs(pos.getZ()+0.5-this.posZ);
+		
+		return diff < 0.5;
+		
+	}
+*/	
+	@Override
 	public void fall(float distance, float damageMultiplier)
 	{
 		Block block = this.fallTile.getBlock();
@@ -178,7 +178,7 @@ public class WTFSlidingBlock extends EntityFallingBlock
 				}
 				if ((flag) && (this.rand.nextFloat() < 0.05000000074505806D + i * 0.05D))
 				{
-					int j = ((Integer)this.fallTile.getValue(BlockAnvil.DAMAGE)).intValue();
+					int j = this.fallTile.getValue(BlockAnvil.DAMAGE).intValue();
 					j++;
 					if (j <= 2) {
 						this.fallTile = this.fallTile.withProperty(BlockAnvil.DAMAGE, Integer.valueOf(j));

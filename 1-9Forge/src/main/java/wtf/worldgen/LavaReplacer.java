@@ -2,6 +2,7 @@ package wtf.worldgen;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -9,7 +10,9 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.BiomeDictionary;
 import wtf.api.Replacer;
-import wtf.blocks.AnimatedBlock;
+import wtf.blocks.BlockDecoAnim;
+import wtf.init.BlockSets;
+import wtf.init.BlockSets.Modifier;
 import wtf.init.WTFBlocks;
 import wtf.utilities.GenMethods;
 import wtf.utilities.Simplex;
@@ -24,7 +27,7 @@ public class LavaReplacer extends Replacer{
 	private static Simplex simplex = new Simplex(5000);
 	
 	@Override
-	public  boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, Block oldBlock) {
+	public  boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, IBlockState oldState) {
 		if (pos.getY() < 11){
 			
 			double x = pos.getX();
@@ -56,7 +59,7 @@ public class LavaReplacer extends Replacer{
 					GenMethods.setBlockState(world, pos, Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND));
 				}
 				else if (noise < 7){
-					GenMethods.setBlockState(world, pos, WTFBlocks.decoStone.getDefaultState().withProperty(AnimatedBlock.TYPE, AnimatedBlock.ANIMTYPE.LAVA_CRUST));
+					GenMethods.setBlockState(world, pos, BlockSets.getTransformedState(Blocks.STONE.getDefaultState(), Modifier.LAVA_CRUST));
 				}
 			}
 	

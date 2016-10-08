@@ -1,22 +1,10 @@
 package wtf;
 
-import javax.annotation.Nullable;
-
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockOldLeaf;
-import net.minecraft.block.BlockPlanks;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ColorizerFoliage;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.biome.BiomeColorHelper;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -60,7 +48,7 @@ import wtf.worldscan.CoreWorldGenListener;
 
 public class Core {
 	public static  final String coreID = "wtfcore";
-	public static final String version = "1.10_BetaX";
+	public static final String version = "1.10.2_v1.0";
 
 	@SidedProxy(clientSide="wtf.proxy.ClientProxy", serverSide="wtf.proxy.CommonProxy")
 	public static CommonProxy proxy;

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
@@ -21,13 +22,14 @@ public class NetherScanner extends WorldScanner{
 
 	public boolean isSurfaceAndCheck(Chunk chunk, int x, int y, int z){
 		//BlockPos pos = ;
-		Block block = chunk.getBlockState(new BlockPos(x & 15, y, z & 15)).getBlock();
+		IBlockState state =chunk.getBlockState(new BlockPos(x & 15, y, z & 15)); 
+		Block block = state.getBlock();
 
 		if (BlockSets.isNonSolidAndCheckReplacement.containsKey(block)){
 			//System.out.println("genReplace contained " + block.getLocalizedName());
 			Replacer replacer = BlockSets.isNonSolidAndCheckReplacement.get(block);
 			if (replacer!= null){
-				replacer.isNonSolidAndReplacement(chunk, new BlockPos(x & 15, y, z & 15), block);
+				replacer.isNonSolidAndReplacement(chunk, new BlockPos(x & 15, y, z & 15), state);
 				//WTFCore.log.info("Replaced");
 			}
 		}

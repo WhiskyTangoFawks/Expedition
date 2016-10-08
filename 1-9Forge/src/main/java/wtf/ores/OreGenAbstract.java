@@ -94,14 +94,13 @@ public abstract class OreGenAbstract{
 		return random.nextInt(maxHeight-minHeight)+minHeight;
 	}
 
-	public int getDensityToSet(Random random, double d){
+	public int getDensityToSet(Random random, double height, double surfaceAvg){
 		
-		//This is a lot more dependent upon the random then I want it to be
-		//
-		//multiply depth by 2- anything above half can't return 0 then
-		//I really need something that gives me a bit better spread
+		//0 is a full ore, and 2 is a light ore
+		double depth = height/(surfaceAvg*maxGenRangeHeight);
+		double rand = random.nextFloat()+random.nextFloat()-1;
 		
-		double density = d*random.nextInt(8)/this.veinDensity;
+		double density = depth*3 + rand;
 		
 		if (density < 1){ return 0;}
 		else if (density > 2){ return 2;}

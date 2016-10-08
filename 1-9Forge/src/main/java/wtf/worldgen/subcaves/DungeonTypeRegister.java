@@ -35,10 +35,10 @@ public class DungeonTypeRegister {
 	private static AbstractDungeonType Pigman = new DungeonClassicMob("ZombiePigman", Blocks.NETHERRACK.getDefaultState(), "PigZombie").setSpawnRate(6);
 	private static AbstractDungeonType Mummy = new DungeonClassicMob("Mummy", Blocks.SANDSTONE.getDefaultState(), Core.coreID+".ZombieMummy").setStripe(Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.CHISELED));	
 	private static AbstractDungeonType SkeletonKnight = new DungeonClassicMob("SkeletonKnight", Blocks.STONEBRICK.getDefaultState(), "Skeleton");
-	private static AbstractDungeonType Spider = new DungeonClassicSpider("ClassicSpider");
+	//private static AbstractDungeonType Spider = new DungeonClassicSpider("ClassicSpider");
 	private static AbstractDungeonType Slime = new DungeonSlime("Slime");
 	public static AbstractDungeonType Pharaoh = new DungeonTypePharohTomb("PharohsTomb");
-	private static AbstractDungeonType Golem = new DungeonTypeDerangedGolem("DerangedGolem");
+	//private static AbstractDungeonType Golem = new DungeonTypeDerangedGolem("DerangedGolem");
 	public static AbstractDungeonType Bat = new DungeonTypeBatCave("BatCave", 10, 0);
 	
 	public static AbstractDungeonType CaveIn = new DungeonTypeCaveIn("Cavein");
@@ -80,7 +80,7 @@ public class DungeonTypeRegister {
 			list.add(Foxfire);
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
-			list.add(Spider);
+			//list.add(Spider);
 			//list.add(Witch);
 		}
 		return list;
@@ -153,7 +153,7 @@ public class DungeonTypeRegister {
 
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
-			list.add(Golem);
+			//list.add(Golem);
 		}
 		return list;
 	}

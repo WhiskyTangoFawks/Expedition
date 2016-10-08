@@ -2,6 +2,7 @@
 package wtf.init;
 
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockTorch;
@@ -17,23 +18,23 @@ import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameData;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import wtf.Core;
-import wtf.blocks.AnimatedBlock;
+import wtf.blocks.BlockDecoAnim;
 import wtf.blocks.BlockCrackedStone;
 import wtf.blocks.BlockFoxfire;
 import wtf.blocks.BlockIcicle;
-import wtf.blocks.BlockMossy;
+import wtf.blocks.BlockDecoStatic;
 import wtf.blocks.BlockPatchFluid;
 import wtf.blocks.BlockPatchIce;
 import wtf.blocks.BlockRoots;
 import wtf.blocks.BlockSpeleothem;
 import wtf.blocks.BlockWTFTorch;
 import wtf.blocks.OreNitre;
-import wtf.blocks.OreSandGoldNugget;
 import wtf.blocks.redstone.RedstoneStalactite;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
 import wtf.crafting.WCICTable;
 import wtf.crafting.render.WCICTileEntity;
+import wtf.gameplay.OreSandGoldNugget;
 import wtf.items.ItemBlockState;
 
 public class WTFBlocks {
@@ -65,6 +66,7 @@ public class WTFBlocks {
 		roots = (BlockRoots) registerBlockItemSubblocks(new BlockRoots(), 4, "roots");
 		oreSandGold = registerBlock(new OreSandGoldNugget(), "oreSandGold");
 		crackedStone = registerBlock(new BlockCrackedStone(Blocks.STONE.getDefaultState()), "cracked_stone");
+		mossyDirt = registerBlock(new BlockDecoStatic(Blocks.DIRT.getDefaultState()), "dirt0DecoStatic");
 		
 		waterPatch = (BlockPatchFluid) registerBlock(new BlockPatchFluid(Material.WATER), "patchWater");
 		lavaPatch = (BlockPatchFluid) registerBlock(new BlockPatchFluid(Material.LAVA), "patchLava");
@@ -76,27 +78,29 @@ public class WTFBlocks {
 		waterPatchStatic.otherState = waterPatch.getDefaultState();
 		lavaPatchStatic.otherState = lavaPatch.getDefaultState();
 		
+		for(Entry<IBlockState, IBlockState> entry : CoreConfig.StoneCobble.entrySet()){
+			
+			String stoneName = entry.getKey().getBlock().getRegistryName().toString().split(":")[1] + entry.getKey().getBlock().getMetaFromState(entry.getKey());
+			String cobbleName = entry.getValue().getBlock().getRegistryName().toString().split(":")[1] + entry.getKey().getBlock().getMetaFromState(entry.getKey());
+			
+			registerBlockItemSubblocks(new BlockSpeleothem(entry.getKey()).setFrozen(stoneName + "Speleothem"), 6, stoneName + "Speleothem");// .setFrozen("stoneSpeleothem");
+			decoStone = registerBlockItemSubblocks(new BlockDecoAnim(entry.getKey()), 2, stoneName+"DecoAnim");
+			registerBlock(new BlockDecoStatic(entry.getKey()), stoneName+"DecoStatic");
+				
+		}
 		
 		registerBlockItemSubblocks(new RedstoneStalactite(false).setFrozen("redstoneSpeleothem"), 6, "redstoneSpeleothem");// .setFrozen("stoneSpeleothem");
 		registerBlockItemSubblocks(new RedstoneStalactite(false).setFrozen("redstoneSpeleothem_on"), 6, "redstoneSpeleothem_on");// .setFrozen("stoneSpeleothem");
 		
-		registerBlockItemSubblocks(new BlockSpeleothem(Blocks.STONE.getDefaultState()).setFrozen("stoneSpeleothem"), 6, "stoneSpeleothem");// .setFrozen("stoneSpeleothem");
-		registerBlockItemSubblocks(new BlockSpeleothem(Blocks.SANDSTONE.getDefaultState()).setFrozen("sandstoneSpeleothem"), 6, "sandstoneSpeleothem");//);
-
-		
-		//All Speleothems must be registered prior to decorative blocks
-		//switch this over to a block transformation placement map
-		registerBlock(new BlockMossy(Blocks.STONE.getDefaultState()), "overlayStone");
-		
-		decoStone = registerBlockItemSubblocks(new AnimatedBlock(Blocks.STONE.getDefaultState()), 2, "animStone");
-
-		mossyDirt = registerBlock(new BlockMossy(Blocks.DIRT.getDefaultState()), "overlayDirt");
-		
-		BlockWTFTorch.torch_on = registerBlock(new BlockWTFTorch(true), "torch_on");
+		//registerBlockItemSubblocks(new BlockSpeleothem(Blocks.STONE.getDefaultState()).setFrozen("stoneSpeleothem"), 6, "stoneSpeleothem");// .setFrozen("stoneSpeleothem");
+		//registerBlockItemSubblocks(new BlockSpeleothem(Blocks.SANDSTONE.getDefaultState()).setFrozen("sandstoneSpeleothem"), 6, "sandstoneSpeleothem");//);
+		//decoStone = registerBlockItemSubblocks(new AnimatedBlock(Blocks.STONE.getDefaultState()), 2, "animStone");
+		//registerBlock(new BlockMossy(Blocks.STONE.getDefaultState()), "overlayStone");
 		
 		wcicTable = registerBlock(new WCICTable(), "wcic_table");
 		GameRegistry.registerTileEntity(WCICTileEntity.class, "WCICTable");
-		
+
+		//BlockWTFTorch.torch_on = registerBlock(new BlockWTFTorch(true), "torch_on");
 		/*
 		if (CoreConfig.gameplaytweaks && GameplayConfig.torchLifespan > -1){
 			

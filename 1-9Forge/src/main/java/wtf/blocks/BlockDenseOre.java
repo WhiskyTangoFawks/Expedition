@@ -1,8 +1,6 @@
 package wtf.blocks;
 
 
-import java.util.Random;
-
 import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -10,11 +8,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.stats.StatList;
 import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import wtf.init.BlockSets;
 import wtf.utilities.wrappers.StoneAndOre;
 
@@ -30,13 +25,25 @@ public class BlockDenseOre extends AbstractBlockDerivative{
 		this.disableStats();
 	}
 	
-
-	
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer)
     {
-        return BlockRenderLayer.CUTOUT_MIPPED;
+        switch (layer){
+		case CUTOUT:
+			return false;
+		case CUTOUT_MIPPED:
+			return false;
+		case SOLID:
+			return true;
+		case TRANSLUCENT:
+			return true;
+		default:
+			break;
+        
+        }
+        return false;
     }
+	
     
     @Override
 	public IBlockState getStateFromMeta(int meta) {
@@ -57,7 +64,7 @@ public class BlockDenseOre extends AbstractBlockDerivative{
         	state = state.withProperty(DENSITY, state.getValue(DENSITY)+1);
         }
         else {
-        	
+        	this.parentBackground.getBlock().dropBlockAsItem(world, pos, this.parentBackground, 0);
         	state = Blocks.AIR.getDefaultState();
         }
         player.addStat(StatList.getBlockStats(this.parentForeground.getBlock()));
@@ -69,7 +76,8 @@ public class BlockDenseOre extends AbstractBlockDerivative{
 		return new BlockStateContainer(this, DENSITY);
 	}
 	
-    public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
+    @Override
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
     {
         return false;
     }

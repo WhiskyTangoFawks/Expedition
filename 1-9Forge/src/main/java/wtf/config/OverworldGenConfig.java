@@ -11,6 +11,10 @@ public class OverworldGenConfig{
 	public static double mountainFracChunkPercent;
 	public static double mountainFracFreq;
 
+	public static double riverFracChunkPercent;
+	public static double riverFracFreq;
+
+	
 	public static double forestMossChunkPercent;
 	public static double ForestMossFreq;
 	
@@ -31,9 +35,9 @@ public class OverworldGenConfig{
 	public static boolean replaceRTGBirches;
 
 	
-	public static int mangroveID;
-	public static int mangrovePercent;
-	public static int mangroveSize;
+	//public static int mangroveID;
+	//public static int mangrovePercent;
+	//public static int mangroveSize;
 	
 	public static int denseJungleID;
 	public static int denseJungleHillsID;	
@@ -61,6 +65,9 @@ public class OverworldGenConfig{
 		mountainFracChunkPercent = config.get(surface, "In mountainous, percentage of chunks which will have cobblestone fractured surfaces", 50).getDouble()/100;
 		mountainFracFreq = config.get(surface, "In mountainous, percentage of blocks within the chunk which will be fractured", 20).getDouble()/100;
 		
+		riverFracChunkPercent = config.get(surface, "In rivers, percentage of chunks which will have cobblestone fractured river beds", 50).getDouble()/100;
+		riverFracFreq = config.get(surface, "In rivers, percentage of blocks within the chunk which will be fractured", 20).getDouble()/100;
+		
 		forestMossChunkPercent = config.get(surface, "In forests, percentage of chunks which will have mossy surfaces", 50).getDouble()/100;
 		ForestMossFreq = config.get(surface, "In mossy forests, percentage of blocks within the chunk which will be mossified", 50).getDouble()/100;
 		
@@ -76,12 +83,12 @@ public class OverworldGenConfig{
 		autumnForestColorScale = config.get(af, "Autumn Color Scaling- setting smaller will give faster changes in colour", 10).getInt();
 		
 
-		fixBirchLeaves = config.get(af, "Register Birch leaves to the color manager- allows them to function in autumn sub-biomes", true).getBoolean();
+		//fixBirchLeaves = config.get(af, "Register Birch leaves to the color manager- allows them to function in autumn sub-biomes", true).getBoolean();
 		
-		String m = "Sub-Biome : Mangrove Swamp";
-		mangroveID = config.get(m, "Mangrove swamp ID, set to -1 to disable", 44).getInt();
-		mangrovePercent = config.get(m, "Percentage frequency of mangrove sub biomes within their parent biomes", 15).getInt();
-		mangroveSize = config.get(m, "Mangrove sub-biome size- setting smaller will give isolated patches, larger gives large swathes", 1).getInt()*32;
+		//String m = "Sub-Biome : Mangrove Swamp";
+		//mangroveID = config.get(m, "Mangrove swamp ID, set to -1 to disable", 44).getInt();
+		//mangrovePercent = config.get(m, "Percentage frequency of mangrove sub biomes within their parent biomes", 15).getInt();
+		//mangroveSize = config.get(m, "Mangrove sub-biome size- setting smaller will give isolated patches, larger gives large swathes", 1).getInt()*32;
 
 		//String j = "Sub-Biome : Dense Jungle";
 		//denseJungleID = config.get(j, "Dense Jungle ID, set to -1 to disable", 45).getInt();

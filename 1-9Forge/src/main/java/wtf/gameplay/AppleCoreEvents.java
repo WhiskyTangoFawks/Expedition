@@ -1,15 +1,16 @@
 package wtf.gameplay;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockCocoa;
-import net.minecraft.block.BlockStem;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import squeek.applecore.api.plants.PlantGrowthEvent;
@@ -65,4 +66,23 @@ public class AppleCoreEvents {
 		event.setResult(Result.ALLOW);
 	}
 
+	@SubscribeEvent
+	public void BlockHarvestEvent(HarvestDropsEvent event){
+		Block plant = event.getState().getBlock();
+		if (plantmods.containsKey(plant)){
+			Biome biome = event.getWorld().getBiomeGenForCoords(event.getPos());
+			if (!BiomeDictionary.isBiomeOfType(biome, plantmods.get(plant))){
+				List<ItemStack> drops = event.getDrops();
+				for (int loop = 0; loop < drops.size() && drops.size() > 1; loop++){
+					if (random.nextFloat() < 0.33){
+						drops.remove(loop);
+					}
+				}
+			}
+			
+			
+			
+		}
+	}
+	
 }

@@ -40,19 +40,19 @@ public class CaveTypeRegister {
 	//shallow caves
 	public static final AbstractCaveType simple = new CaveTypeDefault("default", floorChance, ceilingChance);
 	
-	public static final AbstractCaveType wet =new CaveTypeWet ("wet", floorChance, ceilingChance);
-	public static final AbstractCaveType swamp = new CaveTypeSwamp ("swamp", floorChance, ceilingChance);
+	public static final AbstractCaveType wet =new CaveTypeWet ("wet", floorChance, ceilingChance+1);
+	public static final AbstractCaveType swamp = new CaveTypeSwamp ("swamp", floorChance, ceilingChance+2);
 	public static final AbstractCaveType sandy = new CaveTypeSandy ("sandy", floorChance, ceilingChance, false);
 	public static final AbstractCaveType redSandy = new CaveTypeSandy ("sandy", floorChance, ceilingChance, true);
-	public static final AbstractCaveType jungleVolcano = new CaveTypeJungleVolcano ("jungleVolcanic", floorChance, ceilingChance+10);
-	public static final AbstractCaveType rocky = new CaveTypeRocky ("rocky", floorChance*2, ceilingChance*2);
-	public static final AbstractCaveType ice = new CaveTypeIce ("ice", floorChance, ceilingChance);
+	public static final AbstractCaveType jungleVolcano = new CaveTypeJungleVolcano ("jungleVolcanic", floorChance, ceilingChance+5);
+	public static final AbstractCaveType rocky = new CaveTypeRocky ("rocky", floorChance, ceilingChance+3);
+	public static final AbstractCaveType ice = new CaveTypeIce ("ice", floorChance, ceilingChance+3);
 	public static final AbstractCaveType fungal = new CaveTypeFungal ("fungal", floorChance, ceilingChance);
 	public static final AbstractCaveType plains = new CaveTypeDirtWater ("dirtWater", floorChance, ceilingChance);
 	public static final AbstractCaveType podzol = new CaveTypeMossy("mossy", floorChance, ceilingChance, Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.PODZOL));
 	public static final AbstractCaveType mossy = new CaveTypeMossy("mossy", floorChance, ceilingChance, Blocks.DIRT.getDefaultState());
-	public static final AbstractCaveType iceRocky = new CaveTypeIceRocky ("iceRocky", floorChance*2, ceilingChance*2);
-	public static final AbstractCaveType volcanic = new CaveTypeVolcanic ("volcanic", floorChance*2, ceilingChance*2);
+	public static final AbstractCaveType iceRocky = new CaveTypeIceRocky ("iceRocky", floorChance, ceilingChance+3);
+	public static final AbstractCaveType volcanic = new CaveTypeVolcanic ("volcanic", floorChance, ceilingChance+4);
 	public static final AbstractCaveType nether = new CaveTypeHell ("nether", floorChance, ceilingChance);
 
 
@@ -68,12 +68,16 @@ public class CaveTypeRegister {
 		
 		ArrayList<AbstractDungeonType> dungeonShallow = new ArrayList<AbstractDungeonType>(DungeonTypeRegister.defaultlist());
 		AbstractCaveType shallow = simple;
-		
+
 		if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.SNOWY)){
 			shallow = ice;
 			dungeonShallow.addAll(DungeonTypeRegister.coldList());
 		}
 		else if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.OCEAN)){
+			shallow = wet;
+			dungeonShallow.addAll(DungeonTypeRegister.wetList());
+		}
+		else if (BiomeDictionary.isBiomeOfType(biome, BiomeDictionary.Type.RIVER)){
 			shallow = wet;
 			dungeonShallow.addAll(DungeonTypeRegister.wetList());
 		}

@@ -8,17 +8,12 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.blocks.AnimatedBlock;
+import wtf.blocks.BlockDecoAnim;
 import wtf.blocks.BlockDenseOre;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
-import wtf.init.BlockSets.Modifier;
-import wtf.utilities.Simplex;
 import wtf.utilities.wrappers.Vec;
 
 public class StoneFractureMethods {
@@ -103,7 +98,7 @@ public class StoneFractureMethods {
 		for (int xloop = -1; xloop < 2; xloop++){
 			for (int yloop = -1; yloop < 2; yloop++){
 				for (int zloop = -1; zloop < 2; zloop++){
-					if (xloop != 0 && yloop != 0 && zloop != 0){
+					if (xloop != 0 || yloop != 0 || zloop != 0){
 						list.add(new BlockPos(pos.getX()+xloop, pos.getY()+yloop, pos.getZ()+zloop));
 					}
 				}	
@@ -120,7 +115,7 @@ public class StoneFractureMethods {
 	public static HashSet<BlockPos> fracLow(World world, BlockPos pos, int n){
 		HashSet<BlockPos> hashset = new HashSet<BlockPos>();
 		ArrayList<BlockPos> adjPos = getAdjPos(pos);
-		
+		System.out.println("Adjacent " + adjPos.size());
 		for (int loop = 0; loop < n; loop++){
 			BlockPos randPos = adjPos.get(random.nextInt(adjPos.size()));
 			if  (BlockSets.hasCobble(world.getBlockState(randPos))){
@@ -211,6 +206,7 @@ public class StoneFractureMethods {
 			}
 			
 			fracStone(world, pos, state);
+			
 		}
 		if (hashset2.size() > 0){
 			FracIterator(world, hashset2);
@@ -223,10 +219,10 @@ public class StoneFractureMethods {
 		
 		if (stateToSet != null) { 
 			world.setBlockState(pos, stateToSet);
-			GravityMethods.dropBlock(world, pos, false);
+			GravityMethods.dropBlock(world, pos, true);
 			return true;
 		}
-		else if (world.getBlockState(pos) instanceof AnimatedBlock && state.getValue(AnimatedBlock.TYPE) == AnimatedBlock.ANIMTYPE.LAVA_CRUST) {
+		else if (world.getBlockState(pos) instanceof BlockDecoAnim && state.getValue(BlockDecoAnim.TYPE) == BlockDecoAnim.ANIMTYPE.LAVA_CRUST) {
 			world.setBlockState(pos, Blocks.LAVA.getDefaultState());
 		}
 		return false;

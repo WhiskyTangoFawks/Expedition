@@ -3,6 +3,7 @@ package wtf.ores.config;
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 
 public class WTFOreConfig {
 
@@ -18,6 +19,7 @@ public class WTFOreConfig {
 	public static boolean genSandGold;
 	public static boolean genCrackedStone;
 	
+	
 	public static boolean simplexGen;
 	
 	public static void loadConfig() throws Exception {
@@ -32,21 +34,21 @@ public class WTFOreConfig {
 		String cancel = "Enable Ore Gen: Vanilla";
 		
 		cancelVanillaCoal = config.get(cancel, "Coal", true).getBoolean();
-		String coal = config.get(vanilla, "Vanilla Coal Generation", "vein, minecraft:coal_ore@0, denseOre=true, orePerChunk=60 & 220, GenHeightPercentSurface=20 & 120,"
-				+ " VeinDimensions=8 & 8 & 1, pitch=1.5, genPercentInBiomeType=swamp@150, genPercentInBiomeType=hot@50").getString();
+		String coal = config.get(vanilla, "Vanilla Coal Generation", "vein, minecraft:coal_ore@0, stone=minecraft:stone@0, stone=minecraft:gravel@0, denseOre=true, orePerChunk=60 & 220, GenHeightPercentSurface=20 & 120,"
+				+ " VeinDimensions=8 & 8 & 1, pitch=1.5, DensityPercent=75, genPercentInBiomeType=swamp@150, genPercentInBiomeType=hot@50").getString();
 		if (cancelVanillaCoal){
 			ParseOre.parse(coal);
 		}
 		
 		cancelVanillaIron = config.get(cancel, "Iron", true).getBoolean();
-		String iron = config.get(vanilla, "Vanilla Iron Generation", "vein, minecraft:iron_ore@0, denseOre=true, orePerChunk=30 & 120, GenHeightPercentSurface=10 & 105, VeinDimensions=8 & 2 & 2,"
+		String iron = config.get(vanilla, "Vanilla Iron Generation", "vein, minecraft:iron_ore@0, denseOre=true, orePerChunk=30 & 120, GenHeightPercentSurface=10 & 105, VeinDimensions=12 & 2 & 2,"
 				+ " DensityPercent=50, pitch=1.5, genPercentInBiomeType=mountain@150, genPercentInBiomeType=savanna@50 ").getString();
 		if (cancelVanillaIron){
 			ParseOre.parse(iron);
 		}
 		
 		cancelVanillaGold = config.get(cancel, "Gold", true).getBoolean();
-		String gold = config.get(vanilla, "Vanilla Gold Generation", "cloud, minecraft:gold_ore@0, denseOre=true, orePerChunk=-12 & 20, GenHeightPercentSurface=5 & 45, size=10, DensityPercent=10,"
+		String gold = config.get(vanilla, "Vanilla Gold Generation", "cloud, minecraft:gold_ore@0, denseOre=true, orePerChunk=-12 & 20, GenHeightPercentSurface=5 & 45, size=14, DensityPercent=10,"
 				+ " genPercentInBiomeType=river@150, genPercentInBiomeType=forest@50").getString();
 		if (cancelVanillaGold){
 			ParseOre.parse(gold);
@@ -60,7 +62,7 @@ public class WTFOreConfig {
 		}
 		
 		cancelVanillaRedstone = config.get(cancel, "Redstone", true).getBoolean();
-		String redstone = config.get(vanilla, "Vanilla Redstone Generation", "vein, minecraft:redstone_ore@0, denseOre=true, orePerChunk=10 & 38, GenHeightPercentSurface=5 & 60, VeinDimensions=8 & 1 & 1,"
+		String redstone = config.get(vanilla, "Vanilla Redstone Generation", "vein, minecraft:redstone_ore@0, denseOre=true, orePerChunk=10 & 38, GenHeightPercentSurface=5 & 60, VeinDimensions=16 & 1 & 1,"
 				+ " pitch=0, genPercentInBiomeType=sandy@150, genPercentInBiomeType=wet@50").getString();
 		if (cancelVanillaRedstone){			
 			ParseOre.parse(redstone);
@@ -75,14 +77,14 @@ public class WTFOreConfig {
 		}
 		
 		cancelVanillaDiamond = config.get(cancel, "Diamond", true).getBoolean();
-		String diamond = config.get(vanilla, "Vanilla Diamond Generation", "cluster, minecraft:diamond_ore@0, denseOre=true, orePerChunk=-17 & 23, GenHeightPercentSurface=1 & 25,"
+		String diamond = config.get(vanilla, "Vanilla Diamond Generation", "cluster, minecraft:diamond_ore@0, stone=minecraft:stone@0, stone=minecraft:obsidian@0, denseOre=true, orePerChunk=-17 & 23, GenHeightPercentSurface=1 & 25,"
 				+ " DensityPercent=50, genPercentInBiomeType=jungle@150, genPercentInBiomeType=swamp@50").getString();
 		if (cancelVanillaDiamond){
 			ParseOre.parse(diamond);
 		}
 		
 		cancelVanillaQuartz = config.get(cancel, "Quartz", true).getBoolean();
-		String quartz = config.get(vanilla, "Vanilla Quartz Generation", "cave@vanilla, minecraft:quartz_ore@0, surfaces=floor&wall&ceiling, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-60 & 120,"
+		String quartz = config.get(vanilla, "Vanilla Quartz Generation", "cave@cluster, minecraft:quartz_ore@0, surfaces=floor&wall&ceiling, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-60 & 120,"
 				+ " GenHeightPercentSurface=5 & 95, size=16, dimension=-1").getString();
 		if (cancelVanillaQuartz){
 			ParseOre.parse(quartz);
@@ -102,9 +104,28 @@ public class WTFOreConfig {
 			ParseOre.parse(sandgold);
 		}
 		genCrackedStone = config.get(defEnableMod, "Mod Added Ore: WTF's Cracked Stone", true).getBoolean();
-		String crackedStone = config.get(defModOre, "WTF's Cracked Stone", "cave@vein, wtfcore:cracked_stone@0, surfaces=ceiling, orePerChunk=-25 & 45, GenHeightPercentSurface=10 & 110, VeinDimensions=6 & 2 & 2, pitch=1.5").getString();
+		String crackedStone = config.get(defModOre, "WTF's Cracked Stone", "cave@vein, wtfcore:cracked_stone@0, surfaces=ceiling, orePerChunk=-25 & 85, GenHeightPercentSurface=10 & 110, VeinDimensions=10 & 4 & 1, pitch=1.5, DensityPercent=50").getString();
 		if (genCrackedStone){
 			ParseOre.parse(crackedStone);
+		}
+		
+		
+		
+		if (Loader.isModLoaded("tconstruct")){
+			boolean tconOres = config.get(defEnableMod, "Mod Added Ore : Tinker's Construct Cobalt and Ardite", true).getBoolean();
+			String cobalt = config.get(defModOre, "Tinker's Construct Cobalt Generation", "vein, tconstruct:ore@0, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, VeinDimensions=16 & 1 & 1, pitch = 0.45,"
+					+ " GenHeightPercentSurface=5 & 95, dimension=-1").getString();
+			if (tconOres){
+				ParseOre.parse(cobalt);
+			}
+			String ardite = config.get(defModOre, "Tinker's Construct Ardite Generation", "cloud, tconstruct:ore@1, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, "
+					+ " GenHeightPercentSurface=5 & 95, size=16, DensityPercent=15, dimension=-1").getString();
+			if (tconOres){
+				ParseOre.parse(ardite);
+			}
+			
+			
+			
 		}
 		
 		

@@ -39,7 +39,7 @@ public class OreGenSingle extends OreGenAbstract{
 	public int genVein(World world, ChunkDividedOreMap map, Random random, ChunkScan scan, BlockPos pos) {
 		int densityToSet;
 		if (genDenseOres){
-			densityToSet = getDensityToSet(random, (pos.getY()/scan.surfaceAvg));
+			densityToSet = getDensityToSet(random, pos.getY(), scan.surfaceAvg);
 		}
 		else {
 			densityToSet = 0;
@@ -52,7 +52,7 @@ public class OreGenSingle extends OreGenAbstract{
 
 	@Override
 	public int blocksReq() {
-		return 1;
+		return 2;
 	}
 
 

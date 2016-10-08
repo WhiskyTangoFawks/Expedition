@@ -12,7 +12,9 @@ import wtf.utilities.wrappers.ChunkScan;
 import wtf.worldgen.trees.WorldGenCustomTree;
 import wtf.worldgen.trees.types.Mangrove;
 
-public class SubBiomeMangroveSwamp extends BiomeSwamp implements SubBiome{
+public class SubBiomeMangroveSwamp{
+/*
+extends BiomeSwamp implements SubBiome{
 
 	private final Biome parentBiome;
 	
@@ -72,16 +74,13 @@ public class SubBiomeMangroveSwamp extends BiomeSwamp implements SubBiome{
 	@Override
 	public WorldGenerator getTree(ChunkScan chunkscan, boolean doReplace, Random random) {
 		
-		if (chunkscan.getWaterList().size() > 64){
+		
 			if (mangrove == null){
 				mangrove = new WorldGenCustomTree(chunkscan, new Mangrove(chunkscan.world));
 			}
 			return mangrove;
-		}
-		else {
-			return this.genBigTreeChance(random);
-		}
+		
 	}
-
+*/
 
 }

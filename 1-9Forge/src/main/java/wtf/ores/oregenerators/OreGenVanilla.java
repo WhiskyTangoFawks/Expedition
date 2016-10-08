@@ -81,7 +81,7 @@ public class OreGenVanilla extends OreGenAbstract{
 								
 								int densityToSet;
 								if (genDenseOres){
-									densityToSet = getDensityToSet(random, (l2/scan.surfaceAvg));
+									densityToSet = getDensityToSet(random, l2, scan.surfaceAvg);
 								}
 								else {
 									densityToSet = 0;
@@ -102,7 +102,7 @@ public class OreGenVanilla extends OreGenAbstract{
 
 	@Override
 	public int blocksReq() {
-		return (int) (blocksPerCluster*this.veinDensity);
+		return (int) (blocksPerCluster*this.veinDensity)*2;
 	}
 
 }

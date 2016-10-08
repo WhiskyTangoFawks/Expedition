@@ -1,12 +1,12 @@
 package wtf.worldgen.caves;
 
-import java.util.HashMap;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockVine;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,7 +22,6 @@ import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import wtf.blocks.BlockRoots;
 import wtf.blocks.BlockSpeleothem;
-import wtf.blocks.BlockFoxfire;
 import wtf.blocks.BlockIcicle.IcicleType;
 import wtf.blocks.BlockRoots.RootType;
 import wtf.blocks.BlockSpeleothem.SpType;
@@ -129,7 +128,8 @@ public class CaveBiomeGenMethods{
 	 **/
 	public void setIcePatch(BlockPos pos){
 		
-		if (getBlockState(pos.up()).getBlock().hashCode() == airHash){
+		int hash = getBlockState(pos).getMaterial().hashCode();
+		if (getBlockState(pos.up()).getBlock().hashCode() == airHash  && hash != Material.SNOW.hashCode() && hash != Material.ICE.hashCode() && hash != Material.PACKED_ICE.hashCode()){
 			blocksToSet.put(pos.up(), WTFBlocks.icePatch.getDefaultState());
 		}
 	}
@@ -269,12 +269,14 @@ public class CaveBiomeGenMethods{
 	 **Generates an icicle hanging from the ceiling
 	 **/
 	public  void genIcicle (BlockPos pos){
-		if (random.nextBoolean() && getBlockState(pos.down()).hashCode() == airHash){
-			blocksToSet.put(pos, WTFBlocks.icicle.getBlockState(IcicleType.icicle_base));
-			blocksToSet.put(pos.down(),  WTFBlocks.icicle.getBlockState(IcicleType.icicle_tip));
-		}
-		else {
-			blocksToSet.put(pos, WTFBlocks.icicle.getBlockState(IcicleType.icicle_small));
+		if (getBlockState(pos.up()).isNormalCube()){
+			if (random.nextBoolean() && getBlockState(pos.down()).hashCode() == airHash){
+				blocksToSet.put(pos, WTFBlocks.icicle.getBlockState(IcicleType.icicle_base));
+				blocksToSet.put(pos.down(),  WTFBlocks.icicle.getBlockState(IcicleType.icicle_tip));
+			}
+			else {
+				blocksToSet.put(pos, WTFBlocks.icicle.getBlockState(IcicleType.icicle_small));
+			}
 		}
 	}
 

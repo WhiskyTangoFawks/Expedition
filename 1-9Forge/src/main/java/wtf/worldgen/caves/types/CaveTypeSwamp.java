@@ -108,18 +108,4 @@ public class CaveTypeSwamp extends AbstractCaveType {
 		}
 	}
 
-	TreeVars mangrove= null;
-	@Override
-	public TreeVars getTreeType(World world, ChunkScan scan, WorldGenAbstractTree oldTree){
-		double noise = getNoise(scan.surface[8][8], 1, 0.1F);
-		 
-		//if (simplex.noise(pos.x()/160, pos.getZ()) < OverworldGenConfig.mangroveChunkPercent){
-			
-			//if (mangrove == null){
-				//mangrove = new Mangrove(world);
-			//}
-			//return mangrove;
-		//}
-		return super.getTreeType(world, scan, oldTree);
-	}
 }

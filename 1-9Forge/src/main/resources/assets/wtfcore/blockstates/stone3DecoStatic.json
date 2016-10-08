@@ -1,0 +1,24 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+         "model": "forge:multi-layer",
+    	"transform": "forge:default-block"
+                
+    },
+    "variants": {
+        "normal": [
+        	{"custom": { "base": "diorite#normal", "Solid": "diorite#normal", "Translucent": "wtfcore:stone3DecoStatic#base" }}
+        	],
+        "inventory": [{
+			"custom": { "base": "diorite#normal", "Solid": "diorite#normal", "Translucent": "wtfcore:stone3DecoStatic#base" }
+        }],
+   
+	"base": [
+		{"model": "wtfcore:overlay", "textures": { "mask": "wtfcore:blocks/moss_overlay" }},
+		{"model": "wtfcore:overlay", "y":90, "x":90, "textures": { "mask": "wtfcore:blocks/moss_overlay" }},
+		{"model": "wtfcore:overlay", "y":180, "x":180, "textures": { "mask": "wtfcore:blocks/moss_overlay" }},
+		{"model": "wtfcore:overlay", "y":270, "x":270, "textures": { "mask": "wtfcore:blocks/moss_overlay" }}
+    ]
+   
+    }
+}

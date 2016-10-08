@@ -21,6 +21,7 @@ import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
 import wtf.ores.OreGenAbstract;
 import wtf.ores.OreGenerator;
+import wtf.ores.OreReplacer;
 import wtf.ores.oregenerators.OreGenCaveFloor;
 import wtf.ores.oregenerators.OreGenCloud;
 import wtf.ores.oregenerators.OreGenCluster;
@@ -78,11 +79,8 @@ public class ParseOre {
 		if (!stringArray[1].contains(":")){
 			throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " expected a block argument, got this instead " + stringArray[1] + " The second argument of each string MUST be the block and metadata, in the format modID:block@metadata");
 		}
-		String blockName = stringArray[1].split(":")[1].split("@")[0];
-		int metadata = Integer.parseInt(stringArray[1].split(":")[1].split("@")[1]);
-		if (metadata > 0){
-			blockName += metadata;
-		}
+		String oreName = stringArray[1].split(":")[1].split("@")[0] + Integer.parseInt(stringArray[1].split(":")[1].split("@")[1]); 
+		
 		
 		if (blockstate == null){
 			throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " ***** cound not find block for " + stringArray[1] + " Turn on the block name getter in the core config, and place the block whose name you want in the world to get the blocks registry name");
@@ -297,18 +295,24 @@ public class ParseOre {
 		for (IBlockState stone : stones){
 			if (denseOres){
 				Block block = null;
+				String stoneName = stone.getBlock().getRegistryName().toString().split(":")[1]+stone.getBlock().getMetaFromState(stone);
+				String blockName = stoneName+oreName;
 				if (blockstate.getBlock() != Blocks.REDSTONE_ORE){
 					block = stone.getBlock() instanceof BlockFalling ? WTFBlocks.registerBlock(new BlockDenseOreFalling(stone, blockstate), "dense_"+blockName) : WTFBlocks.registerBlock(new BlockDenseOre(stone, blockstate), "dense_"+blockName);
 				}
 				else {
+					
 					block = WTFBlocks.registerBlock(new DenseRedstoneOre(false), "dense_"+blockName);
 					DenseRedstoneOre.denseRedstone_off = block;
 					DenseRedstoneOre.denseRedstone_on = WTFBlocks.registerBlock(new DenseRedstoneOre(true), "dense_"+blockName+"_on");
 				}
 				BlockSets.stoneAndOre.put(new StoneAndOre(stone, blockstate), block.getDefaultState());
+				//Ore ubification/densification of existing ores- removed because it was crashing
+				//new OreReplacer(blockstate.getBlock());
 			}
 			else {
 				BlockSets.stoneAndOre.put(new StoneAndOre(stone, blockstate), blockstate);
+				new OreReplacer(blockstate.getBlock());
 			}
 		}
 		//Optional arguments

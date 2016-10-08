@@ -90,10 +90,12 @@ public class TreeTypeGetter {
 			}
 
 		}
-
+		else if (oldTree instanceof WorldGenMegaPineTree){
+			treeTypes.put(oldTree, new RedwoodTree(world));
+			return new RedwoodTree(world);
+		}
 		else if (oldTree instanceof WorldGenCanopyTree){
 			treeTypes.put(oldTree, new DarkOakTree(world));
-			System.out.println("returned canopy tree");
 			return new DarkOakTree(world);
 		}
 

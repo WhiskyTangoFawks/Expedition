@@ -8,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityFallingBlock;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import wtf.config.GameplayConfig;
 import wtf.init.BlockSets;
@@ -22,7 +21,7 @@ public class GravityMethods {
 
 	public static void checkPos(World world, BlockPos pos){
 
-		IBlockState state =world.getBlockState(pos); 
+		IBlockState state = world.getBlockState(pos); 
 		Block block = state.getBlock();
 
 		if (block.hashCode() == grassHash){
@@ -31,20 +30,19 @@ public class GravityMethods {
 		else if (!BlockSets.fallingBlocks.containsKey(block)){
 			return;
 		}
-
-		
-
-
+		//if the block beneath isn't solid
 		if (BlockSets.nonSolidBlockSet.contains(world.getBlockState(pos.down()).getBlock())){
+
 			int blockhash = block.hashCode();
 			double fallchance = 1;
-
-			for (int loop = 1; loop < 6 && blockhash == world.getBlockState(pos.up(loop)).getBlock().hashCode(); loop++){
-				fallchance *= (1-BlockSets.fallingBlocks.get(block));
-			}
-			if (random.nextFloat() < fallchance){
-				dropBlock(world, pos, true);
-			}
+				for (int loop = 1; loop < 6 && blockhash == world.getBlockState(pos.up(loop)).getBlock().hashCode(); loop++){
+					fallchance *= (1-BlockSets.fallingBlocks.get(block));
+				}
+				if (random.nextFloat() < fallchance){
+					dropBlock(world, pos, true);
+				}
+				return;
+			
 		}
 
 
@@ -68,7 +66,7 @@ public class GravityMethods {
 			}
 
 			if (random.nextFloat()*count > BlockSets.fallingBlocks.get(downBlock)){
-				EntityFallingBlock entityfallingblock = new WTFSlidingBlock(world, pos, getRandomAdj(pos), state, true);
+				EntityFallingBlock entityfallingblock = new WTFSlidingBlock(world, pos, getRandomAdj(pos), state);
 				entityfallingblock.setHurtEntities(GameplayConfig.fallingBlocksDamage);
 			}
 			//downward iteration is within the sliding block class
@@ -96,7 +94,7 @@ public class GravityMethods {
 				return false;
 			}
 
-			EntityFallingBlock entityfallingblock = new EntityFallingBlock(world, pos.getX()+0.5, pos.getY(), pos.getZ()+0.5, world.getBlockState(pos));
+			EntityFallingBlock entityfallingblock = new WTFFallingBlock(world, pos.getX()+0.5, pos.getY(), pos.getZ()+0.5, world.getBlockState(pos));
 			entityfallingblock.setHurtEntities(GameplayConfig.fallingBlocksDamage);
 			if (world.spawnEntityInWorld(entityfallingblock)){
 
@@ -128,24 +126,16 @@ public class GravityMethods {
 	}
 
 	public static BlockPos getRandomAdj(BlockPos pos){
-		int chance = random.nextInt(8);
+		int chance = random.nextInt(4);
 		switch (chance){
 		case 0:
 			return pos.north();
 		case 1:
-			return pos.north().east();
-		case 2:
 			return pos.east();
-		case 3:
-			return pos.south().east();
-		case 4:
+		case 2:
 			return pos.south();
-		case 5:
-			return pos.south().west();
-		case 6:
+		case 3:
 			return pos.west();
-		case 7:
-			return pos.north().west();
 		}
 		return null;
 	}

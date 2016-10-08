@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -43,6 +44,7 @@ public class RTGCompat {
 			if (rtgtree.noLeaves){
 				rtgtree.noLeaves=false;
 			}
+			rtgtree.leavesBlock = rtgtree.leavesBlock.withProperty(BlockLeaves.CHECK_DECAY, false);
 
 			return rtgtree;
 		}

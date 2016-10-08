@@ -35,8 +35,6 @@ public abstract class AbstractBlockDerivative extends Block{
 		this.setCreativeTab(Core.wtfTab);
 		
 		this.setHarvestLevel(foreState.getBlock().getHarvestTool(foreState), foreState.getBlock().getHarvestLevel(foreState));
-		
-		
 	}
 
 

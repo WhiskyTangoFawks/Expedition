@@ -74,7 +74,12 @@ public class OreGenVein extends OreGenAbstract {
 		float vecWidthX = MathHelper.cos(pitchX+pi4);// * MathHelper.sin(pitchY+pi4);
 		float vecWidthZ = MathHelper.sin(pitchX+pi4);// * MathHelper.sin(pitchY+pi4);
 		
+		 
+		double x = pos.getX() - vecWidthX*veinWidth/2 - vecX*length/2;
+		double y = pos.getY() - vecWidthY*veinWidth/2 - vecY*length/2;
+		double z = pos.getZ() - vecWidthZ*veinWidth/2 - vecZ*length/2;
 		
+		pos = new BlockPos(x, y, z);
 		
 		for (int widthLoop = 0; widthLoop < veinWidth; widthLoop++){
 			for (int heightLoop = 0; heightLoop < veinHeight; heightLoop++){
@@ -85,7 +90,7 @@ public class OreGenVein extends OreGenAbstract {
 				for (int lengthLoop = 0; lengthLoop < length; lengthLoop++){
 					
 					
-					int densityToSet = genDenseOres ? densityToSet = getDensityToSet(random, (ypos/scan.surfaceAvg)) : 0;
+					int densityToSet = genDenseOres ? densityToSet = getDensityToSet(random, (int) ypos, scan.surfaceAvg) : 0;
 					
 					if (random.nextFloat() < this.veinDensity){
 						blocksSet+= densityToSet+1;
@@ -104,10 +109,10 @@ public class OreGenVein extends OreGenAbstract {
 
 	@Override
 	public int blocksReq() {
-		// TODO Auto-generated method stub
-		
-		return (int) (this.veinLength*this.veinWidth*this.veinHeight*this.veinDensity);
+		return (int) (this.veinLength*this.veinWidth*this.veinHeight*this.veinDensity)*2;
 
 	}
+	
+
 }
 

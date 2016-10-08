@@ -3,7 +3,6 @@ package wtf.config;
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
 import wtf.init.BlockSets;
 
 
@@ -49,7 +48,9 @@ public class GameplayConfig {
 	public static boolean removeVanillaTools;
 	
 	public static Configuration config = new Configuration(new File("config/WTFGameplay.cfg"));
+	public static boolean waterControl;
 	
+	public static boolean childZombie;
 
 	public static void loadConfig(){
 	config.load();
@@ -88,7 +89,7 @@ public class GameplayConfig {
 	 */
 	
 	String defaultFall = ConfigUtils.getStringFromArrayList(BlockSets.defaultFallingBlocks);
-	String fallingBlockString = config.get("Gravity", "Block name and number of identical blocks above requried to prevent falling if disturbed by player", defaultFall).getString();
+	String fallingBlockString = config.get("Gravity", "Block name and stability percent- lower numbers mean a block falls more often", defaultFall).getString();
 	ConfigUtils.parseFallingBlocks(fallingBlockString);
 		
 	fallingBlocksDamage = config.get("Gravity", "Enable damage from blocks", true).getBoolean();
@@ -97,11 +98,12 @@ public class GameplayConfig {
 	/**
 	 * Torches Options
 	 */
+	/*
 	String torch = "Finite Torches";
 	torchLifespan = config.get(torch, "Chance in 100 per block tick (avg every 45 seconds) that an unattended torch will go out, 0 disables torches going out, -1 prevents torch replacement entirely", 20).getInt();
 	torchRange = config.get(torch, "Number of blocks a player must be within to prevent a torch from going out", 20).getInt();
 	relightTorchByHand = config.get(torch, "Torches can be relit by hand (true), or require flint and steel (false)", true).getBoolean();
-	
+	*/
 	
 	/**
 	 * Drops Options
@@ -123,6 +125,8 @@ public class GameplayConfig {
 	
 	removeVanillaTools = config.get("Loot and Crafting", "Remove recipes for vanilla tools (Requires Tinkers Construct to be installed)", true).getBoolean(); 
 	
+	waterControl = config.get("Other", "Prevent infinite water source blocks outside biomes with the WET type", true).getBoolean();
+	childZombie = config.get("Other", "Prevent spawning of baby zombies", false).getBoolean();
 	
 	config.save();
 	}

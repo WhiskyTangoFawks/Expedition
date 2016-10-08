@@ -24,6 +24,7 @@ public class Mangrove extends TreeVars {
 		rootInitialAngle = 1F;
 		rootIncrementAngle = 99F;
 		waterGenerate = true;
+		genBuffer = -10;
 	}
 
 	@Override

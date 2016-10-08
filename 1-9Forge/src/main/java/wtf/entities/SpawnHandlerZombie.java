@@ -13,6 +13,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import wtf.config.GameplayConfig;
 import wtf.entities.zombies.EntityMummy;
 import wtf.utilities.GenMethods;
 
@@ -23,7 +24,9 @@ public class SpawnHandlerZombie {
 	public static EntityLiving zombieSpawn(LivingSpawnEvent event){	
 		Biome biome = event.getWorld().getBiomeGenForCoords(new BlockPos(event.getX(), event.getY(), event.getZ()));
 		EntityZombie zombie =(EntityZombie) event.getEntityLiving();
-
+		if (zombie.isChild() && GameplayConfig.childZombie){
+			zombie.setChild(false);
+		}
 		if (BiomeDictionary.isBiomeOfType(biome, Type.SANDY)){
 			return new EntityMummy(event.getWorld(), false);
 		}

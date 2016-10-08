@@ -13,6 +13,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenShrub;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import net.minecraftforge.fml.common.Loader;
 import wtf.api.PopulationGenerator;
 import wtf.config.CoreConfig;
 import wtf.config.OverworldGenConfig;
@@ -20,6 +21,9 @@ import wtf.utilities.Simplex;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
 import wtf.utilities.wrappers.SurfacePos;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveProfile;
+import wtf.worldgen.caves.CaveTypeRegister;
 import wtf.worldgen.subbiomes.SubBiome;
 import wtf.worldgen.trees.GenTree;
 import wtf.worldgen.trees.TreePos;
@@ -37,9 +41,12 @@ public class OverworldGen extends PopulationGenerator{
 
 	public static HashMap <Byte, SubBiome> subBiomeRegistry = new HashMap<Byte, SubBiome>();
 
+	boolean streamsSetBiome = Loader.isModLoaded("Streams");
+	
 	@Override
 	public void generate(World world, ChunkCoords chunkcoords, Random random, ChunkScan chunkscan) throws Exception{
-
+		CaveBiomeGenMethods gen = new CaveBiomeGenMethods(world, chunkcoords, random);
+		
 		if (simplex == null || world.hashCode() != prevWorld.hashCode()){
 			simplex = new Simplex((int) world.getSeed());
 			simplex2 = new Simplex((int) world.getSeed()*2);
@@ -52,26 +59,29 @@ public class OverworldGen extends PopulationGenerator{
 			for (int zloop = 0; zloop < 16; zloop++){
 				int loop = xloop + zloop*16;
 				SubBiome sub = subBiomeRegistry.get(newBiomes[loop]);
+				Biome biome = world.getBiomeGenForCoords(chunkscan.surface[xloop][zloop]);
+				
+				CaveProfile profile = CaveTypeRegister.getCaveProfile(biome);
+				profile.caveShallow.setTopBlock(gen, random, chunkscan.surface[xloop][zloop]);
+				
 				if (sub != null){
-
 					double x = (xloop+chunkcoords.getWorldX())/sub.scale();
 					double z = (zloop+chunkcoords.getWorldZ())/sub.scale();
-
 					if ((simplex.noise(x, z)*0.5+0.5) < sub.freq()){
-
 						newBiomes[loop] = sub.getID();
-						sub.resetTopBlock(world, chunkscan.surface[xloop][zloop]);
 					}
+						//if (streamsSetBiome && BlockSets.riverBlocks.contains(world.getBlockState(chunkscan.surface[xloop][zloop].up()).getBlock())){
+							//newBiomes[loop] = (byte)7;
+						//}
 				}
 			}
 		}
 
+		gen.blocksToSet.setBlockSet();
+		
 		if (CoreConfig.enableOverworldGeneration && OverworldGenConfig.genTrees){
 			genTrees(world, chunkcoords, random, chunkscan);
 		}
-
-
-
 	}
 
 	public void genTrees(World world, ChunkCoords chunkcoords, Random random, ChunkScan chunkscan) throws Exception {
@@ -110,6 +120,9 @@ public class OverworldGen extends PopulationGenerator{
 					if (treeType != null){
 						if (GenTree.tryGenerate(new TreePos(world, random, chunkscan, pos, treeType))){
 							//generation successful
+						}
+						else {
+							//System.out.println("Tree gen failed for " + treeType.getClass().toString());
 						}
 					}
 					else {
@@ -174,7 +187,9 @@ public class OverworldGen extends PopulationGenerator{
 			world.setBlockState(pos.up(), Blocks.AIR.getDefaultState());
 			tree.generate(world, world.rand, pos);
 			chunkscan.setGenerated(pos, 4);
-			addRoots(world, pos, random, chunkscan);
+			if (OverworldGenConfig.addRoots){
+				addRoots(world, pos, random, chunkscan);
+			}
 		}
 	}
 
