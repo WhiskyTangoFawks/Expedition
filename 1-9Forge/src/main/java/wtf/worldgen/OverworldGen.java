@@ -91,7 +91,7 @@ public class OverworldGen extends PopulationGenerator{
 
 				if (genChance > 0 && !pos.generated && random.nextFloat()<genChance){
 
-					boolean doReplace = customTree(random, pos);
+					boolean doReplace = customTree(random, world, pos);
 
 					WorldGenerator oldTree = null; //getTree(random, biome, chunkscan, doReplace);
 
@@ -137,10 +137,10 @@ public class OverworldGen extends PopulationGenerator{
 		return biome.genBigTreeChance(random);
 	}
 
-	public boolean customTree(Random random, BlockPos pos){
+	public boolean customTree(Random random, World world, BlockPos pos){
 		double noise = (simplex2.noise(pos.getX()/32, pos.getZ()/32)*0.5 + 0.5); 
 		double rand = random.nextFloat(); 
-		double noise2 = noise - (noise - OverworldGenConfig.treeReplacementRate)*OverworldGenConfig.simplexTreeScale;	
+		double noise2 = noise - (noise - OverworldGenConfig.getTreeReplacementRate(world.getBiomeGenForCoords(pos)))*OverworldGenConfig.simplexTreeScale;	
 		return rand < noise2;
 	}
 

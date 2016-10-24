@@ -1,6 +1,11 @@
 package wtf.config;
 
 import java.io.File;
+
+import com.google.common.collect.ImmutableMap;
+
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Configuration;
 
 public class OverworldGenConfig{
@@ -15,6 +20,7 @@ public class OverworldGenConfig{
 	public static double ForestMossFreq;
 	
 	public static double treeReplacementRate;
+	public static ImmutableMap<Biome, Double> treeReplacementRateBiomeOverride;
 	public static double simplexTreeScale;
 	public static boolean addRoots;
 	
@@ -44,10 +50,11 @@ public class OverworldGenConfig{
 	public static int meadowPercent;
 	public static int meadowSize;
 	
+	private static Configuration config;
 	
 	public static void loadConfig() {
 
-		Configuration config = new Configuration(new File("config/WTFOverworldGenConfig.cfg"));
+		config = new Configuration(new File("config/WTFOverworldGenConfig.cfg"));
 
 		genTrees = config.get("Trees", "Allow this mod to bypass normal tree generation, and do custom tree generation (required for the rest of the tree configs to have effect)", true).getBoolean();
 		treeReplacementRate = config.get("Trees", "Percentage of trees generated that this mod will attempt to replace with custom big trees", 50).getDouble()/100;
@@ -94,9 +101,42 @@ public class OverworldGenConfig{
 		//meadowPercent = config.get(meadow, "Percentage frequency of meadow sub biomes within their parent biomes", 25).getInt();
 		//meadowSize = config.get(meadow, "Meadow sub-biome size- setting smaller will give isolated patches, larger gives large swathes", 1).getInt()*32;
 		
+	}
+	
+	public static void postLoadConfig() {
 		
+		ImmutableMap.Builder<Biome, Double> treeReplacementRateBiomeOverrideBuilder = ImmutableMap.builder();
+		
+		String[] raw = config.get("Trees", "Biome specific percentage of trees generated that this mod will attempt to replace with custom big trees", new String[0], "Format - modid:biome=%").getStringList();
+		for(String s : raw){
+			String[] bv = s.split("=");
+			if(bv.length == 2){
+				Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(bv[0]));
+				if(biome != null){
+					double p;
+					try {
+						p = Double.parseDouble(bv[2]) / 100;
+					} catch(NumberFormatException e){
+						continue;
+					}
+					treeReplacementRateBiomeOverrideBuilder.put(biome, p);
+				}
+			}
+		}
+		
+		treeReplacementRateBiomeOverride = treeReplacementRateBiomeOverrideBuilder.build();
 		
 		config.save();
+		
+	}
+
+	public static double getTreeReplacementRate(Biome biome){
+		
+		if(treeReplacementRateBiomeOverride.containsKey(biome)){
+			return treeReplacementRateBiomeOverride.get(biome);
+		} else {
+			return treeReplacementRate;
+		}
 		
 	}
 }
