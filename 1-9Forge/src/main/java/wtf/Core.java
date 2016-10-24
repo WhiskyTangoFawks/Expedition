@@ -113,6 +113,8 @@ public class Core {
 	}
 	@EventHandler public void load(FMLInitializationEvent event) throws Exception
 	{
+		OverworldGenConfig.postLoadConfig();
+
 		MinecraftForge.EVENT_BUS.register(new CoreWorldGenListener());
 		MinecraftForge.TERRAIN_GEN_BUS.register(new CoreWorldGenListener());
 
