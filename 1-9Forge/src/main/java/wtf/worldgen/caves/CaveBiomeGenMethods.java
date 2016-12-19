@@ -39,8 +39,8 @@ public class CaveBiomeGenMethods{
 	public final Random random;
 
 	public CaveBiomeGenMethods(World world, ChunkCoords coords, Random random) {
-		this.chunk = coords.getChunk(world);
-		blocksToSet = new ChunkDividedHashMap(chunk.getWorld(), coords);
+		chunk = coords.getChunk(world);
+		blocksToSet = new ChunkDividedHashMap(world, coords);
 		this.random = random;
 	}
 

@@ -16,9 +16,9 @@
    
    
    	"density" : {
-   		"0" : {"custom": { "base": "stone#normal", "Solid": "stone#normal", "Translucent": "wtfcore:dense_stone0coal_ore0#dense0"} },
-		"1" : {"custom": { "base": "stone#normal", "Solid": "stone#normal", "Translucent": "wtfcore:dense_stone0coal_ore0#dense1"} },
-		"2" : {"custom": { "base": "stone#normal", "Solid": "stone#normal", "Translucent": "wtfcore:dense_stone0coal_ore0#dense2"} }	
+   		"0" : {"custom": { "base": "gravel#normal", "Solid": "stone#normal", "Translucent": "wtfcore:dense_stone0coal_ore0#dense0"} },
+		"1" : {"custom": { "base": "gravel#normal", "Solid": "stone#normal", "Translucent": "wtfcore:dense_stone0coal_ore0#dense1"} },
+		"2" : {"custom": { "base": "gravel#normal", "Solid": "stone#normal", "Translucent": "wtfcore:dense_stone0coal_ore0#dense2"} }	
 		},
    
 	"dense0": [

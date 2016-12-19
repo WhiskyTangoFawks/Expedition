@@ -1,0 +1,27 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "forge:multi-layer",
+		"transform": "forge:default-block"
+	},
+	"variants": {
+		"inventory0": [{ "custom": { "base": "undergroundbiomes:sedimentary_stone#type=chalk", "Solid": "undergroundbiomes:sedimentary_stone#type=chalk", "Translucent": "wtfcore:sedimentary_stone1DecoStatic#moss" } }],
+		"inventory1": [{ "custom": { "base": "undergroundbiomes:sedimentary_stone#type=chalk", "Solid": "undergroundbiomes:sedimentary_stone#type=chalk", "Translucent": "wtfcore:sedimentary_stone1DecoStatic#soul" } }],
+		"type": {
+			"moss": { "custom": { "base": "undergroundbiomes:sedimentary_stone#type=chalk", "Solid": "undergroundbiomes:sedimentary_stone#type=chalk", "Translucent": "wtfcore:sedimentary_stone1DecoStatic#moss" } },
+			"soul": { "custom": { "base": "undergroundbiomes:sedimentary_stone#type=chalk", "Solid": "undergroundbiomes:sedimentary_stone#type=chalk", "Translucent": "wtfcore:sedimentary_stone1DecoStatic#soul" } }
+		},
+		"moss": [
+			{ "model": "wtfcore:overlay", "textures": { "mask": "wtfcore:blocks/moss_overlay" } },
+			{ "model": "wtfcore:overlay", "y": 90, "x": 90, "textures": { "mask": "wtfcore:blocks/moss_overlay" } },
+			{ "model": "wtfcore:overlay", "y": 180, "x": 180, "textures": { "mask": "wtfcore:blocks/moss_overlay" } },
+			{ "model": "wtfcore:overlay", "y": 270, "x": 270, "textures": { "mask": "wtfcore:blocks/moss_overlay" } }
+		],
+		"soul": [
+			{ "model": "wtfcore:overlay", "textures": { "mask": "wtfcore:blocks/soul_overlay" } },
+			{ "model": "wtfcore:overlay", "y": 90, "x": 90, "textures": { "mask": "wtfcore:blocks/soul_overlay" } },
+			{ "model": "wtfcore:overlay", "y": 180, "x": 180, "textures": { "mask": "wtfcore:blocks/soul_overlay" } },
+			{ "model": "wtfcore:overlay", "y": 270, "x": 270, "textures": { "mask": "wtfcore:blocks/soul_overlay" } }
+		]
+	}
+}

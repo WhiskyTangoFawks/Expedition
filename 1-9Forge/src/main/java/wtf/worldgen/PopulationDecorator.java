@@ -88,21 +88,5 @@ public class PopulationDecorator extends PopulationGenerator{
 				}
 			}
 		}
-	}
-
-
-
-	//Need to recode and clean up and simplify the tree generation
-	//I would also like to get tree selection and restriction out of caves
-	//and into sub-biomes
-	//Doing tree control via sub-biomes inherently means having a subbiome instance for each parent biome
-	
-	//And in the end- what I need is actually just the best way to do sub biomes and trees
-	//Can I do biome replacement and trees at the same time?
-	//Or otherwise store the original biome information, and pass it along to the tree populator
-	//with a conditional check on replacement?
-	//Should be possible
-	
-	
-	
+	}	
 }

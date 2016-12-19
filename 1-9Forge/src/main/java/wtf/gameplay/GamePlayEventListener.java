@@ -197,7 +197,7 @@ public class GamePlayEventListener {
 	
 	@SubscribeEvent
 	public void watergen(CreateFluidSourceEvent event){
-		if (GameplayConfig.waterControl && event.getWorld().getBlockState(event.getPos()).getMaterial() ==Material.WATER && !BiomeDictionary.isBiomeOfType(event.getWorld().getBiomeGenForCoords(event.getPos()), Type.WET)){
+		if (GameplayConfig.waterControl && event.getWorld().getBlockState(event.getPos()).getMaterial() ==Material.WATER && !BiomeDictionary.isBiomeOfType(event.getWorld().getBiome(event.getPos()), Type.WET)){
 			event.setResult(Result.DENY);
 		}
 	}

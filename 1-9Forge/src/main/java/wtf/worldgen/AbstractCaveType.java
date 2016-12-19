@@ -7,6 +7,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import wtf.utilities.Simplex;
 import wtf.utilities.wrappers.AdjPos;
+import wtf.utilities.wrappers.CavePosition;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
 import wtf.utilities.wrappers.SurfacePos;
@@ -46,6 +47,8 @@ public abstract class AbstractCaveType
 	public void generateAdjacentWall(CaveBiomeGenMethods gen, Random random, AdjPos pos, float depth, int height){
 		
 	}
+	
+
 	
 	/**
 	 * 

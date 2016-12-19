@@ -1,22 +1,20 @@
 package wtf.ores.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
-import net.minecraft.block.BlockSand;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.fml.common.Loader;
 import wtf.Core;
 import wtf.blocks.BlockDenseOre;
 import wtf.blocks.BlockDenseOreFalling;
 import wtf.blocks.redstone.DenseRedstoneOre;
-import wtf.config.GameplayConfig;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
 import wtf.ores.OreGenAbstract;
@@ -29,6 +27,7 @@ import wtf.ores.oregenerators.OreGenSingle;
 import wtf.ores.oregenerators.OreGenUnderWater;
 import wtf.ores.oregenerators.OreGenVanilla;
 import wtf.ores.oregenerators.OreGenVein;
+import wtf.utilities.UBCCompat;
 import wtf.utilities.wrappers.StoneAndOre;
 
 public class ParseOre {
@@ -187,6 +186,19 @@ public class ParseOre {
 				biomeMap.put(biometype, f);
 				break;
 			case stone:
+
+				if (Loader.isModLoaded("undergroundbiomes")){
+					if (subStringArray[1] == "sedimentary"){
+						stones.addAll(Arrays.asList(UBCCompat.SedimentaryStone));
+					}
+					if (subStringArray[1] == "igneous"){
+						stones.addAll(Arrays.asList(UBCCompat.IgneousStone));
+					}
+					if (subStringArray[1] == "igneous"){
+						stones.addAll(Arrays.asList(UBCCompat.MetamorphicStone));
+					}
+				}
+
 				IBlockState stoneBlockState = getBlockState(uncleaned[1]);
 				if (blockstate == null){
 					throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " ***** cound not find block for " + stringArray[1] + " int the stone section of the config.  Turn on the block name getter in the core config, and place the block whose name you want in the world to get the blocks registry name");
@@ -290,12 +302,21 @@ public class ParseOre {
 		}
 		
 		if (stones.size() == 0){
+
+			if (Loader.isModLoaded("undergroundbiomes")){
+				stones.addAll(Arrays.asList(UBCCompat.IgneousStone));
+				stones.addAll(Arrays.asList(UBCCompat.MetamorphicStone));
+				stones.addAll(Arrays.asList(UBCCompat.SedimentaryStone));
+			}
+
 			stones.add(Blocks.STONE.getDefaultState());
 		}
 		for (IBlockState stone : stones){
 			if (denseOres){
 				Block block = null;
-				String stoneName = stone.getBlock().getRegistryName().toString().split(":")[1]+stone.getBlock().getMetaFromState(stone);
+				Block stoneblock = stone.getBlock();
+				int meta = stoneblock.getMetaFromState(stone);
+				String stoneName = stoneblock.getRegistryName().toString().split(":")[1]+meta;
 				String blockName = stoneName+oreName;
 				if (blockstate.getBlock() != Blocks.REDSTONE_ORE){
 					block = stone.getBlock() instanceof BlockFalling ? WTFBlocks.registerBlock(new BlockDenseOreFalling(stone, blockstate), "dense_"+blockName) : WTFBlocks.registerBlock(new BlockDenseOre(stone, blockstate), "dense_"+blockName);

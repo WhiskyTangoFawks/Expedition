@@ -59,7 +59,7 @@ public class OverworldGen extends PopulationGenerator{
 			for (int zloop = 0; zloop < 16; zloop++){
 				int loop = xloop + zloop*16;
 				SubBiome sub = subBiomeRegistry.get(newBiomes[loop]);
-				Biome biome = world.getBiomeGenForCoords(chunkscan.surface[xloop][zloop]);
+				Biome biome = world.getBiome(chunkscan.surface[xloop][zloop]);
 				
 				CaveProfile profile = CaveTypeRegister.getCaveProfile(biome);
 				profile.caveShallow.setTopBlock(gen, random, chunkscan.surface[xloop][zloop]);
@@ -95,8 +95,8 @@ public class OverworldGen extends PopulationGenerator{
 					pos = chunkscan.surface[4*loopx+random.nextInt(4)][4*loopz+random.nextInt(4)];
 				}
 				
-				Biome biome = world.getBiomeGenForCoords(pos);
-				double numTrees = biome.theBiomeDecorator.treesPerChunk > -1 ? biome.theBiomeDecorator.treesPerChunk : 16;
+				Biome biome = world.getBiome(pos);
+				double numTrees = getGenRate(biome);
 				double genChance = 16*numTrees/240;
 
 				if (genChance > 0 && !pos.generated && random.nextFloat()<genChance){
@@ -142,6 +142,11 @@ public class OverworldGen extends PopulationGenerator{
 			}
 		}
 	}
+	
+	public double getGenRate(Biome biome){
+		return biome.theBiomeDecorator.treesPerChunk > -1 ? biome.theBiomeDecorator.treesPerChunk : 16;
+	}
+	
 
 	public WorldGenerator getTree(Random random, Biome biome, ChunkScan chunkscan, boolean doReplace){
 		if (biome instanceof SubBiome){

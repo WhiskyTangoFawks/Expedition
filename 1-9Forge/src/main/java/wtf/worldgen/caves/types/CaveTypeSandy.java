@@ -32,6 +32,7 @@ public class CaveTypeSandy extends AbstractCaveType{
 
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+		
 		double noise = getNoise(pos, 5, 0.2F);
 		if (noise < depth*3){
 			gen.replaceBlock(pos, sandstone);

@@ -3,6 +3,7 @@ package wtf.config;
 import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.common.Loader;
 import wtf.init.BlockSets;
 
 
@@ -51,8 +52,11 @@ public class GameplayConfig {
 	public static boolean waterControl;
 	
 	public static boolean childZombie;
+	
+	public static double explosionDamageMod;
+	public static double explosionForceMod;
 
-	public static void loadConfig(){
+	public static void loadConfig() throws Exception{
 	config.load();
 	
 	/**
@@ -83,10 +87,13 @@ public class GameplayConfig {
 	expLvlDrop = config.get("Explosives", "Explosion level above which blocks drop, and below which they fracture (if fracturing on- if off nothing happens below)", 1).getDouble();
 	creeperUpConstant = config.get("Explosives", "Creeper upward modifier, increase to have creeper explosions explode more upwards", 1.5).getDouble()*100;
 	
+	explosionDamageMod = config.get("Explosives", "Explosion entity damage percentage modifier", 50).getDouble()/100;
+	explosionForceMod = config.get("Explosives", "Explosion entity force percentage modifier", 50).getDouble()/100;
 
 	/**
 	 * Gravity Options
 	 */
+	
 	
 	String defaultFall = ConfigUtils.getStringFromArrayList(BlockSets.defaultFallingBlocks);
 	String fallingBlockString = config.get("Gravity", "Block name and stability percent- lower numbers mean a block falls more often", defaultFall).getString();

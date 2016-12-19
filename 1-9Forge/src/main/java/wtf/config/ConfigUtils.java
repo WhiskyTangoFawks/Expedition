@@ -39,19 +39,20 @@ public class ConfigUtils {
 		}
 	}
 
-	public static void parseOreFrac(String oreStringSet){
-
+	public static void parseOreFrac(String oreStringSet) throws Exception{
+		oreStringSet = oreStringSet.replaceAll("\\s","");
+		Core.coreLog.info ("WTF- Parsing ore Frac list : loading from "+  oreStringSet);
 		String[] oreStringArray = oreStringSet.split(",");
-		//for(int loop = 0; loop < oreStringArray.length; loop++)	{
 		for (String oreString : oreStringArray){	
 			Core.coreLog.info("WTFTweaksConfig.AddOre: block for : "+ oreString);
 			Block oreBlock = Block.getBlockFromName(oreString);
-			if (oreBlock != Blocks.AIR && oreBlock != null){
+			
+			if (oreBlock != null){
 				BlockSets.oreAndFractures.add(oreBlock);
 				Core.coreLog.info("Parsing Ore Fracturing List : Block added to ore list: "+oreBlock.getRegistryName());
 			}
 			else {
-				Core.coreLog.info(" Parsing Ore Fracturing List : Unable to find block for : "+"oreStringArray[loop]");
+				throw new Exception(" Parsing Ore Fracturing List : Unable to find block for :  " + oreString);
 			}
 		}
 	}

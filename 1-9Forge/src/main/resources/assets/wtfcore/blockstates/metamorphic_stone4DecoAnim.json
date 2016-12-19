@@ -1,0 +1,27 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "forge:multi-layer",
+		"transform": "forge:default-block"
+	},
+	"variants": {
+		"inventory0": [{ "custom": { "base": "undergroundbiomes:metamorphic_stone#type=blueschist", "Solid": "undergroundbiomes:metamorphic_stone#type=blueschist", "Translucent": "wtfcore:metamorphic_stone4DecoAnim#lava" } }],
+		"inventory1": [{ "custom": { "base": "undergroundbiomes:metamorphic_stone#type=blueschist", "Solid": "undergroundbiomes:metamorphic_stone#type=blueschist" } }],
+		"inventory2": [{ "custom": { "base": "undergroundbiomes:metamorphic_stone#type=blueschist", "Solid": "undergroundbiomes:metamorphic_stone#type=blueschist" } }],
+		"type": {
+			"lava_crust": { "custom": { "base": "undergroundbiomes:metamorphic_stone#type=blueschist", "Solid": "undergroundbiomes:metamorphic_stone#type=blueschist", "Translucent": "wtfcore:metamorphic_stone4DecoAnim#lava" } },
+			"drip_water": { "custom": { "base": "undergroundbiomes:metamorphic_stone#type=blueschist", "Solid": "undergroundbiomes:metamorphic_stone#type=blueschist" } },
+			"drip_lava": { "custom": { "base": "undergroundbiomes:metamorphic_stone#type=blueschist", "Solid": "undergroundbiomes:metamorphic_stone#type=blueschist" } }
+		},
+		"fast": {
+			"true": {},
+			"false": {}
+		},
+		"lava": [
+			{ "model": "wtfcore:overlay", "textures": { "mask": "wtfcore:blocks/lava_overlay" } },
+			{ "model": "wtfcore:overlay", "y": 90, "x": 90, "textures": { "mask": "wtfcore:blocks/lava_overlay" } },
+			{ "model": "wtfcore:overlay", "y": 180, "x": 180, "textures": { "mask": "wtfcore:blocks/lava_overlay" } },
+			{ "model": "wtfcore:overlay", "y": 270, "x": 270, "textures": { "mask": "wtfcore:blocks/lava_overlay" } }
+		]
+	}
+}

@@ -31,6 +31,7 @@ public class WCICTable extends BlockContainer{
 	public WCICTable() {
 		super(Material.WOOD);
 		this.setHarvestLevel(null, 0);
+		this.setCreativeTab(Core.wtfTab);
 			
 	}
 

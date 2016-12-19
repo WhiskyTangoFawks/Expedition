@@ -23,6 +23,7 @@ import net.minecraft.world.World;
 import wtf.config.GameplayConfig;
 
 public class WTFSlidingBlock extends EntityFallingBlock
+
 {
 	private IBlockState fallTile;
 	private int fallHurtMax = 40;
@@ -41,6 +42,7 @@ public class WTFSlidingBlock extends EntityFallingBlock
 		addVelocity(0.05D * motx, -0.1D, 0.05D * motz);
 		this.setEntityBoundingBox(new AxisAlignedBB(origin));
 		worldIn.spawnEntityInWorld(this);
+		System.out.println("New sliding block created");
 	}
 	
 
@@ -55,6 +57,7 @@ public class WTFSlidingBlock extends EntityFallingBlock
 	{
 		Block block = this.fallTile.getBlock();
 
+		
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
 		this.prevPosZ = this.posZ;
@@ -83,7 +86,7 @@ public class WTFSlidingBlock extends EntityFallingBlock
 			this.setPosition(pos.getX()+0.5, pos.getY(), pos.getZ()+0.5);
 			GravityMethods.checkPos(this.worldObj, this.origin.down());
 		}
-		if (!func_189652_ae()) {
+		if (!hasNoGravity()) {
 			this.motionY -= 0.03999999910593033D;
 		}
 
@@ -103,7 +106,7 @@ public class WTFSlidingBlock extends EntityFallingBlock
 		else if (Math.abs(this.motionX) + Math.abs(motionY) + Math.abs(this.motionZ) < 0.0001){
 			setBlock();
 		}
-		else if (((this.fallTime > 100) && (!this.worldObj.isRemote) && ((blockpos1.getY() < 1) || (blockpos1.getY() > 256))) || (this.fallTime > 600))
+		else if (((this.fallTime > 100) && ((blockpos1.getY() < 1) || (blockpos1.getY() > 256))) || (this.fallTime > 600))
 		{
 			if ((this.shouldDropItem) && (this.worldObj.getGameRules().getBoolean("doEntityDrops"))) {
 				entityDropItem(new ItemStack(block, 1, block.damageDropped(this.fallTile)), 0.0F);

@@ -37,6 +37,7 @@ import wtf.ores.OreGenerator;
 import wtf.ores.VanillOreGenCatcher;
 import wtf.ores.config.WTFOreConfig;
 import wtf.proxy.CommonProxy;
+import wtf.utilities.UBCCompat;
 import wtf.worldgen.DungeonPopulator;
 import wtf.worldgen.OverworldGen;
 import wtf.worldgen.PopulationDecorator;
@@ -44,11 +45,11 @@ import wtf.worldgen.RTGOverworldGen;
 import wtf.worldgen.trees.WorldGenTreeCancel;
 import wtf.worldscan.CoreWorldGenListener;
 
-@Mod (modid = Core.coreID, name = Core.coreID, version = Core.version)
+@Mod (modid = Core.coreID, name = Core.coreID, version = Core.version, dependencies = "after:undergroundbiomes")
 
 public class Core {
 	public static  final String coreID = "wtfcore";
-	public static final String version = "1.10.2_v1.0";
+	public static final String version = "1.10.2_v1.1";
 
 	@SidedProxy(clientSide="wtf.proxy.ClientProxy", serverSide="wtf.proxy.CommonProxy")
 	public static CommonProxy proxy;
@@ -74,14 +75,23 @@ public class Core {
 	{
 		coreLog = preEvent.getModLog();
 
+
+		if (Loader.isModLoaded("undergroundbiomes")){
+			UBCCompat.loadUBCStone();
+		}
+		else {
+			coreLog.info("Underground Biomes Construct not detected");
+		}
+	
 		CoreConfig.loadConfig();
 		GameplayConfig.loadConfig();
 		OverworldGenConfig.loadConfig();
 		CaveBiomesConfig.customConfig();
 
 
+		
 		BlockSets.initBlockSets();
-		WTFBlocks.initBlocks(preEvent);
+		WTFBlocks.initBlocks();
 		proxy.initWCICRender();
 		WTFItems.initItems();
 		WTFArmor.initArmor();
@@ -91,16 +101,25 @@ public class Core {
 			WTFBiomes.init();
 		}
 		
+		
+		
+		if (CoreConfig.enableOreGen){
+			
+			WTFOreConfig.loadConfig();
+		}
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		
 		
-		if (CoreConfig.enableOreGen){
-			WTFOreConfig.loadConfig();
-		}
+	
 	}
 	@EventHandler public void load(FMLInitializationEvent event) throws Exception
 	{
+		
+
+
+
+		
 		MinecraftForge.EVENT_BUS.register(new CoreWorldGenListener());
 		MinecraftForge.TERRAIN_GEN_BUS.register(new CoreWorldGenListener());
 
@@ -118,6 +137,7 @@ public class Core {
 		}
 
 		if (CoreConfig.enableOreGen){
+			
 			MinecraftForge.ORE_GEN_BUS.register(new VanillOreGenCatcher());
 			WTFWorldGen.addGen(new OreGenerator());
 		}
@@ -153,6 +173,9 @@ public class Core {
 	@EventHandler
 	public void PostInit(FMLPostInitializationEvent postEvent) throws Exception{
 
+
+
+		
 		//Blocks.LEAVES.setLightOpacity(0);
 		//Blocks.LEAVES2.setLightOpacity(0);
 		System.out.println("Torch class is now " + Blocks.TORCH.getClass());

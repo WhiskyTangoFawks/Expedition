@@ -66,7 +66,7 @@ public class GravityMethods {
 			}
 
 			if (random.nextFloat()*count > BlockSets.fallingBlocks.get(downBlock)){
-				EntityFallingBlock entityfallingblock = new WTFSlidingBlock(world, pos, getRandomAdj(pos), state);
+				EntityFallingBlock entityfallingblock = new EntityWTFSlidingBlock(world, pos, getRandomAdj(pos), state);
 				entityfallingblock.setHurtEntities(GameplayConfig.fallingBlocksDamage);
 			}
 			//downward iteration is within the sliding block class
@@ -94,7 +94,7 @@ public class GravityMethods {
 				return false;
 			}
 
-			EntityFallingBlock entityfallingblock = new WTFFallingBlock(world, pos.getX()+0.5, pos.getY(), pos.getZ()+0.5, world.getBlockState(pos));
+			EntityFallingBlock entityfallingblock = new EntityWTFFallingBlock(world, pos, world.getBlockState(pos));
 			entityfallingblock.setHurtEntities(GameplayConfig.fallingBlocksDamage);
 			if (world.spawnEntityInWorld(entityfallingblock)){
 

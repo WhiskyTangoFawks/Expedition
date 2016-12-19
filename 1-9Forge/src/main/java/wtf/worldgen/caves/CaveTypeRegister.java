@@ -53,7 +53,7 @@ public class CaveTypeRegister {
 	public static final AbstractCaveType mossy = new CaveTypeMossy("mossy", floorChance, ceilingChance, Blocks.DIRT.getDefaultState());
 	public static final AbstractCaveType iceRocky = new CaveTypeIceRocky ("iceRocky", floorChance, ceilingChance+3);
 	public static final AbstractCaveType volcanic = new CaveTypeVolcanic ("volcanic", floorChance, ceilingChance+4);
-	public static final AbstractCaveType nether = new CaveTypeHell ("nether", floorChance, ceilingChance);
+	public static final CaveTypeHell nether = new CaveTypeHell ("nether", floorChance, ceilingChance);
 
 
 	public static CaveProfile getCaveProfile(Biome biome){

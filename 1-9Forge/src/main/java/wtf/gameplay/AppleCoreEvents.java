@@ -55,7 +55,7 @@ public class AppleCoreEvents {
 		
 		Type type = plantmods.get(event.block);
 		if (type != null){
-			Biome biome = event.world.getBiomeGenForCoords(event.pos);
+			Biome biome = event.world.getBiome(event.pos);
 			if (BiomeDictionary.isBiomeOfType(biome, type)){
 				if (chance > GameplayConfig.appleCoreConstant){
 					event.setResult(Result.DENY);
@@ -70,7 +70,7 @@ public class AppleCoreEvents {
 	public void BlockHarvestEvent(HarvestDropsEvent event){
 		Block plant = event.getState().getBlock();
 		if (plantmods.containsKey(plant)){
-			Biome biome = event.getWorld().getBiomeGenForCoords(event.getPos());
+			Biome biome = event.getWorld().getBiome(event.getPos());
 			if (!BiomeDictionary.isBiomeOfType(biome, plantmods.get(plant))){
 				List<ItemStack> drops = event.getDrops();
 				for (int loop = 0; loop < drops.size() && drops.size() > 1; loop++){

@@ -12,6 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import wtf.init.BlockSets;
 import wtf.utilities.GenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 
 public abstract class Replacer {
@@ -20,7 +21,7 @@ public abstract class Replacer {
 		BlockSets.isNonSolidAndCheckReplacement.put(block,  this);
 	}
 	
-	public abstract boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, IBlockState oldState);
+	public abstract boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen, IBlockState oldState);
 	
 
 	/*

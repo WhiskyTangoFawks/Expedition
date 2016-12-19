@@ -6,19 +6,28 @@
                 
     },
     "variants": {
-        "normal": [
-        	{"custom": { "base": "granite#normal", "Solid": "granite#normal", "Translucent": "wtfcore:stone1DecoStatic#base" }}
-        	],
-        "inventory": [{
-			"custom": { "base": "granite#normal", "Solid": "granite#normal", "Translucent": "wtfcore:stone1DecoStatic#base" }
-        }],
+      
+         "inventory0": [{"custom": { "base": "granite#normal", "Solid": "granite#normal", "Translucent": "wtfcore:stone1DecoStatic#moss" }}],
+         "inventory1": [{"custom": { "base": "granite#normal", "Solid": "granite#normal", "Translucent": "wtfcore:stone1DecoStatic#soul" }}],
    
-	"base": [
+   "type" : {
+   			"moss": {"custom": {"base": "granite#normal", "Solid": "granite#normal", "Translucent": "wtfcore:stone1DecoStatic#moss" }},
+   			"soul": {"custom": {"base": "granite#normal", "Solid": "granite#normal", "Translucent": "wtfcore:stone1DecoStatic#soul" }}
+   },
+   
+	"moss": [
 		{"model": "wtfcore:overlay", "textures": { "mask": "wtfcore:blocks/moss_overlay" }},
 		{"model": "wtfcore:overlay", "y":90, "x":90, "textures": { "mask": "wtfcore:blocks/moss_overlay" }},
 		{"model": "wtfcore:overlay", "y":180, "x":180, "textures": { "mask": "wtfcore:blocks/moss_overlay" }},
 		{"model": "wtfcore:overlay", "y":270, "x":270, "textures": { "mask": "wtfcore:blocks/moss_overlay" }}
+    ],
+    	"soul": [
+		{"model": "wtfcore:overlay", "textures": { "mask": "wtfcore:blocks/soul_overlay" }},
+		{"model": "wtfcore:overlay", "y":90, "x":90, "textures": { "mask": "wtfcore:blocks/soul_overlay" }},
+		{"model": "wtfcore:overlay", "y":180, "x":180, "textures": { "mask": "wtfcore:blocks/soul_overlay" }},
+		{"model": "wtfcore:overlay", "y":270, "x":270, "textures": { "mask": "wtfcore:blocks/soul_overlay" }}
     ]
+    
    
     }
 }

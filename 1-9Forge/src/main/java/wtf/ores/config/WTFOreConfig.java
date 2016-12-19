@@ -94,7 +94,7 @@ public class WTFOreConfig {
 		String defEnableMod = "Enable Ore Gen : Default Mod Added Ores";
 		
 		genNitreOre = config.get(defEnableMod, "Mod Added Ore : WTF's Nitre", true).getBoolean();
-		String nitre = config.get(defModOre, "WTF's Nitre", "cave@single, wtfcore:oreNitre@0, surfaces=floor, orePerChunk=-10 & 10, denseOre=true, GenHeightPercentSurface=15 & 95").getString();
+		String nitre = config.get(defModOre, "WTF's Nitre Ore", "cave@single, wtfcore:nitre_ore@0, surfaces=floor, orePerChunk=-10 & 10, denseOre=true, GenHeightPercentSurface=15 & 95").getString();
 		if (genNitreOre){
 			ParseOre.parse(nitre);
 		}
@@ -113,12 +113,12 @@ public class WTFOreConfig {
 		
 		if (Loader.isModLoaded("tconstruct")){
 			boolean tconOres = config.get(defEnableMod, "Mod Added Ore : Tinker's Construct Cobalt and Ardite", true).getBoolean();
-			String cobalt = config.get(defModOre, "Tinker's Construct Cobalt Generation", "vein, tconstruct:ore@0, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, VeinDimensions=16 & 1 & 1, pitch = 0.45,"
+			String cobalt = config.get(defModOre, "Tinker's Construct Cobalt Generation", "vein, tconstruct:ore@1, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, VeinDimensions=16 & 1 & 1, pitch = 0.45,"
 					+ " GenHeightPercentSurface=5 & 95, dimension=-1").getString();
 			if (tconOres){
 				ParseOre.parse(cobalt);
 			}
-			String ardite = config.get(defModOre, "Tinker's Construct Ardite Generation", "cloud, tconstruct:ore@1, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, "
+			String ardite = config.get(defModOre, "Tinker's Construct Ardite Generation", "cloud, tconstruct:ore@0, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, "
 					+ " GenHeightPercentSurface=5 & 95, size=16, DensityPercent=15, dimension=-1").getString();
 			if (tconOres){
 				ParseOre.parse(ardite);

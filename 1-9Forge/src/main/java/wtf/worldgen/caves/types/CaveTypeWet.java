@@ -68,7 +68,7 @@ public class CaveTypeWet extends AbstractCaveType {
 	int gravelHash = Blocks.GRAVEL.hashCode();
 	public void setTopBlock(CaveBiomeGenMethods gen, Random random, SurfacePos pos){
 
-		if (Biome.getIdForBiome(gen.chunk.getWorld().getBiomeGenForCoords(pos)) == 7
+		if (Biome.getIdForBiome(gen.chunk.getWorld().getBiome(pos)) == 7
 				&& getNoise(pos, 1, 0.05F) < OverworldGenConfig.riverFracChunkPercent && getNoise(pos, 1, 1) < OverworldGenConfig.riverFracFreq){
 			if (gen.getBlockState(pos).getBlock().hashCode() == gravelHash){
 				gen.replaceBlock(pos, Blocks.COBBLESTONE.getDefaultState());

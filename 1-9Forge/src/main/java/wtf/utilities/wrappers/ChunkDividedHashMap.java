@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -55,11 +54,7 @@ public class ChunkDividedHashMap {
 	public void setBlockSet(){
 
 		Iterator<Entry<ChunkCoords, HashMap<BlockPos, IBlockState>>> master = hashmap.entrySet().iterator();
-		//System.out.println("Iterating tree in chunks " + hashmap.size());
-		//int count = 1;
 		while (master.hasNext()){
-			//System.out.println("Count = " + count);
-			//count++;
 			Entry<ChunkCoords, HashMap<BlockPos, IBlockState>> subMap = master.next();
 
 			Chunk chunk = subMap.getKey().getChunk(world);
@@ -71,14 +66,10 @@ public class ChunkDividedHashMap {
 
 
 				if (entry.getKey().getY() > 0 || entry.getKey().getY() < world.getHeight()){
-
-
-
 					BlockPos pos = entry.getKey();
 					IBlockState state = entry.getValue();
 
 					ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[pos.getY() >> 4];
-
 
 					if (extendedblockstorage != Chunk.NULL_BLOCK_STORAGE)
 					{
@@ -86,8 +77,6 @@ public class ChunkDividedHashMap {
 
 							//System.out.println("setting " + entry.getKey().density);
 							extendedblockstorage.set(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15, state);
-
-
 						}
 
 					}

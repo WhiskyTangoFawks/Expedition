@@ -53,7 +53,7 @@ public class TreePos {
 		this.oriX =(pos.getX() & 1) == 0 ? pos.getX()+0.5 : pos.getX();
 		this.y = pos.getY();
 		this.oriZ = (pos.getZ() & 1) == 0 ? pos.getZ()+0.5 : pos.getZ();
-		this.snow = BiomeDictionary.isBiomeOfType(world.getBiomeGenForCoords(pos), Type.SNOWY);
+		this.snow = BiomeDictionary.isBiomeOfType(world.getBiome(pos), Type.SNOWY);
 		
 		this.type = tree;
 		if (simplex == null){

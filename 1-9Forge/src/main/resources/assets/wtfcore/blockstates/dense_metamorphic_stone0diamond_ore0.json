@@ -1,0 +1,32 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "forge:multi-layer",
+		"transform": "forge:default-block"
+	},
+	"variants": {
+		"normal": [{
+			"custom": { "base": "undergroundbiomes:metamorphic_stone#type=gneiss", "Solid": "undergroundbiomes:metamorphic_stone#type=gneiss", "Translucent": "wtfcore:dense_metamorphic_stone0diamond_ore0#dense0" }
+		}],
+		"inventory": [{
+			"custom": { "base": "undergroundbiomes:metamorphic_stone#type=gneiss", "Solid": "undergroundbiomes:metamorphic_stone#type=gneiss", "Translucent": "wtfcore:dense_metamorphic_stone0diamond_ore0#dense0" }
+		}],
+		"density": {
+			"0": { "custom": { "base": "undergroundbiomes:metamorphic_stone#type=gneiss", "Solid": "undergroundbiomes:metamorphic_stone#type=gneiss", "Translucent": "wtfcore:dense_metamorphic_stone0diamond_ore0#dense0" } },
+			"1": { "custom": { "base": "undergroundbiomes:metamorphic_stone#type=gneiss", "Solid": "undergroundbiomes:metamorphic_stone#type=gneiss", "Translucent": "wtfcore:dense_metamorphic_stone0diamond_ore0#dense1" } },
+			"2": { "custom": { "base": "undergroundbiomes:metamorphic_stone#type=gneiss", "Solid": "undergroundbiomes:metamorphic_stone#type=gneiss", "Translucent": "wtfcore:dense_metamorphic_stone0diamond_ore0#dense2" } }
+		},
+		"dense0": [
+			{ "model": "minecraft:cube_all", "textures": { "all": "wtfcore:overlays/diamond_ore0" } },
+			{ "model": "minecraft:cube_all", "y": 180, "x": 180, "textures": { "all": "wtfcore:overlays/diamond_ore0" } }
+		],
+		"dense1": [
+			{ "model": "minecraft:cube_all", "textures": { "all": "wtfcore:overlays/diamond_ore1" } },
+			{ "model": "minecraft:cube_all", "y": 180, "x": 180, "textures": { "all": "wtfcore:overlays/diamond_ore1" } }
+		],
+		"dense2": [
+			{ "model": "minecraft:cube_all", "textures": { "all": "wtfcore:overlays/diamond_ore2" } },
+			{ "model": "minecraft:cube_all", "y": 180, "x": 180, "textures": { "all": "wtfcore:overlays/diamond_ore2" } }
+		]
+	}
+}

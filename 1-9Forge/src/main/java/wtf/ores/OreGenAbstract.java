@@ -72,10 +72,10 @@ public abstract class OreGenAbstract{
 	
 	protected int getBlocksPerChunk(World world, ChunkCoords coords, Random random, double surfaceAvg){
 				
-		int genNum = WTFOreConfig.simplexGen ? (int) getSimplexOres(world, coords.getWorldX(), coords.getWorldZ()) : (int)random.nextFloat()*(maxPerChunk-minPerChunk)+minPerChunk ;
+		int genNum = WTFOreConfig.simplexGen ? (int) getSimplexOres(world, coords.getWorldX(), coords.getWorldZ()) : (int)(random.nextFloat()*(maxPerChunk-minPerChunk)+minPerChunk);
 		
 		
-		Type[] biomeTypes = BiomeDictionary.getTypesForBiome(world.getBiomeGenForCoords(new BlockPos(coords.getWorldX()+8, surfaceAvg, coords.getWorldZ()+8)));
+		Type[] biomeTypes = BiomeDictionary.getTypesForBiome(world.getBiome(new BlockPos(coords.getWorldX()+8, surfaceAvg, coords.getWorldZ()+8)));
 		for (Type biome : biomeTypes){
 			if (biomeModifier.containsKey(biome)){
 				genNum+= (minPerChunk+(maxPerChunk-minPerChunk)/2) * biomeModifier.get(biome);

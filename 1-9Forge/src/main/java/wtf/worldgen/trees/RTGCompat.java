@@ -30,7 +30,7 @@ public class RTGCompat {
 	public static TreeRTG getRTGTree(Random random, Biome biome){
 		RealisticBiomeBase rb = RealisticBiomeBase.getBiome(Biome.getIdForBiome(biome));
 		ArrayList<TreeRTG> biomeTrees = rb.rtgTrees;
-		if (biomeTrees.size() > 0) {
+		if (biomeTrees != null && biomeTrees.size() > 0) {
 			TreeRTG rtgtree = biomeTrees.get(random.nextInt(biomeTrees.size()));
 			// Set the trunk size if min/max values have been set.
 
@@ -86,6 +86,11 @@ public class RTGCompat {
 		}
 
 		return (rtgtrees.get(random.nextInt(rtgtrees.size())));
+	}
+	
+	public double getGenRate(Biome biome){
+		//RealisticBiomeBase rb = RealisticBiomeBase.getBiome(Biome.getIdForBiome(biome));
+		return biome.theBiomeDecorator.treesPerChunk > -1 ? biome.theBiomeDecorator.treesPerChunk : 16;
 	}
 
 }

@@ -67,4 +67,8 @@ public class RTGOverworldGen extends OverworldGen{
 		}
 	}
 
+	public double getGenRate(Biome biome){
+		return biome.theBiomeDecorator.treesPerChunk > -1 ? biome.theBiomeDecorator.treesPerChunk : 16;
+	}
+	
 }
