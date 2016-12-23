@@ -27,6 +27,7 @@ import wtf.ores.oregenerators.OreGenSingle;
 import wtf.ores.oregenerators.OreGenUnderWater;
 import wtf.ores.oregenerators.OreGenVanilla;
 import wtf.ores.oregenerators.OreGenVein;
+import wtf.utilities.BlockstateWriter;
 import wtf.utilities.UBCCompat;
 import wtf.utilities.wrappers.StoneAndOre;
 
@@ -43,7 +44,7 @@ public class ParseOre {
 	}
 
 	public static enum ARGUMENT{
-		oreperchunk, genheightpercentsurface, size, veindimensions, pitch, densitypercent, dimension, genpercentinbiometype, stone, denseore, surfaces, reqbiometype;
+		oreperchunk, genheightpercentsurface, size, veindimensions, pitch, densitypercent, dimension, genpercentinbiometype, stone, denseore, surfaces, reqbiometype, texture;
 	}
 
 
@@ -99,6 +100,7 @@ public class ParseOre {
 		ArrayList<BiomeDictionary.Type> reqBiomeTypes = new ArrayList<BiomeDictionary.Type>();
 
 		boolean denseOres = false;
+		String texture = null;
 		ArrayList<IBlockState> stones = new ArrayList<IBlockState>();
 		
 		float pitch = -99F; 
@@ -187,7 +189,7 @@ public class ParseOre {
 				break;
 			case stone:
 
-				if (Loader.isModLoaded("undergroundbiomes")){
+				if (Core.UBC){
 					if (subStringArray[1] == "sedimentary"){
 						stones.addAll(Arrays.asList(UBCCompat.SedimentaryStone));
 					}
@@ -207,6 +209,9 @@ public class ParseOre {
 				break;
 			case denseore:
 				denseOres = Boolean.parseBoolean(subStringArray[1]);
+				break;
+			case texture:
+				texture = subStringArray[1];
 				break;
 			case surfaces:
 				String[] surfacestrings = subStringArray[1].split("&");
@@ -303,21 +308,24 @@ public class ParseOre {
 		
 		if (stones.size() == 0){
 
-			if (Loader.isModLoaded("undergroundbiomes")){
+			if (Core.UBC){
 				stones.addAll(Arrays.asList(UBCCompat.IgneousStone));
 				stones.addAll(Arrays.asList(UBCCompat.MetamorphicStone));
 				stones.addAll(Arrays.asList(UBCCompat.SedimentaryStone));
 			}
-
+			
 			stones.add(Blocks.STONE.getDefaultState());
 		}
 		for (IBlockState stone : stones){
 			if (denseOres){
+				
 				Block block = null;
 				Block stoneblock = stone.getBlock();
 				int meta = stoneblock.getMetaFromState(stone);
 				String stoneName = stoneblock.getRegistryName().toString().split(":")[1]+meta;
 				String blockName = stoneName+oreName;
+				
+				texture = texture == null ? blockstate.getBlock().getRegistryName().toString().split(":")[1] : texture;
 				if (blockstate.getBlock() != Blocks.REDSTONE_ORE){
 					block = stone.getBlock() instanceof BlockFalling ? WTFBlocks.registerBlock(new BlockDenseOreFalling(stone, blockstate), "dense_"+blockName) : WTFBlocks.registerBlock(new BlockDenseOre(stone, blockstate), "dense_"+blockName);
 				}
@@ -326,7 +334,11 @@ public class ParseOre {
 					block = WTFBlocks.registerBlock(new DenseRedstoneOre(false), "dense_"+blockName);
 					DenseRedstoneOre.denseRedstone_off = block;
 					DenseRedstoneOre.denseRedstone_on = WTFBlocks.registerBlock(new DenseRedstoneOre(true), "dense_"+blockName+"_on");
+					BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName+"_on", texture, stoneName);
 				}
+				
+				BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName, texture, stoneName);
+				
 				BlockSets.stoneAndOre.put(new StoneAndOre(stone, blockstate), block.getDefaultState());
 				//Ore ubification/densification of existing ores- removed because it was crashing
 				//new OreReplacer(blockstate.getBlock());
@@ -343,7 +355,8 @@ public class ParseOre {
 			oregenerator.dimension = dimensions;
 		}
 		oregenerator.reqBiomeTypes.addAll(reqBiomeTypes);
-
+		
+			
 		OreGenerator.oreGenRegister.add(oregenerator);
 	}
 

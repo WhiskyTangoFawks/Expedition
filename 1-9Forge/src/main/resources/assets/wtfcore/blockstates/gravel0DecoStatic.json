@@ -1,0 +1,15 @@
+{"forge_marker": 1,
+"defaults": {
+"model": "forge:multi-layer",
+"transform": "forge:default-block"},
+"variants": {
+"inventory0": [{"custom": { "base": "gravel#normal", "Solid": "gravel#normal", "Translucent": "wtfcore:base#moss" }}],
+"inventory1": [{"custom": { "base": "gravel#normal", "Solid": "gravel#normal", "Translucent": "wtfcore:base#soul" }}],
+"inventory2": [{"custom": { "base": "gravel#normal", "Solid": "gravel#normal", "Translucent": "wtfcore:base#cracked" }}],
+"type" : {
+"moss": {"custom": { "base": "gravel#normal", "Solid": "gravel#normal", "Translucent": "wtfcore:base#moss" }},
+"soul": {"custom": { "base": "gravel#normal", "Solid": "gravel#normal", "Translucent": "wtfcore:base#soul" }},
+"cracked": {"custom": { "base": "gravel#normal", "Solid": "gravel#normal", "Translucent": "wtfcore:base#cracked" }}
+}
+}
+}

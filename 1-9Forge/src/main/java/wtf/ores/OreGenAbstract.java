@@ -20,7 +20,7 @@ import wtf.utilities.wrappers.ChunkScan;
 
 public abstract class OreGenAbstract{
 	
-	protected final IBlockState oreBlock;
+	public final IBlockState oreBlock;
 	
 	//public String textureName;
 	public HashMap<BiomeDictionary.Type, Float> biomeModifier = new HashMap<BiomeDictionary.Type, Float>(); 
@@ -35,7 +35,7 @@ public abstract class OreGenAbstract{
 	private int seed = 0;
 	public final boolean genDenseOres;
 	public final ArrayList<BiomeDictionary.Type> reqBiomeTypes = new ArrayList<BiomeDictionary.Type>();
-	
+		
 	public OreGenAbstract(IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk, int minPerChunk, boolean denseGen){
 		this.oreBlock = blockstate;
 		this.maxGenRangeHeight = maxGenRangeHeight;

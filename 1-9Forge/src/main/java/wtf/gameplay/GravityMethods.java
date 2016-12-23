@@ -96,7 +96,7 @@ public class GravityMethods {
 
 			EntityFallingBlock entityfallingblock = new EntityWTFFallingBlock(world, pos, world.getBlockState(pos));
 			entityfallingblock.setHurtEntities(GameplayConfig.fallingBlocksDamage);
-			if (world.spawnEntityInWorld(entityfallingblock)){
+			if (!world.isRemote && world.spawnEntityInWorld(entityfallingblock)){
 
 			}
 

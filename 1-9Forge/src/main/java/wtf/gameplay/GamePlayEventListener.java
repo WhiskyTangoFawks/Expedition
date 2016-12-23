@@ -40,7 +40,6 @@ import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import squeek.applecore.api.plants.PlantGrowthEvent;
 import wtf.Core;
 import wtf.blocks.AbstractBlockDerivative;
 import wtf.blocks.BlockDenseOre;

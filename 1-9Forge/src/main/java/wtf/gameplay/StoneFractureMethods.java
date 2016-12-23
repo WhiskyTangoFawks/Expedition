@@ -7,9 +7,11 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import wtf.blocks.BlockCrackedStone;
 import wtf.blocks.BlockDecoAnim;
 import wtf.blocks.BlockDenseOre;
 import wtf.init.BlockSets;
@@ -184,33 +186,37 @@ public class StoneFractureMethods {
 	}
 
 
-	final static int crackedHash = WTFBlocks.crackedStone.hashCode();
+	//final static int crackedHash = WTFBlocks.crackedStone.hashCode();
 	
 	public static void FracIterator(World world, HashSet<BlockPos> hashset){
 		BlockPos pos;
 		
-		HashSet<BlockPos> hashset2 = new HashSet<BlockPos>();
+		//HashSet<BlockPos> hashset2 = new HashSet<BlockPos>();
 		
 		Iterator<BlockPos> iterator = hashset.iterator();
 		while (iterator.hasNext()){
 			pos = iterator.next();
 			IBlockState state = world.getBlockState(pos);
 			
-			if (state.getBlock().hashCode() == crackedHash){
+			if (state.getBlock() instanceof BlockCrackedStone){
+				/*
 				hashset2.add(pos.up());
 				hashset2.add(pos.down());
 				hashset2.add(pos.east());
 				hashset2.add(pos.west());
 				hashset2.add(pos.north());
 				hashset2.add(pos.south());
+				*/
+				Entity crack = new StoneCrack(world, pos);
+				world.spawnEntityInWorld(crack);
 			}
 			
 			fracStone(world, pos, state);
 			
 		}
-		if (hashset2.size() > 0){
-			FracIterator(world, hashset2);
-		}
+		//if (hashset2.size() > 0){
+		//FracIterator(world, hashset2);
+		//}
 	}
 
 	public static boolean fracStone(World world, BlockPos pos, IBlockState state){

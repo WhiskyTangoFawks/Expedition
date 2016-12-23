@@ -10,15 +10,22 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
+import wtf.config.WTFStoneRegistry;
+import wtf.gameplay.StoneCrack;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
 import wtf.init.BlockSets.Modifier;
+import wtf.utilities.BlockstateWriter;
 import wtf.utilities.wrappers.StateAndModifier;
+import wtf.utilities.wrappers.StoneAndOre;
 
 public class BlockDecoStatic extends AbstractBlockDerivative{
 
@@ -27,28 +34,38 @@ public class BlockDecoStatic extends AbstractBlockDerivative{
 	public BlockDecoStatic(IBlockState state) {
 		super(state, state);
 		
+		if (WTFBlocks.crackedStone == null){
+			//If cracked stone hasn't been defined, the define it for later use
+			WTFBlocks.crackedStone = this.getDefaultState().withProperty(TYPE, DecoType.CRACKED);
+		}
+		
 		BlockSets.blockTransformer.put(new StateAndModifier(state, BlockSets.Modifier.MOSSY), this.getDefaultState());
 		BlockSets.blockTransformer.put(new StateAndModifier(state, BlockSets.Modifier.SOUL), this.getDefaultState().withProperty(TYPE, DecoType.SOUL));
 		if (this.blockMaterial == Material.SAND){
 			BlockSets.defaultFallingBlocks.add(this.getRegistryName()+"@10");
 		}
+		if (WTFStoneRegistry.stoneReg.get(state).cracked){ //If NOT sand, then register a cracked version of the ore register
+			BlockSets.stoneAndOre.put(new StoneAndOre(state, WTFBlocks.crackedStone), this.getDefaultState().withProperty(TYPE, DecoType.CRACKED));
+		}
 		
-		if (state == Blocks.SANDSTONE.getDefaultState()){
-			Block decoSand = WTFBlocks.registerBlockItemSubblocks(new BlockDecoStatic(Blocks.SAND.getDefaultState()), BlockDecoStatic.DecoType.values().length-1, "sand0DecoStatic");
-			BlockSets.blockTransformer.put(new StateAndModifier(this.getDefaultState().withProperty(TYPE, DecoType.MOSS), Modifier.COBBLE), decoSand.getDefaultState().withProperty(TYPE, DecoType.MOSS));
-			BlockSets.blockTransformer.put(new StateAndModifier(this.getDefaultState().withProperty(TYPE, DecoType.SOUL), Modifier.COBBLE), decoSand.getDefaultState().withProperty(TYPE, DecoType.SOUL));
-		}
-		else if (state == Blocks.RED_SANDSTONE.getDefaultState()){
-			Block decoSand = WTFBlocks.registerBlockItemSubblocks(new BlockDecoStatic(Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND)), BlockDecoStatic.DecoType.values().length-1, "sand1DecoStatic");
-			BlockSets.blockTransformer.put(new StateAndModifier(this.getDefaultState().withProperty(TYPE, DecoType.MOSS), Modifier.COBBLE), decoSand.getDefaultState().withProperty(TYPE, DecoType.MOSS));
-			BlockSets.blockTransformer.put(new StateAndModifier(this.getDefaultState().withProperty(TYPE, DecoType.SOUL), Modifier.COBBLE), decoSand.getDefaultState().withProperty(TYPE, DecoType.SOUL));
-		}
+		
+		
+		
 			
 		//BlockSets.blockMiningSpeed
 		if (BlockSets.fallingBlocks.containsKey(state.getBlock())){
 			BlockSets.fallingBlocks.put(this, BlockSets.fallingBlocks.get(state.getBlock()));
 		}
 		BlockSets.ReplaceHashset.add(this);
+	}
+	
+    @Override
+	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state)
+    {
+    	if (state.getValue(TYPE)==DecoType.CRACKED){
+    		Entity crack = new StoneCrack(world, pos);
+			world.spawnEntityInWorld(crack);
+    	}
 	}
 	
 	@Override
@@ -72,7 +89,8 @@ public class BlockDecoStatic extends AbstractBlockDerivative{
 
 	public enum DecoType implements IStringSerializable {
 		MOSS(0, "moss", BlockSets.Modifier.MOSSY),
-		SOUL(1, "soul", BlockSets.Modifier.SOUL);
+		SOUL(1, "soul", BlockSets.Modifier.SOUL),
+		CRACKED(2, "cracked", BlockSets.Modifier.CRACKED);
 	
 		
 		private final int ID;

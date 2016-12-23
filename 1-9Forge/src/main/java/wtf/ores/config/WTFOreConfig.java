@@ -18,6 +18,7 @@ public class WTFOreConfig {
 	public static boolean genNitreOre;
 	public static boolean genSandGold;
 	public static boolean genCrackedStone;
+	public static boolean rotate180only;
 	
 	
 	public static boolean simplexGen;
@@ -29,9 +30,14 @@ public class WTFOreConfig {
 		config.load();
 		
 		simplexGen = config.get("Gen Options", "Use simplex noise instead of random for ore generation", true).getBoolean();
+		rotate180only = config.get("Ore Blockstate Generation", "When generating new blockstates, create variants with 180 rotation only, setting to false enables 90 adn 270 degree rotations.  Requires generating new blockstates, and placing them in a resource pack", true).getBoolean();
+		
+		
 		
 		String vanilla = "Generation of Vanilla Ore";
 		String cancel = "Enable Ore Gen: Vanilla";
+		
+		//I need to add another tag: texture- which gets used when a blocks name doesn't match the texture overlay it needs to use
 		
 		cancelVanillaCoal = config.get(cancel, "Coal", true).getBoolean();
 		String coal = config.get(vanilla, "Vanilla Coal Generation", "vein, minecraft:coal_ore@0, stone=minecraft:stone@0, stone=minecraft:gravel@0, denseOre=true, orePerChunk=60 & 220, GenHeightPercentSurface=20 & 120,"
@@ -99,12 +105,12 @@ public class WTFOreConfig {
 			ParseOre.parse(nitre);
 		}
 		genSandGold = config.get(defEnableMod, "Mod Added Ore: WTF's Gold in Sand", true).getBoolean();
-		String sandgold = config.get(defModOre, "WTF's Gold in Sand", "underwater@single, wtfcore:oreSandGold@0, orePerChunk=-10 & 10, stone=minecraft:sand@0, reqBiomeType=river, denseOre=true, GenHeightPercentSurface=90 & 110").getString();
+		String sandgold = config.get(defModOre, "WTF's Gold in Sand", "underwater@single, wtfcore:oreSandGold@0, orePerChunk=-10 & 10, stone=minecraft:sand@0, reqBiomeType=river, denseOre=true, GenHeightPercentSurface=90 & 110, texture=gold_ore").getString();
 		if (genSandGold){
 			ParseOre.parse(sandgold);
 		}
 		genCrackedStone = config.get(defEnableMod, "Mod Added Ore: WTF's Cracked Stone", true).getBoolean();
-		String crackedStone = config.get(defModOre, "WTF's Cracked Stone", "cave@vein, wtfcore:cracked_stone@0, surfaces=ceiling, orePerChunk=-25 & 85, GenHeightPercentSurface=10 & 110, VeinDimensions=10 & 4 & 1, pitch=1.5, DensityPercent=50").getString();
+		String crackedStone = config.get(defModOre, "WTFs Cracked Stone", "cave@vein, wtfcore:stone0DecoStatic@2, surfaces=ceiling, orePerChunk=-25 & 85, GenHeightPercentSurface=10 & 110, VeinDimensions=10 & 4 & 1, pitch=1.5, DensityPercent=50").getString();
 		if (genCrackedStone){
 			ParseOre.parse(crackedStone);
 		}
@@ -113,12 +119,12 @@ public class WTFOreConfig {
 		
 		if (Loader.isModLoaded("tconstruct")){
 			boolean tconOres = config.get(defEnableMod, "Mod Added Ore : Tinker's Construct Cobalt and Ardite", true).getBoolean();
-			String cobalt = config.get(defModOre, "Tinker's Construct Cobalt Generation", "vein, tconstruct:ore@1, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, VeinDimensions=16 & 1 & 1, pitch = 0.45,"
+			String cobalt = config.get(defModOre, "Tinker's Construct Cobalt Generation", "vein, tconstruct:ore@0, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, VeinDimensions=16 & 1 & 1, pitch = 0.45,"
 					+ " GenHeightPercentSurface=5 & 95, dimension=-1").getString();
 			if (tconOres){
 				ParseOre.parse(cobalt);
 			}
-			String ardite = config.get(defModOre, "Tinker's Construct Ardite Generation", "cloud, tconstruct:ore@0, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, "
+			String ardite = config.get(defModOre, "Tinker's Construct Ardite Generation", "cloud, tconstruct:ore@1, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, "
 					+ " GenHeightPercentSurface=5 & 95, size=16, DensityPercent=15, dimension=-1").getString();
 			if (tconOres){
 				ParseOre.parse(ardite);

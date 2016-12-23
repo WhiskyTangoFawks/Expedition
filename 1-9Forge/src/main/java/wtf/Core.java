@@ -1,7 +1,11 @@
 package wtf;
 
+import java.util.List;
+
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -15,11 +19,13 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import wtf.api.WTFWorldGen;
 import wtf.config.CaveBiomesConfig;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
 import wtf.config.OverworldGenConfig;
+import wtf.config.WTFStoneRegistry;
 import wtf.crafting.GuiHandler;
 import wtf.crafting.RecipeParser;
 import wtf.entities.EntitySpawnListener;
@@ -37,6 +43,7 @@ import wtf.ores.OreGenerator;
 import wtf.ores.VanillOreGenCatcher;
 import wtf.ores.config.WTFOreConfig;
 import wtf.proxy.CommonProxy;
+import wtf.utilities.BlockstateWriter;
 import wtf.utilities.UBCCompat;
 import wtf.worldgen.DungeonPopulator;
 import wtf.worldgen.OverworldGen;
@@ -58,6 +65,8 @@ public class Core {
 
 	@Instance(coreID)
 	public static Core instance;
+	
+	public static boolean UBC;
 
 	public static CreativeTabs wtfTab = new CreativeTabs("WTFBlocks")
 	{
@@ -75,8 +84,9 @@ public class Core {
 	{
 		coreLog = preEvent.getModLog();
 
-
-		if (Loader.isModLoaded("undergroundbiomes")){
+		BlockstateWriter.writeResourcePack();
+		UBC = Loader.isModLoaded("undergroundbiomes");
+		if (UBC){
 			UBCCompat.loadUBCStone();
 		}
 		else {
@@ -89,7 +99,7 @@ public class Core {
 		CaveBiomesConfig.customConfig();
 
 
-		
+		WTFStoneRegistry.loadStoneReg();
 		BlockSets.initBlockSets();
 		WTFBlocks.initBlocks();
 		proxy.initWCICRender();
@@ -101,10 +111,7 @@ public class Core {
 			WTFBiomes.init();
 		}
 		
-		
-		
 		if (CoreConfig.enableOreGen){
-			
 			WTFOreConfig.loadConfig();
 		}
 
@@ -149,11 +156,12 @@ public class Core {
 			}
 		}
 		
-		if (Loader.isModLoaded("AppleCore")){
-			coreLog.info("AppleCore detected, registering integration");
-			AppleCoreEvents.initGrowthMap();
-			MinecraftForge.EVENT_BUS.register(new AppleCoreEvents());
-		}
+		
+		//coreLog.info("AppleCore detected, registering integration");
+		//No longer uses applecore
+		AppleCoreEvents.initGrowthMap();
+		MinecraftForge.EVENT_BUS.register(new AppleCoreEvents());
+		
 		
 		if (CoreConfig.enableOverworldGeneration){
 			if (Loader.isModLoaded("RTG")){
@@ -173,9 +181,6 @@ public class Core {
 	@EventHandler
 	public void PostInit(FMLPostInitializationEvent postEvent) throws Exception{
 
-
-
-		
 		//Blocks.LEAVES.setLightOpacity(0);
 		//Blocks.LEAVES2.setLightOpacity(0);
 		System.out.println("Torch class is now " + Blocks.TORCH.getClass());

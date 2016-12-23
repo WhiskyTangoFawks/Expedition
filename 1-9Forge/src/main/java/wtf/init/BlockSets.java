@@ -23,7 +23,7 @@ import wtf.worldscan.NonSolidNoReplace;
 public class BlockSets {
 
 	public enum Modifier {
-		COBBLE, LAVA_CRUST, MOSSY, WATER_DRIP, LAVA_DRIP, FROZEN, SOUL
+		COBBLE, CRACKED, LAVA_CRUST, MOSSY, WATER_DRIP, LAVA_DRIP, FROZEN, SOUL
 	}
 
 	private static String[] deffall = {"minecraft:dirt@50", "minecraft:cobblestone@75", "minecraft:mossy_cobble@90","minecraft:sand@10", "minecraft:soul_sand@10","minecraft:gravel@20", "minectaft:snow@40"};
@@ -152,15 +152,7 @@ public class BlockSets {
 		explosiveBlocks.put(Blocks.REDSTONE_BLOCK, 8F);
 		//differentiate between lit and unlit redstone wire
 		explosiveBlocks.put(Blocks.REDSTONE_WIRE, 0.9F);
-		//
 
-		for(Entry<IBlockState, IBlockState> entry : CoreConfig.StoneCobble.entrySet()){
-			if(entry.getKey() != entry.getValue()){
-				blockTransformer.put(new StateAndModifier(entry.getKey(), Modifier.COBBLE), entry.getValue());
-			}
-			
-		}
-		
 		blockTransformer.put(new StateAndModifier(Blocks.COBBLESTONE.getDefaultState(), Modifier.MOSSY), Blocks.MOSSY_COBBLESTONE.getDefaultState());
 		blockTransformer.put(new StateAndModifier(blockTransformer.get(new StateAndModifier(Blocks.STONE.getDefaultState(), Modifier.MOSSY)), Modifier.COBBLE), Blocks.MOSSY_COBBLESTONE.getDefaultState());
 

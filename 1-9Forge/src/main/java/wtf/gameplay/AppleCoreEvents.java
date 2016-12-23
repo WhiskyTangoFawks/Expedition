@@ -10,10 +10,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.event.world.BlockEvent.CropGrowEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import squeek.applecore.api.plants.PlantGrowthEvent;
 import wtf.config.GameplayConfig;
 
 public class AppleCoreEvents {
@@ -43,7 +43,7 @@ public class AppleCoreEvents {
 	}
 	
 	@SubscribeEvent
-	public void growthTickAllowed(PlantGrowthEvent.AllowGrowthTick event)
+	public void growthTickAllowed(CropGrowEvent event)
 	{	
 		//System.out.println(event.block.getLocalizedName());
 		double growthPercent = GameplayConfig.appleCoreConstant*2;
@@ -53,9 +53,9 @@ public class AppleCoreEvents {
 			return;
 		}
 		
-		Type type = plantmods.get(event.block);
+		Type type = plantmods.get(event.getState().getBlock());
 		if (type != null){
-			Biome biome = event.world.getBiome(event.pos);
+			Biome biome = event.getWorld().getBiome(event.getPos());
 			if (BiomeDictionary.isBiomeOfType(biome, type)){
 				if (chance > GameplayConfig.appleCoreConstant){
 					event.setResult(Result.DENY);
@@ -63,7 +63,7 @@ public class AppleCoreEvents {
 				}
 			}
 		}
-		event.setResult(Result.ALLOW);
+		event.setResult(Result.DEFAULT);
 	}
 
 	@SubscribeEvent

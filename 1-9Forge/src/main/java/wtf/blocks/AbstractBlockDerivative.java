@@ -19,6 +19,7 @@ public abstract class AbstractBlockDerivative extends Block{
 	
 	public final IBlockState parentBackground;
 	protected final IBlockState parentForeground;
+	
 
 	/**
 	 * This class is used to create blocks whose properties are derivative of other blocks
@@ -32,7 +33,9 @@ public abstract class AbstractBlockDerivative extends Block{
 		super(backState.getMaterial());
 		this.parentBackground = backState;
 		this.parentForeground = foreState;
-		this.setCreativeTab(Core.wtfTab);
+		if (this.parentBackground != null){
+			this.setCreativeTab(Core.wtfTab);
+		}
 		
 		this.setHarvestLevel(foreState.getBlock().getHarvestTool(foreState), foreState.getBlock().getHarvestLevel(foreState));
 	}

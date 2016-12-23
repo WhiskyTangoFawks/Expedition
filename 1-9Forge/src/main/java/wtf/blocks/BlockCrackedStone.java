@@ -3,20 +3,23 @@ package wtf.blocks;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockStone;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import wtf.gameplay.StoneCrack;
 import wtf.gameplay.StoneFractureMethods;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
 import wtf.utilities.wrappers.StateAndModifier;
 
-public class BlockCrackedStone extends AbstractBlockDerivative{
+public class BlockCrackedStone extends BlockStone{
 
 	public BlockCrackedStone(IBlockState stone) {
-		super(stone, stone);
+		super();
 		BlockSets.blockTransformer.put(new StateAndModifier(getDefaultState(), Modifier.COBBLE), Blocks.COBBLESTONE.getDefaultState());
 		BlockSets.oreAndFractures.add(this);
 	}
@@ -37,7 +40,14 @@ public class BlockCrackedStone extends AbstractBlockDerivative{
     @Override
 	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state)
     {
-    	StoneFractureMethods.frac(world, pos, 1);
+    	//How to put a delay on this thing
+    	//1) swap over to a tile entity- like how one is used for a delay in explosions
+    	//model it off the secondary exploder entity I'm already using- so it's just an entity, not a tile entity
+    	
+
+    	//StoneFractureMethods.frac(world, pos, 1);
+    	Entity crack = new StoneCrack(world, pos);
+		world.spawnEntityInWorld(crack);
 	}
 	
 	@Override

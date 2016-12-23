@@ -9,7 +9,7 @@ public class EntityWTFFallingBlock extends EntityFallingBlock {
 
 	public EntityWTFFallingBlock(World worldIn, BlockPos pos, IBlockState fallingBlockState) {
 		super(worldIn, pos.getX()+0.5, pos.getY(), pos.getZ()+0.5, fallingBlockState);
-		System.out.println("New falling block created");
+		
 	}
 
 
@@ -19,7 +19,7 @@ public class EntityWTFFallingBlock extends EntityFallingBlock {
     		GravityMethods.checkPos(this.worldObj, new BlockPos(this.posX, this.posY, this.posZ));
     		this.isDead = true;
     	}
-    	System.out.println("New falling block set dead");
+    	
     }
 	
 
