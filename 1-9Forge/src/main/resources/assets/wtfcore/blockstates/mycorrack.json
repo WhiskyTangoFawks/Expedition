@@ -1,0 +1,26 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+         "model": "forge:multi-layer",
+    	"transform": "forge:default-block"
+                
+    },
+    "variants": {
+      
+         "normal": [{
+ 			"custom": { "base": "netherrack#normal", "Solid": "netherrack#normal", "Translucent": "wtfcore:mycorrack#overlay" }
+        }],
+        "inventory": [{
+			 
+        }],
+   
+	"overlay": [
+		{"model": "wtfcore:overlay_top", "textures": { "top": "wtfcore:blocks/mycelium_top_overlay", "sides": "wtfcore:blocks/mycelium_side_overlay" }},
+		{"model": "wtfcore:overlay_top", "y":90, "textures": { "top": "wtfcore:blocks/mycelium_top_overlay", "sides": "wtfcore:blocks/mycelium_side_overlay" }},
+		{"model": "wtfcore:overlay_top", "y":180, "textures": { "top": "wtfcore:blocks/mycelium_top_overlay", "sides": "wtfcore:blocks/mycelium_side_overlay" }},
+		{"model": "wtfcore:overlay_top", "y":270, "textures": { "top": "wtfcore:blocks/mycelium_top_overlay", "sides": "wtfcore:blocks/mycelium_side_overlay" }}
+    ]
+    
+   
+    }
+}

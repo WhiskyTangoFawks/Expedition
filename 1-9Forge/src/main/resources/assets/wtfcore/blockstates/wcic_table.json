@@ -1,0 +1,21 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+      		"particle": "blocks/crafting_table_side",
+        	"bottom": "blocks/planks_oak",
+        	"top": "blocks/crafting_table_top",
+        	"side": "blocks/crafting_table_side"
+        },
+        "model": "wtfcore:shortBlock"
+        
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory": [{
+        
+        }]
+    }
+}

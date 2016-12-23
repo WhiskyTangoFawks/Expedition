@@ -1,0 +1,27 @@
+
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures" : { "texture" : "blocks/ice"}
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory0": [{
+			 "model" : "wtfcore:stalactite_small"
+        }],
+        "inventory1": [{
+			"model" : "wtfcore:stalactite_base"
+        }],
+        "inventory2": [{
+			"model" : "wtfcore:stalactite_tip" 
+        }],
+
+        "type" : {
+        	"stalactite_small" 	: { "model": "wtfcore:stalactite_small" },
+       		"stalactite_base" 	: { "model" : "wtfcore:stalactite_base" },
+        	"stalactite_tip" 	: { "model" : "wtfcore:stalactite_tip" }
+		}	
+    }
+}
