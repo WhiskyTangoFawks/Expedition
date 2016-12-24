@@ -23,6 +23,11 @@ public class CommonProxy {
 		
 	}
 
+	public void enableBlockstateTexturePack() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

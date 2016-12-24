@@ -181,6 +181,8 @@ public class Core {
 	@EventHandler
 	public void PostInit(FMLPostInitializationEvent postEvent) throws Exception{
 
+		proxy.enableBlockstateTexturePack();
+		
 		//Blocks.LEAVES.setLightOpacity(0);
 		//Blocks.LEAVES2.setLightOpacity(0);
 		System.out.println("Torch class is now " + Blocks.TORCH.getClass());

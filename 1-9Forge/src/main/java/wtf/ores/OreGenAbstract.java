@@ -26,16 +26,21 @@ public abstract class OreGenAbstract{
 	public HashMap<BiomeDictionary.Type, Float> biomeModifier = new HashMap<BiomeDictionary.Type, Float>(); 
 	public HashSet<Integer> dimension = new HashSet<Integer>();
 	
-	protected final float maxGenRangeHeight;
-	protected final float minGenRangeHeight;
-	protected final int maxPerChunk;
-	protected final int minPerChunk;
-	protected Float veinDensity = 1F;
+	public float maxGenRangeHeight;
+	public float minGenRangeHeight;
+	public int maxPerChunk;
+	public int minPerChunk;
+	public Float veinDensity = 1F;
 	private Simplex simplex = null;
 	private int seed = 0;
-	public final boolean genDenseOres;
+	public boolean genDenseOres;
 	public final ArrayList<BiomeDictionary.Type> reqBiomeTypes = new ArrayList<BiomeDictionary.Type>();
 		
+	public OreGenAbstract(IBlockState blockstate){
+		this.oreBlock = blockstate;
+	
+	}
+	
 	public OreGenAbstract(IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk, int minPerChunk, boolean denseGen){
 		this.oreBlock = blockstate;
 		this.maxGenRangeHeight = maxGenRangeHeight;
