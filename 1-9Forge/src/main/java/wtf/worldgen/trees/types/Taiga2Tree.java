@@ -15,6 +15,7 @@ public class Taiga2Tree extends TreeVars {
 				Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE), 
 				Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE));
 		leaftype = LeafStyle.SPRUCE;
+		this.genBuffer = 4;
 	}
 
 	@Override

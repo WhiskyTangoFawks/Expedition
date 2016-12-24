@@ -102,7 +102,7 @@ public class BlockFoxfire extends AbstractActiveablePlant{
 		//Try to spread
 		if (random.nextInt(250) == 0)
 		{
-			System.out.println("trying to spread");
+			//System.out.println("trying to spread");
 			int count = 0;
 			ArrayList<BlockPos> arraylist = new ArrayList<BlockPos>();
 			for (int xloop = -2; xloop < 3; xloop++){

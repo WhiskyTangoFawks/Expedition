@@ -8,12 +8,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 
 import net.minecraft.world.World;
+import wtf.init.WTFBlocks;
 import wtf.utilities.Simplex;
 
 public abstract class TreeVars {
 	
 	protected final Random random;
 	protected double PId2 = Math.PI/2;
+	
 	
 	//Constants
 	public final IBlockState wood;// = Blocks.LOG.getDefaultState();
@@ -28,7 +30,7 @@ public abstract class TreeVars {
 		random = new Random();
 		simplex = new Simplex((int) world.getSeed());
 		
-		canGrowOn.add(Blocks.DIRT); canGrowOn.add(Blocks.GRASS); 
+		canGrowOn.add(Blocks.DIRT); canGrowOn.add(Blocks.GRASS);  canGrowOn.add(WTFBlocks.mossyDirt);
 		this.wood = wood;
 		this.branch = branch;
 		this.leaf = leaf;
@@ -54,6 +56,7 @@ public abstract class TreeVars {
 	public double  rootInitialAngle = 1.01;
 	public double  rootFinalAngle = 0;
 	public double  rootIncrementAngle = 1;
+	public double rootLevel = 0;
 	
 	//public double trunkTaper = 1;
 	
@@ -99,4 +102,9 @@ public abstract class TreeVars {
 	public abstract int getTrunkColumnHeight(double trunkHeight, double currentRadius, double maxRadius);
 	
 	public abstract int getNumRoots(double trunkDiameter);
+	
+	public int genBuffer = 0;
+	public float rootDecoRate = 0;
+	public IBlockState decoUp = null;
+	public IBlockState decoDown = null;
 }

@@ -17,6 +17,7 @@ public class SwampTree extends TreeVars {
 		vines = 6;
 		leafYMax=3;
 		topLimitDown = Math.PI/2;
+		
 		}
 
 	@Override
@@ -65,8 +66,9 @@ public class SwampTree extends TreeVars {
 	@Override
 	public int getTrunkColumnHeight(double trunkHeight, double currentRadius, double maxRadius) {
 		if (currentRadius > 1){
-			double halfHeight = trunkHeight/2;
-			return (int) (halfHeight + halfHeight*currentRadius/maxRadius + random.nextInt(2)-1);
+			double thirdHeight = trunkHeight/3;
+			double rad = 1-(currentRadius/maxRadius);
+			return (int) (thirdHeight + (thirdHeight*rad) + random.nextInt(5)-2);
 		}
 		else {
 			return MathHelper.ceiling_double_int(trunkHeight);

@@ -1,26 +1,25 @@
 package wtf.ores.config;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
-import net.minecraft.block.BlockSand;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.fml.common.Loader;
 import wtf.Core;
 import wtf.blocks.BlockDenseOre;
 import wtf.blocks.BlockDenseOreFalling;
 import wtf.blocks.redstone.DenseRedstoneOre;
-import wtf.config.GameplayConfig;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
 import wtf.ores.OreGenAbstract;
 import wtf.ores.OreGenerator;
+import wtf.ores.OreReplacer;
 import wtf.ores.oregenerators.OreGenCaveFloor;
 import wtf.ores.oregenerators.OreGenCloud;
 import wtf.ores.oregenerators.OreGenCluster;
@@ -28,6 +27,8 @@ import wtf.ores.oregenerators.OreGenSingle;
 import wtf.ores.oregenerators.OreGenUnderWater;
 import wtf.ores.oregenerators.OreGenVanilla;
 import wtf.ores.oregenerators.OreGenVein;
+import wtf.utilities.BlockstateWriter;
+import wtf.utilities.UBCCompat;
 import wtf.utilities.wrappers.StoneAndOre;
 
 public class ParseOre {
@@ -43,7 +44,7 @@ public class ParseOre {
 	}
 
 	public static enum ARGUMENT{
-		oreperchunk, genheightpercentsurface, size, veindimensions, pitch, densitypercent, dimension, genpercentinbiometype, stone, denseore, surfaces, reqbiometype;
+		oreperchunk, genheightpercentsurface, size, veindimensions, pitch, densitypercent, dimension, genpercentinbiometype, stone, denseore, surfaces, reqbiometype, texture;
 	}
 
 
@@ -78,11 +79,8 @@ public class ParseOre {
 		if (!stringArray[1].contains(":")){
 			throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " expected a block argument, got this instead " + stringArray[1] + " The second argument of each string MUST be the block and metadata, in the format modID:block@metadata");
 		}
-		String blockName = stringArray[1].split(":")[1].split("@")[0];
-		int metadata = Integer.parseInt(stringArray[1].split(":")[1].split("@")[1]);
-		if (metadata > 0){
-			blockName += metadata;
-		}
+		String oreName = stringArray[1].split(":")[1].split("@")[0] + Integer.parseInt(stringArray[1].split(":")[1].split("@")[1]); 
+		
 		
 		if (blockstate == null){
 			throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " ***** cound not find block for " + stringArray[1] + " Turn on the block name getter in the core config, and place the block whose name you want in the world to get the blocks registry name");
@@ -102,6 +100,7 @@ public class ParseOre {
 		ArrayList<BiomeDictionary.Type> reqBiomeTypes = new ArrayList<BiomeDictionary.Type>();
 
 		boolean denseOres = false;
+		String texture = null;
 		ArrayList<IBlockState> stones = new ArrayList<IBlockState>();
 		
 		float pitch = -99F; 
@@ -189,6 +188,19 @@ public class ParseOre {
 				biomeMap.put(biometype, f);
 				break;
 			case stone:
+
+				if (Core.UBC){
+					if (subStringArray[1] == "sedimentary"){
+						stones.addAll(Arrays.asList(UBCCompat.SedimentaryStone));
+					}
+					if (subStringArray[1] == "igneous"){
+						stones.addAll(Arrays.asList(UBCCompat.IgneousStone));
+					}
+					if (subStringArray[1] == "igneous"){
+						stones.addAll(Arrays.asList(UBCCompat.MetamorphicStone));
+					}
+				}
+
 				IBlockState stoneBlockState = getBlockState(uncleaned[1]);
 				if (blockstate == null){
 					throw new Exception("Ore Config Parsing Exception while trying to parse : " + orestring + " ***** cound not find block for " + stringArray[1] + " int the stone section of the config.  Turn on the block name getter in the core config, and place the block whose name you want in the world to get the blocks registry name");
@@ -197,6 +209,9 @@ public class ParseOre {
 				break;
 			case denseore:
 				denseOres = Boolean.parseBoolean(subStringArray[1]);
+				break;
+			case texture:
+				texture = subStringArray[1];
 				break;
 			case surfaces:
 				String[] surfacestrings = subStringArray[1].split("&");
@@ -292,23 +307,45 @@ public class ParseOre {
 		}
 		
 		if (stones.size() == 0){
+
+			if (Core.UBC){
+				stones.addAll(Arrays.asList(UBCCompat.IgneousStone));
+				stones.addAll(Arrays.asList(UBCCompat.MetamorphicStone));
+				stones.addAll(Arrays.asList(UBCCompat.SedimentaryStone));
+			}
+			
 			stones.add(Blocks.STONE.getDefaultState());
 		}
 		for (IBlockState stone : stones){
 			if (denseOres){
+				
 				Block block = null;
+				Block stoneblock = stone.getBlock();
+				int meta = stoneblock.getMetaFromState(stone);
+				String stoneName = stoneblock.getRegistryName().toString().split(":")[1]+meta;
+				String blockName = stoneName+oreName;
+				
+				texture = texture == null ? blockstate.getBlock().getRegistryName().toString().split(":")[1] : texture;
 				if (blockstate.getBlock() != Blocks.REDSTONE_ORE){
 					block = stone.getBlock() instanceof BlockFalling ? WTFBlocks.registerBlock(new BlockDenseOreFalling(stone, blockstate), "dense_"+blockName) : WTFBlocks.registerBlock(new BlockDenseOre(stone, blockstate), "dense_"+blockName);
 				}
 				else {
+					
 					block = WTFBlocks.registerBlock(new DenseRedstoneOre(false), "dense_"+blockName);
 					DenseRedstoneOre.denseRedstone_off = block;
 					DenseRedstoneOre.denseRedstone_on = WTFBlocks.registerBlock(new DenseRedstoneOre(true), "dense_"+blockName+"_on");
+					BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName+"_on", texture, stoneName);
 				}
+				
+				BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName, texture, stoneName);
+				
 				BlockSets.stoneAndOre.put(new StoneAndOre(stone, blockstate), block.getDefaultState());
+				//Ore ubification/densification of existing ores- removed because it was crashing
+				//new OreReplacer(blockstate.getBlock());
 			}
 			else {
 				BlockSets.stoneAndOre.put(new StoneAndOre(stone, blockstate), blockstate);
+				new OreReplacer(blockstate.getBlock());
 			}
 		}
 		//Optional arguments
@@ -318,7 +355,8 @@ public class ParseOre {
 			oregenerator.dimension = dimensions;
 		}
 		oregenerator.reqBiomeTypes.addAll(reqBiomeTypes);
-
+		
+			
 		OreGenerator.oreGenRegister.add(oregenerator);
 	}
 

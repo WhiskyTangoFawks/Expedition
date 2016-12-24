@@ -13,20 +13,20 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import wtf.api.Replacer;
-import wtf.config.GameplayConfig;
+import wtf.config.CoreConfig;
 import wtf.utilities.wrappers.StateAndModifier;
 import wtf.utilities.wrappers.StoneAndOre;
-import wtf.worldgen.LavaReplacer;
+import wtf.worldgen.replacers.LavaReplacer;
 import wtf.worldscan.NonSolidNoReplace;
 
 
 public class BlockSets {
 
 	public enum Modifier {
-		COBBLE, LAVA_CRUST, MOSSY, WATER_DRIP, LAVA_DRIP, FROZEN
+		COBBLE, CRACKED, LAVA_CRUST, MOSSY, WATER_DRIP, LAVA_DRIP, FROZEN, SOUL
 	}
 
-	private static String[] deffall = {"minecraft:dirt@50", "minecraft:cobblestone@75", "minecraft:mossy_cobble@90","minecraft:sand@10","minecraft:gravel@20", "minectaft:snow@40"};
+	private static String[] deffall = {"minecraft:dirt@50", "minecraft:cobblestone@75", "minecraft:mossy_cobble@90","minecraft:sand@10", "minecraft:soul_sand@10","minecraft:gravel@20", "minectaft:snow@40"};
 	public static ArrayList<String> defaultFallingBlocks = new ArrayList<String>(Arrays.asList(deffall));
 	public static HashMap<Block, Float> fallingBlocks = new HashMap<Block, Float>();
 
@@ -41,21 +41,21 @@ public class BlockSets {
 
 	public static HashMap<Item, Item> itemReplacer = new HashMap<Item, Item>();
 
-	
+
 
 
 
 	//WorldGenHashSets
 
-	private static Block[] listReplaceBlocks = {Blocks.STONE, Blocks.SANDSTONE, Blocks.DIRT, Blocks.GRAVEL, Blocks.SAND, Blocks.AIR, Blocks.LAVA, Blocks.COBBLESTONE, Blocks.FLOWING_LAVA, Blocks.OBSIDIAN, Blocks.WATER, Blocks.FLOWING_WATER, WTFBlocks.icePatch};
+	private static Block[] listReplaceBlocks = {Blocks.STONE, Blocks.SANDSTONE, Blocks.DIRT, Blocks.GRAVEL, Blocks.SAND, Blocks.AIR, Blocks.LAVA, Blocks.COBBLESTONE, Blocks.FLOWING_LAVA, Blocks.OBSIDIAN, Blocks.WATER, Blocks.FLOWING_WATER, WTFBlocks.icePatch, Blocks.NETHERRACK};
 	public static HashSet<Block> ReplaceHashset = new HashSet<Block>(Arrays.asList(listReplaceBlocks));
 
 	private static Block[] listSurfaceBlocks = {Blocks.DIRT, Blocks.SAND, Blocks.GRASS, Blocks.STONE, Blocks.GRAVEL, Blocks.CLAY, Blocks.HARDENED_CLAY, Blocks.STAINED_HARDENED_CLAY};
 	public static HashSet<Block> surfaceBlocks = new HashSet<Block>(Arrays.asList(listSurfaceBlocks));
-	
+
 	public static HashSet<Block> treeReplaceableBlocks = new HashSet<Block>();
 
-	
+
 	public static HashSet<Block> nonSolidBlockSet = new HashSet<Block>();
 
 
@@ -80,13 +80,20 @@ public class BlockSets {
 	public static boolean isFractured(IBlockState state){
 		return cobble.contains(state.getBlock());
 	}
+	
+	public static HashSet<Block> riverBlocks = new HashSet<Block>();
 
 	public static void initBlockSets(){
 
-		
+
 		Iterator<Block> blockIterator = Block.REGISTRY.iterator();
 		while (blockIterator.hasNext()){
 			Block block = blockIterator.next();
+
+			if (block.getRegistryName().toString().contains("streams:river")){
+				riverBlocks.add(block);
+			}
+			
 			if (!block.getDefaultState().isBlockNormalCube()){
 				nonSolidBlockSet.add(block);
 				if (!isNonSolidAndCheckReplacement.containsKey(block)){
@@ -117,19 +124,25 @@ public class BlockSets {
 					new NonSolidNoReplace(block);
 				}
 			}
-			
+
 			try{
-				if (block.isReplaceable(null, null)){
+					if (block.isReplaceable(null, null)){
+						treeReplaceableBlocks.add(block);
+					}
+				}
+				catch (Exception e){
 					treeReplaceableBlocks.add(block);
 				}
-			}
-			catch (Exception e){
-				treeReplaceableBlocks.add(block);
-			}
-			if (block.getDefaultState().getMaterial() == Material.PLANTS){
-				treeReplaceableBlocks.add(block);
-			}
+				if (block.getDefaultState().getMaterial() == Material.PLANTS){
+					treeReplaceableBlocks.add(block);
+				}
+
 		}
+
+		//new NonSolidNoReplace(Blocks.BROWN_MUSHROOM_BLOCK);
+		//new NonSolidNoReplace(Blocks.RED_MUSHROOM_BLOCK);
+		new NonSolidNoReplace(Blocks.LEAVES);
+		new NonSolidNoReplace(Blocks.LEAVES2);
 
 
 		explosiveBlocks.put(Blocks.TNT, 4F);
@@ -139,12 +152,9 @@ public class BlockSets {
 		explosiveBlocks.put(Blocks.REDSTONE_BLOCK, 8F);
 		//differentiate between lit and unlit redstone wire
 		explosiveBlocks.put(Blocks.REDSTONE_WIRE, 0.9F);
-		//
 
-		blockTransformer.put(new StateAndModifier(Blocks.STONE.getDefaultState(), Modifier.COBBLE), Blocks.COBBLESTONE.getDefaultState());
-		blockTransformer.put(new StateAndModifier(Blocks.SANDSTONE.getDefaultState(), Modifier.COBBLE), Blocks.SAND.getDefaultState());
 		blockTransformer.put(new StateAndModifier(Blocks.COBBLESTONE.getDefaultState(), Modifier.MOSSY), Blocks.MOSSY_COBBLESTONE.getDefaultState());
-		
+		blockTransformer.put(new StateAndModifier(blockTransformer.get(new StateAndModifier(Blocks.STONE.getDefaultState(), Modifier.MOSSY)), Modifier.COBBLE), Blocks.MOSSY_COBBLESTONE.getDefaultState());
 
 		for (Entry<StateAndModifier, IBlockState> entry : blockTransformer.entrySet()){
 			if (entry.getKey().modifier == Modifier.COBBLE){

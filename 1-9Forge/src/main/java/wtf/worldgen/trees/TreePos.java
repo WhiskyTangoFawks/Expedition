@@ -12,6 +12,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
+import wtf.init.WTFBlocks;
 import wtf.utilities.Simplex;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkDividedHashMap;
@@ -37,6 +40,8 @@ public class TreePos {
 
 	public final double scale;
 	public static Simplex simplex;
+	
+	public final boolean snow;
 
 	public ChunkScan chunkscan;
 
@@ -48,6 +53,7 @@ public class TreePos {
 		this.oriX =(pos.getX() & 1) == 0 ? pos.getX()+0.5 : pos.getX();
 		this.y = pos.getY();
 		this.oriZ = (pos.getZ() & 1) == 0 ? pos.getZ()+0.5 : pos.getZ();
+		this.snow = BiomeDictionary.isBiomeOfType(world.getBiome(pos), Type.SNOWY);
 		
 		this.type = tree;
 		if (simplex == null){
@@ -62,20 +68,15 @@ public class TreePos {
 		//branchLength = MathHelper.ceiling_double_int((tree.baseBranchLength +  tree.baseBranchLength*scale)/2);
 		//rootLength = (int) (trunkHeight/tree.rootLengthDivisor);
 		if (!tree.airGenerate){
-			rootLevel = random.nextInt(1);
+			rootLevel = tree.rootLevel == 0 ? random.nextInt(2): tree.rootLevel;
 		}
 		else {
 			rootLevel = tree.airGenHeight; // +1 because generation height is cut off at > airGenHeight
 		}
-
-		
-
 		this.chunkscan = chunkscan;
-
-
 	}
 
-	Block[] groundArray = {Blocks.DIRT, Blocks.GRASS, Blocks.GRAVEL};//, CaveBlocks.MossyDirt};
+	Block[] groundArray = {Blocks.DIRT, Blocks.GRASS, Blocks.GRAVEL, WTFBlocks.mossyDirt};
 	public HashSet<Block> groundBlocks = new HashSet<Block>(Arrays.asList(groundArray));
 
 
@@ -87,28 +88,27 @@ public class TreePos {
 	
 	public void setTrunk(BlockPos pos){
 		trunkBlocks.put(pos, type.wood);
-		chunkscan.setGenerated(pos.getX(), pos.getZ());
 	}
 
 	public void setRoot(BlockPos pos){
 		rootBlocks.put(pos, type.wood.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.NONE));
-		chunkscan.setGenerated(pos.getX(), pos.getZ());
 
 	}
 	public void setBranch(BlockPos pos, BlockLog.EnumAxis axis){
 		rootBlocks.put(pos, type.branch.withProperty(BlockLog.LOG_AXIS, axis));
-		if (!type.growDense){
-			chunkscan.setGenerated(pos.getX(), pos.getZ());
-		}
 	}
 	int airHash = Blocks.AIR.hashCode();
 	public void setLeaf(BlockPos pos){
 		if (world.getBlockState(pos).getBlock().hashCode() == airHash){
 			leafBlocks.put(pos, type.leaf.withProperty(BlockLeaves.CHECK_DECAY, false));
-			if (!type.growDense){
-				chunkscan.setGenerated(pos.getX(), pos.getZ());
+			if (snow){
+				setDeco(pos.up(), Blocks.SNOW_LAYER.getDefaultState());
+				if (random.nextInt(100) < 0){
+					setDeco(pos.down(), WTFBlocks.icicle.getDefaultState());
+				}
 			}
 		}
+		
 	}
 	
 	public void setDeco(BlockPos pos, IBlockState state){	
@@ -124,6 +124,7 @@ public class TreePos {
 		masterMap.putAll(trunkBlocks);
 		
 		masterMap.setBlockSet();
+		
 	}
 
 	public boolean inTrunk(BlockPos pos){
@@ -131,14 +132,4 @@ public class TreePos {
 		return trunkBlocks.containsKey(pos);
 	}
 
-/*
-	public void setBlockSetWithoutNotify(HashMap<BlockPos, IBlockState> set){
-		Iterator<Entry<BlockPos, IBlockState>> iterator = set.entrySet().iterator();
-		while (iterator.hasNext()){
-			Entry<BlockPos, IBlockState> entry = iterator.next();
-			//GenMethods.setBlockState(world, entry.getKey(), entry.getValue());	
-			//world.setBlockState(entry.getKey(), entry.getValue());
-		}
-	}
-*/
 }

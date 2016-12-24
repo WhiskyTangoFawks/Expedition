@@ -5,6 +5,7 @@ import java.util.Random;
 import akka.routing.Pool;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
+import net.minecraft.block.material.Material;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -22,19 +23,25 @@ import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.conditions.LootCondition;
 import net.minecraft.world.storage.loot.functions.LootFunction;
 import net.minecraft.world.storage.loot.functions.SetCount;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
 import net.minecraftforge.event.world.BlockEvent.BreakEvent;
+import net.minecraftforge.event.world.BlockEvent.CreateFluidSourceEvent;
 import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
+import net.minecraftforge.event.world.BlockEvent.NeighborNotifyEvent;
 import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import squeek.applecore.api.plants.PlantGrowthEvent;
 import wtf.Core;
+import wtf.blocks.AbstractBlockDerivative;
 import wtf.blocks.BlockDenseOre;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
@@ -60,6 +67,11 @@ public class GamePlayEventListener {
 			}
 			else if (BlockSets.blockMiningSpeed.containsKey(block)){
 				event.setNewSpeed(BlockSets.blockMiningSpeed.get(block) * event.getOriginalSpeed());
+			}
+			else if (block instanceof AbstractBlockDerivative){
+				if (!(block.canHarvestBlock(event.getEntityPlayer().worldObj, event.getPos(), event.getEntityPlayer()))){
+					event.setNewSpeed(0.2F * event.getOriginalSpeed());
+				}
 			}
 		}
 	}
@@ -108,8 +120,6 @@ public class GamePlayEventListener {
 		//Check if the block we're trying to break should fracture
 		if (!event.getPlayer().capabilities.isCreativeMode){
 			if (BlockSets.hasCobble(event.getState()) && GameplayConfig.stoneFracturesBeforeBreaking)	{
-
-
 				if (isHammer(event.getPlayer().getHeldItemMainhand()) && GameplayConfig.modifyHammer){
 					event.setCanceled(true);
 					StoneFractureMethods.fracStone(event.getWorld(), event.getPos(), event.getState());
@@ -139,19 +149,21 @@ public class GamePlayEventListener {
 			{
 				StoneFractureMethods.tryFrac(event.getWorld(), event.getPos(), block, toolLevel);
 			}
-
-			//checks for fall of the block above the block thats been broken
-			GravityMethods.checkPos(event.getWorld(), event.getPos().up());
 		}
 	}
+	
 
+	
 	@SubscribeEvent
 	public void BlockHarvestEvent(HarvestDropsEvent event){
 		if (event.getState().getBlock() instanceof BlockLeaves){
 			if (random.nextInt(100) < GameplayConfig.stickDrop){
-
 				event.getDrops().add(new ItemStack(Items.STICK, 1));
 			}
+		}
+		else {
+			//instead of using the block break event, which fires, before the block is replaced, I use the harvest, which is fired afterwards
+			GravityMethods.checkPos(event.getWorld(), event.getPos().up());
 		}
 
 	}
@@ -181,6 +193,22 @@ public class GamePlayEventListener {
 		}
 
 	}
+	
+	@SubscribeEvent
+	public void watergen(CreateFluidSourceEvent event){
+		if (GameplayConfig.waterControl && event.getWorld().getBlockState(event.getPos()).getMaterial() ==Material.WATER && !BiomeDictionary.isBiomeOfType(event.getWorld().getBiome(event.getPos()), Type.WET)){
+			event.setResult(Result.DENY);
+		}
+	}
+	
+/*
+	@SubscribeEvent
+	public void notify(NeighborNotifyEvent event){
+		System.out.println("Notify event");
+		//GravityMethods.checkPos(event.getWorld(), event.getPos());
+	}
+	*/
+	
 
 	public static boolean isHammer(ItemStack stack){
 		if (stack == null){

@@ -3,6 +3,7 @@ package wtf.worldscan;
 import java.util.ArrayList;
 import java.util.HashMap;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -15,6 +16,7 @@ import wtf.utilities.wrappers.CavePosition;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
 import wtf.utilities.wrappers.SurfacePos;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class WorldScanner {
 
@@ -22,13 +24,13 @@ public class WorldScanner {
 
 	}
 	
-	
 	public HashMap<BlockPos, CaveListWrapper> airBlocks = new HashMap<BlockPos, CaveListWrapper>();
-
-
 	
 	public ChunkScan getChunkScan(World world, ChunkCoords coords)
 	{		
+		CaveBiomeGenMethods gen = new CaveBiomeGenMethods(world, coords, world.rand);
+		
+		
 		ArrayList<CaveListWrapper> caveareas = new ArrayList<CaveListWrapper>();
 
 		SurfacePos[][] surfacepositions = new SurfacePos[16][16];
@@ -64,9 +66,17 @@ public class WorldScanner {
 
 
 				//First, we find the surface for the block position
-				int y = scanForSurface(chunk, x, lastY, z);
-
-				surfacepositions[xloop][zloop] = new SurfacePos(x, y, z);
+				int y = scanForSurface(chunk, gen, x, lastY, z);
+				if (y < 0){
+					y=y*-1;
+					surfacepositions[xloop][zloop] = new SurfacePos(x, y, z).setGenerated();
+					
+				}
+				else {
+					surfacepositions[xloop][zloop] = new SurfacePos(x, y, z);
+				}
+				
+				
 				lastY = y;
 				surfaceaverage += y;
 
@@ -84,7 +94,7 @@ public class WorldScanner {
 					EnumFacing prevFaceZ = zig ? EnumFacing.NORTH : EnumFacing.SOUTH;
 					EnumFacing nextFaceZ = zig ? EnumFacing.SOUTH : EnumFacing.NORTH;
 
-					boolean isAir =isAirAndCheck(chunk, x, y, z); 
+					boolean isAir =isAirAndCheck(chunk, gen, x, y, z); 
 
 					/**
 					 * X scanning
@@ -230,32 +240,37 @@ public class WorldScanner {
 
 		surfaceaverage /= 256;
 		//System.out.println("surface average" + surfaceaverage);
+		gen.blocksToSet.setBlockSet();
 		return new ChunkScan(world, surfacepositions, coords.getWorldX(), coords.getWorldZ(), surfaceaverage, caveareas);
 	}
 
 	
-	public int scanForSurface(Chunk chunk, int x, int y, int z) {
+	public int scanForSurface(Chunk chunk, CaveBiomeGenMethods gen,int x, int y, int z) {
+		int generated = 1;
 		while (!chunk.canSeeSky(new BlockPos(x & 15, y, z & 15)) && y<256){
 			y+=10;
 		}	
 		//initial scan to find the first non-air block
-		while (isAirAndCheck(chunk, x,y,z) && y > 10)
+		while (isAirAndCheck(chunk, gen, x,y,z) && y > 1)
 		{
 			y--;
 		}
-		while (!isSurfaceAndCheck(chunk, x, y, z) && y > 10){
+		while (!isSurfaceAndCheck(chunk, gen, x, y, z) && y > 1){
+			generated = -1;
 			y--;
 		}
-		return y;
+		return y*generated;
 	}
 
 
-	public boolean isAirAndCheck(Chunk chunk, int x, int y, int z){
+	public boolean isAirAndCheck(Chunk chunk, CaveBiomeGenMethods gen, int x, int y, int z){
 
-		Block block = chunk.getBlockState(x & 15, y, z & 15).getBlock();
+		IBlockState state = chunk.getBlockState(new BlockPos(x, y, z));
+		Block block = state.getBlock();
+
 		Replacer replacer = BlockSets.isNonSolidAndCheckReplacement.get(block);
 		if (replacer!= null){
-			return replacer.isNonSolidAndReplacement(chunk, new BlockPos(x & 15, y, z & 15), block);
+			return replacer.isNonSolidAndReplacement(chunk, new BlockPos(x, y, z), gen, state);
 			//WTFCore.log.info("Replaced");
 		}
 		return false;
@@ -277,15 +292,16 @@ public class WorldScanner {
 		return BlockSets.nonSolidBlockSet.contains(world.getBlockState(pos).getBlock());
 	}
 
-	public boolean isSurfaceAndCheck(Chunk chunk, int x, int y, int z){
+	public boolean isSurfaceAndCheck(Chunk chunk, CaveBiomeGenMethods gen, int x, int y, int z){
 		//BlockPos pos = ;
-		Block block = chunk.getBlockState(new BlockPos(x & 15, y, z & 15)).getBlock();
+		IBlockState state = chunk.getBlockState(new BlockPos(x & 15, y, z & 15));
+		Block block = state.getBlock();
 
 		if (BlockSets.isNonSolidAndCheckReplacement.containsKey(block)){
 			//System.out.println("genReplace contained " + block.getLocalizedName());
 			Replacer replacer = BlockSets.isNonSolidAndCheckReplacement.get(block);
 			if (replacer!= null){
-				replacer.isNonSolidAndReplacement(chunk, new BlockPos(x & 15, y, z & 15), block);
+				replacer.isNonSolidAndReplacement(chunk, new BlockPos(x & 15, y, z & 15), gen, state);
 				//WTFCore.log.info("Replaced");
 			}
 		}

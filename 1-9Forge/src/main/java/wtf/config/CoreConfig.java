@@ -1,7 +1,15 @@
 package wtf.config;
 
 import java.io.File;
+import java.util.HashMap;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirt;
+import net.minecraft.block.BlockSand;
+import net.minecraft.block.BlockStone;
+import net.minecraft.block.BlockDirt.DirtType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.Configuration;
 
 
@@ -17,10 +25,10 @@ public class CoreConfig {
 	public static boolean enableOverworldGeneration;
 	public static boolean appleCore;
 	
-		
+
 	public static Configuration config = new Configuration(new File("config/WTFCore.cfg"));
 
-	public static void loadConfig(){
+	public static void loadConfig() throws Exception{
 	config.load();
 		
 
@@ -35,6 +43,19 @@ public class CoreConfig {
 		enableOverworldGeneration = config.get(section, "Set to false to disable all Overworld generation", true).getBoolean();
 		
 		
+			
+				
+
 	config.save();
 	}
+	
+	public static IBlockState getBlockState(String string){
+		String[] stringArray = string.split("@");
+		Block block = Block.getBlockFromName(stringArray[0]);
+		//this is written this way, so it will return null, and can throw the exception back in the main method, which allows it to identify which string throws the exception
+		return block == null ? null : block.getStateFromMeta(Integer.parseInt(stringArray[1]));
+	}
+
+
+	
 }

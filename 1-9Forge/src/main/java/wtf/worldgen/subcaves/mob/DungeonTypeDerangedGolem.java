@@ -17,7 +17,7 @@ import net.minecraft.util.math.BlockPos;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
 import wtf.worldgen.AbstractDungeonType;
-import wtf.worldgen.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class DungeonTypeDerangedGolem extends AbstractDungeonType {
 

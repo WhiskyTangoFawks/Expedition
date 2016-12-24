@@ -1,10 +1,16 @@
 package wtf.blocks;
 
+import java.util.List;
+import java.util.Random;
+
+import javax.annotation.Nullable;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -19,6 +25,7 @@ public abstract class AbstractBlockDerivative extends Block{
 	
 	public final IBlockState parentBackground;
 	protected final IBlockState parentForeground;
+	
 
 	/**
 	 * This class is used to create blocks whose properties are derivative of other blocks
@@ -32,14 +39,15 @@ public abstract class AbstractBlockDerivative extends Block{
 		super(backState.getMaterial());
 		this.parentBackground = backState;
 		this.parentForeground = foreState;
-		this.setCreativeTab(Core.wtfTab);
-		
+		if (this.parentBackground != null){
+			this.setCreativeTab(Core.wtfTab);
+		}
+
 		this.setHarvestLevel(foreState.getBlock().getHarvestTool(foreState), foreState.getBlock().getHarvestLevel(foreState));
-		
-		
 	}
 
-
+	
+	
     @Override
 	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos)
     {
@@ -79,6 +87,7 @@ public abstract class AbstractBlockDerivative extends Block{
             }
         }
     }
+
 
     
     @Override

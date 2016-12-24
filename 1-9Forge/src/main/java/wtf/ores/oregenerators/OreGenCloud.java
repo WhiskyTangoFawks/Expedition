@@ -55,12 +55,12 @@ public final double radius;
 
 						int densityToSet;
 						if (genDenseOres) {
-							densityToSet = getDensityToSet(random, (pos.getY() + yloop)/scan.surfaceAvg);
+							densityToSet = getDensityToSet(random, pos.getY() + yloop, scan.surfaceAvg, distance, radius);
 						} else {
 							densityToSet = 0;
 						}
 
-						if (random.nextFloat() < this.veinDensity){
+						if (random.nextFloat() < this.veinDensity/2 + (1-distance/radius)/2){
 							blocksSet+=densityToSet+1;
 							map.put(new OrePos(pos.getX() + xloop, pos.getY() + yloop, pos.getZ() + zloop, densityToSet), this.oreBlock);
 						}
@@ -71,11 +71,24 @@ public final double radius;
 		return blocksSet;
 		
 	}
-
+	
+	public int getDensityToSet(Random random, double height, double surfaceAvg, double radius, double maxRadius){
+		
+		//0 is a full ore, and 2 is a light ore
+		double depth = height/(surfaceAvg*maxGenRangeHeight);
+		double rand = random.nextFloat()+random.nextFloat()-1;
+		double radRatio = radius/maxRadius;
+		
+		double density = depth*1.5+radRatio*1.5 + rand;
+		
+		if (density < 1){ return 0;}
+		else if (density > 2){ return 2;}
+		return 1;
+	}
 
 	@Override
 	public int blocksReq() {
-		return (int) (1.3333*Math.PI*radius*radius*radius*this.veinDensity);
+		return (int) (1.3333*Math.PI*radius*radius*radius*this.veinDensity)*2;
 	}
 
 }

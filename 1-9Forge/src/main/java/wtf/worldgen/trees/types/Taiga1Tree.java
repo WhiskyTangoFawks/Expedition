@@ -17,6 +17,7 @@ public class Taiga1Tree extends TreeVars{
 		leaftype = LeafStyle.SPRUCE;
 		this.topLimitDown = 1.5;
 		this.topLimitUp = 0;
+		this.genBuffer = 3;
 	}
 
 	@Override

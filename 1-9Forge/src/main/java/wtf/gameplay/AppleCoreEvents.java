@@ -1,107 +1,88 @@
 package wtf.gameplay;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.event.world.BlockEvent.CropGrowEvent;
+import net.minecraftforge.event.world.BlockEvent.HarvestDropsEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import squeek.applecore.api.plants.PlantGrowthEvent;
 import wtf.config.GameplayConfig;
 
 public class AppleCoreEvents {
 
-	//Task: Biome specific growth modifiers
+	static HashMap<Block, Type> plantmods = new HashMap<Block, Type>();
 	
-	public static final int beetroot = Blocks.BEETROOTS.hashCode();
-	public static final int cactus = Blocks.CACTUS.hashCode();
-	public static final int carrot = Blocks.CARROTS.hashCode();
-	public static final int cocoa = Blocks.COCOA.hashCode();
-	public static final int melon = Blocks.MELON_STEM.hashCode();
-	public static final int mushroomBrown = Blocks.BROWN_MUSHROOM.hashCode();
-	public static final int mushroomRed = Blocks.RED_MUSHROOM.hashCode();
-	public static final int netherWart = Blocks.NETHER_WART.hashCode();
-	public static final int potato = Blocks.POTATOES.hashCode();
-	public static final int pumpkin = Blocks.PUMPKIN_STEM.hashCode();
-	public static final int reed = Blocks.REEDS.hashCode();
-	public static final int wheat = Blocks.WHEAT.hashCode();
+	static Random random = new Random();
+	
+	public static void initGrowthMap(){
+		plantmods.put(Blocks.BEETROOTS, Type.COLD);
+		plantmods.put(Blocks.CACTUS, Type.DRY);
+		plantmods.put(Blocks.CARROTS, Type.HILLS);
+		plantmods.put(Blocks.CACTUS, Type.DRY);
+		plantmods.put(Blocks.COCOA, Type.JUNGLE);
+		plantmods.put(Blocks.MELON_STEM, Type.LUSH);
+		plantmods.put(Blocks.BROWN_MUSHROOM, Type.SWAMP);
+		plantmods.put(Blocks.RED_MUSHROOM, Type.CONIFEROUS);
+		plantmods.put(Blocks.NETHER_WART, Type.NETHER);
+		
+		plantmods.put(Blocks.POTATOES, Type.PLAINS);
+		plantmods.put(Blocks.PUMPKIN_STEM, Type.FOREST);
+		plantmods.put(Blocks.REEDS, Type.RIVER);
+		plantmods.put(Blocks.WHEAT, Type.SAVANNA);
+		
+		
+		
+	}
 	
 	@SubscribeEvent
-	public static void GrowthTick(PlantGrowthEvent.AllowGrowthTick event){
-
-		int hash = event.block.hashCode();
-		int growthPercent = GameplayConfig.appleCoreConstant;
-		Biome biome = event.world.getBiomeForCoordsBody(event.pos);
-		
-		if (hash == beetroot){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.COLD)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == cactus){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.HOT) && BiomeDictionary.isBiomeOfType(biome, Type.DRY)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == carrot){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.HILLS)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == cocoa){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.JUNGLE)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == melon){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.HOT) && BiomeDictionary.isBiomeOfType(biome, Type.WET)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == mushroomBrown){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.SWAMP)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == mushroomRed){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.CONIFEROUS)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == netherWart){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.NETHER)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == potato){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.PLAINS)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == pumpkin){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.FOREST)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == reed){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.RIVER)){
-				growthPercent*=2;
-			}
-		}
-		else if (hash == wheat){
-			if (BiomeDictionary.isBiomeOfType(biome, Type.SAVANNA)){
-				growthPercent*=2;
-			}
-		}
-
-		else {
-			System.out.println("Unrecognised crop type " + event.block.getLocalizedName());
-		}
-		
-		if (event.random.nextInt(100) > growthPercent){
+	public void growthTickAllowed(CropGrowEvent event)
+	{	
+		//System.out.println(event.block.getLocalizedName());
+		double growthPercent = GameplayConfig.appleCoreConstant*2;
+		float chance = random.nextFloat();
+		if (chance > growthPercent){
 			event.setResult(Result.DENY);
+			return;
 		}
 		
+		Type type = plantmods.get(event.getState().getBlock());
+		if (type != null){
+			Biome biome = event.getWorld().getBiome(event.getPos());
+			if (BiomeDictionary.isBiomeOfType(biome, type)){
+				if (chance > GameplayConfig.appleCoreConstant){
+					event.setResult(Result.DENY);
+					return;
+				}
+			}
+		}
+		event.setResult(Result.DEFAULT);
+	}
+
+	@SubscribeEvent
+	public void BlockHarvestEvent(HarvestDropsEvent event){
+		Block plant = event.getState().getBlock();
+		if (plantmods.containsKey(plant)){
+			Biome biome = event.getWorld().getBiome(event.getPos());
+			if (!BiomeDictionary.isBiomeOfType(biome, plantmods.get(plant))){
+				List<ItemStack> drops = event.getDrops();
+				for (int loop = 0; loop < drops.size() && drops.size() > 1; loop++){
+					if (random.nextFloat() < 0.33){
+						drops.remove(loop);
+					}
+				}
+			}
+			
+			
+			
+		}
 	}
 	
 }

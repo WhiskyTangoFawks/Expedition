@@ -1,0 +1,38 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cactus",
+        "textures": {
+        	"particle": "wtfcore:blocks/red_cactus_side",
+        	"bottom": "wtfcore:blocks/red_cactus_bottom",
+        	"top": "wtfcore:blocks/red_cactus_top",
+        	"side": "wtfcore:blocks/red_cactus_side"
+        }
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory": [{
+        
+        }],
+	   	"age" : {
+   			"0" : { },
+			"1" : { },
+			"2" : { },
+			"3" : { },
+			"4" : { },
+			"5" : { },
+			"6" : { },
+			"7" : { },
+			"8" : { },
+			"9" : { },
+			"10" : { },
+			"11" : { },
+			"12" : { },
+			"13" : { },
+			"14" : { },
+			"15" : { }
+		}
+    }
+}

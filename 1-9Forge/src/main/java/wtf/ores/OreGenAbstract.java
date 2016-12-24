@@ -20,21 +20,26 @@ import wtf.utilities.wrappers.ChunkScan;
 
 public abstract class OreGenAbstract{
 	
-	protected final IBlockState oreBlock;
+	public final IBlockState oreBlock;
 	
 	//public String textureName;
 	public HashMap<BiomeDictionary.Type, Float> biomeModifier = new HashMap<BiomeDictionary.Type, Float>(); 
 	public HashSet<Integer> dimension = new HashSet<Integer>();
 	
-	protected final float maxGenRangeHeight;
-	protected final float minGenRangeHeight;
-	protected final int maxPerChunk;
-	protected final int minPerChunk;
-	protected Float veinDensity = 1F;
+	public float maxGenRangeHeight;
+	public float minGenRangeHeight;
+	public int maxPerChunk;
+	public int minPerChunk;
+	public Float veinDensity = 1F;
 	private Simplex simplex = null;
 	private int seed = 0;
-	public final boolean genDenseOres;
+	public boolean genDenseOres;
 	public final ArrayList<BiomeDictionary.Type> reqBiomeTypes = new ArrayList<BiomeDictionary.Type>();
+		
+	public OreGenAbstract(IBlockState blockstate){
+		this.oreBlock = blockstate;
+	
+	}
 	
 	public OreGenAbstract(IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk, int minPerChunk, boolean denseGen){
 		this.oreBlock = blockstate;
@@ -72,10 +77,10 @@ public abstract class OreGenAbstract{
 	
 	protected int getBlocksPerChunk(World world, ChunkCoords coords, Random random, double surfaceAvg){
 				
-		int genNum = WTFOreConfig.simplexGen ? (int) getSimplexOres(world, coords.getWorldX(), coords.getWorldZ()) : (int)random.nextFloat()*(maxPerChunk-minPerChunk)+minPerChunk ;
+		int genNum = WTFOreConfig.simplexGen ? (int) getSimplexOres(world, coords.getWorldX(), coords.getWorldZ()) : (int)(random.nextFloat()*(maxPerChunk-minPerChunk)+minPerChunk);
 		
 		
-		Type[] biomeTypes = BiomeDictionary.getTypesForBiome(world.getBiomeGenForCoords(new BlockPos(coords.getWorldX()+8, surfaceAvg, coords.getWorldZ()+8)));
+		Type[] biomeTypes = BiomeDictionary.getTypesForBiome(world.getBiome(new BlockPos(coords.getWorldX()+8, surfaceAvg, coords.getWorldZ()+8)));
 		for (Type biome : biomeTypes){
 			if (biomeModifier.containsKey(biome)){
 				genNum+= (minPerChunk+(maxPerChunk-minPerChunk)/2) * biomeModifier.get(biome);
@@ -94,14 +99,13 @@ public abstract class OreGenAbstract{
 		return random.nextInt(maxHeight-minHeight)+minHeight;
 	}
 
-	public int getDensityToSet(Random random, double d){
+	public int getDensityToSet(Random random, double height, double surfaceAvg){
 		
-		//This is a lot more dependent upon the random then I want it to be
-		//
-		//multiply depth by 2- anything above half can't return 0 then
-		//I really need something that gives me a bit better spread
+		//0 is a full ore, and 2 is a light ore
+		double depth = height/(surfaceAvg*maxGenRangeHeight);
+		double rand = random.nextFloat()+random.nextFloat()-1;
 		
-		double density = d*random.nextInt(8)/this.veinDensity;
+		double density = depth*3 + rand;
 		
 		if (density < 1){ return 0;}
 		else if (density > 2){ return 2;}

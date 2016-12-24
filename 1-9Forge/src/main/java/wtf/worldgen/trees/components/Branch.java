@@ -52,7 +52,7 @@ public class Branch {
 	//swap over to a calculated length, intead of simply number of blocks placed
 	
 	public BlockPos next(){
-		/*
+		
 		if (length > 6 && MathHelper.abs_max(vecX,  vecY) > vecY){
 			if ((int)(y+vecY) > (int)y){
 				y += vecY;
@@ -62,7 +62,7 @@ public class Branch {
 				y += vecY;
 				return new BlockPos(x, y, z);
 			}
-		}*/
+		}
 		
 		x += vecX;
 		y += vecY;

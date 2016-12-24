@@ -15,6 +15,11 @@ public class SurfacePos extends BlockPos{
 		this.z=z;
 	}
 
+	public SurfacePos setGenerated(){
+		this.generated=true;
+		return this;
+	}
+	
 	public boolean generated = false;
 
 	@Override

@@ -19,12 +19,15 @@ public class JungleTree extends TreeVars{
 		leafRad = 3.5;
 		airGenerate = true;
 		airGenHeight = 3;
+		
 		growDense = false;
 		cocoa = true;
 		rootFinalAngle = 0.5;
 		vines = 3;
 		rootInitialAngle = 1F;
 		rootIncrementAngle = 0.3F;
+		this.genBuffer = -6;
+		
 	}
 
 	@Override

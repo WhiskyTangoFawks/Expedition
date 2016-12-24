@@ -8,7 +8,7 @@ import wtf.init.BlockSets;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
 import wtf.worldgen.AbstractDungeonType;
-import wtf.worldgen.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class DungeonTypeCaveIn extends AbstractDungeonType {
 

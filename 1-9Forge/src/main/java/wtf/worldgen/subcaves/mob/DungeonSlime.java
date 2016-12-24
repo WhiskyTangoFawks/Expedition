@@ -9,7 +9,7 @@ import net.minecraft.world.World;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
 import wtf.worldgen.AbstractDungeonType;
-import wtf.worldgen.CaveBiomeGenMethods;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class DungeonSlime extends AbstractDungeonType{
 

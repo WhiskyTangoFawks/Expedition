@@ -39,35 +39,35 @@ public class OreGenCluster extends OreGenAbstract {
 	@Override
 	public int genVein(World world, ChunkDividedOreMap map, Random random, ChunkScan chunkscan, BlockPos pos) throws Exception {
 		int blocksPerChunk=0;
-		double depth = pos.getY()/chunkscan.surfaceAvg;
+		
 
 		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos, depth);
+			blocksPerChunk += genStarPosition(map, world, random, pos, chunkscan.surfaceAvg);
 		}
 		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos.up(), depth);
+			blocksPerChunk += genStarPosition(map, world, random, pos.up(), chunkscan.surfaceAvg);
 		}
-		blocksPerChunk += genStarPosition(map, world, random, pos.down(), depth);
+		blocksPerChunk += genStarPosition(map, world, random, pos.down(), chunkscan.surfaceAvg);
 		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos.north(), depth);
-		}
-		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos.south(), depth);
+			blocksPerChunk += genStarPosition(map, world, random, pos.north(), chunkscan.surfaceAvg);
 		}
 		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos.east(), depth);
+			blocksPerChunk += genStarPosition(map, world, random, pos.south(), chunkscan.surfaceAvg);
 		}
 		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos.west(), depth);
+			blocksPerChunk += genStarPosition(map, world, random, pos.east(), chunkscan.surfaceAvg);
+		}
+		if (random.nextFloat() < this.veinDensity){
+			blocksPerChunk += genStarPosition(map, world, random, pos.west(), chunkscan.surfaceAvg);
 		}
 		return blocksPerChunk;
 
 	}
 
-	private int genStarPosition(ChunkDividedOreMap map, World world, Random random, BlockPos pos, double depth) throws Exception {
+	private int genStarPosition(ChunkDividedOreMap map, World world, Random random, BlockPos pos, double surface) throws Exception {
 		int densityToSet;
 		if (genDenseOres){
-			densityToSet = getDensityToSet(random, depth);
+			densityToSet = getDensityToSet(random, pos.getY(), surface);
 		}
 		else {
 			densityToSet = 0;
@@ -81,7 +81,7 @@ public class OreGenCluster extends OreGenAbstract {
 	@Override
 	public int blocksReq() {
 		// TODO Auto-generated method stub
-		return (int) (6*this.veinDensity);
+		return (int) (12*this.veinDensity);
 	}
 
 

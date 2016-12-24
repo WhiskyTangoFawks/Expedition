@@ -12,14 +12,11 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import wtf.init.WTFBlocks;
 
 
@@ -43,10 +40,10 @@ public class BlockSpeleothem extends AbstractBlockDerivative{
 	}
 
 	public Block setFrozen(String string){
-		frozen = (BlockSpeleothem) WTFBlocks.registerBlockItemSubblocks(new BlockSpeleothemFrozen(this), 6, "frozen_" + string);
+		frozen = (BlockSpeleothem) WTFBlocks.registerBlockItemSubblocks(new BlockSpeleothemFrozen(this), 6, string+"Frozen");
 		return this;
 	}
-
+/*
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block blockIn)
 	{
@@ -54,7 +51,7 @@ public class BlockSpeleothem extends AbstractBlockDerivative{
 			world.destroyBlock(pos, true);
 		}
 	}
-
+*/
 
 
 	@Override

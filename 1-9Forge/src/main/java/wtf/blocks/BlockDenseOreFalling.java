@@ -27,11 +27,25 @@ public class BlockDenseOreFalling extends AbstractBlockDerivativeFalling {
 	
 
 	
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
+	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer)
     {
-        return BlockRenderLayer.CUTOUT_MIPPED;
+        switch (layer){
+		case CUTOUT:
+			return false;
+		case CUTOUT_MIPPED:
+			return false;
+		case SOLID:
+			return true;
+		case TRANSLUCENT:
+			return true;
+		default:
+			break;
+        
+        }
+        return false;
     }
+	
     
     @Override
 	public IBlockState getStateFromMeta(int meta) {
@@ -63,5 +77,10 @@ public class BlockDenseOreFalling extends AbstractBlockDerivativeFalling {
 	protected BlockStateContainer createBlockState() {
 		return new BlockStateContainer(this, DENSITY);
 	}
+	
+	public boolean canSilkHarvest(World world, BlockPos pos, IBlockState state, EntityPlayer player)
+    {
+        return false;
+    }
     
 }

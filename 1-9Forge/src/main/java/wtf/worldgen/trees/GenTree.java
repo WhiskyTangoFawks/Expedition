@@ -24,16 +24,11 @@ public class GenTree {
 	private static final float PId2 = (float)Math.PI/2;
 	private static final float PId4 = (float)Math.PI/4;
 
-	public static boolean generate(TreePos tree){
+	public static boolean tryGenerate(TreePos tree) throws Exception{
 
-		if (!tree.type.waterGenerate && tree.world.getBlockState(tree.pos.up()).getMaterial().hashCode() == Material.WATER.hashCode()){
-			//System.out.println("Water generation stopped");
+		if (!tree.chunkscan.checkPositionForTreeGen(tree.world, tree)){
 			return false;
-
-			//don't generate underwater
 		}
-		//System.out.println("Water check passed");
-
 		if (genTrunk(tree)){	
 			//System.out.println("trunk generated");
 			float offset = genTop(tree, tree.random.nextFloat()*PIx2);
@@ -44,12 +39,20 @@ public class GenTree {
 			//System.out.println("roots generated");
 			tree.placeBlocks();
 			//System.out.println("blocks placed in world");
+			int rad = (int)(tree.type.genBuffer + tree.trunkRadius + tree.type.getBranchLength(tree.scale, tree.trunkHeight, tree.trunkHeight/2));
+			tree.chunkscan.setGenerated(tree.pos, rad > tree.trunkRadius ? rad : (int)tree.trunkRadius);
 			return true;
 		}
 		else{
 			//System.out.println("GenFailed");
 			return false;
 		}
+	}
+	
+	public static boolean genRootsOnly(TreePos tree){
+		genMainRoots(tree);
+		tree.placeBlocks();
+		return true;
 	}
 
 
@@ -156,6 +159,8 @@ public class GenTree {
 		}//end branch node loop
 	}
 
+	static int airHash = Blocks.AIR.hashCode();
+	
 	public static void genMainRoots(TreePos tree){
 
 
@@ -193,8 +198,26 @@ public class GenTree {
 					tree.setRoot(pos);
 					if (tree.type.rootWall){
 
-						for (int loop = 1; BlockSets.nonSolidBlockSet.contains(getBlockState(tree, pos.down(loop)).getBlock()) && loop > -4; loop--){
+						for (int loop = 1; BlockSets.nonSolidBlockSet.contains(getBlockState(tree, pos.down(loop)).getBlock()) && loop > tree.type.airGenHeight+1; loop++){
 							tree.setRoot(pos.down(loop));
+							
+						}
+					}
+					else {
+						if (tree.random.nextFloat() < tree.type.rootDecoRate){
+							if (tree.random.nextBoolean()){
+								BlockPos decoPos = pos.down();
+								if (getBlockState(tree, decoPos).getBlock().hashCode() == airHash){
+									tree.setDeco(pos.down(), tree.type.decoDown);
+								}
+							}
+							else {
+								BlockPos decoPos = pos.up();
+								if (getBlockState(tree, decoPos).getBlock().hashCode() == airHash){
+									tree.setDeco(pos.up(), tree.type.decoUp);
+								}
+							}
+
 						}
 					}
 
@@ -221,11 +244,10 @@ public class GenTree {
 		
 		while (tree.inTrunk(branch.pos())){
 			branch.next();
-			
 		}
 		
 
-		if (tree.type.cocoa && tree.random.nextInt(5)==0){
+		if (tree.type.cocoa && tree.random.nextFloat() < 0.3){
 			genCocoa(tree, branch);
 		}
 		BlockPos pos = branch.pos();
@@ -244,11 +266,14 @@ public class GenTree {
 				if (branch.length-branch.count > 3){
 					tree.setBranch(pos, branch.axis);
 				}
+				
 				tree.setLeaf(pos.up());
-				tree.setLeaf(pos.east());
-				tree.setLeaf(pos.west());
-				tree.setLeaf(pos.north());
-				tree.setLeaf(pos.south());
+				for (int loop = 1; loop < tree.type.leafRad+1; loop++){
+					tree.setLeaf(pos.east(loop));
+					tree.setLeaf(pos.west(loop));
+					tree.setLeaf(pos.north(loop));
+					tree.setLeaf(pos.south(loop));
+				}
 				break;
 			default:
 				break;
@@ -320,13 +345,6 @@ public class GenTree {
 						}
 					}
 				}
-
-
-				//Set icicles in snowy biomes: problem- making sure that it doesn't set just a base or just a tip of a large one-
-				//Possibly seperate out the deco blocks from the generation hash, and do them seperately afterwards
-				//if (random.nextBoolean ())
-				//tree.setDeco(xpos+xloop, ypos-1, zpos+zloop, BlockIcicle.IcicleSmall, 1);
-
 			}
 		}
 	}	
@@ -419,7 +437,7 @@ public class GenTree {
 
 	}
 
-	static Material[] replaceables = {Material.AIR, Material.CACTUS, Material.GOURD, Material.GRASS, Material.LEAVES, Material.VINE, Material.PLANTS, Material.ICE, Material.PACKED_ICE, Material.GROUND, Material.SAND, Material.WATER};
+	static Material[] replaceables = {Material.AIR, Material.CACTUS, Material.GOURD, Material.GRASS, Material.LEAVES, Material.VINE, Material.PLANTS, Material.ICE, Material.PACKED_ICE, Material.GROUND, Material.SAND, Material.WATER, Material.SNOW};
 	protected static HashSet<Material> rootReplaceable = new HashSet<Material>(Arrays.asList(replaceables));
 
 	protected static boolean canReplaceRoot(TreePos tree, BlockPos pos){

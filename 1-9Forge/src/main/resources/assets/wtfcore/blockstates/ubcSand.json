@@ -1,0 +1,46 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube_all"
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory0": [{
+			"textures" : { "all" : "wtfcore:blocks/limestone_sand"}
+        }],
+        "inventory1": [{
+			"textures" : { "all" : "wtfcore:blocks/chalk_sand"}
+        }],
+        "inventory2": [{
+			"textures" : { "all" : "wtfcore:blocks/shale_sand"}
+        }],
+        "inventory3": [{
+			"textures" : { "all" : "wtfcore:blocks/siltstone_sand"}
+        }],
+        "inventory4": [{
+			"textures" : { "all" : "wtfcore:blocks/lignite_sand"}
+        }],
+        "inventory5": [{
+			"textures" : { "all" : "wtfcore:blocks/dolomite_sand"}
+        }],
+        "inventory6": [{
+			"textures" : { "all" : "wtfcore:blocks/greywacke_sand"}
+        }],
+        "inventory7": [{
+			"textures" : { "all" : "wtfcore:blocks/chert_sand"}
+        }],
+        
+        "variant" : {
+        	"limestone" : { "textures" : { "all" : "wtfcore:blocks/limestone_sand"} },
+       		"chalk" 	: { "textures" : { "all" : "wtfcore:blocks/chalk_sand"} },
+        	"shale" 	: { "textures" : { "all" : "wtfcore:blocks/shale_sand"} },
+        	"siltstone" : { "textures" : { "all" : "wtfcore:blocks/siltstone_sand"} },
+	        "lignite" 	: { "textures" : { "all" : "wtfcore:blocks/lignite_sand"} },
+    	    "dolomite"	: { "textures" : { "all" : "wtfcore:blocks/dolomite_sand"} },
+    	    "greywacke"	: { "textures" : { "all" : "wtfcore:blocks/greywacke_sand"} },
+    	    "chert"		: { "textures" : { "all" : "wtfcore:blocks/chert_sand"} }
+		}	
+    }
+}

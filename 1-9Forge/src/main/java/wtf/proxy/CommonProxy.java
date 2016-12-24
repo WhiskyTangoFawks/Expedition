@@ -18,6 +18,16 @@ public class CommonProxy {
 		
 	}
 
+	public void initWCICRender() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void enableBlockstateTexturePack() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 
 }

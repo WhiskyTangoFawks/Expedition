@@ -18,11 +18,13 @@ public class RedwoodTree extends TreeVars{
 		this.topLimitDown = 2;
 		this.topLimitUp = 0;
 		this.topLimitIncrement = Math.PI/8;
+		this.genBuffer = -100;
+		this.leafRad = 3;
 	}
 
 	@Override
 	public int getBranchesPerNode(double scale) {
-		return (int) (15+15*scale);
+		return (int) (8+15*scale);
 	}
 
 	@Override
@@ -37,7 +39,7 @@ public class RedwoodTree extends TreeVars{
 
 	@Override
 	public double getBranchPitch(double scale) {
-		return -0.2;
+		return -0.35;
 	}
 
 	@Override

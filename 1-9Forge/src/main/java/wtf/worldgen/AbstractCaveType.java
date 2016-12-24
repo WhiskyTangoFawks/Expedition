@@ -7,9 +7,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
 import wtf.utilities.Simplex;
 import wtf.utilities.wrappers.AdjPos;
+import wtf.utilities.wrappers.CavePosition;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
 import wtf.utilities.wrappers.SurfacePos;
+import wtf.worldgen.caves.CaveBiomeGenMethods;
 import wtf.worldgen.trees.TreeTypeGetter;
 import wtf.worldgen.trees.TreeVars;
 
@@ -18,7 +20,7 @@ public abstract class AbstractCaveType
 
 	public int dungeonPercentChance = 5;
 	final public String name;
-	private static Simplex simplex = new Simplex(5000);
+	protected static Simplex simplex = new Simplex(5000);
 	
 	public final int ceilingaddonchance;
 	public final int flooraddonchance;
@@ -46,6 +48,8 @@ public abstract class AbstractCaveType
 		
 	}
 	
+
+	
 	/**
 	 * 
 	 * @param pos
@@ -66,10 +70,6 @@ public abstract class AbstractCaveType
 	
 	public void setTopBlock(CaveBiomeGenMethods gen, Random random, SurfacePos pos){
 		
-	}
-	
-	public TreeVars getTreeType(World world, ChunkScan scan, WorldGenAbstractTree oldTree){
-		return TreeTypeGetter.getTree(world, oldTree);
 	}
 
 }
