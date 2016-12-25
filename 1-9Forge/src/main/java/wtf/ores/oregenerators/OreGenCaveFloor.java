@@ -15,6 +15,8 @@ import wtf.utilities.wrappers.ChunkScan;
 
 public class OreGenCaveFloor extends OreGenAbstract{
 
+
+
 	private final OreGenAbstract veinType;
 	private final List<surface> surfaceList;
 	
@@ -22,13 +24,12 @@ public class OreGenCaveFloor extends OreGenAbstract{
 		floor, wall, ceiling
 	}
 	
-	public OreGenCaveFloor(OreGenAbstract vein, IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk,
-			int minPerChunk, boolean genDense, List<surface> list) {
-		super(blockstate, maxGenRangeHeight, minGenRangeHeight, maxPerChunk, minPerChunk, genDense);
+	public OreGenCaveFloor(OreGenAbstract vein, IBlockState blockstate, int[] genRange, int[] minmaxPerChunk, boolean denseGen, ArrayList<surface> list) {
+		super(blockstate, genRange, minmaxPerChunk, denseGen);
 		veinType = vein;
 		surfaceList = list;
-
 	}
+
 
 	
 	@Override

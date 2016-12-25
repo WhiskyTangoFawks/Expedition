@@ -14,14 +14,13 @@ import wtf.utilities.wrappers.ChunkScan;
 
 public class OreGenUnderWater extends OreGenAbstract{
 
-	private final OreGenAbstract veinType;
-	
-	public OreGenUnderWater(OreGenAbstract vein, IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk,
-			int minPerChunk, boolean denseGen) {
-		super(blockstate, maxGenRangeHeight, minGenRangeHeight, maxPerChunk, minPerChunk, denseGen);
+	public OreGenUnderWater(OreGenAbstract vein, IBlockState blockstate, int[] genRange, int[] minmaxPerChunk, boolean denseGen) {
+		super(blockstate, genRange, minmaxPerChunk, denseGen);
 		veinType = vein;
 	}
 
+	private final OreGenAbstract veinType;
+	
 	@Override
 	public void doOreGen(World world, ChunkDividedOreMap map, Random random, ChunkCoords coords, ChunkScan chunkscan)
 			throws Exception {

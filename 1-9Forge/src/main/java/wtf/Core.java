@@ -41,7 +41,7 @@ import wtf.init.WTFItems;
 import wtf.init.WTFRecipes;
 import wtf.ores.OreGenerator;
 import wtf.ores.VanillOreGenCatcher;
-import wtf.ores.config.WTFOreConfig;
+import wtf.ores.config.WTFOresNewConfig;
 import wtf.proxy.CommonProxy;
 import wtf.utilities.BlockstateWriter;
 import wtf.utilities.UBCCompat;
@@ -85,7 +85,7 @@ public class Core {
 		coreLog = preEvent.getModLog();
 
 		BlockstateWriter.writeResourcePack();
-		UBC = Loader.isModLoaded("undergroundbiomes");
+		UBC = false;//Loader.isModLoaded("undergroundbiomes");
 		if (UBC){
 			UBCCompat.loadUBCStone();
 		}
@@ -112,7 +112,7 @@ public class Core {
 		}
 		
 		if (CoreConfig.enableOreGen){
-			WTFOreConfig.loadConfig();
+			WTFOresNewConfig.loadConfig();
 		}
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());

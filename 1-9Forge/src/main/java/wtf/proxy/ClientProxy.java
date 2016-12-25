@@ -22,6 +22,7 @@ public class ClientProxy extends CommonProxy {
 		
 	@Override
 	public void enableBlockstateTexturePack(){
+		//ResourcePack : WTFOres
 		//ReflectionHelper.<List<IResourcePack>>getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "defaultResourcePacks", "field_110449_ao").add(wtfResourcePack);
 	}
 	

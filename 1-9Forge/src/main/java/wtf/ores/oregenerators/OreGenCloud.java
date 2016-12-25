@@ -13,13 +13,20 @@ import wtf.utilities.wrappers.ChunkScan;
 import wtf.utilities.wrappers.OrePos;
 
 public class OreGenCloud extends OreGenAbstract {
+
 public final double radius;
 
-	public OreGenCloud(IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk,
+/*	
+public OreGenCloud(IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk,
 			int minPerChunk, int diameter, boolean genDense) {
 		super(blockstate, maxGenRangeHeight, minGenRangeHeight, maxPerChunk, minPerChunk, genDense);
 		this.radius = diameter / 2F;
 	}
+*/
+public OreGenCloud(IBlockState blockstate, int[] genRange, int[] minmaxPerChunk, boolean denseGen, int diameter) {
+	super(blockstate, genRange, minmaxPerChunk, denseGen);
+	this.radius = diameter / 2F;
+}
 
 	
 	@Override

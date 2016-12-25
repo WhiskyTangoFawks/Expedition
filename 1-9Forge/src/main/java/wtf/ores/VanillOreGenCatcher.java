@@ -1,9 +1,10 @@
 package wtf.ores;
 
+import net.minecraft.init.Blocks;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import wtf.ores.config.WTFOreConfig;
+import wtf.ores.config.WTFOresNewConfig;
 
 public class VanillOreGenCatcher {
 
@@ -16,38 +17,38 @@ public class VanillOreGenCatcher {
 		case ANDESITE:
 			break;
 		case COAL:
-			if (WTFOreConfig.cancelVanillaCoal){event.setResult(Event.Result.DENY);}
+			if (WTFOresNewConfig.cancelOres.contains(Blocks.COAL_ORE.getDefaultState())){event.setResult(Event.Result.DENY);}
 			break;
 		case CUSTOM:
 			break;
 		case DIAMOND:
-			if (WTFOreConfig.cancelVanillaDiamond){event.setResult(Event.Result.DENY);}
+			if (WTFOresNewConfig.cancelOres.contains(Blocks.DIAMOND_ORE.getDefaultState())){event.setResult(Event.Result.DENY);}
 			break;
 		case DIORITE:
 			break;
 		case DIRT:
 			break;
 		case EMERALD:
-			if (WTFOreConfig.cancelVanillaEmerald){event.setResult(Event.Result.DENY);}
+			if (WTFOresNewConfig.cancelOres.contains(Blocks.EMERALD_ORE.getDefaultState())){event.setResult(Event.Result.DENY);}
 			break;
 		case GOLD:
-			if (WTFOreConfig.cancelVanillaGold){event.setResult(Event.Result.DENY);}
+			if (WTFOresNewConfig.cancelOres.contains(Blocks.GOLD_ORE.getDefaultState())){event.setResult(Event.Result.DENY);}
 			break;
 		case GRANITE:
 			break;
 		case GRAVEL:
 			break;
 		case IRON:
-			if (WTFOreConfig.cancelVanillaIron){event.setResult(Event.Result.DENY);}
+			if (WTFOresNewConfig.cancelOres.contains(Blocks.IRON_ORE.getDefaultState())){event.setResult(Event.Result.DENY);}
 			break;
 		case LAPIS:
-		if (WTFOreConfig.cancelVanillaLapis){event.setResult(Event.Result.DENY);}
+			if (WTFOresNewConfig.cancelOres.contains(Blocks.LAPIS_ORE.getDefaultState())){event.setResult(Event.Result.DENY);}
 			break;
 		case QUARTZ:
-			if (WTFOreConfig.cancelVanillaQuartz){event.setResult(Event.Result.DENY);}
+			if (WTFOresNewConfig.cancelOres.contains(Blocks.QUARTZ_ORE.getDefaultState())){event.setResult(Event.Result.DENY);}
 			break;
 		case REDSTONE:
-			if (WTFOreConfig.cancelVanillaRedstone){event.setResult(Event.Result.DENY);}
+			if (WTFOresNewConfig.cancelOres.contains(Blocks.REDSTONE_ORE.getDefaultState())){event.setResult(Event.Result.DENY);}
 			break;
 		case SILVERFISH:
 			break;

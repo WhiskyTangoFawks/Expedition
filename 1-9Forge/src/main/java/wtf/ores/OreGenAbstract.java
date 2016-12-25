@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import wtf.ores.config.WTFOreConfig;
+import wtf.ores.config.WTFOresNewConfig;
 import wtf.utilities.Simplex;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkDividedHashMap;
@@ -36,18 +36,14 @@ public abstract class OreGenAbstract{
 	public boolean genDenseOres;
 	public final ArrayList<BiomeDictionary.Type> reqBiomeTypes = new ArrayList<BiomeDictionary.Type>();
 		
-	public OreGenAbstract(IBlockState blockstate){
-		this.oreBlock = blockstate;
+
 	
-	}
-	
-	public OreGenAbstract(IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk, int minPerChunk, boolean denseGen){
+	public OreGenAbstract(IBlockState blockstate, int[]genRange, int[] minmaxPerChunk, boolean denseGen){
 		this.oreBlock = blockstate;
-		this.maxGenRangeHeight = maxGenRangeHeight;
-		this.minGenRangeHeight = minGenRangeHeight;
-		this.maxPerChunk = maxPerChunk;
-		this.minPerChunk = minPerChunk;
-		this.dimension.add(0);
+		this.maxGenRangeHeight = genRange[0]/100F;
+		this.minGenRangeHeight = genRange[1]/100F;
+		this.maxPerChunk = minmaxPerChunk[0];
+		this.minPerChunk = minmaxPerChunk[1];
 		genDenseOres = denseGen;
 	}
 	
@@ -77,7 +73,7 @@ public abstract class OreGenAbstract{
 	
 	protected int getBlocksPerChunk(World world, ChunkCoords coords, Random random, double surfaceAvg){
 				
-		int genNum = WTFOreConfig.simplexGen ? (int) getSimplexOres(world, coords.getWorldX(), coords.getWorldZ()) : (int)(random.nextFloat()*(maxPerChunk-minPerChunk)+minPerChunk);
+		int genNum = WTFOresNewConfig.simplexGen ? (int) getSimplexOres(world, coords.getWorldX(), coords.getWorldZ()) : (int)(random.nextFloat()*(maxPerChunk-minPerChunk)+minPerChunk);
 		
 		
 		Type[] biomeTypes = BiomeDictionary.getTypesForBiome(world.getBiome(new BlockPos(coords.getWorldX()+8, surfaceAvg, coords.getWorldZ()+8)));

@@ -13,9 +13,11 @@ import wtf.utilities.wrappers.OrePos;
 
 public class OreGenSingle extends OreGenAbstract{
 
-	public OreGenSingle(IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk, int minPerChunk, boolean genDense) {
-		super(blockstate, maxGenRangeHeight, minGenRangeHeight, maxPerChunk, minPerChunk, genDense);
 
+
+	public OreGenSingle(IBlockState blockstate, int[] genRange, int[] minmaxPerChunk, boolean denseGen) {
+		super(blockstate, genRange, minmaxPerChunk, denseGen);
+		
 	}
 
 	@Override

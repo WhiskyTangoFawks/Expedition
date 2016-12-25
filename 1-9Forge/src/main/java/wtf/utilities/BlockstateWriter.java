@@ -7,7 +7,7 @@ import java.io.IOException;
 import net.minecraft.block.state.IBlockState;
 import wtf.config.StoneRegEntry;
 import wtf.config.WTFStoneRegistry;
-import wtf.ores.config.WTFOreConfig;
+import wtf.ores.config.WTFOresNewConfig;
 
 public class BlockstateWriter {
 
@@ -159,7 +159,7 @@ public class BlockstateWriter {
 			//For these- I don't need the blockstate location- I need the block's texture location
 			//for vanilla, it's going to be same as the override
 			//for UBC and other mods- it's going to need to be coded in as an override
-
+			
 			writer.write("{\"forge_marker\": 1,");
 			writer.newLine();
 			writer.write("\"defaults\": {\"textures\": {\"texture\": \""+stone.textureLocation+"\"}},");
@@ -318,7 +318,7 @@ public class BlockstateWriter {
 				writer.write("{\"model\": \"minecraft:cube_all\", \"textures\": { \"all\": \"wtfcore:overlays/"+orestring+loop+"\" }},");
 				writer.newLine();
 				writer.write("{\"model\": \"minecraft:cube_all\", \"y\":180, \"x\":180, \"textures\": { \"all\": \"wtfcore:overlays/"+orestring+loop+"\" }}");				
-				if (!WTFOreConfig.rotate180only){
+				if (!WTFOresNewConfig.rotate180only){
 					writer.write(",");
 					writer.newLine();
 					writer.write("{\"model\": \"minecraft:cube_all\", \"y\":90, \"x\":90, \"textures\": { \"all\": \"wtfcore:overlays/"+orestring+loop+"\" }},");

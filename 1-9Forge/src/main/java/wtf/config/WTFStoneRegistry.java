@@ -112,6 +112,8 @@ public class WTFStoneRegistry {
 				
 				
 				stoneReg.put(state, new StoneRegEntry(state, cobblestone, locTexture, locBlockstate, staticDeco, animDeco, speleothems, cracked));
+				
+				
 			}
 			else {
 				config.get(stateString, "unable to find Block", "").getString();	
