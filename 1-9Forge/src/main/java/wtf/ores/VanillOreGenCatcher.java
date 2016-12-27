@@ -5,7 +5,6 @@ import net.minecraft.init.Blocks;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import wtf.config.ore.WTFOresNewConfig;
 
 public class VanillOreGenCatcher {
 	

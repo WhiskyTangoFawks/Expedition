@@ -35,11 +35,11 @@ public class ClientProxy extends CommonProxy {
 		// Choose which one you want and remove the other lines.
 		
 		// 2 Lines below enable resource pack, but it stays visible in RPs GUI and can be disabled by user.
-		rpEnabled.add(wtfResourcePack);
-		repo.setRepositories(rpEnabled);
+		//rpEnabled.add(wtfResourcePack);
+		//repo.setRepositories(rpEnabled);
 
 		// A line below enables resource packs and hides it from RPs GUI making user unable to disable it.
-		ReflectionHelper.<List<IResourcePack>, Minecraft>getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "defaultResourcePacks", "field_110449_ao").add(wtfResourcePack.getResourcePack());
+		//ReflectionHelper.<List<IResourcePack>, Minecraft>getPrivateValue(Minecraft.class, Minecraft.getMinecraft(), "defaultResourcePacks", "field_110449_ao").add(wtfResourcePack.getResourcePack());
 	}
 	
 	@Override

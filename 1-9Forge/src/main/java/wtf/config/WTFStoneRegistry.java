@@ -123,6 +123,9 @@ public class WTFStoneRegistry extends ConfigMaster {
 					if (drop != null && drop != state.getBlock()){
 						cobblestring = drop.getRegistryName()+"@"+meta;
 					}
+					else {
+						cobblestring = "";
+					}
 					
 				}
 				
