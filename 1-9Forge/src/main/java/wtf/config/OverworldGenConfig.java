@@ -3,7 +3,7 @@ package wtf.config;
 import java.io.File;
 import net.minecraftforge.common.config.Configuration;
 
-public class OverworldGenConfig{
+public class OverworldGenConfig extends ConfigMaster{
 
 	public static boolean genTrees;
 	public static boolean modifySurface;
@@ -51,7 +51,7 @@ public class OverworldGenConfig{
 	
 	public static void loadConfig() {
 
-		Configuration config = new Configuration(new File("config/WTFOverworldGenConfig.cfg"));
+		Configuration config = new Configuration(new File(configPath + "WTFOverworldGenConfig.cfg"));
 
 		genTrees = config.get("Trees", "Allow this mod to bypass normal tree generation, and do custom tree generation (required for the rest of the tree configs to have effect)", true).getBoolean();
 		treeReplacementRate = config.get("Trees", "Percentage of trees generated that this mod will attempt to replace with custom big trees", 50).getDouble()/100;

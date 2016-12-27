@@ -19,14 +19,15 @@ import wtf.init.BlockSets.Modifier;
 import wtf.utilities.UBCCompat;
 import wtf.utilities.wrappers.StateAndModifier;
 
-public class WTFStoneRegistry {
+public class WTFStoneRegistry extends ConfigMaster {
 
 	static Random rand = new Random();
-	public static Configuration config = new Configuration(new File("config/WTFStoneRegistry.cfg"));
+	public static Configuration config = new Configuration(new File(configPath+"WTFStoneRegistry.cfg"));
 
 	public static HashMap<IBlockState, String> defBlockStateLocations = new HashMap<IBlockState, String>();
 	public static HashMap<IBlockState, String> defTextureLocations = new HashMap<IBlockState, String>();
 	public static HashMap<IBlockState, String> defCobble = new HashMap<IBlockState, String>();
+	public static HashMap<Block, Integer> defSpeed = new HashMap<Block, Integer>();
 
 	public static HashMap<IBlockState, StoneRegEntry> stoneReg = new HashMap<IBlockState, StoneRegEntry>();
 
@@ -63,55 +64,88 @@ public class WTFStoneRegistry {
 		
 		defCobble.put(Blocks.SANDSTONE.getDefaultState(), "minecraft:sand@0");
 		defCobble.put(Blocks.RED_SANDSTONE.getDefaultState(), "minecraft:sand@1");
+		
+		defSpeed.put(Blocks.STONE, 15);
+		defSpeed.put(Blocks.SANDSTONE, 30);
+		defSpeed.put(Blocks.RED_SANDSTONE, 30);
+		if (Core.UBC){
+			defSpeed.put(UBCCompat.IgneousStone[0].getBlock(), 5);
+			defSpeed.put(UBCCompat.MetamorphicStone[0].getBlock(), 20);
+			defSpeed.put(UBCCompat.SedimentaryStone[0].getBlock(), 30);
+		}
 	}
 
 	public static void loadStoneReg() throws Exception{
 		loadOverrideMap();
 		config.load();
 
-		String defstone = "minecraft:stone@0, minecraft:stone@1,minecraft:stone@3, minecraft:stone@5,minecraft:sandstone@0, minecraft:red_sandstone@0, minecraft:obsidian@0, minecraft:dirt@0, minecraft:sand@0, minecraft:sand@1, minecraft:gravel@0, minecraft:netherrack@0";
-		
+		String[] defstone = {"minecraft:stone@0", "minecraft:stone@1", "minecraft:stone@3", "minecraft:stone@5","minecraft:sandstone@0", "minecraft:red_sandstone@0", "minecraft:obsidian@0", "minecraft:dirt@0", 
+				"minecraft:sand@0", "minecraft:sand@1", "minecraft:gravel@0", "minecraft:netherrack@0"};
+				
 		if (Core.UBC){
-			System.out.println("Adding UBC stone to the registry- you may need to delete you configuration to allow it to generate correctly");
-			defstone += ", "+ UBCCompat.UBCStoneList;
+			System.out.println("Adding UBC stone to the registry- you may need to delete the configuration file to allow it to generate correctly if the config has already generated");
+			String[] newDef = new String[defstone.length+UBCCompat.UBCStoneList.length];
+			int count = 0;
+			for (String string : defstone){
+				newDef[count] = string;
+				count++;
+			}
+			for (String string : UBCCompat.UBCStoneList){
+				newDef[count] = string;
+				count++;
+			}
+			defstone = newDef;
 		}
+
 		
-		String stoneList = config.get("Master Stone List", "Master list of stone blockstates", defstone).getString().replaceAll("\\s","");;
-		
-		String[] stoneset = stoneList.split(",");
+		String[] stoneset = config.get("Master Stone List", "Master list of stone blockstates", defstone).getStringList();
+
+		//String[] stoneset = stoneList.split(",");
 
 		for (String stateString : stoneset){
 
 			IBlockState state = getBlockState(stateString);
-			
-			
+
+
 			if (state != null){
 				String locBlockstate = config.get(stateString, "BlockState resource location", defBlockStateLocations.get(state) == null ? state.getBlock().getRegistryName().toString() : defBlockStateLocations.get(state).toString()).getString();
 				String locTexture = config.get(stateString, "Stone texture resource location", defTextureLocations.get(state) == null ? "null" : defTextureLocations.get(state).toString()).getString();
 
-				Block drop = Block.getBlockFromItem(state.getBlock().getItemDropped(state, rand, 0));
-				int meta = state.getBlock().damageDropped(state);
+
+				//Igneous and Metamorphic aren't automatically finding their cobblestone
+
 				String cobblestring = defCobble.get(state);
-				if (drop != null && drop != state.getBlock()){
-					cobblestring = drop.getRegistryName()+"@"+meta;
+
+				if (cobblestring == null){
+					Block drop = Block.getBlockFromItem(state.getBlock().getItemDropped(state, rand, 0));
+					int meta = state.getBlock().damageDropped(state);
+
+					if (drop != null && drop != state.getBlock()){
+						cobblestring = drop.getRegistryName()+"@"+meta;
+					}
+					
 				}
 				
+				cobblestring = config.get (stateString, "Cobblestone version of block", cobblestring).getString();
+				
 				IBlockState cobblestone = getBlockState(cobblestring);
-				if (cobblestone != null && cobblestone != state){
-					cobblestring = config.get (stateString, "Cobblestone version of block", cobblestring).getString();
-					BlockSets.blockTransformer.put(new StateAndModifier(state, Modifier.COBBLE), cobblestone);
-				}
-				else {
-					cobblestring = config.get (stateString, "Cobblestone version of block", "null").getString();
-				}
 				
 				boolean speleothems =  config.get(stateString, "Generate stalactite and stalagmites", state.getMaterial() ==Material.ROCK).getBoolean();
 				boolean staticDeco =  config.get(stateString, "Generate static deco blocks (moss, cracked, ect)", true).getBoolean();
 				boolean animDeco =  config.get(stateString, "Generate animated deco blocks (Lava crust, dripping, ect)", state.getMaterial() ==Material.ROCK).getBoolean();
 				boolean cracked = config.get(stateString, "Allow cracked version to spawn in world (requires static deco blocks, and cracked stone ore generation)", state.getMaterial() == Material.ROCK).getBoolean();
+				boolean frac = false;
+				if (CoreConfig.gameplaytweaks){
+					int speed = config.get(stateString, "Gameplay: Percentage speed modifier to mine (100% disables)", defSpeed.get(state.getBlock())!= null ? defSpeed.get(state.getBlock()) : 100 ).getInt();
+					BlockSets.blockMiningSpeed.put(state, (float)speed/100F);
 				
+					if (cobblestone != null){
+						frac = config.get(stateString, "Gameplay: Fractures into cobblestone variant before breaking", true).getBoolean();
+					}
+					
+				}
 				
-				stoneReg.put(state, new StoneRegEntry(state, cobblestone, locTexture, locBlockstate, staticDeco, animDeco, speleothems, cracked));
+				stoneReg.put(state, new StoneRegEntry(state, cobblestone, locTexture, locBlockstate, staticDeco, animDeco, speleothems, cracked, frac));
 				
 				
 			}
@@ -128,12 +162,5 @@ public class WTFStoneRegistry {
 		config.save();
 	}
 
-	public static IBlockState getBlockState(String string){
-		if (string == null){ return null;}
-		String[] stringArray = string.split("@");
-		Block block = Block.getBlockFromName(stringArray[0]);
-		//this is written this way, so it will return null, and can throw the exception back in the main method, which allows it to identify which string throws the exception
-		return block == null ? null : block.getStateFromMeta(Integer.parseInt(stringArray[1]));
-	}
 
 }

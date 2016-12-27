@@ -26,6 +26,7 @@ import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
 import wtf.config.OverworldGenConfig;
 import wtf.config.WTFStoneRegistry;
+import wtf.config.ore.WTFOresNewConfig;
 import wtf.crafting.GuiHandler;
 import wtf.crafting.RecipeParser;
 import wtf.entities.EntitySpawnListener;
@@ -41,7 +42,6 @@ import wtf.init.WTFItems;
 import wtf.init.WTFRecipes;
 import wtf.ores.OreGenerator;
 import wtf.ores.VanillOreGenCatcher;
-import wtf.ores.config.WTFOresNewConfig;
 import wtf.proxy.CommonProxy;
 import wtf.utilities.BlockstateWriter;
 import wtf.utilities.UBCCompat;
@@ -85,7 +85,7 @@ public class Core {
 		coreLog = preEvent.getModLog();
 
 		BlockstateWriter.writeResourcePack();
-		UBC = false;//Loader.isModLoaded("undergroundbiomes");
+		UBC = Loader.isModLoaded("undergroundbiomes");
 		if (UBC){
 			UBCCompat.loadUBCStone();
 		}
@@ -122,10 +122,6 @@ public class Core {
 	}
 	@EventHandler public void load(FMLInitializationEvent event) throws Exception
 	{
-		
-
-
-
 		
 		MinecraftForge.EVENT_BUS.register(new CoreWorldGenListener());
 		MinecraftForge.TERRAIN_GEN_BUS.register(new CoreWorldGenListener());

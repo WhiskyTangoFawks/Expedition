@@ -1,4 +1,4 @@
-package wtf.ores.config;
+package wtf.config.ore;
 
 public class OreDefReg {
 
@@ -27,6 +27,8 @@ public class OreDefReg {
 	public String biomeTags = "";
 	
 	public final String name = "name is good";
+	
+	public String reqBiomeTypes = "";
 	
 	public OreDefReg (String stoneList, String genType, int[] genRange, int[] orePerChunk, boolean denseBlock){
 		this.stoneList = stoneList;
@@ -87,6 +89,10 @@ public class OreDefReg {
 		return this;
 	}
 
+	public OreDefReg setReqBiomes(String string){
+		this.reqBiomeTypes=string;
+		return this;
+	}
 
 	
 }

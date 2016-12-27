@@ -118,7 +118,7 @@ public class RecipeWrapper {
 		}
 		catch (NullPointerException e){
 			if (recipe != null){
-				Core.coreLog.info("Ignoring bad itemstack while trying to parse recipe ingrediant for recipe " + recipe.getRecipeOutput());
+				Core.coreLog.info("Ignoring bad itemstack while trying to parse recipe ingrediant for unknown recipe ");
 			}
 		}
 		return subList;

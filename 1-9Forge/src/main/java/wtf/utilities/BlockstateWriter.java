@@ -7,7 +7,7 @@ import java.io.IOException;
 import net.minecraft.block.state.IBlockState;
 import wtf.config.StoneRegEntry;
 import wtf.config.WTFStoneRegistry;
-import wtf.ores.config.WTFOresNewConfig;
+import wtf.config.ore.WTFOresNewConfig;
 
 public class BlockstateWriter {
 
@@ -277,12 +277,19 @@ public class BlockstateWriter {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void writeDenseOreBlockstate(IBlockState backState, String regName, String orestring, String stoneString){
 
 		StoneRegEntry entry = WTFStoneRegistry.stoneReg.get(backState); 
+		if (entry == null){
+			try {
+				throw new Exception("No stone registry entry found for "+ backState.getBlock().getRegistryName()+"@"+backState.getBlock().getMetaFromState(backState) + " please add it to the WTFStoneRegistry.cfg");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		String blockstateLocation = entry.blockstateLocation;
-		
+
 		try {
 
 			//the blockname being created- which I have because it's the registry name, is what the filename needs to be

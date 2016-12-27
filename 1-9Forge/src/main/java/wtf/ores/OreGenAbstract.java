@@ -12,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import wtf.ores.config.WTFOresNewConfig;
+import wtf.config.ore.WTFOresNewConfig;
 import wtf.utilities.Simplex;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkDividedHashMap;
@@ -40,10 +40,10 @@ public abstract class OreGenAbstract{
 	
 	public OreGenAbstract(IBlockState blockstate, int[]genRange, int[] minmaxPerChunk, boolean denseGen){
 		this.oreBlock = blockstate;
-		this.maxGenRangeHeight = genRange[0]/100F;
-		this.minGenRangeHeight = genRange[1]/100F;
-		this.maxPerChunk = minmaxPerChunk[0];
-		this.minPerChunk = minmaxPerChunk[1];
+		this.maxGenRangeHeight = genRange[1]/100F;
+		this.minGenRangeHeight = genRange[0]/100F;
+		this.maxPerChunk = minmaxPerChunk[1];
+		this.minPerChunk = minmaxPerChunk[0];
 		genDenseOres = denseGen;
 	}
 	

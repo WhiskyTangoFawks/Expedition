@@ -80,7 +80,7 @@ public class CaveTypeMossy extends AbstractCaveType{
 			
 			if (getNoise(pos, 1, 1F) < OverworldGenConfig.ForestMossFreq){
 				if (gen.getBlockState(pos).getBlock().hashCode() == Blocks.GRASS.hashCode()){
-					gen.replaceBlock(pos, WTFBlocks.mossyDirt.getDefaultState());
+					gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
 				}
 				gen.transformBlock(pos, Modifier.MOSSY);
 			}

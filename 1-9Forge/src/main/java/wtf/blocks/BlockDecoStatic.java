@@ -41,8 +41,8 @@ public class BlockDecoStatic extends AbstractBlockDerivative{
 		
 		BlockSets.blockTransformer.put(new StateAndModifier(state, BlockSets.Modifier.MOSSY), this.getDefaultState());
 		BlockSets.blockTransformer.put(new StateAndModifier(state, BlockSets.Modifier.SOUL), this.getDefaultState().withProperty(TYPE, DecoType.SOUL));
-		if (this.blockMaterial == Material.SAND){
-			BlockSets.defaultFallingBlocks.add(this.getRegistryName()+"@10");
+		if (BlockSets.fallingBlocks.containsKey(this.parentBackground)){
+			BlockSets.fallingBlocks.put(this, BlockSets.fallingBlocks.get(this.parentBackground));
 		}
 		if (WTFStoneRegistry.stoneReg.get(state).cracked){ //If NOT sand, then register a cracked version of the ore register
 			BlockSets.stoneAndOre.put(new StoneAndOre(state, WTFBlocks.crackedStone), this.getDefaultState().withProperty(TYPE, DecoType.CRACKED));

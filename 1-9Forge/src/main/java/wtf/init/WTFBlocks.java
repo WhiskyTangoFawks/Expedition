@@ -22,6 +22,7 @@ import wtf.blocks.BlockRoots;
 import wtf.blocks.BlockSpeleothem;
 import wtf.blocks.BlockMycorrack;
 import wtf.blocks.OreNitre;
+import wtf.blocks.BlockDecoStatic.DecoType;
 import wtf.blocks.redstone.RedstoneStalactite;
 import wtf.config.CoreConfig;
 import wtf.config.StoneRegEntry;
@@ -74,7 +75,7 @@ public class WTFBlocks{
 		roots = (BlockRoots) registerBlockItemSubblocks(new BlockRoots(), 4, "roots");
 		oreSandGold = registerBlock(new OreSandGoldNugget(), "oreSandGold");
 		
-		//mossyDirt = registerBlockItemSubblocks(new BlockDecoStatic(Blocks.DIRT.getDefaultState()), BlockDecoStatic.DecoType.values().length-1, "dirt0DecoStatic");
+		mossyDirt = Block.getBlockFromName("dirt0decoStatic");
 		//BlockstateWriter.writeDecoStaticBlockstate(Blocks.DIRT.getDefaultState(), "dirt0DecoStatic");
 		
 		red_cactus =  registerBlock(new BlockRedCactus(), "red_cactus");

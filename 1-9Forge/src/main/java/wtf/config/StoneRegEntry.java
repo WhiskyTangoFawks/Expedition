@@ -13,8 +13,9 @@ public class StoneRegEntry {
 	public final boolean decoAnim;
 	public final boolean speleothem;
 	public final boolean cracked;
+	public final boolean fractures;
 	
-	public StoneRegEntry(IBlockState stoneState, IBlockState cobbleState, String textureLoc, String blockstateLoc, boolean stat, boolean anim, boolean spel, boolean crac){
+	public StoneRegEntry(IBlockState stoneState, IBlockState cobbleState, String textureLoc, String blockstateLoc, boolean stat, boolean anim, boolean spel, boolean crac, boolean frac){
 		this.stone = stoneState;
 		this.cobble = cobbleState;
 		this.textureLocation = textureLoc;
@@ -23,6 +24,7 @@ public class StoneRegEntry {
 		this.decoStatic = stat;
 		this.speleothem = spel;
 		this.cracked = crac;
+		this.fractures = frac;
 	}
 	
 	

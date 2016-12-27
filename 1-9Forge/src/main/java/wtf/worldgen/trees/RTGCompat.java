@@ -34,17 +34,17 @@ public class RTGCompat {
 			TreeRTG rtgtree = biomeTrees.get(random.nextInt(biomeTrees.size()));
 			// Set the trunk size if min/max values have been set.
 
-			int size = rtgtree.maxTrunkSize-rtgtree.minTrunkSize > 4 ? rtgtree.maxTrunkSize-rtgtree.minTrunkSize : 4;
-			rtgtree.trunkSize = random.nextInt(size)+rtgtree.minTrunkSize;
+			int size = rtgtree.getMaxTrunkSize()-rtgtree.getMinTrunkSize() > 4 ? rtgtree.getMaxTrunkSize()-rtgtree.getMinTrunkSize() : 4;
+			rtgtree.setTrunkSize(random.nextInt(size)+rtgtree.getMinTrunkSize()); 
 			//System.out.println("Tree " + rtgtree.getClass().toString() + rtgtree.trunkSize);
 
-			size = rtgtree.maxCrownSize-rtgtree.minCrownSize;
-			rtgtree.crownSize = size > 0 ? random.nextInt(size)+rtgtree.minCrownSize : 2;
+			size = rtgtree.getMaxCrownSize()-rtgtree.getMinCrownSize();
+			rtgtree.setCrownSize(size > 0 ? random.nextInt(size)+rtgtree.getMinCrownSize() : 2);
 
-			if (rtgtree.noLeaves){
-				rtgtree.noLeaves=false;
+			if (rtgtree.getNoLeaves()){
+				rtgtree.setNoLeaves(false);
 			}
-			rtgtree.leavesBlock = rtgtree.leavesBlock.withProperty(BlockLeaves.CHECK_DECAY, false);
+			
 
 			return rtgtree;
 		}
@@ -53,7 +53,7 @@ public class RTGCompat {
 
 	public static boolean tryRTGRoots(World world, BlockPos pos, Random random, ChunkScan chunkscan, WorldGenerator oldTree){
 		if (OverworldGen.RTG && oldTree instanceof TreeRTG){
-			OverworldGen.addRoots(world, pos, random, chunkscan, ((TreeRTG)oldTree).trunkSize);
+			OverworldGen.addRoots(world, pos, random, chunkscan, ((TreeRTG)oldTree).getTrunkSize());
 			return true;
 		}
 		return false;
@@ -69,17 +69,17 @@ public class RTGCompat {
 			HashSet<IBlockState> leaves = new HashSet<IBlockState>(Arrays.asList(leaflist));
 
 			for (TreeRTG rtgtree : biomeTrees){
-				if (leaves.contains(rtgtree.leavesBlock)){
+				if (leaves.contains(rtgtree.getLeavesBlock())){
 
-					int size = rtgtree.maxTrunkSize-rtgtree.minTrunkSize > 4 ? rtgtree.maxTrunkSize-rtgtree.minTrunkSize : 4;
-					rtgtree.trunkSize = random.nextInt(size)+rtgtree.minTrunkSize;
+					int size = rtgtree.getMaxTrunkSize()-rtgtree.getMinTrunkSize() > 4 ? rtgtree.getMaxTrunkSize()-rtgtree.getMinTrunkSize() : 4;
+					rtgtree.setTrunkSize(random.nextInt(size)+rtgtree.getMinTrunkSize());
 					//System.out.println("Tree " + rtgtree.getClass().toString() + rtgtree.trunkSize);
 
-					size = rtgtree.maxCrownSize-rtgtree.minCrownSize;
-					rtgtree.crownSize = size > 0 ? random.nextInt(size)+rtgtree.minCrownSize : 2;
+					size = rtgtree.getMaxCrownSize()-rtgtree.getMinCrownSize();
+					rtgtree.setCrownSize(size > 0 ? random.nextInt(size)+rtgtree.getMinCrownSize() : 2);
 				}
-				if (rtgtree.noLeaves){
-					rtgtree.noLeaves=false;
+				if (rtgtree.getNoLeaves()){
+					rtgtree.setNoLeaves(false);
 				}
 				rtgtrees.add(rtgtree);
 			}
