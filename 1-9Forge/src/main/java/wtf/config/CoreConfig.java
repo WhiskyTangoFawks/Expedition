@@ -13,7 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.Configuration;
 
 
-public class CoreConfig {
+public class CoreConfig extends ConfigMaster{
 	
 	public static boolean enableNameGetter;
 	
@@ -23,10 +23,9 @@ public class CoreConfig {
 	public static boolean mobReplacement;
 	public static boolean enableOreGen;
 	public static boolean enableOverworldGeneration;
-	public static boolean appleCore;
-	
+		
 
-	public static Configuration config = new Configuration(new File("config/WTFCore.cfg"));
+	public static Configuration config = new Configuration(new File(configPath+"WTFCore.cfg"));
 
 	public static void loadConfig() throws Exception{
 	config.load();

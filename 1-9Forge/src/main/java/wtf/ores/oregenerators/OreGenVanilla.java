@@ -15,12 +15,14 @@ import wtf.utilities.wrappers.OrePos;
 
 public class OreGenVanilla extends OreGenAbstract{
 
+	public OreGenVanilla(IBlockState blockstate, int[] genRange, int[] minmaxPerChunk, boolean denseGen, int blocks) {
+		super(blockstate, genRange, minmaxPerChunk, denseGen);
+		blocksPerCluster = blocks;
+	}
+
 	protected final int blocksPerCluster;
 	
-	public OreGenVanilla(IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk, int minPerChunk, int blocksPerCluster, boolean genDense) {
-		super(blockstate, maxGenRangeHeight, minGenRangeHeight, blocksPerCluster, blocksPerCluster, genDense);
-		this.blocksPerCluster = blocksPerCluster;
-	}
+
 
 	@Override
 	public void doOreGen(World world, ChunkDividedOreMap map, Random random, ChunkCoords coords, ChunkScan scan) throws Exception {

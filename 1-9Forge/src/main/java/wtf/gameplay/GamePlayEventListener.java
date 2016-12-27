@@ -6,6 +6,7 @@ import akka.routing.Pool;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -45,6 +46,8 @@ import wtf.blocks.AbstractBlockDerivative;
 import wtf.blocks.BlockDenseOre;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
+import wtf.config.StoneRegEntry;
+import wtf.config.WTFStoneRegistry;
 import wtf.init.BlockSets;
 import wtf.init.WTFItems;
 
@@ -57,19 +60,19 @@ public class GamePlayEventListener {
 	@SubscribeEvent
 	public void StoneBreakSpeed (BreakSpeed event)
 	{
-		Block block = event.getState().getBlock();
+		IBlockState state = event.getState();
 		if (!event.getEntityPlayer().capabilities.isCreativeMode){
 			//Tinkers Construct hammer speed changer
 			if (isHammer(event.getEntityPlayer().getHeldItemMainhand())){
-				if (BlockSets.blockMiningSpeed.containsKey(block)){
-					event.setNewSpeed(BlockSets.blockMiningSpeed.get(block) * event.getOriginalSpeed());
+				if (BlockSets.blockMiningSpeed.containsKey(state)){
+					event.setNewSpeed(BlockSets.blockMiningSpeed.get(state) * event.getOriginalSpeed());
 				}
 			}
-			else if (BlockSets.blockMiningSpeed.containsKey(block)){
-				event.setNewSpeed(BlockSets.blockMiningSpeed.get(block) * event.getOriginalSpeed());
+			else if (BlockSets.blockMiningSpeed.containsKey(state)){
+				event.setNewSpeed(BlockSets.blockMiningSpeed.get(state) * event.getOriginalSpeed());
 			}
-			else if (block instanceof AbstractBlockDerivative){
-				if (!(block.canHarvestBlock(event.getEntityPlayer().worldObj, event.getPos(), event.getEntityPlayer()))){
+			else if (state.getBlock() instanceof AbstractBlockDerivative){
+				if (!(state.getBlock().canHarvestBlock(event.getEntityPlayer().worldObj, event.getPos(), event.getEntityPlayer()))){
 					event.setNewSpeed(0.2F * event.getOriginalSpeed());
 				}
 			}
@@ -119,7 +122,8 @@ public class GamePlayEventListener {
 
 		//Check if the block we're trying to break should fracture
 		if (!event.getPlayer().capabilities.isCreativeMode){
-			if (BlockSets.hasCobble(event.getState()) && GameplayConfig.stoneFracturesBeforeBreaking)	{
+			StoneRegEntry entry = WTFStoneRegistry.stoneReg.get(event.getState());
+			if (entry != null && entry.fractures)	{
 				if (isHammer(event.getPlayer().getHeldItemMainhand()) && GameplayConfig.modifyHammer){
 					event.setCanceled(true);
 					StoneFractureMethods.fracStone(event.getWorld(), event.getPos(), event.getState());
@@ -145,7 +149,7 @@ public class GamePlayEventListener {
 
 				}
 			}
-			else if (BlockSets.oreAndFractures.contains(block) && GameplayConfig.oreFractures)
+			else if (BlockSets.oreAndFractures.contains(block))
 			{
 				StoneFractureMethods.tryFrac(event.getWorld(), event.getPos(), block, toolLevel);
 			}

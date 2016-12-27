@@ -26,8 +26,7 @@ public class BlockSets {
 		COBBLE, CRACKED, LAVA_CRUST, MOSSY, WATER_DRIP, LAVA_DRIP, FROZEN, SOUL
 	}
 
-	private static String[] deffall = {"minecraft:dirt@50", "minecraft:cobblestone@75", "minecraft:mossy_cobble@90","minecraft:sand@10", "minecraft:soul_sand@10","minecraft:gravel@20", "minectaft:snow@40"};
-	public static ArrayList<String> defaultFallingBlocks = new ArrayList<String>(Arrays.asList(deffall));
+	
 	public static HashMap<Block, Float> fallingBlocks = new HashMap<Block, Float>();
 
 	private static Block[] defOres = {Blocks.IRON_ORE, Blocks.DIAMOND_ORE, Blocks.LAPIS_ORE, Blocks.GOLD_ORE, Blocks.EMERALD_ORE, Blocks.REDSTONE_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.COAL_ORE};
@@ -63,7 +62,7 @@ public class BlockSets {
 	public static HashSet<Block> meltBlocks = new HashSet<Block>(Arrays.asList(defMelt));	
 
 	public static HashMap<Block, Replacer> isNonSolidAndCheckReplacement = new HashMap <Block, Replacer>();
-	public static HashMap<Block, Float> blockMiningSpeed = new HashMap <Block, Float>();
+	public static HashMap<IBlockState, Float> blockMiningSpeed = new HashMap <IBlockState, Float>();
 
 
 	public static HashMap<StateAndModifier, IBlockState> blockTransformer = new HashMap<StateAndModifier, IBlockState>();

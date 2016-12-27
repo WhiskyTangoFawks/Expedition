@@ -4,12 +4,8 @@ import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 
-public class CaveBiomesConfig{
+public class CaveBiomesConfig extends ConfigMaster{
 
-
-	//public static int ceilingAddonChance;
-	//public static int floorAddonChance;
-	//public static boolean enableMossyStone;
 	public static float dungeonChance;
 	public static boolean logDungeons;
 	public static boolean enableMobDungeons;
@@ -18,7 +14,7 @@ public class CaveBiomesConfig{
 	
 	public static void customConfig() {
 
-		Configuration config = new Configuration(new File("config/WTFCaveBiomesConfig.cfg"));
+		Configuration config = new Configuration(new File(configPath+"WTFCaveBiomesConfig.cfg"));
 
 		config.load();
 		String section1 = "Cave Subtype and Dungeon Generation";

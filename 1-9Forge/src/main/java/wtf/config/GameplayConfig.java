@@ -1,31 +1,25 @@
 package wtf.config;
 
 import java.io.File;
-
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
+import wtf.Core;
 import wtf.init.BlockSets;
+import wtf.init.WTFBlocks;
+import wtf.utilities.UBCCompat;
 
 
 	
 
-public class GameplayConfig {
-
-	
-	
-	public static boolean oreFractures;
-	public static boolean stoneFracturesBeforeBreaking;
-	
+public class GameplayConfig extends ConfigMaster {
 	
 	public static int torchLifespan;
 	public static int torchRange;
 	public static boolean relightTorchByHand;
 
 	public static boolean modifyHammer;
-	
-	
 
-	public static String[] oreList;
 	public static boolean fallingBlocksDamage;
 	public static boolean antiNerdPole;
 	
@@ -36,6 +30,8 @@ public class GameplayConfig {
 	public static double creeperUpConstant;
 	
 	public static boolean homescroll;
+	
+	public static boolean miningSpeedEnabled;
 
 	//public static boolean enableQuickCrafting;
 
@@ -48,7 +44,7 @@ public class GameplayConfig {
 	
 	public static boolean removeVanillaTools;
 	
-	public static Configuration config = new Configuration(new File("config/WTFGameplay.cfg"));
+	public static Configuration config = new Configuration(new File(configPath+"WTFGameplay.cfg"));
 	public static boolean waterControl;
 	
 	public static boolean childZombie;
@@ -62,18 +58,21 @@ public class GameplayConfig {
 	/**
 	 * Mining Options
 	 */
+
+	//MOVE MINING SPEED INTO STONE REGISTRY
 	
-	String defaultMiningSpeed = "minecraft:stone@0.15,minecraft:sandstone@0.3"; //,UndergroundBiomes:igneousStone@0.05,UndergroundBiomes:metamorphicStone@0.2,UndergroundBiomes:sedimentaryStone@0.3
-	String readMiningSpeed = config.get("Mining", "Mining speed modifiers", defaultMiningSpeed).getString();
-	ConfigUtils.parseMiningSpeeds(readMiningSpeed);
-	
-	oreFractures = config.get("Mining", "Ores fracture adjacent blocks when mined", true).getBoolean();
-	stoneFracturesBeforeBreaking = config.get("Mining", "Stone fractures before breaking", true).getBoolean();
 	modifyHammer = config.get("Mining", "Modify hammer behaviour", true).getBoolean();
+	miningSpeedEnabled = config.get("Mining", "Enable mining speed modification (values are set in the Stone Registry)", true).getBoolean();
 	
 
-	String oreString = config.get("Mining", "Ores to add for fracturing- modname:blockname", "minecraft:emerald_ore").getString();
-	ConfigUtils.parseOreFrac(oreString);
+
+	String[] defaultOres = {Blocks.COAL_ORE.getRegistryName().toString(), Blocks.IRON_ORE.getRegistryName().toString(), Blocks.GOLD_ORE.getRegistryName().toString(),
+			Blocks.LAPIS_ORE.getRegistryName().toString(), Blocks.DIAMOND_ORE.getRegistryName().toString(), Blocks.EMERALD_ORE.getRegistryName().toString()};
+	
+	String[] oresFrac = config.get("Mining", "Blocks which fracture adjacent stone when mined", defaultOres).getStringList();
+	for (String string : oresFrac){
+		BlockSets.oreAndFractures.add(getBlockFromString(string));
+	}
 
 	/**
 	 * Explosions Options
@@ -94,11 +93,24 @@ public class GameplayConfig {
 	 * Gravity Options
 	 */
 	
+	String[] deffall = {"minecraft:dirt@50", "minecraft:cobblestone@75", "minecraft:mossy_cobblestone@90","minecraft:sand@10", "minecraft:soul_sand@10","minecraft:gravel@20", "minecraft:snow@40"};
 	
-	String defaultFall = ConfigUtils.getStringFromArrayList(BlockSets.defaultFallingBlocks);
-	String fallingBlockString = config.get("Gravity", "Block name and stability percent- lower numbers mean a block falls more often", defaultFall).getString();
-	ConfigUtils.parseFallingBlocks(fallingBlockString);
+	if (Core.UBC){
+		String[] UBCdeffall = {"minecraft:dirt@50", "minecraft:cobblestone@75", "minecraft:mossy_cobblestone@90","minecraft:sand@10", "minecraft:soul_sand@10","minecraft:gravel@20", "minecraft:snow@40", 
+				UBCCompat.IgneousCobblestone[0].getBlock().getRegistryName()+"@90", UBCCompat.MetamorphicCobblestone[0].getBlock().getRegistryName()+"@85", WTFBlocks.ubcSand.getRegistryName()+"@10"};
 		
+		deffall = UBCdeffall;
+	}
+	
+	String[] fallingBlocks = config.get("Gravity", "blockName@percentStability (lower means less stable)", deffall).getStringList();
+	
+	for (String blockAndStability :fallingBlocks){
+		Block block = getBlockFromString(blockAndStability.split("@")[0]);
+		float stability = Integer.parseInt(blockAndStability.split("@")[1]);
+		BlockSets.fallingBlocks.put(block, stability/100F);
+	}
+	
+
 	fallingBlocksDamage = config.get("Gravity", "Enable damage from blocks", true).getBoolean();
 	antiNerdPole = config.get("Gravity", "NerdPole Prevention: Prevent indefinite stacking of non-stable blocks (causes them to slide off)", true).getBoolean();
 	
@@ -122,7 +134,7 @@ public class GameplayConfig {
 	 * AppleCore options
 	 */
 	
-	appleCoreConstant = config.get("AppleCore", "Growth rate percent for crops (requires AppleCore)", 10).getDouble()/100;
+	appleCoreConstant = config.get("Crop Growth Rate", "Growth rate percent modifier for crops", 10).getDouble()/100;
 	
 	/*
 	 * Loot & Crafting

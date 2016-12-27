@@ -13,12 +13,13 @@ import wtf.utilities.wrappers.OrePos;
 
 public class OreGenCluster extends OreGenAbstract {
 
-	public OreGenCluster(IBlockState blockstate, float maxGenRangeHeight, float minGenRangeHeight, int maxPerChunk,	int minPerChunk, boolean genDense) {
-		super(blockstate, maxGenRangeHeight, minGenRangeHeight, maxPerChunk, minPerChunk, genDense);
 
-	}
 
 	
+	public OreGenCluster(IBlockState blockstate, int[] genRange, int[] minmaxPerChunk, boolean denseGen) {
+		super(blockstate, genRange, minmaxPerChunk, denseGen);
+	}
+
 	@Override
 	public void doOreGen(World world, ChunkDividedOreMap map, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception {
 

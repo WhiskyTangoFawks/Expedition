@@ -7,7 +7,7 @@ import java.io.IOException;
 import net.minecraft.block.state.IBlockState;
 import wtf.config.StoneRegEntry;
 import wtf.config.WTFStoneRegistry;
-import wtf.ores.config.WTFOreConfig;
+import wtf.config.ore.WTFOresNewConfig;
 
 public class BlockstateWriter {
 
@@ -159,7 +159,7 @@ public class BlockstateWriter {
 			//For these- I don't need the blockstate location- I need the block's texture location
 			//for vanilla, it's going to be same as the override
 			//for UBC and other mods- it's going to need to be coded in as an override
-
+			
 			writer.write("{\"forge_marker\": 1,");
 			writer.newLine();
 			writer.write("\"defaults\": {\"textures\": {\"texture\": \""+stone.textureLocation+"\"}},");
@@ -277,12 +277,19 @@ public class BlockstateWriter {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void writeDenseOreBlockstate(IBlockState backState, String regName, String orestring, String stoneString){
 
 		StoneRegEntry entry = WTFStoneRegistry.stoneReg.get(backState); 
+		if (entry == null){
+			try {
+				throw new Exception("No stone registry entry found for "+ backState.getBlock().getRegistryName()+"@"+backState.getBlock().getMetaFromState(backState) + " please add it to the WTFStoneRegistry.cfg");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		String blockstateLocation = entry.blockstateLocation;
-		
+
 		try {
 
 			//the blockname being created- which I have because it's the registry name, is what the filename needs to be
@@ -318,7 +325,7 @@ public class BlockstateWriter {
 				writer.write("{\"model\": \"minecraft:cube_all\", \"textures\": { \"all\": \"wtfcore:overlays/"+orestring+loop+"\" }},");
 				writer.newLine();
 				writer.write("{\"model\": \"minecraft:cube_all\", \"y\":180, \"x\":180, \"textures\": { \"all\": \"wtfcore:overlays/"+orestring+loop+"\" }}");				
-				if (!WTFOreConfig.rotate180only){
+				if (!WTFOresNewConfig.rotate180only){
 					writer.write(",");
 					writer.newLine();
 					writer.write("{\"model\": \"minecraft:cube_all\", \"y\":90, \"x\":90, \"textures\": { \"all\": \"wtfcore:overlays/"+orestring+loop+"\" }},");
