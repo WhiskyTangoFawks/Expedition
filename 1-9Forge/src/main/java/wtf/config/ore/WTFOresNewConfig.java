@@ -2,7 +2,6 @@ package wtf.config.ore;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -10,12 +9,8 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.Loader;
-
 import wtf.Core;
 import wtf.blocks.BlockDenseOre;
 import wtf.blocks.BlockDenseOreFalling;
@@ -35,7 +30,6 @@ import wtf.ores.oregenerators.OreGenUnderWater;
 import wtf.ores.oregenerators.OreGenVanilla;
 import wtf.ores.oregenerators.OreGenVein;
 import wtf.utilities.BlockstateWriter;
-import wtf.utilities.UBCCompat;
 import wtf.utilities.wrappers.StoneAndOre;
 
 public class WTFOresNewConfig extends ConfigMaster{

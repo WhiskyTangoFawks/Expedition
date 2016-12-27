@@ -25,9 +25,14 @@ public class OreGenerator extends PopulationGenerator{
 		
 		ChunkDividedOreMap map = new ChunkDividedOreMap(world, coords);
 		
-		for (int loop = 0; loop < OreGenerator.oreGenRegister.size(); loop++){
-			
-			OreGenerator.oreGenRegister.get(loop).generate(world, map, random, coords, chunkscan);
+		for (OreGenAbstract gen : oreGenRegister){
+			//long start = System.nanoTime();
+			gen.generate(world, map, random, coords, chunkscan);
+			//long end = System.nanoTime();
+			//long time = (end-start)/100;
+			//if (time > 500){
+			//	System.out.println("Time for " + gen.oreBlock.toString() + " = " + time);
+			//}
 		}
 		
 		map.setBlockSet();

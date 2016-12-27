@@ -34,15 +34,16 @@ public class ChunkScan {
 
 	public final ArrayList<CaveListWrapper> caveset;
 
-	private ArrayList<BlockPos> underwater = null;
+	private final ArrayList<BlockPos> underwater;
 
-	public ChunkScan(World world, SurfacePos[][] var, int x, int z, int avg, ArrayList<CaveListWrapper> caveareas){
+	public ChunkScan(World world, SurfacePos[][] var, int x, int z, int avg, ArrayList<CaveListWrapper> caveareas, ArrayList<BlockPos> water){
 		this.surface = var;
 		this.chunkX = x;
 		this.chunkZ = z;
 		this.surfaceAvg = avg;
 		this.world = world;
 		this.caveset = caveareas;
+		this.underwater = water;
 	}
 
 
@@ -265,17 +266,6 @@ public class ChunkScan {
 	}
 
 	public ArrayList<BlockPos> getWaterList(){
-		if (underwater == null){
-			underwater = new ArrayList<BlockPos>();
-			Chunk chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
-			for (int xloop = 0; xloop < 16; xloop++){
-				for (int zloop = 0; zloop < 16; zloop++){
-					if (chunk.getBlockState(surface[xloop][zloop].up()).getMaterial().hashCode() == waterHash){
-						underwater.add(surface[xloop][zloop]);
-					}
-				}
-			}
-		}
 		return underwater;
 	}
 

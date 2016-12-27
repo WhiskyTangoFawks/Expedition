@@ -56,6 +56,7 @@ public class BlockSets {
 
 
 	public static HashSet<Block> nonSolidBlockSet = new HashSet<Block>();
+	public static HashSet<Block> liquidBlockSet = new HashSet<Block>();
 
 
 	private static Block[] defMelt = {Blocks.LAVA, Blocks.FLOWING_LAVA, Blocks.FLOWING_WATER, Blocks.FIRE};
@@ -89,11 +90,8 @@ public class BlockSets {
 		while (blockIterator.hasNext()){
 			Block block = blockIterator.next();
 
-			if (block.getRegistryName().toString().contains("streams:river")){
-				riverBlocks.add(block);
-			}
 			
-			if (!block.getDefaultState().isBlockNormalCube()){
+			if (!block.getDefaultState().isBlockNormalCube() && block.getMaterial(block.getDefaultState()) != Material.WATER){
 				nonSolidBlockSet.add(block);
 				if (!isNonSolidAndCheckReplacement.containsKey(block)){
 					new NonSolidNoReplace(block);
@@ -106,10 +104,10 @@ public class BlockSets {
 				}
 			}
 			if (block.getDefaultState().getMaterial() == Material.WATER){
-				nonSolidBlockSet.add(block);
-				if (!isNonSolidAndCheckReplacement.containsKey(block)){
-					new NonSolidNoReplace(block);
-				}
+				liquidBlockSet.add(block);
+				//if (!isNonSolidAndCheckReplacement.containsKey(block)){
+				//	new NonSolidNoReplace(block);
+				//}
 			}
 			if (block.getDefaultState().getMaterial() == Material.LAVA){
 				nonSolidBlockSet.add(block);

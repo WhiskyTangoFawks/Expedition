@@ -30,7 +30,7 @@ public class WorldScanner {
 	{		
 		CaveBiomeGenMethods gen = new CaveBiomeGenMethods(world, coords, world.rand);
 		
-		
+		ArrayList<BlockPos> water = new ArrayList<BlockPos>();
 		ArrayList<CaveListWrapper> caveareas = new ArrayList<CaveListWrapper>();
 
 		SurfacePos[][] surfacepositions = new SurfacePos[16][16];
@@ -65,15 +65,42 @@ public class WorldScanner {
 				int z = coords.getWorldZ() + zloop;
 
 
+				//I need to modify this to do water finding
+				//Swap scan for surface into a scan for surface or air
+				//Then add a new method to scan through water to find the actual surface
+				
+				
 				//First, we find the surface for the block position
-				int y = scanForSurface(chunk, gen, x, lastY, z);
-				if (y < 0){
-					y=y*-1;
-					surfacepositions[xloop][zloop] = new SurfacePos(x, y, z).setGenerated();
-					
+				boolean generated = false;
+				boolean liquid = false;
+				
+				int y = lastY+3;
+				
+				while (!chunk.canSeeSky(new BlockPos(x & 15, y, z & 15)) && y<256){
+					y+=10;
+				}	
+				//initial scan to find the first non-air block
+				while (isAirAndCheck(chunk, gen, x,y,z) && y > 1)
+				{
+					y--;
 				}
-				else {
-					surfacepositions[xloop][zloop] = new SurfacePos(x, y, z);
+
+				while (BlockSets.liquidBlockSet.contains(chunk.getBlockState(new BlockPos(x, y, z)).getBlock())){
+					y--;
+					liquid = true;
+				}
+				
+				while (!isSurfaceAndCheck(chunk, gen, x, y, z) && y > 1){
+					generated = true;
+					y--;
+				}
+
+				surfacepositions[xloop][zloop] = new SurfacePos(x, y, z);
+				if (generated){
+					surfacepositions[xloop][zloop].setGenerated();
+				}
+				if (liquid){
+					water.add(surfacepositions[xloop][zloop]);
 				}
 				
 				
@@ -241,10 +268,11 @@ public class WorldScanner {
 		surfaceaverage /= 256;
 		//System.out.println("surface average" + surfaceaverage);
 		gen.blocksToSet.setBlockSet();
-		return new ChunkScan(world, surfacepositions, coords.getWorldX(), coords.getWorldZ(), surfaceaverage, caveareas);
+		return new ChunkScan(world, surfacepositions, coords.getWorldX(), coords.getWorldZ(), surfaceaverage, caveareas, water);
 	}
 
-	
+
+	//Note: This method is not used internally here, but in skyworld and nether scanner.  I've changed it to optimise the water finding, but it could result in nether and skyworld scanners not being optimised
 	public int scanForSurface(Chunk chunk, CaveBiomeGenMethods gen,int x, int y, int z) {
 		int generated = 1;
 		while (!chunk.canSeeSky(new BlockPos(x & 15, y, z & 15)) && y<256){
