@@ -73,123 +73,125 @@ public class WTFOresNewConfig extends ConfigMaster{
 
 		for (String oreGenString : oreSet){
 
-			String oreString = oreGenString.split("#")[0].replaceAll("\\s","");
-			String genString = oreGenString.split("#")[1].replaceAll("\\s","");
+			if (oreGenString.length() > 1){
 
-			IBlockState oreState = getBlockState(oreString);
+				String oreString = oreGenString.split("#")[0].replaceAll("\\s","");
+				String genString = oreGenString.split("#")[1].replaceAll("\\s","");
 
-			if (oreState == null){
-				config.get("Config for " +oreGenString, "Block not found", "unable to find block for "+oreGenString);
-				break;
-			}
+				IBlockState oreState = getBlockState(oreString);
 
-			cancelOres.add(oreState);
-			OreDefReg preset = defPresets.get(oreString);
+				if (oreState == null){
+					config.get("Config for " +oreGenString, "Block not found", "unable to find block for "+oreGenString);
+					break;
+				}
 
-			if (preset == null){
-				preset = defPresets.get("minecraft:iron_ore@0");
-			}
+				cancelOres.add(oreState);
+				OreDefReg preset = defPresets.get(oreString);
 
-			//Background stones
-			String stoneStringList = config.get("Config for " +oreGenString, "0 List of background stones", preset.stoneList).getString().replaceAll("\\s","");
+				if (preset == null){
+					preset = defPresets.get("minecraft:iron_ore@0");
+				}
 
-			ArrayList<IBlockState> stoneArray = getBlockStateArray(stoneStringList);
+				//Background stones
+				String stoneStringList = config.get("Config for " +oreGenString, "0 List of background stones", preset.stoneList).getString().replaceAll("\\s","");
 
-			int[] genRange = config.get("Config for " +oreGenString, "2 Generation height range (min % surface height, max % surface height)", preset.genRange).getIntList();
-			int[] orePerChunk = config.get("Config for " +oreGenString, "1 Amount of ore to attempt to generate per chunk (min, max)", preset.orePerChunk).getIntList();
-			boolean denseBlock = config.get("Config for " +oreGenString, "4 Use dense versions of this ore block", preset.denseBlock).getBoolean();
+				ArrayList<IBlockState> stoneArray = getBlockStateArray(stoneStringList);
 
-			OreGenAbstract generator = getGenerator(oreGenString, preset, config, genString, oreState, genRange, orePerChunk, denseBlock);
+				int[] genRange = config.get("Config for " +oreGenString, "2 Generation height range (min % surface height, max % surface height)", preset.genRange).getIntList();
+				int[] orePerChunk = config.get("Config for " +oreGenString, "1 Amount of ore to attempt to generate per chunk (min, max)", preset.orePerChunk).getIntList();
+				boolean denseBlock = config.get("Config for " +oreGenString, "4 Use dense versions of this ore block", preset.denseBlock).getBoolean();
 
-			String textureLoc = config.get("Config for " +oreGenString, "5 Ore texture", preset.textureLoc == null ? oreState.getBlock().getRegistryName().toString().split(":")[1] : preset.textureLoc).getString();
+				OreGenAbstract generator = getGenerator(oreGenString, preset, config, genString, oreState, genRange, orePerChunk, denseBlock);
 
-			int[] overworld = {0};
-			int[] dimensionIDs = config.get("Config for " +oreGenString, "3 Dimensions to spawn in", preset.dimensionIDs==null ? overworld : preset.dimensionIDs).getIntList();
-			for (int ID : dimensionIDs){
-				generator.dimension.add(ID);
-			}
+				String textureLoc = config.get("Config for " +oreGenString, "5 Ore texture", preset.textureLoc == null ? oreState.getBlock().getRegistryName().toString().split(":")[1] : preset.textureLoc).getString();
 
-			float density = config.get("Config for " +oreGenString, "6 Vein percent density (chance each block will generate or not)", preset.density).getInt()/100F;
-			generator.setVeinDensity(density);
+				int[] overworld = {0};
+				int[] dimensionIDs = config.get("Config for " +oreGenString, "3 Dimensions to spawn in", preset.dimensionIDs==null ? overworld : preset.dimensionIDs).getIntList();
+				for (int ID : dimensionIDs){
+					generator.dimension.add(ID);
+				}
 
-			String[] biomeModTags = config.get("Config for " +oreGenString, "7 Percent ore generation in biome type", preset.biomeTags).getString().replaceAll("\\s","").toLowerCase().split(",");
+				float density = config.get("Config for " +oreGenString, "6 Vein percent density (chance each block will generate or not)", preset.density).getInt()/100F;
+				generator.setVeinDensity(density);
 
-			generator.biomeModifier = new HashMap<BiomeDictionary.Type, Float>();
+				String[] biomeModTags = config.get("Config for " +oreGenString, "7 Percent ore generation in biome type", preset.biomeTags).getString().replaceAll("\\s","").toLowerCase().split(",");
 
-			if (biomeModTags[0] != "" && biomeModTags.length > 0){
-				for (String biomestring : biomeModTags){
-					if (biomestring.length() > 0){
-						float f = Integer.parseInt(biomestring.split("@")[1])/100F;
-						generator.biomeModifier.put(getBiomeTypeFromString(biomestring.split("@")[0]), f);
+				generator.biomeModifier = new HashMap<BiomeDictionary.Type, Float>();
+
+				if (biomeModTags[0] != "" && biomeModTags.length > 0){
+					for (String biomestring : biomeModTags){
+						if (biomestring.length() > 0){
+							float f = Integer.parseInt(biomestring.split("@")[1])/100F;
+							generator.biomeModifier.put(getBiomeTypeFromString(biomestring.split("@")[0]), f);
+						}
 					}
 				}
-			}
 
-			String[] reqBiomes = config.get("Config for " +oreGenString, "8 Required Biome types", "").getString().replaceAll("\\s","").toLowerCase().split(",");
-			if (reqBiomes[0] != "" && reqBiomes.length > 0){
+				String[] reqBiomes = config.get("Config for " +oreGenString, "8 Required Biome types", "").getString().replaceAll("\\s","").toLowerCase().split(",");
+				if (reqBiomes[0] != "" && reqBiomes.length > 0){
 
-				for (String biomestring : reqBiomes){
-					if (biomestring.length() > 0){
-						generator.reqBiomeTypes.add(getBiomeTypeFromString(biomestring));
+					for (String biomestring : reqBiomes){
+						if (biomestring.length() > 0){
+							generator.reqBiomeTypes.add(getBiomeTypeFromString(biomestring));
+						}
 					}
 				}
-			}
 
 
 
-			for (IBlockState stone : stoneArray){
-				if (denseBlock){
+				for (IBlockState stone : stoneArray){
+					if (denseBlock){
 
-					Block block;
-					Block stoneblock = stone.getBlock();
-					int meta = stoneblock.getMetaFromState(stone);
-					String stoneName = stoneblock.getRegistryName().toString().split(":")[1]+meta;
+						Block block;
+						Block stoneblock = stone.getBlock();
+						int meta = stoneblock.getMetaFromState(stone);
+						String stoneName = stoneblock.getRegistryName().toString().split(":")[1]+meta;
 
-					String blockName = stoneName+ oreString.split(":")[1].split("@")[0] + Integer.parseInt(oreString.split(":")[1].split("@")[1]);
+						String blockName = stoneName+ oreString.split(":")[1].split("@")[0] + Integer.parseInt(oreString.split(":")[1].split("@")[1]);
 
-					//if (Block.getBlockFromName(dense_"+blockName) == null){
-					if (oreState.getBlock() != Blocks.REDSTONE_ORE){
-						if (stone.getBlock() instanceof BlockFalling){
-							block = WTFBlocks.registerBlock(new BlockDenseOreFalling(stone, oreState), "dense_"+blockName);
-							BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName, textureLoc, stoneName);
+						//if (Block.getBlockFromName(dense_"+blockName) == null){
+						if (oreState.getBlock() != Blocks.REDSTONE_ORE){
+							if (stone.getBlock() instanceof BlockFalling){
+								block = WTFBlocks.registerBlock(new BlockDenseOreFalling(stone, oreState), "dense_"+blockName);
+								BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName, textureLoc, stoneName);
+							}
+							else {
+								block = WTFBlocks.registerBlock(new BlockDenseOre(stone, oreState), "dense_"+blockName);
+								BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName, textureLoc, stoneName);
+							}
 						}
 						else {
-							block = WTFBlocks.registerBlock(new BlockDenseOre(stone, oreState), "dense_"+blockName);
+
+							block = WTFBlocks.registerBlock(new DenseRedstoneOre(false), "dense_"+blockName);
 							BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName, textureLoc, stoneName);
+							DenseRedstoneOre.denseRedstone_off = block;
+							DenseRedstoneOre.denseRedstone_on = WTFBlocks.registerBlock(new DenseRedstoneOre(true), "dense_"+blockName+"_on");
+							BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName+"_on", textureLoc, stoneName);
 						}
+
+
+
+						BlockSets.stoneAndOre.put(new StoneAndOre(stone, oreState), block.getDefaultState());
+						//Ore ubification/densification of existing ores- removed because it was crashing
+						//new OreReplacer(blockstate.getBlock());
 					}
 					else {
-
-						block = WTFBlocks.registerBlock(new DenseRedstoneOre(false), "dense_"+blockName);
-						BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName, textureLoc, stoneName);
-						DenseRedstoneOre.denseRedstone_off = block;
-						DenseRedstoneOre.denseRedstone_on = WTFBlocks.registerBlock(new DenseRedstoneOre(true), "dense_"+blockName+"_on");
-						BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName+"_on", textureLoc, stoneName);
+						BlockSets.stoneAndOre.put(new StoneAndOre(stone, oreState), oreState);
+						new OreReplacer(oreState.getBlock());
 					}
-
-
-
-					BlockSets.stoneAndOre.put(new StoneAndOre(stone, oreState), block.getDefaultState());
-					//Ore ubification/densification of existing ores- removed because it was crashing
-					//new OreReplacer(blockstate.getBlock());
 				}
-				else {
-					BlockSets.stoneAndOre.put(new StoneAndOre(stone, oreState), oreState);
-					new OreReplacer(oreState.getBlock());
-				}
+
+				OreGenerator.oreGenRegister.add(generator);
+				VanillOreGenCatcher.vanillaCanceler(oreState);
+				Core.coreLog.info("Ore Generator Added for " + oreGenString);
 			}
 
-			OreGenerator.oreGenRegister.add(generator);
-			VanillOreGenCatcher.vanillaCanceler(oreState);
-			Core.coreLog.info("Ore Generator Added for " + oreGenString);
 		}
-
-
 
 		config.save();
 	}
 
-	
+
 	public static OreGenAbstract getGenerator (String oreString, OreDefReg preset, Configuration config, String genString, IBlockState oreState, int[] genRange, int[] orePerChunk, boolean denseBlock) throws Exception{
 
 		//Parse the gen type string
@@ -262,7 +264,7 @@ public class WTFOresNewConfig extends ConfigMaster{
 		return null;
 	}
 
-	
+
 
 
 }
