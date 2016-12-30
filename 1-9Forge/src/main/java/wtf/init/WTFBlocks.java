@@ -31,7 +31,7 @@ import wtf.crafting.WCICTable;
 import wtf.crafting.render.WCICTileEntity;
 import wtf.gameplay.OreSandGoldNugget;
 import wtf.items.ItemBlockState;
-import wtf.utilities.BlockstateWriter;
+import wtf.utilities.blockstatewriters.BlockstateWriter;
 import wtf.worldgen.replacers.NetherrackReplacer;
 
 public class WTFBlocks{

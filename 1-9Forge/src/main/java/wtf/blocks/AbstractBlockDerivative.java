@@ -50,7 +50,7 @@ public abstract class AbstractBlockDerivative extends Block{
     {
         List<ItemStack> ret = new java.util.ArrayList<ItemStack>();
 
-        Random rand = world instanceof World ? ((World)world).rand : RANDOM;
+        //Random rand = world instanceof World ? ((World)world).rand : RANDOM;
 
         for (int loop = 3-this.getMetaFromState(state); loop > -1; loop--){
         	ret.addAll(parentForeground.getBlock().getDrops(world, pos, parentForeground, fortune));
@@ -81,6 +81,10 @@ public abstract class AbstractBlockDerivative extends Block{
         if (!worldIn.isRemote && !worldIn.restoringBlockSnapshots) // do not drop items while restoring blockstates, prevents item dupe
         {
             java.util.List<ItemStack> items = parentForeground.getBlock().getDrops(worldIn, pos, this.parentForeground, fortune);
+            if (worldIn.rand.nextInt(5) < fortune){
+            	items.addAll(parentForeground.getBlock().getDrops(worldIn, pos, this.parentForeground, fortune));
+	
+            }
             chance = net.minecraftforge.event.ForgeEventFactory.fireBlockHarvesting(items, worldIn, pos, this.parentForeground, fortune, chance, false, harvesters.get());
 
             if (worldIn.getBlockState(pos).getBlock().hashCode() != airHash){
@@ -98,6 +102,7 @@ public abstract class AbstractBlockDerivative extends Block{
                 {
                     spawnAsEntity(worldIn, pos, item);
                 }
+                
             }
         }
     }

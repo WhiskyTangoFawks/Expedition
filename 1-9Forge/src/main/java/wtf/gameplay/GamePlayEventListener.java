@@ -7,8 +7,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.passive.EntityChicken;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.StatList;
@@ -118,10 +120,10 @@ public class GamePlayEventListener {
 		ItemStack tool = event.getPlayer().getHeldItemMainhand();
 		int toolLevel = tool == null ? 0 : tool.getItem().getHarvestLevel(tool, "pickaxe");
 		Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
-
+		boolean silk = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) > 0;
 
 		//Check if the block we're trying to break should fracture
-		if (!event.getPlayer().capabilities.isCreativeMode){
+		if (!event.getPlayer().capabilities.isCreativeMode && !silk){
 			StoneRegEntry entry = WTFStoneRegistry.stoneReg.get(event.getState());
 			if (entry != null && entry.fractures)	{
 				if (isHammer(event.getPlayer().getHeldItemMainhand()) && GameplayConfig.modifyHammer){

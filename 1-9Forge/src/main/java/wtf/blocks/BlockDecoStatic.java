@@ -23,7 +23,7 @@ import wtf.gameplay.StoneCrack;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
 import wtf.init.BlockSets.Modifier;
-import wtf.utilities.BlockstateWriter;
+import wtf.utilities.blockstatewriters.BlockstateWriter;
 import wtf.utilities.wrappers.StateAndModifier;
 import wtf.utilities.wrappers.StoneAndOre;
 

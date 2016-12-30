@@ -73,6 +73,10 @@ public class AbstractBlockDerivativeFalling extends BlockFalling{
         if (!worldIn.isRemote && !worldIn.restoringBlockSnapshots) // do not drop items while restoring blockstates, prevents item dupe
         {
             java.util.List<ItemStack> items = parentForeground.getBlock().getDrops(worldIn, pos, this.parentForeground, fortune);
+            if (worldIn.rand.nextInt(5) < fortune){
+            	items.addAll(parentForeground.getBlock().getDrops(worldIn, pos, this.parentForeground, fortune));
+	
+            }
             chance = net.minecraftforge.event.ForgeEventFactory.fireBlockHarvesting(items, worldIn, pos, this.parentForeground, fortune, chance, false, harvesters.get());
 
             for (ItemStack item : items)

@@ -29,11 +29,12 @@ import wtf.ores.oregenerators.OreGenSingle;
 import wtf.ores.oregenerators.OreGenUnderWater;
 import wtf.ores.oregenerators.OreGenVanilla;
 import wtf.ores.oregenerators.OreGenVein;
-import wtf.utilities.BlockstateWriter;
+import wtf.utilities.blockstatewriters.BlockstateWriter;
 import wtf.utilities.wrappers.StoneAndOre;
 
 public class WTFOresNewConfig extends ConfigMaster{
 	public static boolean rotate180only;
+	public static boolean fancyBlockStates;
 
 	public static HashSet<IBlockState> cancelOres = new HashSet<IBlockState>(); 
 
@@ -56,8 +57,10 @@ public class WTFOresNewConfig extends ConfigMaster{
 		config.load();
 
 		simplexGen = config.get("0 General Options", "Use simplex noise instead of random for ore generation", true).getBoolean();
-		rotate180only = config.get("0 Blockstate Options", "When generating new blockstates, create variants with 180 rotation only, setting to false enables 90 adn 270 degree rotations.  Requires generating new blockstates, and placing them in a resource pack", true).getBoolean();
+		rotate180only = config.get("0 Blockstate Options", "When generating blockstates, create variants with 180 rotation only, setting to false enables 90 adn 270 degree rotations.  Requires generating new blockstates, and placing them in a resource pack", true).getBoolean();
+		rotate180only = config.get("0 Blockstate Options", "Use fancy blockstates", false).getBoolean();
 
+		
 		String[] defOres = {"minecraft:coal_ore@0 #vein", "minecraft:iron_ore@0 #vein", "minecraft:gold_ore@0 #cloud", "minecraft:lapis_ore@0 #cluster", "minecraft:redstone_ore@0 #vein", "minecraft:emerald_ore@0 #single", "minecraft:diamond_ore@0 #single",
 				"wtfcore:nitre_ore@0 #cave&single", "wtfcore:oreSandGold@0 #underwater&single", "wtfcore:stone0DecoStatic@2 #vein"};
 

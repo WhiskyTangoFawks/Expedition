@@ -43,8 +43,8 @@ import wtf.init.WTFRecipes;
 import wtf.ores.OreGenerator;
 import wtf.ores.VanillOreGenCatcher;
 import wtf.proxy.CommonProxy;
-import wtf.utilities.BlockstateWriter;
 import wtf.utilities.UBCCompat;
+import wtf.utilities.blockstatewriters.BlockstateWriter;
 import wtf.worldgen.DungeonPopulator;
 import wtf.worldgen.OverworldGen;
 import wtf.worldgen.PopulationDecorator;
@@ -85,7 +85,7 @@ public class Core {
 		coreLog = preEvent.getModLog();
 
 		BlockstateWriter.writeResourcePack();
-		UBC = Loader.isModLoaded("undergroundbiomes");
+		UBC = false;//Loader.isModLoaded("undergroundbiomes");
 		if (UBC){
 			UBCCompat.loadUBCStone();
 		}
