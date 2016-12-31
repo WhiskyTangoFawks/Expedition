@@ -83,7 +83,7 @@ public class WTFStoneRegistry extends ConfigMaster {
 				"minecraft:sand@0", "minecraft:sand@1", "minecraft:gravel@0", "minecraft:netherrack@0"};
 				
 		if (Core.UBC){
-			System.out.println("Adding UBC stone to the registry- you may need to delete the configuration file to allow it to generate correctly if the config has already generated");
+			Core.coreLog.info("Adding UBC stone to the registry- you may need to delete the configuration file to allow it to generate correctly if the config has already generated");
 			String[] newDef = new String[defstone.length+UBCCompat.UBCStoneList.length];
 			int count = 0;
 			for (String string : defstone){
@@ -140,10 +140,11 @@ public class WTFStoneRegistry extends ConfigMaster {
 				boolean frac = false;
 				if (CoreConfig.gameplaytweaks){
 					int speed = config.get(stateString, "Gameplay: Percentage speed modifier to mine (100% disables)", defSpeed.get(state.getBlock())!= null ? defSpeed.get(state.getBlock()) : 100 ).getInt();
-					BlockSets.blockMiningSpeed.put(state, (float)speed/100F);
+					BlockSets.blockMiningSpeed.put(state, speed/100F);
 				
 					if (cobblestone != null){
 						frac = config.get(stateString, "Gameplay: Fractures into cobblestone variant before breaking", true).getBoolean();
+						BlockSets.blockTransformer.put(new StateAndModifier(state, Modifier.COBBLE), cobblestone);
 					}
 					
 				}

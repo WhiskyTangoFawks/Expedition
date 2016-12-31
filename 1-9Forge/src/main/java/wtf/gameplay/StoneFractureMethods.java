@@ -117,7 +117,7 @@ public class StoneFractureMethods {
 	public static HashSet<BlockPos> fracLow(World world, BlockPos pos, int n){
 		HashSet<BlockPos> hashset = new HashSet<BlockPos>();
 		ArrayList<BlockPos> adjPos = getAdjPos(pos);
-		System.out.println("Adjacent " + adjPos.size());
+		//System.out.println("Adjacent " + adjPos.size());
 		for (int loop = 0; loop < n; loop++){
 			BlockPos randPos = adjPos.get(random.nextInt(adjPos.size()));
 			if  (BlockSets.hasCobble(world.getBlockState(randPos))){
@@ -223,7 +223,10 @@ public class StoneFractureMethods {
 		
 		IBlockState stateToSet = BlockSets.getTransformedState(state, BlockSets.Modifier.COBBLE);
 		
+		
+		
 		if (stateToSet != null) { 
+			
 			world.setBlockState(pos, stateToSet);
 			GravityMethods.dropBlock(world, pos, true);
 			return true;
@@ -231,6 +234,8 @@ public class StoneFractureMethods {
 		else if (world.getBlockState(pos) instanceof BlockDecoAnim && state.getValue(BlockDecoAnim.TYPE) == BlockDecoAnim.ANIMTYPE.LAVA_CRUST) {
 			world.setBlockState(pos, Blocks.LAVA.getDefaultState());
 		}
+		
+		//System.out.println("No block transformer found");
 		return false;
 	}
 

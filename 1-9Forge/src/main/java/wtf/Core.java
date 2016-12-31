@@ -85,7 +85,7 @@ public class Core {
 		coreLog = preEvent.getModLog();
 
 		BlockstateWriter.writeResourcePack();
-		UBC = false;//Loader.isModLoaded("undergroundbiomes");
+		UBC = Loader.isModLoaded("undergroundbiomes");
 		if (UBC){
 			UBCCompat.loadUBCStone();
 		}

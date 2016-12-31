@@ -11,18 +11,18 @@ import wtf.config.ore.WTFOresNewConfig;
 
 public class BlockstateWriter {
 
-	static String dir = "resourcepacks\\WTFOres\\assets\\wtfcore\\blockstates";
+	static String dir = "resourcepacks"+File.separatorChar+"WTFOres"+File.separatorChar+"assets"+File.separatorChar+"wtfcore"+File.separatorChar+"blockstates";
 
 	public static void writeResourcePack(){
 
-		new File("resourcepacks\\WTFOres").mkdir(); // creates a directory
-		new File("resourcepacks\\WTFOres\\assets").mkdir();
-		new File("resourcepacks\\WTFOres\\assets\\wtfcore").mkdir();
-		new File("resourcepacks\\WTFOres\\assets\\wtfcore\\blockstates").mkdir();
+		new File("resourcepacks"+File.separatorChar+"WTFOres").mkdir(); // creates a directory
+		new File("resourcepacks"+File.separatorChar+"WTFOres"+File.separatorChar+"assets").mkdir();
+		new File("resourcepacks"+File.separatorChar+"WTFOres"+File.separatorChar+"assets"+File.separatorChar+"wtfcore").mkdir();
+		new File("resourcepacks"+File.separatorChar+"WTFOres"+File.separatorChar+"assets"+File.separatorChar+"wtfcore"+File.separatorChar+"blockstates").mkdir();
 
 		try {
 
-			BufferedWriter writer = new BufferedWriter(new FileWriter("resourcepacks\\WTFOres\\pack.mcmeta"));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("resourcepacks"+File.separatorChar+"WTFOres"+File.separatorChar+"pack.mcmeta"));
 
 			writer.write("{\"pack\": {\"pack_format\": 2,\"description\": \"WTF-Ores: Blockstates for Custom Added Ores\"}}\n");
 
@@ -39,7 +39,7 @@ public class BlockstateWriter {
 		StoneRegEntry stone = WTFStoneRegistry.stoneReg.get(backState);
 
 		try {
-			String path = dir + "\\" + regName + ".json";
+			String path = dir + "+File.separatorChar+" + regName + ".json";
 			BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 
 			//some vanilla blocks don't follow the convention- so we implement an override here
@@ -70,7 +70,7 @@ public class BlockstateWriter {
 		}
 		try {
 
-			String path = dir + "\\" + regName + "Frozen.json";
+			String path = dir + File.separatorChar + regName + "Frozen.json";
 			BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 
 			String background = backState.toString(); 
@@ -122,7 +122,7 @@ public class BlockstateWriter {
 			}
 		}
 
-		String path = dir + "\\" + regName + ".json";
+		String path = dir + File.separatorChar + regName + ".json";
 
 		BufferedWriter writer;
 		try {
@@ -146,7 +146,7 @@ public class BlockstateWriter {
 
 	public static void writeDecoAnimBlockstate(IBlockState backState, String regName){
 
-		String path = dir + "\\" + regName + ".json";
+		String path = dir + File.separatorChar + regName + ".json";
 		BufferedWriter writer;
 		try {
 			writer = new BufferedWriter(new FileWriter(path));
@@ -164,21 +164,18 @@ public class BlockstateWriter {
 				SimpleBlockstateWriter.writeDecoAnimBlockstate(writer, backState, regName, entry);
 			}
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
 	
 	public static void writeDecoStaticBlockstate(IBlockState backState, String regName){
 
-		String path = dir + "\\" + regName + ".json";
+		String path = dir + File.separatorChar + regName + ".json";
 		BufferedWriter writer;
 		try {
 			writer = new BufferedWriter(new FileWriter(path));
 
 			StoneRegEntry entry =WTFStoneRegistry.stoneReg.get(backState); 
-
-			String blockstateLocation = entry.blockstateLocation;
 
 			if (WTFOresNewConfig.fancyBlockStates){
 				try {
@@ -191,7 +188,6 @@ public class BlockstateWriter {
 				SimpleBlockstateWriter.writeDecoStaticBlockstate(writer, backState, regName, entry);
 			}
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}

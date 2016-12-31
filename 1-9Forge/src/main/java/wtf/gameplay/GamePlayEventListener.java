@@ -122,11 +122,22 @@ public class GamePlayEventListener {
 		Block block = event.getWorld().getBlockState(event.getPos()).getBlock();
 		boolean silk = EnchantmentHelper.getEnchantmentLevel(Enchantments.SILK_TOUCH, tool) > 0;
 
+		//System.out.println("Block break event detected");
+		
 		//Check if the block we're trying to break should fracture
 		if (!event.getPlayer().capabilities.isCreativeMode && !silk){
+			
+			//System.out.println("Not creative, not silk-touch");
+			
 			StoneRegEntry entry = WTFStoneRegistry.stoneReg.get(event.getState());
 			if (entry != null && entry.fractures)	{
+				
+				//System.out.println("Entry found, and fractures = true");
+				
 				if (isHammer(event.getPlayer().getHeldItemMainhand()) && GameplayConfig.modifyHammer){
+					
+					//System.out.println("Hammer found");
+					
 					event.setCanceled(true);
 					StoneFractureMethods.fracStone(event.getWorld(), event.getPos(), event.getState());
 					StoneFractureMethods.hammerFrac(event.getWorld(), event.getPos(), toolLevel);
@@ -141,7 +152,11 @@ public class GamePlayEventListener {
 				}
 
 				//if it's a stone to be fractured, cancel the event, damage tools, and frac the stone
-				else if (StoneFractureMethods.fracStone(event.getWorld(), event.getPos(), event.getState())){
+				else {
+					StoneFractureMethods.fracStone(event.getWorld(), event.getPos(), event.getState());
+					
+					//System.out.println("Fracturing");
+					
 					event.setCanceled(true);
 					if (tool != null){
 						tool.attemptDamageItem(1, random);
