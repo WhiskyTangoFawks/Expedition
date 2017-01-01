@@ -11,9 +11,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import wtf.blocks.BlockCrackedStone;
 import wtf.blocks.BlockDecoAnim;
+import wtf.blocks.BlockDecoStatic;
 import wtf.blocks.BlockDenseOre;
+import wtf.blocks.BlockDecoStatic.DecoType;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
 import wtf.utilities.wrappers.Vec;
@@ -198,7 +199,7 @@ public class StoneFractureMethods {
 			pos = iterator.next();
 			IBlockState state = world.getBlockState(pos);
 			
-			if (state.getBlock() instanceof BlockCrackedStone){
+			if (state.getBlock() instanceof BlockDecoStatic && state.getValue(BlockDecoStatic.TYPE) == BlockDecoStatic.DecoType.CRACKED){
 				/*
 				hashset2.add(pos.up());
 				hashset2.add(pos.down());

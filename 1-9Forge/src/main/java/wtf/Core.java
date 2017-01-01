@@ -19,8 +19,11 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import wtf.api.WTFWorldGen;
+import wtf.blocks.CustomOldLeaves;
 import wtf.config.CaveBiomesConfig;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
@@ -181,24 +184,11 @@ public class Core {
 		
 		//Blocks.LEAVES.setLightOpacity(0);
 		//Blocks.LEAVES2.setLightOpacity(0);
-		System.out.println("Torch class is now " + Blocks.TORCH.getClass());
+		//System.out.println("Torch class is now " + Blocks.TORCH.getClass());
 		
-		RecipeParser.init();
-	
-		/*
-		if (CoreConfig.enableOverworldGeneration && OverworldGenConfig.fixBirchLeaves){
-			Minecraft.getMinecraft().getBlockColors().registerBlockColorHandler(new IBlockColor()
-			{
-				@Override
-				public int colorMultiplier(IBlockState state, @Nullable IBlockAccess worldIn, @Nullable BlockPos pos, int tintIndex)
-				{
-					BlockPlanks.EnumType blockplanks$enumtype = state.getValue(BlockOldLeaf.VARIANT);
-					return blockplanks$enumtype == BlockPlanks.EnumType.SPRUCE ? ColorizerFoliage.getFoliageColorPine() :  (worldIn != null && pos != null ? BiomeColorHelper.getFoliageColorAtPos(worldIn, pos) : ColorizerFoliage.getFoliageColorBasic());
-				}
-			}, new Block[] {Blocks.LEAVES});
-		coreLog.info("Birch leaves registered to the colour handler");
+		if (GameplayConfig.wcictable){
+			RecipeParser.init();
 		}
-		*/
 		
 	}	
 

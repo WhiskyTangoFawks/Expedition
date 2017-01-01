@@ -86,8 +86,8 @@ public class GameplayConfig extends ConfigMaster {
 	expLvlDrop = config.get("Explosives", "Explosion level above which blocks drop, and below which they fracture (if fracturing on- if off nothing happens below)", 1).getDouble();
 	creeperUpConstant = config.get("Explosives", "Creeper upward modifier, increase to have creeper explosions explode more upwards", 1.5).getDouble()*100;
 	
-	explosionDamageMod = config.get("Explosives", "Explosion entity damage percentage modifier", 50).getDouble()/100;
-	explosionForceMod = config.get("Explosives", "Explosion entity force percentage modifier", 50).getDouble()/100;
+	explosionDamageMod = config.get("Explosives", "Explosion entity damage percentage modifier", 100).getDouble()/1000;
+	explosionForceMod = config.get("Explosives", "Explosion entity force percentage modifier", 100).getDouble()/500;
 
 	/**
 	 * Gravity Options

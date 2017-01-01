@@ -23,9 +23,8 @@ public class CoreConfig extends ConfigMaster{
 	public static boolean mobReplacement;
 	public static boolean enableOreGen;
 	public static boolean enableOverworldGeneration;
-		
 
-	public static Configuration config = new Configuration(new File(configPath+"WTFCore.cfg"));
+	public static Configuration config = new Configuration(new File(configPath+"MasterConfig.cfg"));
 
 	public static void loadConfig() throws Exception{
 	config.load();

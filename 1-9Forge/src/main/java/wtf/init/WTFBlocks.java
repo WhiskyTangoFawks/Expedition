@@ -151,18 +151,9 @@ public class WTFBlocks{
 		
 		//Alias for Leaves
 		//System.out.println("Attempting leaf replacement");
-		//two problems- first, it cannot find the model
-		
-		//Second- RTG tree leaves are being broken by aliasing- Why?  Are they already aliasing it?
-		//Look up the RTG thread to see if they've already tried to address this problem
-		/*
-		try {
-			GameRegistry.addSubstitutionAlias("minecraft:leaves", GameRegistry.Type.BLOCK, new CustomOldLeaves());
 
-		} catch (ExistingSubstitutionException e) {
-			e.printStackTrace();
-		}
-*/
+		
+
 
 	}
 

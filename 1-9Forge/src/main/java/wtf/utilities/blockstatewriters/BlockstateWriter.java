@@ -11,20 +11,20 @@ import wtf.config.ore.WTFOresNewConfig;
 
 public class BlockstateWriter {
 
-	static String dir = "resourcepacks"+File.separatorChar+"WTFOres"+File.separatorChar+"assets"+File.separatorChar+"wtfcore"+File.separatorChar+"blockstates";
+	static String dir = "resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"assets"+File.separatorChar+"wtfcore"+File.separatorChar+"blockstates";
 
 	public static void writeResourcePack(){
 
-		new File("resourcepacks"+File.separatorChar+"WTFOres").mkdir(); // creates a directory
-		new File("resourcepacks"+File.separatorChar+"WTFOres"+File.separatorChar+"assets").mkdir();
-		new File("resourcepacks"+File.separatorChar+"WTFOres"+File.separatorChar+"assets"+File.separatorChar+"wtfcore").mkdir();
-		new File("resourcepacks"+File.separatorChar+"WTFOres"+File.separatorChar+"assets"+File.separatorChar+"wtfcore"+File.separatorChar+"blockstates").mkdir();
+		new File("resourcepacks"+File.separatorChar+"WTFExpedition").mkdir(); // creates a directory
+		new File("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"assets").mkdir();
+		new File("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"assets"+File.separatorChar+"wtfcore").mkdir();
+		new File("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"assets"+File.separatorChar+"wtfcore"+File.separatorChar+"blockstates").mkdir();
 
 		try {
 
-			BufferedWriter writer = new BufferedWriter(new FileWriter("resourcepacks"+File.separatorChar+"WTFOres"+File.separatorChar+"pack.mcmeta"));
+			BufferedWriter writer = new BufferedWriter(new FileWriter("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"pack.mcmeta"));
 
-			writer.write("{\"pack\": {\"pack_format\": 2,\"description\": \"WTF-Ores: Blockstates for Custom Added Ores\"}}\n");
+			writer.write("{\"pack\": {\"pack_format\": 2,\"description\": \"Do Not Disable:WTF Expedition Blockstates\"}}\n");
 
 			writer.close();
 		}
@@ -39,7 +39,7 @@ public class BlockstateWriter {
 		StoneRegEntry stone = WTFStoneRegistry.stoneReg.get(backState);
 
 		try {
-			String path = dir + "+File.separatorChar+" + regName + ".json";
+			String path = dir +File.separatorChar+ regName + ".json";
 			BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 
 			//some vanilla blocks don't follow the convention- so we implement an override here
