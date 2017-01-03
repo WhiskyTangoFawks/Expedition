@@ -26,8 +26,8 @@ public class OreGenVein extends OreGenAbstract {
 	public OreGenVein(IBlockState blockstate, int[] genRange, int[] minmaxPerChunk, int[] dimensions, float pitch, boolean genDense) {
 		super(blockstate, genRange, minmaxPerChunk, genDense);
 		this.veinLength = dimensions[0];
-		this.veinWidth = dimensions[2];
-		this.veinHeight = dimensions[1];
+		this.veinWidth = dimensions[1];
+		this.veinHeight = dimensions[2];
 		this.veinPitch = pitch;
 	}
 

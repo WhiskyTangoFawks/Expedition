@@ -29,11 +29,11 @@ public class NetherSoulDesert extends AbstractCaveType{
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 
-		if (getNoise(pos, 1, 0.5F) < 0.5){
+		if (getNoise(gen.chunk.getWorld(), pos, 1, 0.5F) < 0.5){
 			gen.replaceBlock(pos, Blocks.SOUL_SAND.getDefaultState());
 		}
 		gen.transformBlock(pos, Modifier.COBBLE);
-		double noise = getNoise(pos, 6, 0.2F);
+		double noise = getNoise(gen.chunk.getWorld(), pos, 6, 0.2F);
 		if (noise < 2){
 			gen.setLavaPatch(pos);
 		}

@@ -10,10 +10,9 @@ import net.minecraft.world.gen.feature.WorldGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import wtf.config.OverworldGenConfig;
-import wtf.utilities.Simplex;
+import wtf.utilities.simplex.Simplex;
 import wtf.utilities.wrappers.ChunkScan;
 import wtf.worldgen.OverworldGen;
-import wtf.worldgen.trees.RTGCompat;
 
 public class BiomeAutumnForest extends BiomeForest implements SubBiome{
 
@@ -88,13 +87,8 @@ public class BiomeAutumnForest extends BiomeForest implements SubBiome{
 
 
 	@Override
-	public WorldGenerator getTree(ChunkScan chunkscan, boolean doReplace, Random random) {
-		if (OverworldGen.RTG && !doReplace){
-			return RTGCompat.getNonSpruceRTG(parentBiome, random, doReplace);
-		}
-		else {
+	public WorldGenerator getTree(ChunkScan chunkscan,  Random random) {
 			return parentBiome.genBigTreeChance(random);
-		}
 	}
 
 

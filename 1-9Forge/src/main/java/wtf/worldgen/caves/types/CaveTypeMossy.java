@@ -31,11 +31,11 @@ public class CaveTypeMossy extends AbstractCaveType{
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 
-		if (getNoise(pos, 5, 0.2F) < (depth*2)) //dirt
+		if (getNoise(gen.chunk.getWorld(), pos, 5, 0.2F) < (depth*2)) //dirt
 		{
 			gen.replaceBlock(pos, dirt);
 		}	
-		if (getNoise(pos, 5, 2F) < depth){
+		if (getNoise(gen.chunk.getWorld(), pos, 5, 2F) < depth){
 			gen.transformBlock(pos, Modifier.MOSSY);
 		}
 	}
@@ -61,24 +61,24 @@ public class CaveTypeMossy extends AbstractCaveType{
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
 
-		if (getNoise(pos, 5, 0.33F) > height/2 ){ //dirt
+		if (getNoise(gen.chunk.getWorld(), pos, 5, 0.33F) > height/2 ){ //dirt
 			gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
-			if (getNoise(pos, 2, 2F) < depth){
+			if (getNoise(gen.chunk.getWorld(), pos, 2, 2F) < depth){
 				gen.transformBlock(pos, BlockSets.Modifier.MOSSY);
 			}
 		}
 		
-		else if(getNoise(pos, 5, 1F) < depth){ //stone
+		else if(getNoise(gen.chunk.getWorld(), pos, 5, 1F) < depth){ //stone
 			gen.transformBlock(pos, Modifier.MOSSY);
 		}
 		
 	}
 	
 	public void setTopBlock(CaveBiomeGenMethods gen, Random random, SurfacePos pos){
-		if (getNoise(pos, 0.05, 1F) < OverworldGenConfig.forestMossChunkPercent){
+		if (getNoise(gen.chunk.getWorld(), pos, 0.05, 1F) < OverworldGenConfig.forestMossChunkPercent){
 			//and if the blockpos simplex is > than the frac frequency
 			
-			if (getNoise(pos, 1, 1F) < OverworldGenConfig.ForestMossFreq){
+			if (getNoise(gen.chunk.getWorld(), pos, 1, 1F) < OverworldGenConfig.ForestMossFreq){
 				if (gen.getBlockState(pos).getBlock().hashCode() == Blocks.GRASS.hashCode()){
 					gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
 				}

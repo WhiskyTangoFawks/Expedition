@@ -13,9 +13,8 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import wtf.config.ore.WTFOresNewConfig;
-import wtf.utilities.Simplex;
+import wtf.utilities.simplex.SimplexHelper;
 import wtf.utilities.wrappers.ChunkCoords;
-import wtf.utilities.wrappers.ChunkDividedHashMap;
 import wtf.utilities.wrappers.ChunkScan;
 
 public abstract class OreGenAbstract{
@@ -31,7 +30,7 @@ public abstract class OreGenAbstract{
 	public int maxPerChunk;
 	public int minPerChunk;
 	public Float veinDensity = 1F;
-	private Simplex simplex = null;
+	private final SimplexHelper simplex;
 	private int seed = 0;
 	public boolean genDenseOres;
 	public final ArrayList<BiomeDictionary.Type> reqBiomeTypes = new ArrayList<BiomeDictionary.Type>();
@@ -45,6 +44,7 @@ public abstract class OreGenAbstract{
 		this.maxPerChunk = minmaxPerChunk[1];
 		this.minPerChunk = minmaxPerChunk[0];
 		genDenseOres = denseGen;
+		simplex = new SimplexHelper(blockstate.toString());
 	}
 	
 
@@ -120,14 +120,9 @@ public abstract class OreGenAbstract{
 	
 	
 	public double getSimplexOres(World world, double x, double z){
-		double range = (this.maxPerChunk-this.minPerChunk)/2;
+		double range = (this.maxPerChunk-this.minPerChunk);
 		
-		if (seed != world.getSeed()){
-			seed = (int) (world.getSeed()*this.oreBlock.hashCode());
-			simplex = new Simplex(seed); 
-		}
-		
-		return simplex.noise(x/8, z/8)*range + range + this.minPerChunk;
+		return simplex.get2DNoise(world, x/8, z/8)*range+ this.minPerChunk;
 	}
 }
 

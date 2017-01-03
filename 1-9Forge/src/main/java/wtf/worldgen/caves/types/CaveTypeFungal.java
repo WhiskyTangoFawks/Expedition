@@ -18,7 +18,7 @@ public class CaveTypeFungal extends AbstractCaveType{
 
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(pos, 2, 0.5F) > 1){
+		if (getNoise(gen.chunk.getWorld(), pos, 2, 0.5F) > 1){
 			gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
 		}
 
@@ -27,7 +27,7 @@ public class CaveTypeFungal extends AbstractCaveType{
 
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(pos, 2, 0.1F) > 1){
+		if (getNoise(gen.chunk.getWorld(), pos, 2, 0.1F) > 1){
 			gen.replaceBlock(pos, Blocks.MYCELIUM.getDefaultState());
 		}
 		
@@ -37,7 +37,7 @@ public class CaveTypeFungal extends AbstractCaveType{
 
 	@Override
 	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(pos.up(), 2, 0.5F) > 1){
+		if (getNoise(gen.chunk.getWorld(), pos.up(), 2, 0.5F) > 1){
 			gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
 		}
 		else {
@@ -48,7 +48,7 @@ public class CaveTypeFungal extends AbstractCaveType{
 
 	@Override
 	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(pos.down(), 2, 0.1F) > 1){
+		if (getNoise(gen.chunk.getWorld(), pos.down(), 2, 0.1F) > 1){
 		if (pos.getY() < 53){
 			gen.replaceBlock(pos, Blocks.BROWN_MUSHROOM.getDefaultState());
 		}
@@ -65,7 +65,7 @@ public class CaveTypeFungal extends AbstractCaveType{
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		if (getNoise(pos, 2, 0.5F) > 1){
+		if (getNoise(gen.chunk.getWorld(), pos, 2, 0.5F) > 1){
 			gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
 		}
 

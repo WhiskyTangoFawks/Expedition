@@ -35,7 +35,7 @@ public class DungeonJungleTemple extends AbstractDungeonType{
 
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(pos, 5, 1) < 1.5){
+		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < 1.5){
 			gen.replaceBlock(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED));
 		}
 		else {
@@ -47,7 +47,7 @@ public class DungeonJungleTemple extends AbstractDungeonType{
 
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(pos, 5, 1) < 1.5){
+		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < 1.5){
 			gen.replaceBlock(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED));
 		}
 		else {
@@ -59,7 +59,7 @@ public class DungeonJungleTemple extends AbstractDungeonType{
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		if (getNoise(pos, 5, 1) < 1.5){
+		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < 1.5){
 			gen.replaceBlock(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED));
 		}
 		else {
@@ -94,7 +94,7 @@ public class DungeonJungleTemple extends AbstractDungeonType{
 	
 	@Override
 	public void generateAdjacentWall(CaveBiomeGenMethods gen, Random random, AdjPos pos, float depth, int height){
-		if (getNoise(pos, 5, 1) < depth*1.5){	
+		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < depth*1.5){	
 			gen.GenVines(pos, pos.getFace(random));
 		}
 	}

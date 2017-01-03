@@ -24,7 +24,7 @@ public class CaveTypeSandy extends AbstractCaveType{
 
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		double noise = getNoise(pos, 5, 0.2F);
+		double noise = getNoise(gen.chunk.getWorld(), pos, 5, 0.2F);
 		if (noise < depth*3 ){
 			gen.replaceBlock(pos, sandstone);
 		}
@@ -33,7 +33,7 @@ public class CaveTypeSandy extends AbstractCaveType{
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 		
-		double noise = getNoise(pos, 5, 0.2F);
+		double noise = getNoise(gen.chunk.getWorld(), pos, 5, 0.2F);
 		if (noise < depth*3){
 			gen.replaceBlock(pos, sandstone);
 		}
@@ -49,7 +49,7 @@ public class CaveTypeSandy extends AbstractCaveType{
 
 	@Override
 	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		double noise = getNoise(pos, 5, 0.2F);
+		double noise = getNoise(gen.chunk.getWorld(), pos, 5, 0.2F);
 		if (noise < depth*3 ){
 			gen.replaceBlock(pos, sand);
 		}
@@ -60,7 +60,7 @@ public class CaveTypeSandy extends AbstractCaveType{
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		double noise = getNoise(pos, 5, 0.2F);
+		double noise = getNoise(gen.chunk.getWorld(), pos, 5, 0.2F);
 		if (noise < depth*3 ){
 			gen.replaceBlock(pos, sandstone);
 		}

@@ -18,10 +18,9 @@ import wtf.worldgen.caves.CaveProfile;
 import wtf.worldgen.caves.CaveTypeRegister;
 
 public class PopulationDecorator extends PopulationGenerator{
-
+	
 	@Override
 	public void generate(World world, ChunkCoords coords, Random random, ChunkScan chunkscan) throws Exception {
-
 		
 		CaveBiomeGenMethods gen = new CaveBiomeGenMethods(world, coords, random);
 		if (CoreConfig.caveGeneration){

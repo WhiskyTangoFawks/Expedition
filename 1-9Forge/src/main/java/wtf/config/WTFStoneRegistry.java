@@ -106,7 +106,6 @@ public class WTFStoneRegistry extends ConfigMaster {
 
 			IBlockState state = getBlockState(stateString);
 
-
 			if (state != null){
 				String locBlockstate = config.get(stateString, "BlockState resource location", defBlockStateLocations.get(state) == null ? state.getBlock().getRegistryName().toString() : defBlockStateLocations.get(state).toString()).getString();
 				String locTexture = config.get(stateString, "Stone texture resource location", defTextureLocations.get(state) == null ? "null" : defTextureLocations.get(state).toString()).getString();

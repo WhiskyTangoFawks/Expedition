@@ -17,6 +17,7 @@ import wtf.blocks.BlockDenseOreFalling;
 import wtf.blocks.redstone.DenseRedstoneOre;
 import wtf.config.ConfigMaster;
 import wtf.init.BlockSets;
+import wtf.init.BlockSets.Modifier;
 import wtf.init.WTFBlocks;
 import wtf.ores.OreGenAbstract;
 import wtf.ores.OreGenerator;
@@ -33,8 +34,7 @@ import wtf.utilities.blockstatewriters.BlockstateWriter;
 import wtf.utilities.wrappers.StoneAndOre;
 
 public class WTFOresNewConfig extends ConfigMaster{
-	public static boolean rotate180only;
-	public static boolean fancyBlockStates;
+
 
 	public static HashSet<IBlockState> cancelOres = new HashSet<IBlockState>(); 
 
@@ -57,12 +57,10 @@ public class WTFOresNewConfig extends ConfigMaster{
 		config.load();
 
 		simplexGen = config.get("0 General Options", "Use simplex noise instead of random for ore generation", true).getBoolean();
-		rotate180only = config.get("0 Blockstate Options", "When generating blockstates, create variants with 180 rotation only, setting to false enables 90 adn 270 degree rotations.  Requires generating new blockstates, and placing them in a resource pack", true).getBoolean();
-		rotate180only = config.get("0 Blockstate Options", "Use fancy blockstates", false).getBoolean();
 
-		
+
 		String[] defOres = {"minecraft:coal_ore@0 #vein", "minecraft:iron_ore@0 #vein", "minecraft:gold_ore@0 #cloud", "minecraft:lapis_ore@0 #cluster", "minecraft:redstone_ore@0 #vein", "minecraft:emerald_ore@0 #single", "minecraft:diamond_ore@0 #single",
-				"wtfcore:nitre_ore@0 #cave&single", "wtfcore:oreSandGold@0 #underwater&single", "wtfcore:stone0DecoStatic@2 #vein"};
+				"wtfcore:nitre_ore@0 #cave&single", "wtfcore:oreSandGold@0 #underwater&single", "WTFBlockType:cracked #vein"};
 
 		String[] oreSet = config.get("1 Master Ore List", "Master list of all ores generated, add ore blocks to this list, then run minecraft, in order to generate their config options", defOres).getStringList();
 
@@ -75,7 +73,31 @@ public class WTFOresNewConfig extends ConfigMaster{
 				String oreString = oreGenString.split("#")[0].replaceAll("\\s","");
 				String genString = oreGenString.split("#")[1].replaceAll("\\s","");
 
-				IBlockState oreState = getBlockState(oreString);
+				//Piece of code for backwards compatibility or previously generated ore strings
+				if (oreString == " wtfcore:stone0DecoStatic@2"){
+					oreString = "WTFBlockType:cracked #vein";
+				}
+				
+				IBlockState oreState = null;
+				Modifier modifier = null;
+				
+				if (oreString.toLowerCase().contains("wtfblocktype")){
+					try {
+						modifier = Modifier.valueOf(oreString.split(":")[1].toUpperCase());
+						oreState = BlockSets.getTransformedState(Blocks.STONE.getDefaultState(), modifier);
+					}
+					catch (IllegalArgumentException e){
+						Modifier[] types = Modifier.values();
+						String gentypestring = "";
+						for (Modifier type : types){
+							gentypestring += "WTFBlockType:"+type.toString() + ", " ;
+						}
+						throw new Exception("Ore Config Parsing Exception while trying to parse config for " + oreString  + " ***** "  + oreString +" is not a recognised block modifier type.  Accepted Block modifier types are: " + gentypestring );
+					}
+				}
+				else {
+					oreState = getBlockState(oreString);
+				}
 
 				if (oreState == null){
 					config.get("Config for " +oreGenString, "Block not found", "unable to find block for "+oreGenString);
@@ -93,10 +115,10 @@ public class WTFOresNewConfig extends ConfigMaster{
 				String stoneStringList = config.get("Config for " +oreGenString, "0 List of background stones", preset.stoneList).getString().replaceAll("\\s","");
 
 				ArrayList<IBlockState> stoneArray = getBlockStateArray(stoneStringList);
-
+	
 				int[] genRange = config.get("Config for " +oreGenString, "2 Generation height range (min % surface height, max % surface height)", preset.genRange).getIntList();
 				int[] orePerChunk = config.get("Config for " +oreGenString, "1 Amount of ore to attempt to generate per chunk (min, max)", preset.orePerChunk).getIntList();
-				boolean denseBlock = config.get("Config for " +oreGenString, "4 Use dense versions of this ore block", preset.denseBlock).getBoolean();
+				boolean denseBlock = config.get("Config for " +oreGenString, "4 Use dense versions of this ore block", modifier == null ? preset.denseBlock : false).getBoolean();
 
 				OreGenAbstract generator = getGenerator(oreGenString, preset, config, genString, oreState, genRange, orePerChunk, denseBlock);
 
@@ -134,16 +156,18 @@ public class WTFOresNewConfig extends ConfigMaster{
 					}
 				}
 
-
-
 				for (IBlockState stone : stoneArray){
+					
+					if (modifier != null){
+						BlockSets.stoneAndOre.put(new StoneAndOre(stone, oreState), BlockSets.getTransformedState(stone, modifier));
+					}
+					
 					if (denseBlock){
 
 						Block block;
 						Block stoneblock = stone.getBlock();
 						int meta = stoneblock.getMetaFromState(stone);
 						String stoneName = stoneblock.getRegistryName().toString().split(":")[1]+meta;
-
 						String blockName = stoneName+ oreString.split(":")[1].split("@")[0] + Integer.parseInt(oreString.split(":")[1].split("@")[1]);
 
 						//if (Block.getBlockFromName(dense_"+blockName) == null){
@@ -166,13 +190,11 @@ public class WTFOresNewConfig extends ConfigMaster{
 							BlockstateWriter.writeDenseOreBlockstate(stone, "dense_"+blockName+"_on", textureLoc, stoneName);
 						}
 
-
-
 						BlockSets.stoneAndOre.put(new StoneAndOre(stone, oreState), block.getDefaultState());
 						//Ore ubification/densification of existing ores- removed because it was crashing
 						//new OreReplacer(blockstate.getBlock());
 					}
-					else {
+					else if (modifier == null){
 						BlockSets.stoneAndOre.put(new StoneAndOre(stone, oreState), oreState);
 						new OreReplacer(oreState.getBlock());
 					}

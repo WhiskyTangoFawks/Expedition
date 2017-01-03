@@ -56,7 +56,7 @@ public class OreConfigHelper {
 		
 		defPresets.put("wtfcore:oreSandGold@0", new OreDefReg("minecraft:sand@0", "underwater@single", new int[]{90, 110}, new int[]{-10, 10}, true).setTextureLoc("gold_ore").setReqBiomes("river"));
 		
-		defPresets.put("wtfcore:stone0DecoStatic@2", new OreDefReg(defStone, "cave@single", new int[]{10, 110}, new int[]{-25, 110}, false).setSurfaces("ceiling, wall").setVeinDimensions(new int[]{10,2,1}).setVeinPitch(0).setDensity(50));
+		defPresets.put("WTFBlockType:cracked", new OreDefReg(defStone, "cave@single", new int[]{10, 110}, new int[]{-25, 110}, false).setSurfaces("ceiling, wall").setVeinDimensions(new int[]{10,2,1}).setVeinPitch(0).setDensity(50));
 	
 		return defPresets;
 		

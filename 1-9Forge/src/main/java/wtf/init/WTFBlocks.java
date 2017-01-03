@@ -22,9 +22,6 @@ import wtf.blocks.BlockRoots;
 import wtf.blocks.BlockSpeleothem;
 import wtf.blocks.BlockMycorrack;
 import wtf.blocks.OreNitre;
-import wtf.blocks.BlockDecoStatic.DecoType;
-import wtf.blocks.redstone.RedstoneStalactite;
-import wtf.config.CoreConfig;
 import wtf.config.StoneRegEntry;
 import wtf.config.WTFStoneRegistry;
 import wtf.crafting.WCICTable;
@@ -47,7 +44,6 @@ public class WTFBlocks{
 	public static Block foxfire;
 	public static Block mossyDirt;
 	public static BlockRoots roots;
-	public static IBlockState crackedStone;
 	public static Block red_cactus;
 	
 	public static BlockPatchFluid waterPatch;

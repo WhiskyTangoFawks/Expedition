@@ -9,7 +9,7 @@ import net.minecraft.init.Blocks;
 
 import net.minecraft.world.World;
 import wtf.init.WTFBlocks;
-import wtf.utilities.Simplex;
+import wtf.utilities.simplex.SimplexHelper;
 
 public abstract class TreeVars {
 	
@@ -24,11 +24,10 @@ public abstract class TreeVars {
 
 	public enum LeafStyle{BASIC, SPRUCE, POPLAR};
 
-	public final Simplex simplex;
+	public final SimplexHelper simplex = new SimplexHelper("TreeVars");
 	
 	public TreeVars(World world, IBlockState wood, IBlockState branch, IBlockState leaf){
 		random = new Random();
-		simplex = new Simplex((int) world.getSeed());
 		
 		canGrowOn.add(Blocks.DIRT); canGrowOn.add(Blocks.GRASS);  canGrowOn.add(WTFBlocks.mossyDirt);
 		this.wood = wood;

@@ -20,7 +20,7 @@ public class OverworldGenConfig extends ConfigMaster{
 	
 	public static double treeReplacementRate;
 	public static double simplexTreeScale;
-	public static boolean addRoots;
+	//public static boolean addRoots;
 	
 	public static int autumnForestID;
 	public static int autumnHillsID;
@@ -31,8 +31,8 @@ public class OverworldGenConfig extends ConfigMaster{
 	public static int autumnForestSize;
 	public static int autumnForestColorScale;
 	
-	public static boolean fixBirchLeaves;
-	public static boolean replaceRTGBirches;
+	//public static boolean fixBirchLeaves;
+	//public static boolean replaceRTGBirches;
 
 	
 	//public static int mangroveID;
@@ -56,8 +56,9 @@ public class OverworldGenConfig extends ConfigMaster{
 		genTrees = config.get("Trees", "Allow this mod to bypass normal tree generation, and do custom tree generation (required for the rest of the tree configs to have effect)", true).getBoolean();
 		treeReplacementRate = config.get("Trees", "Percentage of trees generated that this mod will attempt to replace with custom big trees", 50).getDouble()/100;
 		simplexTreeScale = config.get("Trees", "Scale for the simplex tree replacement- smaller values allow more mixing of tree types, larger values seperate them out more", 3.0).getDouble();
-		addRoots = config.get("Trees", "Generate roots for vanilla, and mod added trees placed by this mods generator", true).getBoolean();
-		replaceRTGBirches = config.get("Trees", "Replace RTG Birch trees with custom large poplar trees", true).getBoolean();
+		
+		//addRoots = config.get("Trees", "Generate roots for vanilla, and mod added trees placed by this mods generator", true).getBoolean();
+		//replaceRTGBirches = config.get("Trees", "Replace RTG Birch trees with custom large poplar trees", true).getBoolean();
 		
 		String surface = "Surface Modifications";
 		modifySurface = config.get(surface, "Enable all surface modification", true).getBoolean();

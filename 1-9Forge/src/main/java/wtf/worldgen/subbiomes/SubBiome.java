@@ -19,7 +19,7 @@ public interface SubBiome {
 	public Biome getParentBiome();
 	
 
-	public WorldGenerator getTree(ChunkScan chunkscan, boolean doReplace, Random random);
+	public WorldGenerator getTree(ChunkScan chunkscan, Random random);
 
 	
 }

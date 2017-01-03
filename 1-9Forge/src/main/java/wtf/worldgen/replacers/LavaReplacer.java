@@ -12,7 +12,7 @@ import net.minecraftforge.common.BiomeDictionary;
 import wtf.api.Replacer;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
-import wtf.utilities.Simplex;
+import wtf.utilities.simplex.SimplexHelper;
 import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class LavaReplacer extends Replacer{
@@ -22,7 +22,7 @@ public class LavaReplacer extends Replacer{
 		// TODO Auto-generated constructor stub
 	}
 
-	private static Simplex simplex = new Simplex(5000);
+	private static SimplexHelper simplex = new SimplexHelper("LavaReplacer");
 	
 	@Override
 	public  boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen, IBlockState oldState) {
@@ -32,7 +32,7 @@ public class LavaReplacer extends Replacer{
 			double y = pos.getY();
 			double z = pos.getZ();
 			//A noise generated from 0 to 10
-			double noise = simplex.noise(x/25, y, z/25)*5 +5;
+			double noise = simplex.get3DNoise(chunk.getWorld(), x/25, y, z/25)*10;
 	
 			
 			World world = chunk.getWorld();

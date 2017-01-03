@@ -11,7 +11,6 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import wtf.blocks.BlockDenseOre;
 import wtf.blocks.BlockDenseOreFalling;
-import wtf.config.GameplayConfig;
 import wtf.init.BlockSets;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.OrePos;
@@ -47,7 +46,6 @@ public class ChunkDividedOreMap{
 		}
 	}
 
-
 	public void setBlockSet(){
 
 		Iterator<Entry<ChunkCoords, HashMap<OrePos, IBlockState>>> master = hashmap.entrySet().iterator();
@@ -74,6 +72,7 @@ public class ChunkDividedOreMap{
 						IBlockState oreType = entry.getValue();
 						
 						StoneAndOre stoneandore = new StoneAndOre(extendedblockstorage.get(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15), oreType);
+						
 						IBlockState state = BlockSets.stoneAndOre.get(stoneandore);
 						if (state != null){
 							if (state.getBlock() instanceof BlockDenseOre){
@@ -83,15 +82,11 @@ public class ChunkDividedOreMap{
 								state = state.withProperty(BlockDenseOreFalling.DENSITY, entry.getKey().density);
 								
 							}
-
-
 							if (state != null){
 								extendedblockstorage.set(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15, state);
 								//chunk.setBlockState(pos.up(100), state);
 							}
-
 						}
-
 					}
 					else {
 						IBlockState oreType = entry.getValue();
@@ -100,8 +95,7 @@ public class ChunkDividedOreMap{
 						if (state != null){
 							
 							if (state.getBlock() instanceof BlockDenseOre){
-								state = state.withProperty(BlockDenseOre.DENSITY, entry.getKey().density);
-								
+								state = state.withProperty(BlockDenseOre.DENSITY, entry.getKey().density);								
 							}
 							else if (state.getBlock() instanceof BlockDenseOreFalling){
 								state = state.withProperty(BlockDenseOreFalling.DENSITY, entry.getKey().density);

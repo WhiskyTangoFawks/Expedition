@@ -1,11 +1,7 @@
 package wtf;
 
-import java.util.List;
-
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -19,11 +15,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import wtf.api.WTFWorldGen;
-import wtf.blocks.CustomOldLeaves;
 import wtf.config.CaveBiomesConfig;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
@@ -51,7 +43,6 @@ import wtf.utilities.blockstatewriters.BlockstateWriter;
 import wtf.worldgen.DungeonPopulator;
 import wtf.worldgen.OverworldGen;
 import wtf.worldgen.PopulationDecorator;
-import wtf.worldgen.RTGOverworldGen;
 import wtf.worldgen.trees.WorldGenTreeCancel;
 import wtf.worldscan.CoreWorldGenListener;
 
@@ -59,7 +50,7 @@ import wtf.worldscan.CoreWorldGenListener;
 
 public class Core {
 	public static  final String coreID = "wtfcore";
-	public static final String version = "1.10.2_v1.1";
+	public static final String version = "1.10.2_v1.3";
 
 	@SidedProxy(clientSide="wtf.proxy.ClientProxy", serverSide="wtf.proxy.CommonProxy")
 	public static CommonProxy proxy;
@@ -127,6 +118,7 @@ public class Core {
 	{
 		
 		MinecraftForge.EVENT_BUS.register(new CoreWorldGenListener());
+		
 		MinecraftForge.TERRAIN_GEN_BUS.register(new CoreWorldGenListener());
 
 		if (CoreConfig.dungeonGeneration){
@@ -163,14 +155,14 @@ public class Core {
 		
 		
 		if (CoreConfig.enableOverworldGeneration){
-			if (Loader.isModLoaded("RTG")){
-				coreLog.info(";RTG detected, enabling integration");
-				WTFWorldGen.addGen(new RTGOverworldGen());
-			}
-			else {
+			//if (Loader.isModLoaded("RTG")){
+			//	coreLog.info(";RTG detected, enabling integration");
+			//	WTFWorldGen.addGen(new RTGOverworldGen());
+			//}
+			//else {
 				
 				WTFWorldGen.addGen(new OverworldGen());
-			}
+			//}
 		}
 		
 		WTFWorldGen.addGen(new PopulationDecorator());
@@ -180,7 +172,9 @@ public class Core {
 	@EventHandler
 	public void PostInit(FMLPostInitializationEvent postEvent) throws Exception{
 
-		proxy.enableBlockstateTexturePack();
+		if (CoreConfig.doResourcePack){
+			proxy.enableBlockstateTexturePack();
+		}
 		
 		//Blocks.LEAVES.setLightOpacity(0);
 		//Blocks.LEAVES2.setLightOpacity(0);

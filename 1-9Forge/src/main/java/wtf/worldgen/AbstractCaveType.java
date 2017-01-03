@@ -5,7 +5,8 @@ import java.util.Random;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import wtf.utilities.Simplex;
+import wtf.utilities.simplex.Simplex;
+import wtf.utilities.simplex.SimplexHelper;
 import wtf.utilities.wrappers.AdjPos;
 import wtf.utilities.wrappers.CavePosition;
 import wtf.utilities.wrappers.ChunkCoords;
@@ -20,7 +21,7 @@ public abstract class AbstractCaveType
 
 	public int dungeonPercentChance = 5;
 	final public String name;
-	protected static Simplex simplex = new Simplex(5000);
+	protected static SimplexHelper simplex = new SimplexHelper("CaveGenerator");
 	
 	public final int ceilingaddonchance;
 	public final int flooraddonchance;
@@ -58,13 +59,12 @@ public abstract class AbstractCaveType
 	 * @return
 	 */
 			
-	protected final double getNoise(BlockPos pos, double returnSize, float scale){
-		double x = pos.getX() * scale;
-		double y = pos.getY() * scale;
-		double z = pos.getZ() * scale;
+	protected final double getNoise(World world, BlockPos pos, double returnSize, float scale){
+		double x = (double)pos.getX() * scale;
+		double y = (double)pos.getY() * scale;
+		double z = (double)pos.getZ() * scale;
 		//System.out.println(" simplex " + x + " " + y + " " +z);
-		returnSize /=2;
-		double noise = simplex.noise(x, y, z)*returnSize + returnSize; 
+		double noise = simplex.get3DNoise(world, x, y, z)*returnSize; 
 		return noise;
 	}
 	

@@ -17,11 +17,9 @@ import wtf.utilities.wrappers.ChunkScan;
 public class CoreWorldGenListener {
 
 	public static HashMap<ChunkCoords, ChunkScan> worldChunkScans = new HashMap<ChunkCoords, ChunkScan>();
-
+	
 	@SubscribeEvent(priority=EventPriority.LOWEST)
 	public void populate(PopulateChunkEvent.Post event) throws Exception{
-
-		
 		
 		if (!event.getWorld().isRemote && event.getWorld().getWorldType() != WorldType.FLAT){
 			ChunkCoords coords = new ChunkCoords(event.getChunkX(), event.getChunkZ());

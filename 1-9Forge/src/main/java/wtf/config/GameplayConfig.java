@@ -142,9 +142,9 @@ public class GameplayConfig extends ConfigMaster {
 	homescroll = config.get("Loot and Crafting", "Enable home scrolls", true).getBoolean();
 	wcictable = config.get("Loot and Crafting", "Enable Crafting Recipe Table", true).getBoolean();
 	
-	removeVanillaTools = config.get("Loot and Crafting", "Remove recipes for vanilla tools (Requires Tinkers Construct to be installed)", true).getBoolean(); 
+	removeVanillaTools = config.get("Loot and Crafting", "Remove recipes for vanilla tools (Requires Tinkers Construct to be installed)", false).getBoolean(); 
 	
-	waterControl = config.get("Other", "Prevent infinite water source blocks outside biomes with the WET type", true).getBoolean();
+	waterControl = config.get("Other", "Prevent infinite water source blocks outside biomes with the WET type", false).getBoolean();
 	childZombie = config.get("Other", "Prevent spawning of baby zombies", false).getBoolean();
 	
 	config.save();

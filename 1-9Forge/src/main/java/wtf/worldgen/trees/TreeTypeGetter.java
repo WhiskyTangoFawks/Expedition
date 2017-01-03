@@ -139,10 +139,10 @@ public class TreeTypeGetter {
 			treeTypes.put(oldTree, new Taiga2Tree(world));
 			return new Taiga2Tree(world);
 		}
-		else if (Loader.isModLoaded("RTG") && OverworldGenConfig.replaceRTGBirches && oldTree instanceof TreeRTGBetulaPapyrifera){
-			treeTypes.put(oldTree, new PoplarTree(world));
-			return new PoplarTree(world);
-		}
+		//else if (Loader.isModLoaded("RTG") && OverworldGenConfig.replaceRTGBirches && oldTree instanceof TreeRTGBetulaPapyrifera){
+		//	treeTypes.put(oldTree, new PoplarTree(world));
+		//	return new PoplarTree(world);
+		//}
 
 		treeTypes.put(oldTree, null);
 		//System.out.println("Skipping unsupported tree type- this tree will not be replaced, but instead generate normally " + oldTree.getClass());

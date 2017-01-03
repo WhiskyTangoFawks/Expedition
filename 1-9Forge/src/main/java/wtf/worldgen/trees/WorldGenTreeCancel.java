@@ -1,32 +1,17 @@
 package wtf.worldgen.trees;
 
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate;
-import net.minecraftforge.event.world.BlockEvent.PlaceEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import wtf.utilities.wrappers.ChunkCoords;
-import wtf.utilities.wrappers.ChunkScan;
-import wtf.worldgen.trees.TreeVars.LeafStyle;
-import wtf.worldgen.trees.types.AcaciaTree;
-import wtf.worldgen.trees.types.Mangrove;
-import wtf.worldgen.trees.types.PoplarTree;
-import wtf.worldgen.trees.types.RedwoodTree;
-import wtf.worldgen.trees.types.SimpleTree;
-import wtf.worldgen.trees.types.SwampTree;
-import wtf.worldgen.trees.types.Taiga1Tree;
-import wtf.worldgen.trees.types.Taiga2Tree;
-import wtf.worldscan.CoreWorldGenListener;
+import wtf.worldgen.OverworldGen;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class WorldGenTreeCancel {
 
 	@SubscribeEvent
 	public void decorate(DecorateBiomeEvent.Decorate event){
-		if (event.getType() == Decorate.EventType.TREE){	
+		if (event.getType() == Decorate.EventType.TREE  && OverworldGen.replaceTreeGen(event.getWorld(), event.getRand(), event.getPos())){	
 			event.setResult(Result.DENY);
 		}
 	}

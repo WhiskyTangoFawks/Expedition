@@ -1,4 +1,4 @@
-package wtf.utilities;
+package wtf.utilities.simplex;
 
 import java.util.Random;
 

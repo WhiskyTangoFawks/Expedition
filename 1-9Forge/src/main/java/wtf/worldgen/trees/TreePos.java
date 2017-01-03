@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
 import wtf.init.WTFBlocks;
-import wtf.utilities.Simplex;
+import wtf.utilities.simplex.SimplexHelper;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkDividedHashMap;
 import wtf.utilities.wrappers.ChunkScan;
@@ -39,7 +39,7 @@ public class TreePos {
 	
 
 	public final double scale;
-	public static Simplex simplex;
+	public static SimplexHelper simplex = new SimplexHelper("treeSimplex");
 	
 	public final boolean snow;
 
@@ -56,10 +56,8 @@ public class TreePos {
 		this.snow = BiomeDictionary.isBiomeOfType(world.getBiome(pos), Type.SNOWY);
 		
 		this.type = tree;
-		if (simplex == null){
-			simplex = new Simplex((int) world.getSeed());
-		}
-		scale = simplex.noise(pos.getX()/100, pos.getZ()/100)*0.5 +0.5;
+
+		scale = simplex.get2DNoise(world, pos.getX()/100, pos.getZ()/100);
 		
 		trunkHeight = tree.getTrunkHeight(scale);
 		trunkDiameter = tree.getTrunkDiameter(scale);

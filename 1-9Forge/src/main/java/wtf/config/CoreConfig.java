@@ -23,7 +23,11 @@ public class CoreConfig extends ConfigMaster{
 	public static boolean mobReplacement;
 	public static boolean enableOreGen;
 	public static boolean enableOverworldGeneration;
-
+	
+	public static boolean rotate180only;
+	public static boolean fancyBlockStates;
+	public static boolean doResourcePack;
+	
 	public static Configuration config = new Configuration(new File(configPath+"MasterConfig.cfg"));
 
 	public static void loadConfig() throws Exception{
@@ -32,6 +36,11 @@ public class CoreConfig extends ConfigMaster{
 
 		enableNameGetter = config.get("Name Getter", "When a player places a block, print out the blocks name", false).getBoolean();
 	
+		rotate180only = config.get("Blockstate Options", "When generating blockstates, create variants with 180 rotation only, setting to false enables 90 and 270 degree rotations.  Requires generating new blockstates, and placing them in a resource pack", true).getBoolean();
+		rotate180only = config.get("Blockstate Options", "Use fancy blockstates", false).getBoolean();
+		doResourcePack = config.get("Blockstate Options", "Automatically load the WTF-Expedition blockstate resource pack- Try disabling if you're getting a crash on load, and manually load the resource pack when in game", true).getBoolean();
+
+		
 		String section = "Feature Override";
 		gameplaytweaks = config.get(section, "Set to false to disable all gameplay tweaks for a vanilla gameplay experience.  This override ALL options set inside WTFGameplay.cfg", true).getBoolean();
 		caveGeneration = config.get(section, "Set to false to disable all cave decoration", true).getBoolean();
@@ -39,10 +48,7 @@ public class CoreConfig extends ConfigMaster{
 		mobReplacement = config.get(section, "Set to false to spawning of all custom mobs in the world.  Does not disable spawning within custom dungeons", true).getBoolean();
 		enableOreGen = config.get(section, "Set to false to disable WTF-Ore generation completely", true).getBoolean();
 		enableOverworldGeneration = config.get(section, "Set to false to disable all Overworld generation", true).getBoolean();
-		
-		
 			
-				
 
 	config.save();
 	}
