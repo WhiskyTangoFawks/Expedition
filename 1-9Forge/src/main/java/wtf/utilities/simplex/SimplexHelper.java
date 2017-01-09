@@ -58,7 +58,7 @@ public class SimplexHelper{
 	@SubscribeEvent
 	public void onWorldUnload(WorldEvent.Unload event){
 		if (!event.getWorld().isRemote){
-			System.out.println("Clearing world variable for simplex");
+			System.out.println("Clearing world variable for simplex " + this.name);
 			simplex = null;
 		}
 	}

@@ -10,9 +10,11 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenShrub;
 import net.minecraft.world.gen.feature.WorldGenerator;
+import wtf.Core;
 import wtf.api.PopulationGenerator;
 import wtf.config.CoreConfig;
 import wtf.config.OverworldGenConfig;
+import wtf.utilities.UBC.UBCCavebiomesGenMethods;
 import wtf.utilities.simplex.SimplexHelper;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
@@ -36,7 +38,8 @@ public class OverworldGen extends PopulationGenerator{
 	@Override
 	public void generate(World world, ChunkCoords chunkcoords, Random random, ChunkScan chunkscan) throws Exception{
 		
-		CaveBiomeGenMethods gen = new CaveBiomeGenMethods(world, chunkcoords, random);
+		CaveBiomeGenMethods gen = Core.UBC ? new UBCCavebiomesGenMethods(world, chunkcoords, world.rand) : new CaveBiomeGenMethods(world, chunkcoords, world.rand);
+		
 
 		byte[] newBiomes = chunkcoords.getChunk(world).getBiomeArray();
 

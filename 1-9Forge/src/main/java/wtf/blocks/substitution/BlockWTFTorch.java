@@ -1,4 +1,4 @@
-package wtf.blocks;
+package wtf.blocks.substitution;
 
 
 import java.util.Random;

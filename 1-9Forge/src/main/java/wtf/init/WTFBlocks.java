@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
+import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import wtf.Core;
 import wtf.blocks.BlockDecoAnim;
@@ -22,6 +23,8 @@ import wtf.blocks.BlockRoots;
 import wtf.blocks.BlockSpeleothem;
 import wtf.blocks.BlockMycorrack;
 import wtf.blocks.OreNitre;
+import wtf.blocks.substitution.BlockWTFTorch;
+import wtf.blocks.substitution.CustomOldLeaves;
 import wtf.config.StoneRegEntry;
 import wtf.config.WTFStoneRegistry;
 import wtf.crafting.WCICTable;
@@ -113,7 +116,6 @@ public class WTFBlocks{
 				registerBlockItemSubblocks(new BlockDecoStatic(entry.getKey()), BlockDecoStatic.DecoType.values().length-1, stoneName+"DecoStatic");
 				BlockstateWriter.writeDecoStaticBlockstate(entry.getKey(), stoneName+"DecoStatic");
 			}
-				
 		}
 		
 		//registerBlockItemSubblocks(new RedstoneStalactite(false).setFrozen("redstoneSpeleothem"), 6, "redstoneSpeleothem");// .setFrozen("stoneSpeleothem");
@@ -125,32 +127,8 @@ public class WTFBlocks{
 		wcicTable = registerBlock(new WCICTable(), "wcic_table");
 		GameRegistry.registerTileEntity(WCICTileEntity.class, "WCICTable");
 
-		//BlockWTFTorch.torch_on = registerBlock(new BlockWTFTorch(true), "torch_on");
-		/*
-		if (CoreConfig.gameplaytweaks && GameplayConfig.torchLifespan > -1){
-			
-			BlockWTFTorch.torch_off = new BlockWTFTorch(false);
-			BlockWTFTorch.torch_off.setRegistryName("torch");
-			//BlockWTFTorch.torch_off.setUnlocalizedName("torch");
-
-			System.out.println("Attempting torch replacement");
-			try {
-				GameRegistry.addSubstitutionAlias("minecraft:torch", GameRegistry.Type.BLOCK, BlockWTFTorch.torch_off);
-
-			} catch (ExistingSubstitutionException e) {
-				e.printStackTrace();
-			}
-			
+		BlockWTFTorch.torch_off = new BlockWTFTorch(false);
 		
-		}
-		*/
-		
-		//Alias for Leaves
-		//System.out.println("Attempting leaf replacement");
-
-		
-
-
 	}
 
 	public static Block registerBlock(Block block, String name){

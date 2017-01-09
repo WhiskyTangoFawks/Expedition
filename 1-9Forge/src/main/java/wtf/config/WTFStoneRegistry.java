@@ -16,7 +16,7 @@ import net.minecraftforge.common.config.Configuration;
 import wtf.Core;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
-import wtf.utilities.UBCCompat;
+import wtf.utilities.UBC.UBCCompat;
 import wtf.utilities.wrappers.StateAndModifier;
 
 public class WTFStoneRegistry extends ConfigMaster {

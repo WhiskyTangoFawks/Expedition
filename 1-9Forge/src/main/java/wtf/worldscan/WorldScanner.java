@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
+import wtf.Core;
 import wtf.api.Replacer;
 import wtf.init.BlockSets;
+import wtf.utilities.UBC.UBCCavebiomesGenMethods;
 import wtf.utilities.wrappers.AdjPos;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
@@ -28,7 +32,7 @@ public class WorldScanner {
 	
 	public ChunkScan getChunkScan(World world, ChunkCoords coords)
 	{		
-		CaveBiomeGenMethods gen = new CaveBiomeGenMethods(world, coords, world.rand);
+		CaveBiomeGenMethods gen = Core.UBC ? new UBCCavebiomesGenMethods(world, coords, world.rand) : new CaveBiomeGenMethods(world, coords, world.rand);
 		
 		ArrayList<BlockPos> water = new ArrayList<BlockPos>();
 		ArrayList<CaveListWrapper> caveareas = new ArrayList<CaveListWrapper>();
@@ -48,7 +52,7 @@ public class WorldScanner {
 
 			//boolean [] zArray = new boolean[256];
 			HashMap<Integer, Boolean> zArray = new HashMap<Integer, Boolean>();
-			int x = coords.getWorldX() + xloop;
+			int worldx = coords.getWorldX() + xloop;
 			for (int zloop1 = 0; zloop1 < 16; zloop1++){
 
 				//zig zagging back and forth
@@ -62,13 +66,7 @@ public class WorldScanner {
 					zloop = 15-zloop1;
 					zig = false;
 				}
-				int z = coords.getWorldZ() + zloop;
-
-
-				//I need to modify this to do water finding
-				//Swap scan for surface into a scan for surface or air
-				//Then add a new method to scan through water to find the actual surface
-				
+				int worldz = coords.getWorldZ() + zloop;
 				
 				//First, we find the surface for the block position
 				boolean generated = false;
@@ -76,34 +74,37 @@ public class WorldScanner {
 				
 				int y = lastY+3;
 				
-				while (!chunk.canSeeSky(new BlockPos(x & 15, y, z & 15)) && y<256){
+				while (!chunk.canSeeSky(new BlockPos(xloop, y, zloop)) && y<256){
 					y+=10;
 				}	
+
+				IBlockState[] column = getColumn(chunk, xloop, y, zloop);
+				
 				//initial scan to find the first non-air block
-				while (isAirAndCheck(chunk, gen, x,y,z) && y > 1)
+				
+				while (isAirAndCheck(chunk, gen, column[y], worldx,y,worldz) && y > 1)
 				{
 					y--;
 				}
 
-				while (BlockSets.liquidBlockSet.contains(chunk.getBlockState(new BlockPos(x, y, z)).getBlock())){
+				while (BlockSets.liquidBlockSet.contains(column[y])){
 					y--;
 					liquid = true;
 				}
 				
-				while (!isSurfaceAndCheck(chunk, gen, x, y, z) && y > 1){
+				while (!isSurfaceAndCheck(chunk, gen, column[y], worldx, y, worldz) && y > 1){
 					generated = true;
 					y--;
 				}
 
-				surfacepositions[xloop][zloop] = new SurfacePos(x, y, z);
+				surfacepositions[xloop][zloop] = new SurfacePos(worldx, y, worldz);
 				if (generated){
 					surfacepositions[xloop][zloop].setGenerated();
 				}
 				if (liquid){
 					water.add(surfacepositions[xloop][zloop]);
 				}
-				
-				
+					
 				lastY = y;
 				surfaceaverage += y;
 
@@ -114,14 +115,18 @@ public class WorldScanner {
 				ArrayList<BlockPos> wallPos = new ArrayList<BlockPos>();
 				ArrayList<AdjPos> adjPos = new ArrayList<AdjPos>();
 
+				//We could move down a position here, but that would then be skipping the replacer a position
+				
 				//iterate downward
 				for (y=y-1; y > 1; y--){
-					BlockPos currentPos = new BlockPos(x, y, z);
-					BlockPos prevZpos = zig ? new BlockPos(x, y, z-1) : new BlockPos(x, y, z+1);
+					BlockPos currentPos = new BlockPos(worldx, y, worldz);
+					BlockPos prevZpos = zig ? new BlockPos(worldx, y, worldz-1) : new BlockPos(worldx, y, worldz+1);
 					EnumFacing prevFaceZ = zig ? EnumFacing.NORTH : EnumFacing.SOUTH;
 					EnumFacing nextFaceZ = zig ? EnumFacing.SOUTH : EnumFacing.NORTH;
 
-					boolean isAir =isAirAndCheck(chunk, gen, x, y, z); 
+					boolean isAir =isAirAndCheck(chunk, gen, column[y], worldx, y, worldz);
+					
+					//if false, I might want to add to the air hash here, instead of doing a loop later
 
 					/**
 					 * X scanning
@@ -159,7 +164,6 @@ public class WorldScanner {
 								}
 							}
 						}
-						
 					}
 
 					if (xloop == 15){ //if it's the last column of the chunk, overscan to see if any caves end on the first position of the next chunk
@@ -183,7 +187,6 @@ public class WorldScanner {
 							adjPos.add(new AdjPos(currentPos, prevFaceZ));
 						}
 					}
-
 					
 					else if (isAir != zArray.get(y)){
 							zArray.put(y, isAir);
@@ -207,8 +210,6 @@ public class WorldScanner {
 							}
 						}
 					
-					
-					
 					if (zloop1 == 15){
 						//on 15, if I am overscanning it is always going to be a z-1 situation
 						//BlockPos nextZpos = new BlockPos(x, y, z-1);
@@ -231,12 +232,10 @@ public class WorldScanner {
 						}
 					}
 					else{ //if it's not air
-
-
 						if (ceiling != -1){ // if the ceiling has already been found- then that means we've found a cave floor
 
 							CaveListWrapper cave =  null;
-							CavePosition pos = new CavePosition(x, ceiling, y, z);
+							CavePosition pos = new CavePosition(worldx, ceiling, y, worldz);
 
 							//figure out which cave this is closest too
 							for (CaveListWrapper cavewrapper : caveareas){
@@ -249,9 +248,9 @@ public class WorldScanner {
 								caveareas.add(cave);
 							}
 							
-							//loop through the column, and add all the blocks to the air blocks hash
+							//add all the air blocks for this cave position to the air hash
 							for (int loop = y+1; loop < ceiling; loop ++){
-								airBlocks.put(new BlockPos(x, loop, z), cave);
+								airBlocks.put(new BlockPos(worldx, loop, worldz), cave);
 							}
 													
 							wallPos = new ArrayList<BlockPos>();
@@ -266,34 +265,12 @@ public class WorldScanner {
 		}
 
 		surfaceaverage /= 256;
-		//System.out.println("surface average" + surfaceaverage);
 		gen.blocksToSet.setBlockSet();
 		return new ChunkScan(world, surfacepositions, coords.getWorldX(), coords.getWorldZ(), surfaceaverage, caveareas, water);
 	}
 
+	public boolean isAirAndCheck(Chunk chunk, CaveBiomeGenMethods gen, IBlockState state, int x, int y, int z){
 
-	//Note: This method is not used internally here, but in skyworld and nether scanner.  I've changed it to optimise the water finding, but it could result in nether and skyworld scanners not being optimised
-	public int scanForSurface(Chunk chunk, CaveBiomeGenMethods gen,int x, int y, int z) {
-		int generated = 1;
-		while (!chunk.canSeeSky(new BlockPos(x & 15, y, z & 15)) && y<256){
-			y+=10;
-		}	
-		//initial scan to find the first non-air block
-		while (isAirAndCheck(chunk, gen, x,y,z) && y > 1)
-		{
-			y--;
-		}
-		while (!isSurfaceAndCheck(chunk, gen, x, y, z) && y > 1){
-			generated = -1;
-			y--;
-		}
-		return y*generated;
-	}
-
-
-	public boolean isAirAndCheck(Chunk chunk, CaveBiomeGenMethods gen, int x, int y, int z){
-
-		IBlockState state = chunk.getBlockState(new BlockPos(x, y, z));
 		Block block = state.getBlock();
 
 		Replacer replacer = BlockSets.isNonSolidAndCheckReplacement.get(block);
@@ -311,7 +288,6 @@ public class WorldScanner {
 	public boolean isWall(World world, BlockPos pos){
 		return !getIsAir(world, pos.up()) && !getIsAir(world, pos.down());
 	}
-
 	
 	public boolean getIsAir(Chunk chunk, BlockPos pos){
 		return BlockSets.nonSolidBlockSet.contains(chunk.getBlockState(pos).getBlock());
@@ -320,23 +296,51 @@ public class WorldScanner {
 		return BlockSets.nonSolidBlockSet.contains(world.getBlockState(pos).getBlock());
 	}
 
-	public boolean isSurfaceAndCheck(Chunk chunk, CaveBiomeGenMethods gen, int x, int y, int z){
-		//BlockPos pos = ;
-		IBlockState state = chunk.getBlockState(new BlockPos(x & 15, y, z & 15));
+	public boolean isSurfaceAndCheck(Chunk chunk, CaveBiomeGenMethods gen, IBlockState state, int x, int y, int z){
+		//IBlockState state = chunk.getBlockState(x & 15, y, z & 15);
 		Block block = state.getBlock();
 
 		if (BlockSets.isNonSolidAndCheckReplacement.containsKey(block)){
-			//System.out.println("genReplace contained " + block.getLocalizedName());
 			Replacer replacer = BlockSets.isNonSolidAndCheckReplacement.get(block);
 			if (replacer!= null){
 				replacer.isNonSolidAndReplacement(chunk, new BlockPos(x & 15, y, z & 15), gen, state);
-				//WTFCore.log.info("Replaced");
 			}
 		}
 		return BlockSets.surfaceBlocks.contains(block);
 	}
 
+	protected IBlockState[] getColumn(Chunk chunk, int chunkX, int maxY, int chunkZ){
+	
+		maxY++; //Because I want it to be inclusive of the top block
+		IBlockState[] blockArray = new IBlockState[maxY];
+		
+		for (int loop = 0; loop < maxY;){
+			//blockArray[loop] = chunk.getBlockState(chunkX, loop, chunkZ);
+			//get extended storage
+			//while y < length
+			//get blockstate
 
+			int y2 = loop >> 4;
 
+		//loop max = either 16, or the number of blocks remaining
+			int remaining = maxY-loop;
+			int loopMax = remaining > 16 ? 16 : remaining;
+
+			ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y2];
+			if (extendedblockstorage == null){
+				for (int loop2 = 0; loop2 < loopMax; loop2++){
+					blockArray[loop] = Blocks.AIR.getDefaultState();
+					loop++;
+				}	
+			}
+			else {
+				for (int loop2 = 0; loop2 < loopMax; loop2++){
+					blockArray[loop] = extendedblockstorage.get(chunkX, loop2, chunkZ);
+					loop++;
+				}	
+			}
+		}
+		return blockArray;
+	}
 
 }

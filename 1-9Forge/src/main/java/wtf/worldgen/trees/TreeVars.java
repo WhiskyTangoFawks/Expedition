@@ -24,7 +24,7 @@ public abstract class TreeVars {
 
 	public enum LeafStyle{BASIC, SPRUCE, POPLAR};
 
-	public final SimplexHelper simplex = new SimplexHelper("TreeVars");
+	public static final SimplexHelper simplex = new SimplexHelper("TreeVars");
 	
 	public TreeVars(World world, IBlockState wood, IBlockState branch, IBlockState leaf){
 		random = new Random();

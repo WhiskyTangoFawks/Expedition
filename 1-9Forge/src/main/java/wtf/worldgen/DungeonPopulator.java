@@ -4,8 +4,10 @@ import java.util.Iterator;
 import java.util.Random;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import wtf.Core;
 import wtf.api.PopulationGenerator;
 import wtf.config.CaveBiomesConfig;
+import wtf.utilities.UBC.UBCCavebiomesGenMethods;
 import wtf.utilities.wrappers.AdjPos;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
@@ -21,7 +23,8 @@ public class DungeonPopulator extends PopulationGenerator{
 	public void generate(World world, ChunkCoords coords, Random random, ChunkScan chunkscan) {
 
 
-		CaveBiomeGenMethods gen = new CaveBiomeGenMethods(world, coords, random);
+		CaveBiomeGenMethods gen = Core.UBC ? new UBCCavebiomesGenMethods(world, coords, world.rand) : new CaveBiomeGenMethods(world, coords, world.rand);
+		
 		
 		
 		CaveListWrapper cave = getLargestCave(chunkscan);

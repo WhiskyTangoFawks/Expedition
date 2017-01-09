@@ -7,7 +7,7 @@ import net.minecraftforge.common.config.Configuration;
 import wtf.Core;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
-import wtf.utilities.UBCCompat;
+import wtf.utilities.UBC.UBCCompat;
 
 
 	
@@ -17,11 +17,13 @@ public class GameplayConfig extends ConfigMaster {
 	public static int torchLifespan;
 	public static int torchRange;
 	public static boolean relightTorchByHand;
+	public static boolean replaceTorch;
 
 	public static boolean modifyHammer;
 
 	public static boolean fallingBlocksDamage;
 	public static boolean antiNerdPole;
+	public static boolean gravity;
 	
 	public static boolean customExplosion;
 	public static boolean explosionFractures;
@@ -32,6 +34,8 @@ public class GameplayConfig extends ConfigMaster {
 	public static boolean homescroll;
 	
 	public static boolean miningSpeedEnabled;
+	public static boolean miningStoneFractures;
+	public static boolean miningOreFractures;
 
 	//public static boolean enableQuickCrafting;
 
@@ -39,10 +43,13 @@ public class GameplayConfig extends ConfigMaster {
 	public static int stickDrop;
 	
 	public static double appleCoreConstant;
+	public static boolean plantGrowthMod;
 	
 	public static boolean wcictable;
 	
 	public static boolean removeVanillaTools;
+	
+	public static boolean sulfurRecipe;
 	
 	public static Configuration config = new Configuration(new File(configPath+"WTFGameplay.cfg"));
 	public static boolean waterControl;
@@ -63,15 +70,17 @@ public class GameplayConfig extends ConfigMaster {
 	
 	modifyHammer = config.get("Mining", "Modify hammer behaviour", true).getBoolean();
 	miningSpeedEnabled = config.get("Mining", "Enable mining speed modification (values are set in the Stone Registry)", true).getBoolean();
-	
-
+	miningStoneFractures = config.get("Mining", "Stone fractures upon mining (individual stones disabled in the stone registry)", true).getBoolean();
+	miningOreFractures = config.get("Mining", "Ores fracture adjacent stone upon mining (Individual blocks can be removed from the config list)", true).getBoolean();
 
 	String[] defaultOres = {Blocks.COAL_ORE.getRegistryName().toString(), Blocks.IRON_ORE.getRegistryName().toString(), Blocks.GOLD_ORE.getRegistryName().toString(),
 			Blocks.LAPIS_ORE.getRegistryName().toString(), Blocks.DIAMOND_ORE.getRegistryName().toString(), Blocks.EMERALD_ORE.getRegistryName().toString()};
 	
 	String[] oresFrac = config.get("Mining", "Blocks which fracture adjacent stone when mined", defaultOres).getStringList();
-	for (String string : oresFrac){
-		BlockSets.oreAndFractures.add(getBlockFromString(string));
+	if (miningOreFractures){
+		for (String string : oresFrac){
+			BlockSets.oreAndFractures.add(getBlockFromString(string));
+		}
 	}
 
 	/**
@@ -101,28 +110,34 @@ public class GameplayConfig extends ConfigMaster {
 		
 		deffall = UBCdeffall;
 	}
-	
+
+	gravity = config.get("Gravity", "Enable Gravity for additional blocks", true).getBoolean();
+
 	String[] fallingBlocks = config.get("Gravity", "blockName@percentStability (lower means less stable)", deffall).getStringList();
-	
-	for (String blockAndStability :fallingBlocks){
-		Block block = getBlockFromString(blockAndStability.split("@")[0]);
-		float stability = Integer.parseInt(blockAndStability.split("@")[1]);
-		BlockSets.fallingBlocks.put(block, stability/100F);
+
+	if (gravity){
+
+		for (String blockAndStability :fallingBlocks){
+			Block block = getBlockFromString(blockAndStability.split("@")[0]);
+			float stability = Integer.parseInt(blockAndStability.split("@")[1]);
+			BlockSets.fallingBlocks.put(block, stability/100F);
+		}
 	}
-	
 
 	fallingBlocksDamage = config.get("Gravity", "Enable damage from blocks", true).getBoolean();
+
 	antiNerdPole = config.get("Gravity", "NerdPole Prevention: Prevent indefinite stacking of non-stable blocks (causes them to slide off)", true).getBoolean();
 	
 	/**
 	 * Torches Options
 	 */
-	/*
+	
 	String torch = "Finite Torches";
+	
 	torchLifespan = config.get(torch, "Chance in 100 per block tick (avg every 45 seconds) that an unattended torch will go out, 0 disables torches going out, -1 prevents torch replacement entirely", 20).getInt();
 	torchRange = config.get(torch, "Number of blocks a player must be within to prevent a torch from going out", 20).getInt();
 	relightTorchByHand = config.get(torch, "Torches can be relit by hand (true), or require flint and steel (false)", true).getBoolean();
-	*/
+	replaceTorch = config.get(torch, "0 Replace vanilla torches with finite torches", false).getBoolean();
 	
 	/**
 	 * Drops Options
@@ -135,12 +150,14 @@ public class GameplayConfig extends ConfigMaster {
 	 */
 	
 	appleCoreConstant = config.get("Crop Growth Rate", "Growth rate percent modifier for crops", 10).getDouble()/100;
+	plantGrowthMod = config.get("Crop Growth Rate", "Modify crop growth rates", true).getBoolean();
 	
 	/*
 	 * Loot & Crafting
 	 */
 	homescroll = config.get("Loot and Crafting", "Enable home scrolls", true).getBoolean();
 	wcictable = config.get("Loot and Crafting", "Enable Crafting Recipe Table", true).getBoolean();
+	wcictable = config.get("Loot and Crafting", "Enable Netherrack --> Sulfur recipe", true).getBoolean();
 	
 	removeVanillaTools = config.get("Loot and Crafting", "Remove recipes for vanilla tools (Requires Tinkers Construct to be installed)", false).getBoolean(); 
 	

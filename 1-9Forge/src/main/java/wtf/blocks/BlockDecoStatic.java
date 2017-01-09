@@ -57,7 +57,7 @@ public class BlockDecoStatic extends AbstractBlockDerivative{
 	@Override
 	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state)
 	{
-		if (state.getValue(TYPE)==DecoType.CRACKED){
+		if (!world.isRemote && state.getValue(TYPE)==DecoType.CRACKED){
 			Entity crack = new StoneCrack(world, pos);
 			world.spawnEntityInWorld(crack);
 		}

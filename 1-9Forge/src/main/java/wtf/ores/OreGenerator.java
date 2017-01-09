@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.world.World;
+import wtf.Core;
 import wtf.api.PopulationGenerator;
+import wtf.utilities.UBC.UBCChunkDividedOreMap;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
 
@@ -23,7 +25,7 @@ public class OreGenerator extends PopulationGenerator{
 	@Override
 	public void generate(World world, ChunkCoords coords, Random random, ChunkScan chunkscan) throws Exception {
 		
-		ChunkDividedOreMap map = new ChunkDividedOreMap(world, coords);
+		ChunkDividedOreMap map = Core.UBC ? new UBCChunkDividedOreMap(world, coords) : new ChunkDividedOreMap(world, coords);
 		
 		for (OreGenAbstract gen : oreGenRegister){
 			//long start = System.nanoTime();

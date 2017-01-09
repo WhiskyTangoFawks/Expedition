@@ -16,7 +16,10 @@ public class WTFRecipes {
 			GameRegistry.addRecipe(new ItemStack(WTFItems.homescroll), "x","y","x",'x', new ItemStack(Items.PAPER), 'y', new ItemStack(Items.ENDER_PEARL));
 		}
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.DYE, 1, 15), new Object[]{WTFItems.nitre});
-		GameRegistry.addShapelessRecipe(new ItemStack(WTFItems.sulfur, 1), new Object[]{Blocks.NETHERRACK});
+		
+		if (GameplayConfig.sulfurRecipe){
+			GameRegistry.addShapelessRecipe(new ItemStack(WTFItems.sulfur, 1), new Object[]{Blocks.NETHERRACK});
+		}
 		
 		if (GameplayConfig.wcictable){
 			GameRegistry.addRecipe(new ItemStack(WTFBlocks.wcicTable), " ","y","x",'y', new ItemStack(Items.BOOK), 'x', new ItemStack(Blocks.CRAFTING_TABLE));

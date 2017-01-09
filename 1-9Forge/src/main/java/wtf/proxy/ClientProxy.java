@@ -40,19 +40,21 @@ public class ClientProxy extends CommonProxy {
 			System.out.println("Resource pack not found- please enable manually");
 		}
 		else{
-			System.out.println("Resource pack found- attempting to enable "+ wtfResourcePack.getResourcePackName());	
+			System.out.println("Resource pack found- attempting to enable "+ wtfResourcePack.getResourcePackName());
+		
 		}
 		// Choose which one you want and remove the other lines.
 		
 		// 2 Lines below enable resource pack, but it stays visible in RPs GUI and can be disabled by user.
 		
-		ArrayList<ResourcePackRepository.Entry> newlist = new ArrayList<ResourcePackRepository.Entry>();
+		List<ResourcePackRepository.Entry> newlist = new ArrayList<ResourcePackRepository.Entry>();
 		
 		newlist.addAll(rpEnabled);
 		
 		if (!newlist.contains(wtfResourcePack)){
 			newlist.add(wtfResourcePack);
 			repo.setRepositories(newlist);
+			System.out.println("Crash Warning: WTF Expedition has enabled the blockstate resource pack.  If this is the first time the game has been run to generate the options.txt file, it will crash.  This crash can be safely ignored afterwards, just restart the game and it should be fine.  To stop seeing this warning, manually enable the WTFExpedition resource pack");
 		}
 
 	}

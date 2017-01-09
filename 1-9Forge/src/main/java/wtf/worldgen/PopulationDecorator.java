@@ -4,9 +4,11 @@ import java.util.Iterator;
 import java.util.Random;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import wtf.Core;
 import wtf.api.PopulationGenerator;
 import wtf.config.CoreConfig;
 import wtf.config.OverworldGenConfig;
+import wtf.utilities.UBC.UBCCavebiomesGenMethods;
 import wtf.utilities.wrappers.AdjPos;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
@@ -22,7 +24,8 @@ public class PopulationDecorator extends PopulationGenerator{
 	@Override
 	public void generate(World world, ChunkCoords coords, Random random, ChunkScan chunkscan) throws Exception {
 		
-		CaveBiomeGenMethods gen = new CaveBiomeGenMethods(world, coords, random);
+		CaveBiomeGenMethods gen = Core.UBC ? new UBCCavebiomesGenMethods(world, coords, world.rand) : new CaveBiomeGenMethods(world, coords, world.rand);
+		
 		if (CoreConfig.caveGeneration){
 			genCaves(world, gen, coords, random, chunkscan);
 		}

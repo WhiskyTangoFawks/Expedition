@@ -29,7 +29,8 @@ public class GenTree {
 		if (!tree.chunkscan.checkPositionForTreeGen(tree.world, tree)){
 			return false;
 		}
-		if (genTrunk(tree)){	
+		if (genTrunk(tree)){
+		
 			//System.out.println("trunk generated");
 			float offset = genTop(tree, tree.random.nextFloat()*PIx2);
 			//System.out.println("top generated");

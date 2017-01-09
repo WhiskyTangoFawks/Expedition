@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import wtf.Core;
+import wtf.init.BlockSets;
 
 public abstract class AbstractBlockDerivative extends Block{
 	
@@ -42,7 +43,6 @@ public abstract class AbstractBlockDerivative extends Block{
 		if (this.parentBackground != null){
 			this.setCreativeTab(Core.wtfTab);
 		}
-		
 		this.setHarvestLevel(foreState.getBlock().getHarvestTool(foreState), foreState.getBlock().getHarvestLevel(foreState));
 	}
 

@@ -1,10 +1,11 @@
-package wtf.ores;
+package wtf.utilities.UBC;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -12,40 +13,19 @@ import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import wtf.blocks.BlockDenseOre;
 import wtf.blocks.BlockDenseOreFalling;
 import wtf.init.BlockSets;
+import wtf.ores.ChunkDividedOreMap;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.OrePos;
 import wtf.utilities.wrappers.StoneAndOre;
 
-public class ChunkDividedOreMap{
+public class UBCChunkDividedOreMap extends ChunkDividedOreMap{
 
-	protected final HashMap<ChunkCoords, HashMap<OrePos, IBlockState>> hashmap;
-	protected final World world;
-
-	public ChunkDividedOreMap(World world, ChunkCoords coords){
-		hashmap = new HashMap<ChunkCoords, HashMap<OrePos, IBlockState>>();
-		hashmap.put(coords, new HashMap<OrePos, IBlockState>());
-		this.world = world;
+	public UBCChunkDividedOreMap(World world, ChunkCoords coords) {
+		super(world, coords);
 	}
-
-	public void put(OrePos pos, IBlockState state){
-		ChunkCoords coords = new ChunkCoords(pos);
-		HashMap<OrePos, IBlockState> submap = hashmap.get(coords);
-		if (submap != null){
-			submap.put(pos, state);
-		}
-		else {
-			HashMap<OrePos, IBlockState> newMap = new HashMap<OrePos, IBlockState>();
-			newMap.put(pos, state);
-			hashmap.put(coords, newMap);
-		}
-	}
-
-	public void putAll(HashMap<OrePos, IBlockState> mapIn){
-		for (Entry<OrePos, IBlockState> entry : mapIn.entrySet()){
-			put(entry.getKey(), entry.getValue());
-		}
-	}
-
+	
+	int stoneHash = Blocks.STONE.getDefaultState().hashCode();
+	
 	public void setBlockSet(){
 
 		Iterator<Entry<ChunkCoords, HashMap<OrePos, IBlockState>>> master = hashmap.entrySet().iterator();
@@ -71,7 +51,13 @@ public class ChunkDividedOreMap{
 
 						IBlockState oreType = entry.getValue();
 						
-						StoneAndOre stoneandore = new StoneAndOre(extendedblockstorage.get(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15), oreType);
+						IBlockState stone = extendedblockstorage.get(pos.getX() & 15, pos.getY() & 15, pos.getZ() & 15);
+						
+						if (stone.hashCode() == stoneHash){
+							stone = ReplacerUBCAbstract.getUBCStone(pos);
+						}
+						
+						StoneAndOre stoneandore = new StoneAndOre(stone, oreType);
 						
 						IBlockState state = BlockSets.stoneAndOre.get(stoneandore);
 						if (state != null){
@@ -90,7 +76,14 @@ public class ChunkDividedOreMap{
 					}
 					else {
 						IBlockState oreType = entry.getValue();
-						StoneAndOre stoneandore = new StoneAndOre(chunk.getBlockState(pos), oreType);
+						
+						IBlockState stone = chunk.getBlockState(pos);
+						
+						if (stone.hashCode() == stoneHash){
+							stone = ReplacerUBCAbstract.getUBCStone(pos);
+						}
+						
+						StoneAndOre stoneandore = new StoneAndOre(stone, oreType);
 						IBlockState state = BlockSets.stoneAndOre.get(stoneandore);
 						if (state != null){
 							
@@ -111,4 +104,5 @@ public class ChunkDividedOreMap{
 			}
 		}
 	}
+
 }

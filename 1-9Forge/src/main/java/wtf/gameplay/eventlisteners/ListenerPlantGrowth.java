@@ -1,4 +1,4 @@
-package wtf.gameplay;
+package wtf.gameplay.eventlisteners;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import wtf.config.GameplayConfig;
 
-public class AppleCoreEvents {
+public class ListenerPlantGrowth {
 
 	static HashMap<Block, Type> plantmods = new HashMap<Block, Type>();
 	
@@ -79,9 +79,6 @@ public class AppleCoreEvents {
 					}
 				}
 			}
-			
-			
-			
 		}
 	}
 	

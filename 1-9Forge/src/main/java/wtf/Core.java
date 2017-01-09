@@ -2,10 +2,10 @@ package wtf;
 
 import org.apache.logging.log4j.Logger;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -15,7 +15,9 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
-import wtf.api.WTFWorldGen;
+import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import wtf.blocks.substitution.CustomOldLeaves;
 import wtf.config.CaveBiomesConfig;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
@@ -24,27 +26,18 @@ import wtf.config.WTFStoneRegistry;
 import wtf.config.ore.WTFOresNewConfig;
 import wtf.crafting.GuiHandler;
 import wtf.crafting.RecipeParser;
-import wtf.entities.EntitySpawnListener;
-import wtf.gameplay.AppleCoreEvents;
-import wtf.gameplay.GamePlayEventListener;
 import wtf.init.BlockSets;
-import wtf.init.LootEventListener;
+import wtf.init.EventListenerRegistry;
 import wtf.init.WTFArmor;
 import wtf.init.WTFBiomes;
 import wtf.init.WTFBlocks;
 import wtf.init.WTFEntities;
 import wtf.init.WTFItems;
 import wtf.init.WTFRecipes;
-import wtf.ores.OreGenerator;
-import wtf.ores.VanillOreGenCatcher;
+import wtf.init.WTFSubstitutions;
 import wtf.proxy.CommonProxy;
-import wtf.utilities.UBCCompat;
+import wtf.utilities.UBC.UBCCompat;
 import wtf.utilities.blockstatewriters.BlockstateWriter;
-import wtf.worldgen.DungeonPopulator;
-import wtf.worldgen.OverworldGen;
-import wtf.worldgen.PopulationDecorator;
-import wtf.worldgen.trees.WorldGenTreeCancel;
-import wtf.worldscan.CoreWorldGenListener;
 
 @Mod (modid = Core.coreID, name = Core.coreID, version = Core.version, dependencies = "after:undergroundbiomes")
 
@@ -70,29 +63,33 @@ public class Core {
 		{
 			return Item.getItemFromBlock(Blocks.COBBLESTONE);
 		}
+		
+		
 
 	};
 
 	@EventHandler
 	public void PreInit(FMLPreInitializationEvent preEvent) throws Exception
 	{
+		
 		coreLog = preEvent.getModLog();
 
 		BlockstateWriter.writeResourcePack();
 		UBC = Loader.isModLoaded("undergroundbiomes");
+	
+		CoreConfig.loadConfig();
+		
+		OverworldGenConfig.loadConfig();
+		CaveBiomesConfig.customConfig();
+
 		if (UBC){
 			UBCCompat.loadUBCStone();
 		}
 		else {
 			coreLog.info("Underground Biomes Construct not detected");
 		}
-	
-		CoreConfig.loadConfig();
+		
 		GameplayConfig.loadConfig();
-		OverworldGenConfig.loadConfig();
-		CaveBiomesConfig.customConfig();
-
-
 		WTFStoneRegistry.loadStoneReg();
 		BlockSets.initBlockSets();
 		WTFBlocks.initBlocks();
@@ -111,79 +108,28 @@ public class Core {
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		
+		WTFSubstitutions.init();
+
 		
-	
 	}
+	
 	@EventHandler public void load(FMLInitializationEvent event) throws Exception
 	{
+		EventListenerRegistry.initListeners();
 		
-		MinecraftForge.EVENT_BUS.register(new CoreWorldGenListener());
-		
-		MinecraftForge.TERRAIN_GEN_BUS.register(new CoreWorldGenListener());
-
-		if (CoreConfig.dungeonGeneration){
-			WTFWorldGen.addGen(new DungeonPopulator());
-		}
-	
-		if (CoreConfig.mobReplacement){
-			MinecraftForge.EVENT_BUS.register(new EntitySpawnListener());
-		}
-
-		if (CoreConfig.gameplaytweaks){
-			MinecraftForge.EVENT_BUS.register(new GamePlayEventListener());
-			MinecraftForge.EVENT_BUS.register(new LootEventListener());
-		}
-
-		if (CoreConfig.enableOreGen){
-			
-			MinecraftForge.ORE_GEN_BUS.register(new VanillOreGenCatcher());
-			WTFWorldGen.addGen(new OreGenerator());
-		}
-		
-		if (CoreConfig.enableOverworldGeneration){
-			if (OverworldGenConfig.genTrees){
-			MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenTreeCancel());
-				MinecraftForge.EVENT_BUS.register(new WorldGenTreeCancel());
-			}
-		}
-		
-		
-		//coreLog.info("AppleCore detected, registering integration");
-		//No longer uses applecore
-		AppleCoreEvents.initGrowthMap();
-		MinecraftForge.EVENT_BUS.register(new AppleCoreEvents());
-		
-		
-		if (CoreConfig.enableOverworldGeneration){
-			//if (Loader.isModLoaded("RTG")){
-			//	coreLog.info(";RTG detected, enabling integration");
-			//	WTFWorldGen.addGen(new RTGOverworldGen());
-			//}
-			//else {
-				
-				WTFWorldGen.addGen(new OverworldGen());
-			//}
-		}
-		
-		WTFWorldGen.addGen(new PopulationDecorator());
-		
-
 	}
+	
 	@EventHandler
 	public void PostInit(FMLPostInitializationEvent postEvent) throws Exception{
 
 		if (CoreConfig.doResourcePack){
 			proxy.enableBlockstateTexturePack();
 		}
-		
-		//Blocks.LEAVES.setLightOpacity(0);
-		//Blocks.LEAVES2.setLightOpacity(0);
-		//System.out.println("Torch class is now " + Blocks.TORCH.getClass());
-		
+
 		if (GameplayConfig.wcictable){
 			RecipeParser.init();
 		}
-		
+
 	}	
 
 

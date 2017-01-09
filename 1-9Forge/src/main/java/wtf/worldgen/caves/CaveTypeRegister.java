@@ -34,8 +34,8 @@ public class CaveTypeRegister {
 	//mineshaft, nether portal, mushroom, cave in,
 	//carved stone, carved sandstone
 	
-	private static int floorChance = 5;
-	private static int ceilingChance = 5;
+	private static int floorChance = 2;
+	private static int ceilingChance = 3;
 
 	//shallow caves
 	public static final AbstractCaveType simple = new CaveTypeDefault("default", floorChance, ceilingChance);

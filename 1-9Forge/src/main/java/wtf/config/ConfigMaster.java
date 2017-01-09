@@ -7,7 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import wtf.utilities.UBCCompat;
+import wtf.utilities.UBC.UBCCompat;
 
 public class ConfigMaster {
 
@@ -80,13 +80,13 @@ public class ConfigMaster {
 		String[] stringArray = string.split(",");
 		for (String substring :stringArray){
 
-			if (substring.contains("igneous")){
+			if (substring.equals("igneous")){
 				list.addAll(Arrays.asList(UBCCompat.IgneousStone));
 			}
-			else if (substring.contains("metamorphic")){
+			else if (substring.equals("metamorphic")){
 				list.addAll(Arrays.asList(UBCCompat.MetamorphicStone));
 			}
-			else if (substring.contains("sedimentary")){
+			else if (substring.equals("sedimentary")){
 				list.addAll(Arrays.asList(UBCCompat.SedimentaryStone));
 			}
 			else {

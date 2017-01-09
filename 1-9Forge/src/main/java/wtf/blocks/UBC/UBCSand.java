@@ -33,7 +33,7 @@ public class UBCSand extends BlockFalling{
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(VARIANT, SedimentaryVariant.LIMESTONE);
+		return getDefaultState().withProperty(VARIANT, SedimentaryVariant.values()[meta]);
 	}
 
 	@Override
