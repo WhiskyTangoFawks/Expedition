@@ -78,6 +78,11 @@ public class OreDefReg {
 		this.dimensionIDs = dimensionIDs;
 		return this;
 	}
+	public OreDefReg setDimensionIDs(int dimensionIDs) {
+		int[] array = {dimensionIDs};
+		this.dimensionIDs = array;
+		return this;
+	}
 
 	public OreDefReg setDensity(int density) {
 		this.density = density;

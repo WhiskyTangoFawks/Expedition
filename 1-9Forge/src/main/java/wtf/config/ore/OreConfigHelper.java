@@ -2,6 +2,7 @@ package wtf.config.ore;
 
 import java.util.HashMap;
 
+import net.minecraftforge.fml.common.Loader;
 import wtf.Core;
 
 public class OreConfigHelper {
@@ -10,23 +11,10 @@ public class OreConfigHelper {
 		
 		HashMap<String, OreDefReg> defPresets = new HashMap<String, OreDefReg>();
 		
-		/*
-		 * 		if (Loader.isModLoaded("tconstruct")){
-			boolean tconOres = config.get(defEnableMod, "Mod Added Ore : Tinker's Construct Cobalt and Ardite", true).getBoolean();
-			String cobalt = config.get(defModOre, "Tinker's Construct Cobalt Generation", "vein, tconstruct:ore@0, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, VeinDimensions=16 & 1 & 1, pitch = 0.45,"
-					+ " GenHeightPercentSurface=5 & 95, dimension=-1").getString();
-			if (tconOres){
-				ParseOre.parse(cobalt);
-			}
-			String ardite = config.get(defModOre, "Tinker's Construct Ardite Generation", "cloud, tconstruct:ore@1, stone=minecraft:netherrack@0, denseOre=true, orePerChunk=-30 & 60, "
-					+ " GenHeightPercentSurface=5 & 95, size=16, DensityPercent=15, dimension=-1").getString();
-			if (tconOres){
-				ParseOre.parse(ardite);
-			}
-			
-			
-		 */
-		
+			defPresets.put("tconstruct:ore@0", new OreDefReg("minecraft:netherrack@0", "vein", new int[]{5, 95}, new int[]{-30, 60}, true).setDensity(75)
+					.setVeinDimensions(new int[]{16,1,1}).setVeinPitch(0.45F).setDimensionIDs(-1)); 
+			defPresets.put("tconstruct:ore@1", new OreDefReg("minecraft:netherrack@0", "cloud", new int[]{5, 95}, new int[]{-30, 60}, true).setDensity(16).setCloudDiameter(14)); 
+	
 		String defStone = "minecraft:stone@0";
 		if (Core.UBC){
 			defStone += ", igneous, metamorphic, sedimentary";
