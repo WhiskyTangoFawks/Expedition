@@ -2,6 +2,7 @@ package wtf.config.ore;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -12,7 +13,6 @@ import net.minecraft.init.Blocks;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Loader;
-import scala.actors.threadpool.Arrays;
 import wtf.Core;
 import wtf.blocks.BlockDenseOre;
 import wtf.blocks.BlockDenseOreFalling;
@@ -64,13 +64,10 @@ public class WTFOresNewConfig extends ConfigMaster{
 		String[] defOres = {"minecraft:coal_ore@0 #vein", "minecraft:iron_ore@0 #vein", "minecraft:gold_ore@0 #cloud", "minecraft:lapis_ore@0 #cluster", "minecraft:redstone_ore@0 #vein", "minecraft:emerald_ore@0 #single", "minecraft:diamond_ore@0 #single",
 				"wtfcore:nitre_ore@0 #cave&single", "wtfcore:oreSandGold@0 #underwater&single", "WTFBlockType:cracked #vein"};
 
-		ArrayList<String> list = new ArrayList<String>();
-		list.addAll(Arrays.asList(defOres));
-		
 		if (Loader.isModLoaded("tconstruct")){
-			list.add("tconstruct:ore@0 #vein" );
-			list.add("tconstruct:ore@1 #cloud" );
-			defOres = (String[]) list.toArray();
+			defOres = appendArray(defOres, "tconstruct:ore@0 #vein" );
+			defOres = appendArray(defOres, "tconstruct:ore@1 #cloud" );
+			
 		}
 		
 		String[] oreSet = config.get("1 Master Ore List", "Master list of all ores generated, add ore blocks to this list, then run minecraft, in order to generate their config options", defOres).getStringList();

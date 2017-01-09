@@ -96,4 +96,15 @@ public class ConfigMaster {
 		return list;
 	}
 
+	protected static String[] appendArray(String[] arrayString, String stringToAdd){
+		String[] newStringArray = new String[arrayString.length+1];
+		for (int loop = 0; loop < arrayString.length; loop++){
+			newStringArray[loop] = arrayString[loop];
+		}
+		newStringArray[newStringArray.length-1] = stringToAdd;
+		return newStringArray;
+		
+		
+	}
+	
 }
