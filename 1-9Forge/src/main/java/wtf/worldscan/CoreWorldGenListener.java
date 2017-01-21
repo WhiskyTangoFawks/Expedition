@@ -31,7 +31,9 @@ public class CoreWorldGenListener {
 					int adjX = coords.getChunkX()+xloop;
 					int adjZ = coords.getChunkZ()+zloop;
 					if (chunkserver.chunkExists(adjX, adjZ) && event.getWorld().getChunkFromChunkCoords(adjX, adjZ).isTerrainPopulated()){
+						
 						doScanIfAdjArePopulated(event.getWorld(), chunkserver, event.getRand(), new ChunkCoords(adjX, adjZ));
+					
 					}
 				}	
 			}
@@ -53,7 +55,9 @@ public class CoreWorldGenListener {
 		doChunk(world, random, coords);
 	}
 
-
+	private static int totalTime = 0;
+	private static int count = 0;
+	
 	public static void doChunk(World world, Random random, ChunkCoords coords) throws Exception{
 
 		WorldScanner scanner = null;//new WorldScanner();
@@ -69,8 +73,16 @@ public class CoreWorldGenListener {
 			break;
 		}
 		if (scanner != null){
+			//long pre = System.nanoTime();
+			
 			ChunkScan scan = scanner.getChunkScan(world, coords);
-
+			
+			//long post = System.nanoTime();
+			//totalTime += (post-pre)/100000;
+			//count++;
+			//int average = totalTime/count;
+			//System.out.println("Average scan time = " + average);
+			
 
 
 			worldChunkScans.put(coords, scan);

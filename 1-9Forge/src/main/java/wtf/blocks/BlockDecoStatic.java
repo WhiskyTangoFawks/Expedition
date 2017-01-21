@@ -9,21 +9,17 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import wtf.config.WTFStoneRegistry;
-import wtf.gameplay.StoneCrack;
+import wtf.gameplay.fracturing.EntityStoneCrack;
 import wtf.init.BlockSets;
-import wtf.init.WTFBlocks;
+import wtf.init.BlockSets.Modifier;
 import wtf.utilities.wrappers.StateAndModifier;
-import wtf.utilities.wrappers.StoneAndOre;
 
 public class BlockDecoStatic extends AbstractBlockDerivative{
 
@@ -31,13 +27,25 @@ public class BlockDecoStatic extends AbstractBlockDerivative{
 
 	public static ArrayList<BlockDecoStatic> crackedList = new ArrayList<BlockDecoStatic>();
 
-	
-	public static IBlockState crackedstone = null;
 	public BlockDecoStatic(IBlockState state) {
 		super(state, state);
 
+		
 		if (state.getMaterial() == Material.ROCK || state.getMaterial() == Material.GROUND){
 			BlockSets.blockTransformer.put(new StateAndModifier(state, BlockSets.Modifier.MOSSY), this.getDefaultState());
+			//I want to put the be able to cobbilify the mossy states too
+			//the simplest way to do this, is to just make sure that the cobblestone version of the block is processed first
+			//that way, I can just get the cobble version of the stone, then get the mossified version of the cobble
+			//because I can get a cobble version from a stone, but It's harder to get a stone version from a cobble
+			
+			//So- we've already done cobble and this is not the stone pass
+			IBlockState cobble = BlockSets.getTransformedState(state, Modifier.COBBLE);
+			if (cobble != null){
+				IBlockState mossyCobble = BlockSets.getTransformedState(cobble, Modifier.MOSSY);
+				if (mossyCobble != null){
+					BlockSets.blockTransformer.put(new StateAndModifier(this.getDefaultState(), Modifier.COBBLE), mossyCobble);
+				}
+			}
 		}
 			BlockSets.blockTransformer.put(new StateAndModifier(state, BlockSets.Modifier.SOUL), this.getDefaultState().withProperty(TYPE, DecoType.SOUL));
 		if (state.getMaterial() == Material.ROCK || state.getMaterial() == Material.ICE){
@@ -58,8 +66,7 @@ public class BlockDecoStatic extends AbstractBlockDerivative{
 	public void onBlockDestroyedByPlayer(World world, BlockPos pos, IBlockState state)
 	{
 		if (!world.isRemote && state.getValue(TYPE)==DecoType.CRACKED){
-			Entity crack = new StoneCrack(world, pos);
-			world.spawnEntityInWorld(crack);
+			EntityStoneCrack.crackStone(world, pos);
 		}
 	}
 

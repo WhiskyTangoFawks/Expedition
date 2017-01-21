@@ -78,14 +78,16 @@ public class ChunkScan {
 		int fullrad2 = fullRadius*fullRadius;
 		int materialHash = up1.getMaterial().hashCode();
 
-		if (!tree.type.waterGenerate){
-			if(materialHash == waterHash){
-				return false;	
-			}	
+		if(materialHash == waterHash){
+			if (tree.type.waterGenerate < 1){
+				return false;
+			}
+			int maxHash = world.getBlockState(new BlockPos(tree.pos.getX(), tree.pos.getY()+tree.type.waterGenerate+1, tree.pos.getZ())).getMaterial().hashCode();
+			if (maxHash == waterHash){
+				return false;
+			}
 		}
-		else if (materialHash != waterHash){ //else if it is a water tree
-			return false;
-		}
+		
 		if (materialHash == lavaHash){
 			return false;
 		}
@@ -156,7 +158,9 @@ public class ChunkScan {
 		return canGrow > 0;
 	}
 	Block[] base = {Blocks.DIRT, Blocks.GRASS, WTFBlocks.mossyDirt};
-	HashSet<Block> canGrowOn = new HashSet(Arrays.asList(base));
+	HashSet<Block> canGrowOn = new HashSet<Block>(Arrays.asList(base));
+	
+	
 	public boolean canGrowOnCheck(BlockPos treepos, int checkRad) throws Exception{
 		int x = treepos.getX()-chunkX;
 		int z = treepos.getZ()-chunkZ;
@@ -188,6 +192,7 @@ public class ChunkScan {
 							return false;
 						}
 						if (canGrowOn.contains(getBlockInChunk(scanx,scanz))){
+							
 							canGrow++;
 						}
 						else {

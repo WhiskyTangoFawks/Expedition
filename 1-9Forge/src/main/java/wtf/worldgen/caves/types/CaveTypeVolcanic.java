@@ -3,6 +3,7 @@ package wtf.worldgen.caves.types;
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
+import wtf.config.CaveBiomesConfig;
 import wtf.init.BlockSets.Modifier;
 import wtf.worldgen.AbstractCaveType;
 import wtf.worldgen.caves.CaveBiomeGenMethods;
@@ -29,7 +30,9 @@ public class CaveTypeVolcanic extends AbstractCaveType{
 		double noise = getNoise(gen.chunk.getWorld(), pos, 8, 1F);
 		//System.out.println(noise);
 		if (noise < 2){
-			gen.setLavaPatch(pos);
+			if (CaveBiomesConfig.enableLavaPools){
+				gen.setLavaPatch(pos);
+			}
 			gen.transformBlock(pos, Modifier.LAVA_CRUST);
 		}
 		else if (noise < 3){

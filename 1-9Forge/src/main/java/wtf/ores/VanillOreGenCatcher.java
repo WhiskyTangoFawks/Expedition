@@ -47,6 +47,9 @@ public class VanillOreGenCatcher {
 		case REDSTONE:
 			if (!redstone){event.setResult(Event.Result.DENY);}
 			break;
+		default:
+			event.setResult(Event.Result.DEFAULT);
+			break;
 		}
 
 	}

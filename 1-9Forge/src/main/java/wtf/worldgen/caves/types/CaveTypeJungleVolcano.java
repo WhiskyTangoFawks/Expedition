@@ -6,6 +6,7 @@ import net.minecraft.block.BlockTallGrass;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import wtf.config.CaveBiomesConfig;
 import wtf.init.BlockSets.Modifier;
 import wtf.utilities.wrappers.AdjPos;
 import wtf.worldgen.AbstractCaveType;
@@ -32,8 +33,8 @@ public class CaveTypeJungleVolcano extends AbstractCaveType{
 		}
 		else if (noise > depth*6 && noise > 4){
 			gen.transformBlock(pos, Modifier.LAVA_CRUST);
-		
-			if (noise > depth*7 && noise > 5){
+
+			if (CaveBiomesConfig.enableLavaPools && noise > depth*7 && noise > 5){
 				gen.setLavaPatch(pos);
 			}
 		}

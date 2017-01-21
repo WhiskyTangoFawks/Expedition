@@ -88,11 +88,16 @@ public abstract class OreGenAbstract{
 	}
 
 	public int getGenStartHeight(double surfaceAvg, Random random) {
-		//System.out.println("Surface avg = " + surfaceAvg);
+		
 		int maxHeight = MathHelper.floor_float((float) (maxGenRangeHeight*surfaceAvg));
 		int minHeight = MathHelper.floor_float((float) (minGenRangeHeight*surfaceAvg));
-		//System.out.println("max = "  +  maxGenRangeHeight + " min " + minGenRangeHeight);
-		return random.nextInt(maxHeight-minHeight)+minHeight;
+		
+		int range = maxHeight-minHeight;
+		if (range < 1){
+			range = 1;
+		}
+		
+		return random.nextInt(range)+minHeight;
 	}
 
 	public int getDensityToSet(Random random, double height, double surfaceAvg){

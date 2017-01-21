@@ -58,6 +58,7 @@ public class GameplayConfig extends ConfigMaster {
 	
 	public static double explosionDamageMod;
 	public static double explosionForceMod;
+	public static boolean fracSimple;
 
 	public static void loadConfig() throws Exception{
 	config.load();
@@ -72,6 +73,7 @@ public class GameplayConfig extends ConfigMaster {
 	miningSpeedEnabled = config.get("Mining", "Enable mining speed modification (values are set in the Stone Registry)", true).getBoolean();
 	miningStoneFractures = config.get("Mining", "Stone fractures upon mining (individual stones disabled in the stone registry)", true).getBoolean();
 	miningOreFractures = config.get("Mining", "Ores fracture adjacent stone upon mining (Individual blocks can be removed from the config list)", true).getBoolean();
+	fracSimple = config.get("Mining", "Use simplified fracturing (always fractures all 6 adjacent blocks)", false).getBoolean();
 
 	String[] defaultOres = {Blocks.COAL_ORE.getRegistryName().toString(), Blocks.IRON_ORE.getRegistryName().toString(), Blocks.GOLD_ORE.getRegistryName().toString(),
 			Blocks.LAPIS_ORE.getRegistryName().toString(), Blocks.DIAMOND_ORE.getRegistryName().toString(), Blocks.EMERALD_ORE.getRegistryName().toString()};

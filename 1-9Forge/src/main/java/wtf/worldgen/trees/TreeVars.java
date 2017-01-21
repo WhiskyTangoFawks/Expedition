@@ -1,15 +1,17 @@
 package wtf.worldgen.trees;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import wtf.init.WTFBlocks;
 import wtf.utilities.simplex.SimplexHelper;
+import wtf.worldgen.trees.components.Branch;
 
 public abstract class TreeVars {
 	
@@ -37,7 +39,7 @@ public abstract class TreeVars {
 	
 	public HashSet<Block> canGrowOn = new HashSet<Block>();
 
-	public boolean waterGenerate = false;
+	public int waterGenerate = 0;
 	public int vines = 0;
 	
 	public LeafStyle leaftype = LeafStyle.BASIC;
@@ -71,15 +73,15 @@ public abstract class TreeVars {
 
 	//public boolean leafNoise = true;
 	
-	public TreeVars setWaterGen(){
-		waterGenerate = true;
+	public TreeVars setWaterGen(int depth){
+		waterGenerate = depth;
 		canGrowOn.add(Blocks.WATER);
 		canGrowOn.add(Blocks.SAND);
 		canGrowOn.add(Blocks.GRAVEL);
 		return this;
 	}
 
-	public abstract int getBranchesPerNode(double scale);
+	public abstract int getBranchesPerNode(double nodeHeight, double scale);
 	public abstract double getBranchRotation(double scale, double numBranches);
 	public abstract double getBranchSeperation(double scale);
 	public abstract double getBranchPitch(double scale);
@@ -101,6 +103,8 @@ public abstract class TreeVars {
 	public abstract int getTrunkColumnHeight(double trunkHeight, double currentRadius, double maxRadius);
 	
 	public abstract int getNumRoots(double trunkDiameter);
+	
+	public abstract void doLeafNode(TreePos tree, Branch branch, BlockPos pos);
 	
 	public int genBuffer = 0;
 	public float rootDecoRate = 0;

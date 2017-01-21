@@ -4,26 +4,22 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
+import wtf.init.BlockSets;
+import wtf.utilities.wrappers.StoneAndOre;
 import wtf.worldgen.caves.CaveBiomeGenMethods;
 
-public class ReplacerUBCSandstone extends ReplacerUBCAbstract{
+public class UBCOreReplacer extends ReplacerUBCAbstract{
 
-	public ReplacerUBCSandstone(Block block) {
+	public UBCOreReplacer(Block block) {
 		super(block);
-
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen, IBlockState oldState) {
-		/*
 		IBlockState state = getUBCStone(pos);
-		if (state.getBlock().hashCode() == sedHash){
-			gen.replaceBlock(pos, state);
-		}*/
-		double noise =getSimplexSand(chunk.getWorld(), pos);
-		if (noise < 8){
-			gen.replaceBlock(pos, sands[(int)noise]);
-		}
+		//IBlockState newBlock = BlockSets.stoneAndOre.get(new StoneAndOre(state, oldState));
+		setBlock(chunk.getWorld(), pos, state);
 		return false;
 	}
 

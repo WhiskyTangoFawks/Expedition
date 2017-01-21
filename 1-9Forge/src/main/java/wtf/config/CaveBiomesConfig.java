@@ -11,6 +11,7 @@ public class CaveBiomesConfig extends ConfigMaster{
 	public static boolean enableMobDungeons;
 	public static boolean enableAmbientDungeons;
 
+	public static boolean enableLavaPools;
 	
 	public static void customConfig() {
 
@@ -23,6 +24,8 @@ public class CaveBiomesConfig extends ConfigMaster{
 		logDungeons=config.get(section1, "Log subtypes in chat", false).getBoolean();
 		enableMobDungeons = config.get(section1, "Allow generation of custom mob based dungeons", true).getBoolean();
 		enableAmbientDungeons = config.get(section1, "Allow generation of cave subtypes", true).getBoolean();
+		
+		enableLavaPools = config.get("Cave Options", "Allow generation of lava pools in deep volcanic and jungle volcanic cave biomes", true).getBoolean();
 	
 		
 		config.save();

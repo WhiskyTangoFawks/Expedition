@@ -37,7 +37,7 @@ public class CoreConfig extends ConfigMaster{
 		enableNameGetter = config.get("Name Getter", "When a player places a block, print out the blocks name", false).getBoolean();
 	
 		rotate180only = config.get("Blockstate Options", "When generating blockstates, create variants with 180 rotation only, setting to false enables 90 and 270 degree rotations.  Requires generating new blockstates, and placing them in a resource pack", true).getBoolean();
-		rotate180only = config.get("Blockstate Options", "Use fancy blockstates", false).getBoolean();
+		fancyBlockStates = config.get("Blockstate Options", "Use fancy blockstates", false).getBoolean();
 		doResourcePack = config.get("Blockstate Options", "Automatically load the WTF-Expedition blockstate resource pack- Try disabling if you're getting a crash on load, and manually load the resource pack when in game", true).getBoolean();
 
 		

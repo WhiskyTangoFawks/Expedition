@@ -36,6 +36,7 @@ public class WTFSubstitutions {
 			BlockWTFTorch.torch_off.setUnlocalizedName("torch");
 		}
 		
+		/*
 		if (OverworldGenConfig.subLeaves){
 			
 			Block oldLeaves = new CustomOldLeaves().setUnlocalizedName("leaves");		
@@ -59,6 +60,7 @@ public class WTFSubstitutions {
 
 			
 		}
+		*/
 	}
 	
 }

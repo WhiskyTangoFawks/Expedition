@@ -29,6 +29,7 @@ public class BlockDenseOreFalling extends AbstractBlockDerivativeFalling {
 		BlockSets.stoneAndOre.put(new StoneAndOre(backState, foreState), this.getDefaultState());
 		BlockSets.oreAndFractures.add(this);
 		this.disableStats();
+		BlockSets.surfaceBlocks.add(this);
 	}
 	
 

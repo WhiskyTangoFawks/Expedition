@@ -42,7 +42,6 @@ public class Vec {
 		vecY = MathHelper.cos(pitchY);
 		vecX = MathHelper.cos(pitchX) * sinY;
 		vecZ = MathHelper.sin(pitchX) * sinY;
-		
 	}
 	
 	
@@ -82,14 +81,8 @@ public class Vec {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(currentX);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(currentY);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(currentZ);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
 		result = prime * result + ((ori == null) ? 0 : ori.hashCode());
+		long temp;
 		temp = Double.doubleToLongBits(vecX);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		temp = Double.doubleToLongBits(vecY);
@@ -110,12 +103,6 @@ public class Vec {
 		if (getClass() != obj.getClass())
 			return false;
 		Vec other = (Vec) obj;
-		if (Double.doubleToLongBits(currentX) != Double.doubleToLongBits(other.currentX))
-			return false;
-		if (Double.doubleToLongBits(currentY) != Double.doubleToLongBits(other.currentY))
-			return false;
-		if (Double.doubleToLongBits(currentZ) != Double.doubleToLongBits(other.currentZ))
-			return false;
 		if (ori == null) {
 			if (other.ori != null)
 				return false;
@@ -129,6 +116,8 @@ public class Vec {
 			return false;
 		return true;
 	}
-	
+
+
+
 
 }

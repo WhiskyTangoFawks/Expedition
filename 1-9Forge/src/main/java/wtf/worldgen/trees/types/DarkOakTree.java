@@ -1,24 +1,29 @@
 package wtf.worldgen.trees.types;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockNewLeaf;
 import net.minecraft.block.BlockNewLog;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import wtf.blocks.BlockFoxfire;
 import wtf.init.WTFBlocks;
+import wtf.worldgen.trees.GenTree;
+import wtf.worldgen.trees.TreePos;
 import wtf.worldgen.trees.TreeVars;
+import wtf.worldgen.trees.components.Branch;
 
 public class DarkOakTree extends TreeVars{
 
 	public DarkOakTree(World world) {
 		super(world,  Blocks.LOG2.getDefaultState().withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.DARK_OAK),
 				 Blocks.LOG2.getDefaultState().withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.DARK_OAK),
-				 Blocks.LEAVES2.getDefaultState().withProperty(BlockNewLeaf.VARIANT, BlockPlanks.EnumType.DARK_OAK));
+				 Blocks.LEAVES2.getDefaultState().withProperty(BlockNewLeaf.VARIANT, BlockPlanks.EnumType.DARK_OAK).withProperty(BlockLeaves.CHECK_DECAY, false));
 		
-		this.leafRad = 4;
-		this.leafYMax= 4;
+		this.leafRad = 3;
+		this.leafYMax= 3;
 		this.leafYMin = -2;
 		this.rootDecoRate = 0.01F;
 		this.decoDown = WTFBlocks.foxfire.getDefaultState().withProperty(BlockFoxfire.HANGING, true);
@@ -30,7 +35,7 @@ public class DarkOakTree extends TreeVars{
 	}
 
 	@Override
-	public int getBranchesPerNode(double scale) {
+	public int getBranchesPerNode(double nodeHeight, double scale) {
 		return 10;
 	}
 
@@ -93,6 +98,51 @@ public class DarkOakTree extends TreeVars{
 	@Override
 	public int getNumRoots(double trunkDiameter) {
 		return 4;
+	}
+
+	@Override
+	public void doLeafNode(TreePos tree, Branch branch, BlockPos pos) {
+		double height = pos.getY()-tree.y;
+		double taper = MathHelper.clamp_double((tree.type.leafTaper) * (tree.trunkHeight-height)/tree.trunkHeight, tree.type.leafTaper, 1);
+
+		double radius = MathHelper.clamp_double(tree.type.leafRad*taper, 1, tree.type.leafRad);
+		double ymin = tree.type.leafYMin;
+		double ymax = tree.type.leafYMax;
+
+
+		for (double yloop = ymin; yloop < ymax; yloop++){
+
+			double sliceRadSq = (radius+1) * (radius+1) - (yloop*yloop);
+			double slicedRadSqSmall = radius * radius - (yloop * yloop);
+
+			if (sliceRadSq > 0){
+
+				for (double xloop = -radius; xloop < radius+1; xloop++){
+					for (double zloop = -radius; zloop < radius+1; zloop++){
+
+						double xzDistanceSq = xloop*xloop + zloop*zloop;
+
+						BlockPos leafPos = new BlockPos(xloop+pos.getX(), yloop+pos.getY(), zloop+pos.getZ());
+
+						if (xzDistanceSq < slicedRadSqSmall){
+							tree.setLeaf(leafPos);
+						}
+						else if (xzDistanceSq < sliceRadSq){
+							if (tree.random.nextBoolean()){
+								tree.setLeaf(leafPos);
+
+
+								if (tree.type.vines > 0 && MathHelper.abs_max(xloop, zloop) > yloop && tree.random.nextBoolean()){
+									GenTree.genVine(tree, leafPos, xloop, zloop);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	
+		
 	}
 
 

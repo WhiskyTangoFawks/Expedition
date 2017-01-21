@@ -41,8 +41,9 @@ public class WorldScanner {
 
 		Chunk chunk = coords.getChunk(world);
 		
-		int lastY = 70;
-
+		
+		ArrayList<ExtendedBlockStorage> storageList = getStorageList(chunk);
+		
 		int surfaceaverage = 0;
 
 		//hashmap position = x * 256 +y
@@ -68,36 +69,34 @@ public class WorldScanner {
 				}
 				int worldz = coords.getWorldZ() + zloop;
 				
-				//First, we find the surface for the block position
 				boolean generated = false;
 				boolean liquid = false;
 				
-				int y = lastY+3;
 				
-				while (!chunk.canSeeSky(new BlockPos(xloop, y, zloop)) && y<256){
-					y+=10;
-				}	
-
-				IBlockState[] column = getColumn(chunk, xloop, y, zloop);
+				ArrayList<IBlockState> column = getColumn(storageList, xloop, zloop);
+				int y = column.size()-1;
 				
-				//initial scan to find the first non-air block
+				//chunk.getWorld().setBlockState(new BlockPos(worldx, y, worldz), Blocks.GLASS.getDefaultState());
 				
-				while (isAirAndCheck(chunk, gen, column[y], worldx,y,worldz) && y > 1)
+				while (isAirAndCheck(chunk, gen, column.get(y), worldx, y, worldz)) //removed y>1- because if it's getting through in vanilla, there's a bug
 				{
 					y--;
 				}
-
-				while (BlockSets.liquidBlockSet.contains(column[y])){
+				
+				while (BlockSets.liquidBlockSet.contains(column.get(y))){
+					
 					y--;
 					liquid = true;
 				}
 				
-				while (!isSurfaceAndCheck(chunk, gen, column[y], worldx, y, worldz) && y > 1){
+				while (!isSurfaceAndCheck(chunk, gen, column.get(y), worldx, y, worldz) && y > 1){
 					generated = true;
 					y--;
 				}
 
+
 				surfacepositions[xloop][zloop] = new SurfacePos(worldx, y, worldz);
+				
 				if (generated){
 					surfacepositions[xloop][zloop].setGenerated();
 				}
@@ -105,7 +104,6 @@ public class WorldScanner {
 					water.add(surfacepositions[xloop][zloop]);
 				}
 					
-				lastY = y;
 				surfaceaverage += y;
 
 				int ceiling = -1;
@@ -124,7 +122,7 @@ public class WorldScanner {
 					EnumFacing prevFaceZ = zig ? EnumFacing.NORTH : EnumFacing.SOUTH;
 					EnumFacing nextFaceZ = zig ? EnumFacing.SOUTH : EnumFacing.NORTH;
 
-					boolean isAir =isAirAndCheck(chunk, gen, column[y], worldx, y, worldz);
+					boolean isAir =isAirAndCheck(chunk, gen, column.get(y), worldx, y, worldz);
 					
 					//if false, I might want to add to the air hash here, instead of doing a loop later
 
@@ -265,6 +263,7 @@ public class WorldScanner {
 		}
 
 		surfaceaverage /= 256;
+		//System.out.println("surface average = " +surfaceaverage);
 		gen.blocksToSet.setBlockSet();
 		return new ChunkScan(world, surfacepositions, coords.getWorldX(), coords.getWorldZ(), surfaceaverage, caveareas, water);
 	}
@@ -272,12 +271,13 @@ public class WorldScanner {
 	public boolean isAirAndCheck(Chunk chunk, CaveBiomeGenMethods gen, IBlockState state, int x, int y, int z){
 
 		Block block = state.getBlock();
-
+				
 		Replacer replacer = BlockSets.isNonSolidAndCheckReplacement.get(block);
 		if (replacer!= null){
 			return replacer.isNonSolidAndReplacement(chunk, new BlockPos(x, y, z), gen, state);
-			//WTFCore.log.info("Replaced");
 		}
+		
+			
 		return false;
 	}
 
@@ -297,48 +297,34 @@ public class WorldScanner {
 	}
 
 	public boolean isSurfaceAndCheck(Chunk chunk, CaveBiomeGenMethods gen, IBlockState state, int x, int y, int z){
-		//IBlockState state = chunk.getBlockState(x & 15, y, z & 15);
 		Block block = state.getBlock();
 
 		if (BlockSets.isNonSolidAndCheckReplacement.containsKey(block)){
 			Replacer replacer = BlockSets.isNonSolidAndCheckReplacement.get(block);
 			if (replacer!= null){
-				replacer.isNonSolidAndReplacement(chunk, new BlockPos(x & 15, y, z & 15), gen, state);
+				replacer.isNonSolidAndReplacement(chunk, new BlockPos(x, y, z), gen, state);
 			}
 		}
 		return BlockSets.surfaceBlocks.contains(block);
 	}
 
-	protected IBlockState[] getColumn(Chunk chunk, int chunkX, int maxY, int chunkZ){
+
+	protected ArrayList<ExtendedBlockStorage> getStorageList(Chunk chunk){
+		ArrayList<ExtendedBlockStorage> list = new ArrayList<ExtendedBlockStorage>();
+		for (int loop = 0; chunk.getBlockStorageArray()[loop] != null; loop++){
+			list.add(chunk.getBlockStorageArray()[loop]);
+		}
+		return list;
+	}
 	
-		maxY++; //Because I want it to be inclusive of the top block
-		IBlockState[] blockArray = new IBlockState[maxY];
+	
+	protected ArrayList<IBlockState> getColumn(ArrayList<ExtendedBlockStorage> storageList, int chunkX, int chunkZ){
+		ArrayList<IBlockState> blockArray = new ArrayList<IBlockState>();
 		
-		for (int loop = 0; loop < maxY;){
-			//blockArray[loop] = chunk.getBlockState(chunkX, loop, chunkZ);
-			//get extended storage
-			//while y < length
-			//get blockstate
-
-			int y2 = loop >> 4;
-
-		//loop max = either 16, or the number of blocks remaining
-			int remaining = maxY-loop;
-			int loopMax = remaining > 16 ? 16 : remaining;
-
-			ExtendedBlockStorage extendedblockstorage = chunk.getBlockStorageArray()[y2];
-			if (extendedblockstorage == null){
-				for (int loop2 = 0; loop2 < loopMax; loop2++){
-					blockArray[loop] = Blocks.AIR.getDefaultState();
-					loop++;
-				}	
-			}
-			else {
-				for (int loop2 = 0; loop2 < loopMax; loop2++){
-					blockArray[loop] = extendedblockstorage.get(chunkX, loop2, chunkZ);
-					loop++;
-				}	
-			}
+		for (ExtendedBlockStorage extendedblockstorage : storageList){
+			for (int loop = 0; loop < 16; loop++){
+				blockArray.add(extendedblockstorage.get(chunkX, loop, chunkZ));
+			}	
 		}
 		return blockArray;
 	}

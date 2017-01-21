@@ -26,8 +26,8 @@ public class LeafUpdateHelper {
     			for (int loopz = -1; loopz < 2; loopz++){
     				BlockPos toCheck = new BlockPos(x+loopx, y + loopy, z + loopz);
     				//checks that the distance is < 5 blocks
-    				if (!alreadyChecked.contains(toCheck) && toCheck.distanceSq(x, y, z) < OverworldGenConfig.subLeafDistance){
-    					
+    				if (!alreadyChecked.contains(toCheck)){// && toCheck.distanceSq(x, y, z) < OverworldGenConfig.subLeafDistance){
+    				
     					alreadyChecked.add(toCheck);
     					
     					int result = checkPos(world, toCheck);

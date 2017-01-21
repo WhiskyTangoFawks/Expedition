@@ -49,7 +49,7 @@ public class BlockSets {
 	private static Block[] listReplaceBlocks = {Blocks.STONE, Blocks.SANDSTONE, Blocks.DIRT, Blocks.GRAVEL, Blocks.SAND, Blocks.AIR, Blocks.LAVA, Blocks.COBBLESTONE, Blocks.FLOWING_LAVA, Blocks.OBSIDIAN, Blocks.WATER, Blocks.FLOWING_WATER, WTFBlocks.icePatch, Blocks.NETHERRACK};
 	public static HashSet<Block> ReplaceHashset = new HashSet<Block>(Arrays.asList(listReplaceBlocks));
 
-	private static Block[] listSurfaceBlocks = {Blocks.DIRT, Blocks.SAND, Blocks.GRASS, Blocks.STONE, Blocks.GRAVEL, Blocks.CLAY, Blocks.HARDENED_CLAY, Blocks.STAINED_HARDENED_CLAY};
+	private static Block[] listSurfaceBlocks = {Blocks.DIRT, Blocks.SAND, Blocks.SANDSTONE, Blocks.GRASS, Blocks.STONE, Blocks.GRAVEL, Blocks.CLAY, Blocks.HARDENED_CLAY, Blocks.STAINED_HARDENED_CLAY};
 	public static HashSet<Block> surfaceBlocks = new HashSet<Block>(Arrays.asList(listSurfaceBlocks));
 
 	public static HashSet<Block> treeReplaceableBlocks = new HashSet<Block>();
@@ -91,12 +91,16 @@ public class BlockSets {
 			Block block = blockIterator.next();
 
 			
-			if (!block.getDefaultState().isBlockNormalCube() && block.getMaterial(block.getDefaultState()) != Material.WATER){
+			if (!block.getDefaultState().isBlockNormalCube() && block.getDefaultState().getMaterial() != Material.WATER){
 				nonSolidBlockSet.add(block);
 				if (!isNonSolidAndCheckReplacement.containsKey(block)){
 					new NonSolidNoReplace(block);
 				}
 			}
+			if (block.getDefaultState().getMaterial() == Material.GROUND){
+				surfaceBlocks.add(block);
+			}
+			
 			if (block.getDefaultState().getMaterial() == Material.AIR){
 				nonSolidBlockSet.add(block);
 				if (!isNonSolidAndCheckReplacement.containsKey(block)){
@@ -135,12 +139,14 @@ public class BlockSets {
 				}
 
 		}
-
+		
 		//new NonSolidNoReplace(Blocks.BROWN_MUSHROOM_BLOCK);
 		//new NonSolidNoReplace(Blocks.RED_MUSHROOM_BLOCK);
 		new NonSolidNoReplace(Blocks.LEAVES);
 		new NonSolidNoReplace(Blocks.LEAVES2);
 
+		
+		
 
 		explosiveBlocks.put(Blocks.TNT, 4F);
 		explosiveBlocks.put(Blocks.REDSTONE_ORE, 2F);

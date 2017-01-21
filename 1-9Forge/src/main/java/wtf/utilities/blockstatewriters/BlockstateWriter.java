@@ -8,7 +8,6 @@ import net.minecraft.block.state.IBlockState;
 import wtf.config.CoreConfig;
 import wtf.config.StoneRegEntry;
 import wtf.config.WTFStoneRegistry;
-import wtf.config.ore.WTFOresNewConfig;
 
 public class BlockstateWriter {
 
@@ -16,11 +15,18 @@ public class BlockstateWriter {
 
 	public static void writeResourcePack(){
 
+		
 		new File("resourcepacks"+File.separatorChar+"WTFExpedition").mkdir(); // creates a directory
 		new File("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"assets").mkdir();
 		new File("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"assets"+File.separatorChar+"wtfcore").mkdir();
 		new File("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"assets"+File.separatorChar+"wtfcore"+File.separatorChar+"blockstates").mkdir();
+		new File("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"assets"+File.separatorChar+"wtfcore"+File.separatorChar+"textures").mkdir();
+		new File("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"assets"+File.separatorChar+"wtfcore"+File.separatorChar+"textures"+File.separatorChar+"overlays").mkdir();
+		
+		new File("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"assets"+File.separatorChar+"wtfcore"+File.separatorChar+"lang").mkdir();
 
+		
+		
 		try {
 
 			BufferedWriter writer = new BufferedWriter(new FileWriter("resourcepacks"+File.separatorChar+"WTFExpedition"+File.separatorChar+"pack.mcmeta"));
@@ -128,13 +134,8 @@ public class BlockstateWriter {
 		BufferedWriter writer;
 		try {
 			writer = new BufferedWriter(new FileWriter(path));
-
 			if (CoreConfig.fancyBlockStates){
-				try {
-					FancyBlockstateWriter.writeDenseOreBlockstate(writer, backState, regName, orestring, entry);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				FancyBlockstateWriter.writeDenseOreBlockstate(writer, backState, regName, orestring, entry);
 			}
 			else {
 				SimpleBlockstateWriter.writeDenseOreBlockstate(writer, backState, regName, orestring, entry);

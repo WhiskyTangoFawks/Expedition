@@ -1,46 +1,55 @@
 package wtf.worldgen.trees.types;
 
+import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockOldLeaf;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import wtf.worldgen.trees.TreePos;
 import wtf.worldgen.trees.TreeVars;
+import wtf.worldgen.trees.components.Branch;
 
 public class Taiga2Tree extends TreeVars {
 
 	public Taiga2Tree(World world) {
 		super(world, Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE), 
 				Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE), 
-				Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE));
+				Blocks.LEAVES.getDefaultState().withProperty(BlockOldLeaf.VARIANT, BlockPlanks.EnumType.SPRUCE).withProperty(BlockLeaves.CHECK_DECAY, false));
 		leaftype = LeafStyle.SPRUCE;
 		this.genBuffer = 4;
+		this.leafRad = 2;
 	}
 
+	//Branch length is 0
+	
 	@Override
-	public int getBranchesPerNode(double scale) {
-		return random.nextInt(4)+4;
+	public int getBranchesPerNode(double nodeHeight, double scale) {
+		return random.nextInt(3)+3;
 	}
 
 	@Override
 	public double getBranchRotation(double scale, double numBranches) {
-		return Math.PI/numBranches;
+		return Math.PI/(numBranches+1);
 	}
 
 	@Override
 	public double getBranchSeperation(double scale) {
-		return 1;
+		return 1+random.nextInt(2);
 	}
 
 	@Override
 	public double getBranchPitch(double scale) {
-		return 0;
+		return -0.5;
 	}
 
 	@Override
 	public double getBranchLength(double scale, double trunkHeight, double nodeHeight) {
-		return 0;
+		double taper = 1-nodeHeight/trunkHeight;
+		return  1+(trunkHeight/6)*taper;
+		
 	}
 
 
@@ -73,6 +82,15 @@ public class Taiga2Tree extends TreeVars {
 	@Override
 	public int getNumRoots(double trunkDiameter) {
 		return random.nextInt(3)+2;
+	}
+	
+	@Override
+	public void doLeafNode(TreePos tree, Branch branch, BlockPos pos) {
+		tree.setLeaf(pos.up());
+		tree.setLeaf(pos.north());
+		tree.setLeaf(pos.east());
+		tree.setLeaf(pos.south());
+		tree.setLeaf(pos.west());
 	}
 
 }

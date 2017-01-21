@@ -4,12 +4,13 @@ package wtf.init;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
-import net.minecraftforge.fml.common.registry.ExistingSubstitutionException;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import wtf.Core;
 import wtf.blocks.BlockDecoAnim;
@@ -24,14 +25,12 @@ import wtf.blocks.BlockSpeleothem;
 import wtf.blocks.BlockMycorrack;
 import wtf.blocks.OreNitre;
 import wtf.blocks.substitution.BlockWTFTorch;
-import wtf.blocks.substitution.CustomOldLeaves;
 import wtf.config.StoneRegEntry;
 import wtf.config.WTFStoneRegistry;
 import wtf.crafting.WCICTable;
 import wtf.crafting.render.WCICTileEntity;
 import wtf.gameplay.OreSandGoldNugget;
 import wtf.items.ItemBlockState;
-import wtf.utilities.blockstatewriters.BlockstateWriter;
 import wtf.worldgen.replacers.NetherrackReplacer;
 
 public class WTFBlocks{
@@ -102,19 +101,46 @@ public class WTFBlocks{
 			String stoneName = entry.getKey().getBlock().getRegistryName().toString().split(":")[1] + entry.getKey().getBlock().getMetaFromState(entry.getKey());
 			//String cobbleName = entry.getValue().cobble.getBlock().getRegistryName().toString().split(":")[1] + entry.getValue().cobble.getBlock().getMetaFromState(entry.getValue().cobble);
 			
+			
+			String localisedName = StringUtils.capitalize(entry.getValue().textureLocation.split("/")[1].replaceAll("_", " "));
+			
 			if (entry.getValue().speleothem){
 				registerBlockItemSubblocks(new BlockSpeleothem(entry.getKey()).setFrozen(stoneName + "Speleothem"), 6, stoneName + "Speleothem");// .setFrozen("stoneSpeleothem");
-				BlockstateWriter.writeSpeleothemBlockstate(entry.getKey(), stoneName + "Speleothem");
+				Core.proxy.writeSpeleothemBlockstate(entry.getKey(), stoneName + "Speleothem");
+				
+				Core.proxy.addName(stoneName+"Speleothem.0", localisedName + " Small Stalactite");
+				Core.proxy.addName(stoneName+"Speleothem.1", localisedName + " Stalactite Base");
+				Core.proxy.addName(stoneName+"Speleothem.2", localisedName + " Stalactite Tip");
+				Core.proxy.addName(stoneName+"Speleothem.3", localisedName + " Column");
+				Core.proxy.addName(stoneName+"Speleothem.4", localisedName + " Small Stalagmite");
+				Core.proxy.addName(stoneName+"Speleothem.5", localisedName + " Stalagmite Base");
+				Core.proxy.addName(stoneName+"Speleothem.6", localisedName + " Stalagmite Tip");
+				
+				Core.proxy.addName(stoneName+"SpeleothemFrozen.0", localisedName + " Icy Small Stalactite");
+				Core.proxy.addName(stoneName+"SpeleothemFrozen.1", localisedName + " Icy Stalactite Base");
+				Core.proxy.addName(stoneName+"SpeleothemFrozen.2", localisedName + " Icy Stalactite Tip");
+				Core.proxy.addName(stoneName+"SpeleothemFrozen.3", localisedName + " Icy Column");
+				Core.proxy.addName(stoneName+"SpeleothemFrozen.4", localisedName + " Icy Small Stalagmite");
+				Core.proxy.addName(stoneName+"SpeleothemFrozen.5", localisedName + " Icy Stalagmite Base");
+				Core.proxy.addName(stoneName+"SpeleothemFrozen.6", localisedName + " Icy Stalagmite Tip");
 			}
 			
 			if (entry.getValue().decoAnim){
 				registerBlockItemSubblocks(new BlockDecoAnim(entry.getKey()), BlockDecoAnim.ANIMTYPE.values().length-1, stoneName+"DecoAnim");
-				BlockstateWriter.writeDecoAnimBlockstate(entry.getKey(), stoneName+"DecoAnim");
+				Core.proxy.writeDecoAnimBlockstate(entry.getKey(), stoneName+"DecoAnim");
+				
+				Core.proxy.addName(stoneName+"DecoAnim.0", localisedName+ " Lava Crust");
+				Core.proxy.addName(stoneName+"DecoAnim.1", "Wet " + localisedName);
+				Core.proxy.addName(stoneName+"DecoAnim.2", "Dripping Lava " + localisedName);
 			}
 			
 			if (entry.getValue().decoStatic){
 				registerBlockItemSubblocks(new BlockDecoStatic(entry.getKey()), BlockDecoStatic.DecoType.values().length-1, stoneName+"DecoStatic");
-				BlockstateWriter.writeDecoStaticBlockstate(entry.getKey(), stoneName+"DecoStatic");
+				Core.proxy.writeDecoStaticBlockstate(entry.getKey(), stoneName+"DecoStatic");
+				
+				Core.proxy.addName(stoneName+"DecoStatic.0", "Mossy " + localisedName);
+				Core.proxy.addName(stoneName+"DecoStatic.1", "Soul "+localisedName);
+				Core.proxy.addName(stoneName+"DecoStatic.2", "Cracked "+localisedName);
 			}
 		}
 		

@@ -1,13 +1,10 @@
 package wtf.gameplay;
 
-import java.lang.Thread.State;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -17,10 +14,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
-import net.minecraft.network.play.server.SPacketExplosion;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.SoundCategory;
@@ -31,7 +26,6 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import wtf.config.GameplayConfig;
-import wtf.init.BlockSets;
 import wtf.utilities.wrappers.ExpVec;
 
 public class CustomExplosion extends Explosion{
@@ -47,7 +41,7 @@ public class CustomExplosion extends Explosion{
 	int counterMod;
 
 	//create a list of explosion vectors
-	ArrayList<ExpVec> vecList = new ArrayList<ExpVec>();
+	HashSet<ExpVec> vecList = new HashSet<ExpVec>();
 
 	float motionFactor = 2F;
 	protected Map<Entity, Vec3d> affectedPlayers = new HashMap<Entity, Vec3d>();
@@ -60,9 +54,7 @@ public class CustomExplosion extends Explosion{
 		this.counterMod = 0;
 		populateVectorList(new BlockPos(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord), str);
 		doExplosionB(origin, str);
-		incrementVectorList();
-		update();
-
+		
 
 	}
 
@@ -90,8 +82,8 @@ public class CustomExplosion extends Explosion{
 		zpos = setModifier(zpos, ftotal) * baseStr;
 		zneg = setModifier(zneg, ftotal) * baseStr;
 
-		System.out.println("north = " + zpos + " south " + zneg);
-		System.out.println("east = " + xpos + " west " + xneg);
+		//System.out.println("north = " + zpos + " south " + zneg);
+		//System.out.println("east = " + xpos + " west " + xneg);
 
 		//System.out.println("y+ " + ypos + " y- " + yneg);
 
@@ -147,13 +139,13 @@ public class CustomExplosion extends Explosion{
 		}
 	}
 
-	private void incrementVectorList() {
-		while (!vecList.isEmpty()){
-			Collections.shuffle(vecList);
+	public void incrementVectorList() {
+		
 			//System.out.println("List shuffled");
-			for (int loop = 0; loop < vecList.size(); loop++){
-
-				ExpVec vec = vecList.get(loop);
+			Iterator<ExpVec> iterator = vecList.iterator();
+			while (iterator.hasNext()){
+				ExpVec vec = iterator.next();
+				
 				if (vec.increment()){
 					this.getAffectedBlockPositions().add(vec.pos());
 					this.getAffectedBlockPositions().add(vec.pos().up());
@@ -184,13 +176,13 @@ public class CustomExplosion extends Explosion{
 					}
 				}
 				else {
-					vecList.remove(loop);
+					iterator.remove();
 				}
 			}
-		}		
+				
 	}
-
-	public void doExplosionB(BlockPos origin, float baseStr) {
+	
+		public void doExplosionB(BlockPos origin, float baseStr) {
 		this.world.playSound((EntityPlayer)null, origin.getX(), origin.getY(), origin.getZ(), SoundEvents.ENTITY_GENERIC_EXPLODE, SoundCategory.BLOCKS, 4.0F, (1.0F + (this.world.rand.nextFloat() - this.world.rand.nextFloat()) * 0.2F) * 0.7F);
 		if (baseStr >= 2.0F && isSmoking) {
 			this.world.spawnParticle(EnumParticleTypes.EXPLOSION_HUGE, origin.getX(), origin.getY(), origin.getZ(), 1.0D, 0.0D, 0.0D, new int[0]);
@@ -257,12 +249,14 @@ public class CustomExplosion extends Explosion{
 	}
 
 	int airHash = Blocks.AIR.hashCode();
-	private void update(){
+	
+	void update(){
 		for (BlockPos pos: this.getAffectedBlockPositions()){
 			//System.out.println("neightbor changed");
 			IBlockState iblockstate = world.getBlockState(pos);
 			iblockstate.neighborChanged(world, pos, iblockstate.getBlock());
 		}
+		this.clearAffectedBlockPositions();
 	}
 
 

@@ -23,7 +23,7 @@ public class ConfigMaster {
 			for (Type type : types){
 				string += type.toString() + ", " ;
 			}
-			throw new Exception("Ore Config Parsing Exception while trying to parse Biome Percent modifier : --" + string + "-- "  + "Unrecognised Forge BiomeDictionary BiomeType, the available biome types are : " + string);
+			throw new Exception("Ore Config Parsing Exception while trying to parse Biome Percent modifier : " + biomestring + ":  "  + "Unrecognised Forge BiomeDictionary BiomeType, the available biome types are : " + string);
 		}
 	}
 	

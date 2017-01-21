@@ -7,13 +7,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import wtf.config.GameplayConfig;
+import wtf.config.StoneRegEntry;
+import wtf.config.WTFStoneRegistry;
 import wtf.gameplay.CustomExplosion;
 import wtf.gameplay.ExploderEntity;
-import wtf.gameplay.GravityMethods;
-import wtf.gameplay.StoneFractureMethods;
+import wtf.gameplay.eventlisteners.ListenerStoneFrac;
 import wtf.init.BlockSets;
 
 public class ExpVec extends Vec{
@@ -60,7 +60,6 @@ public class ExpVec extends Vec{
 				world.spawnEntityInWorld(entity);
 			}
 
-
 			double atomize = resistance * GameplayConfig.expLvlAatomize;
 
 			float chance = (float) ((atomize-str)/atomize);
@@ -83,7 +82,10 @@ public class ExpVec extends Vec{
 			} 
 			else if (GameplayConfig.explosionFractures){
 				str -= resistance/3;
-				StoneFractureMethods.fracStone(world, pos, world.getBlockState(pos));
+				StoneRegEntry entry = WTFStoneRegistry.stoneReg.get(state);
+				if (entry != null && entry.fractures){
+					ListenerStoneFrac.doFrac(world, pos, state);
+				}
 			}
 		}
 		str -= attenuation;

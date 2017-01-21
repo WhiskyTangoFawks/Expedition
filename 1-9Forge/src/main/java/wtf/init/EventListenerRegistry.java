@@ -1,6 +1,7 @@
 package wtf.init;
 
 import net.minecraftforge.common.MinecraftForge;
+import wtf.Core;
 import wtf.api.WTFWorldGen;
 import wtf.config.CoreConfig;
 import wtf.config.GameplayConfig;
@@ -35,30 +36,40 @@ public class EventListenerRegistry {
 		if (CoreConfig.gameplaytweaks){
 			if (GameplayConfig.miningSpeedEnabled){
 				MinecraftForge.EVENT_BUS.register(new ListenerMiningSpeed());
-			}
-			if (GameplayConfig.miningStoneFractures){
-				MinecraftForge.EVENT_BUS.register(new ListenerStoneFrac());
+				Core.coreLog.info("mining speed listener registered");
 			}
 			if (GameplayConfig.miningOreFractures){
 				MinecraftForge.EVENT_BUS.register(new ListenerOreFrac());
+				Core.coreLog.info("ore fracturing listener registered");
 			}
+			if (GameplayConfig.miningStoneFractures){
+				MinecraftForge.EVENT_BUS.register(new ListenerStoneFrac());
+				Core.coreLog.info("stone fracturing listener registered");
+			}
+
 			if (GameplayConfig.customExplosion){
 				MinecraftForge.EVENT_BUS.register(new ListenerCustomExplosion());
+				Core.coreLog.info("custom explosion listener registered");
 			}
 			if (GameplayConfig.gravity){
 				MinecraftForge.EVENT_BUS.register(new ListenerGravity());
+				Core.coreLog.info("block gravity listener registered");
 			}
 			if (GameplayConfig.stickDrop > 0){
 				MinecraftForge.EVENT_BUS.register(new ListenerLeafDrops());
+				Core.coreLog.info("Leaves drop sticks listener registered");
 			}
 			if (GameplayConfig.featherDrop > 0){
 				MinecraftForge.EVENT_BUS.register(new ListenerChickenDrops());
+				Core.coreLog.info("Chickens drop feathers listener registered");
 			}
 			if (GameplayConfig.waterControl){
 				MinecraftForge.EVENT_BUS.register(new ListenerWaterSpawn());
+				Core.coreLog.info("Water spawn controller listener registered");
 			}
 			if (GameplayConfig.plantGrowthMod){
 				MinecraftForge.EVENT_BUS.register(new ListenerPlantGrowth());
+				Core.coreLog.info("Plang growth speed modifier listener registered");
 			}
 			
 			MinecraftForge.EVENT_BUS.register(new LootEventListener());

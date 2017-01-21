@@ -1,8 +1,10 @@
 package wtf.config;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Random;
+import java.util.TreeSet;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
@@ -82,27 +84,23 @@ public class WTFStoneRegistry extends ConfigMaster {
 		String[] defstone = {"minecraft:stone@0", "minecraft:stone@1", "minecraft:stone@3", "minecraft:stone@5","minecraft:sandstone@0", "minecraft:red_sandstone@0", "minecraft:obsidian@0", "minecraft:dirt@0", 
 				"minecraft:sand@0", "minecraft:sand@1", "minecraft:gravel@0", "minecraft:netherrack@0"};
 				
+		
+		
 		if (Core.UBC){
-			Core.coreLog.info("Adding UBC stone to the registry- you may need to delete the configuration file to allow it to generate correctly if the config has already generated");
-			String[] newDef = new String[defstone.length+UBCCompat.UBCStoneList.length];
-			int count = 0;
-			for (String string : defstone){
-				newDef[count] = string;
-				count++;
-			}
 			for (String string : UBCCompat.UBCStoneList){
-				newDef[count] = string;
-				count++;
+				defstone = appendArray(defstone, string);
 			}
-			defstone = newDef;
 		}
+			
 
 		
 		String[] stoneset = config.get("Master Stone List", "Master list of stone blockstates", defstone).getStringList();
 
+		TreeSet<String> stoneTreeSet = new TreeSet<String>(Arrays.asList(stoneset));
+		
 		//String[] stoneset = stoneList.split(",");
 
-		for (String stateString : stoneset){
+		for (String stateString : stoneTreeSet){
 
 			IBlockState state = getBlockState(stateString);
 
@@ -132,10 +130,10 @@ public class WTFStoneRegistry extends ConfigMaster {
 				
 				IBlockState cobblestone = getBlockState(cobblestring);
 				
-				boolean speleothems =  config.get(stateString, "Generate stalactite and stalagmites", state.getMaterial() ==Material.ROCK).getBoolean();
+				boolean speleothems =  config.get(stateString, "Generate stalactite and stalagmites", state.getMaterial() ==Material.ROCK && !state.getBlock().getRegistryName().toString().contains("cobble")).getBoolean();
 				boolean staticDeco =  config.get(stateString, "Generate static deco blocks (moss, cracked, ect)", true).getBoolean();
 				boolean animDeco =  config.get(stateString, "Generate animated deco blocks (Lava crust, dripping, ect)", state.getMaterial() ==Material.ROCK).getBoolean();
-				boolean cracked = config.get(stateString, "Allow cracked version to spawn in world (requires static deco blocks, and cracked stone ore generation)", state.getMaterial() == Material.ROCK).getBoolean();
+				boolean cracked = config.get(stateString, "Allow cracked version to spawn in world (requires static deco blocks, and cracked stone ore generation)", state.getMaterial() ==Material.ROCK && !state.getBlock().getRegistryName().toString().contains("cobble")).getBoolean();
 				boolean frac = false;
 				if (CoreConfig.gameplaytweaks){
 					int speed = config.get(stateString, "Gameplay: Percentage speed modifier to mine (100% disables)", defSpeed.get(state.getBlock())!= null ? defSpeed.get(state.getBlock()) : 100 ).getInt();

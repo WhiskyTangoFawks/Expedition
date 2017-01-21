@@ -1,17 +1,19 @@
 package wtf.utilities.UBC;
 
-import exterminatorjeff.undergroundbiomes.api.API;
-import exterminatorjeff.undergroundbiomes.common.block.SedimentaryStone;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.common.BiomeDictionary;
+import net.minecraftforge.common.BiomeManager;
+import net.minecraftforge.common.BiomeDictionary.Type;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
 import wtf.utilities.wrappers.StateAndModifier;
 import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class ReplacerUBCSand extends ReplacerUBCAbstract{
+
 
 	public ReplacerUBCSand(Block block) {
 		super(block);
@@ -20,17 +22,17 @@ public class ReplacerUBCSand extends ReplacerUBCAbstract{
 
 	@Override
 	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen, IBlockState oldState) {
-		
-		IBlockState state = getUBCStone(pos);
-		//System.out.println(state.toString());
-		if (state.getBlock().hashCode() == API.SEDIMENTARY_STONE.hashCode()){
-			IBlockState sand = BlockSets.blockTransformer.get(new StateAndModifier(state, Modifier.COBBLE));
-			gen.replaceBlock(pos, sand);
+		if (!BiomeDictionary.isBiomeOfType(chunk.getWorld().getBiome(pos), Type.SANDY)){
+
+			double noise =getSimplexSand(chunk.getWorld(), pos);
+			if (noise < 8){
+				gen.replaceBlock(pos, sands[(int)noise]);
+			}
 		}
 		return false;
 	}
 
 
 
-	
+
 }

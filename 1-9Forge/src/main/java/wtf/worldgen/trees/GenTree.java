@@ -101,27 +101,61 @@ public class GenTree {
 
 	public static float genTop(TreePos tree, float offset){
 
-		for (double topLoop = tree.type.topLimitUp; topLoop < tree.type.topLimitDown; topLoop+=tree.type.topLimitIncrement){	//Top Loop
-			int branches =  tree.type.getBranchesPerNode(tree.scale);
-			offset+=tree.type.getBranchRotation(tree.scale, branches);
-		
-			for (int loopMultiBranches = 0; loopMultiBranches < branches; loopMultiBranches++){
-				double offSetForBranch = offset + PIx2/branches*loopMultiBranches; // 
+		//Spruce cone top
+		if (tree.type.leaftype == TreeVars.LeafStyle.SPRUCE){
+			
+			//starting at tree height - branch seperation
+			double nodeHeight = tree.trunkHeight-1;
 
-
-				double sinTop = Math.sin(topLoop);
-				double vecY = Math.cos(topLoop);
-				double vecX = Math.cos(offSetForBranch) * sinTop;
-				double vecZ = Math.sin(offSetForBranch) * sinTop;
-
-				//full taper here, because it's the very top
-
+			//looping for multiple branches per node
+			int crownLoops = 4;//(int) MathHelper.clamp_double(tree.trunkHeight/7, 3, 12);
+			
+			while (nodeHeight < tree.trunkHeight+crownLoops){
 				
-				Branch branch = new Branch(tree.oriX, tree.trunkHeight + tree.y, tree.oriZ, vecX, vecY, vecZ, tree.type.getBranchLength(tree.scale, tree.trunkHeight, tree.trunkHeight));
-				//System.out.println("Branch set");
-				genBranch(tree, branch);
+				int branches = tree.type.getBranchesPerNode(nodeHeight/tree.trunkHeight, tree.scale);
+				
+				for (int loopMultiBranches = 0; loopMultiBranches < branches; loopMultiBranches++){
+					float offSetForBranch = (float)(offset + PIx2/branches*loopMultiBranches); 
+
+					float vecX = MathHelper.cos(offSetForBranch);
+					float vecZ = MathHelper.sin(offSetForBranch); 
+
+					Branch branch = new Branch(tree.oriX, nodeHeight + tree.y, tree.oriZ, vecX, tree.type.getBranchPitch(tree.scale), vecZ, (tree.type.getBranchLength(tree.scale, tree.trunkHeight, nodeHeight)));
+					genBranch(tree, branch);
+
+					offset+=tree.type.getBranchRotation(tree.scale, branches);
+
+				}//end branch loop
+				offset += PId4;
+				nodeHeight+=1;
+
+			}//end branch node loop
+			
+		}
+		else {
+
+			for (double topLoop = tree.type.topLimitUp; topLoop < tree.type.topLimitDown; topLoop+=tree.type.topLimitIncrement){	//Top Loop
+				int branches =  tree.type.getBranchesPerNode(1, tree.scale);
 				offset+=tree.type.getBranchRotation(tree.scale, branches);
 
+				for (int loopMultiBranches = 0; loopMultiBranches < branches; loopMultiBranches++){
+					double offSetForBranch = offset + PIx2/branches*loopMultiBranches; // 
+
+
+					double sinTop = Math.sin(topLoop);
+					double vecY = Math.cos(topLoop);
+					double vecX = Math.cos(offSetForBranch) * sinTop;
+					double vecZ = Math.sin(offSetForBranch) * sinTop;
+
+					//full taper here, because it's the very top
+
+
+					Branch branch = new Branch(tree.oriX, tree.trunkHeight-1 + tree.y, tree.oriZ, vecX, vecY, vecZ, tree.type.getBranchLength(tree.scale, tree.trunkHeight, tree.trunkHeight));
+					//System.out.println("Branch set");
+					genBranch(tree, branch);
+					offset+=tree.type.getBranchRotation(tree.scale, branches);
+
+				}
 			}
 		}
 
@@ -139,7 +173,7 @@ public class GenTree {
 		int lowestBranch = MathHelper.floor_double(tree.trunkHeight*tree.type.getLowestBranchRatio());
 		while (nodeHeight > lowestBranch){
 			
-			int branches = tree.type.getBranchesPerNode(tree.scale);
+			int branches = tree.type.getBranchesPerNode(nodeHeight/tree.trunkHeight, tree.scale);
 			
 			for (int loopMultiBranches = 0; loopMultiBranches < branches; loopMultiBranches++){
 				float offSetForBranch = (float)(offset + PIx2/branches*loopMultiBranches); 
@@ -240,13 +274,9 @@ public class GenTree {
 
 
 	protected static boolean genBranch(TreePos tree, Branch branch){
-
-		
-		
 		while (tree.inTrunk(branch.pos())){
 			branch.next();
 		}
-		
 
 		if (tree.type.cocoa && tree.random.nextFloat() < 0.3){
 			genCocoa(tree, branch);
@@ -264,17 +294,8 @@ public class GenTree {
 				tree.setBranch(pos, branch.axis);
 				break;
 			case SPRUCE:
-				if (branch.length-branch.count > 3){
-					tree.setBranch(pos, branch.axis);
-				}
-				
-				tree.setLeaf(pos.up());
-				for (int loop = 1; loop < tree.type.leafRad+1; loop++){
-					tree.setLeaf(pos.east(loop));
-					tree.setLeaf(pos.west(loop));
-					tree.setLeaf(pos.north(loop));
-					tree.setLeaf(pos.south(loop));
-				}
+				double remaining = branch.length - branch.count;
+					tree.type.doLeafNode(tree, branch, pos);		
 				break;
 			default:
 				break;
@@ -291,11 +312,11 @@ public class GenTree {
 
 		switch (tree.type.leaftype){
 		case BASIC:
-			genLeafNode(tree, branch.pos());
+			tree.type.doLeafNode(tree, branch, branch.pos());
 			break;
 		case SPRUCE:
 			//pos = branch.next();
-			tree.setLeaf(pos);
+			//tree.setLeaf(pos);
 			break;
 		default:
 			break;
@@ -307,53 +328,11 @@ public class GenTree {
 	}
 
 
-	public static void genLeafNode(TreePos tree, BlockPos pos){
-
-		double height = pos.getY()-tree.y;
-		double taper = MathHelper.clamp_double((tree.type.leafTaper) * (tree.trunkHeight-height)/tree.trunkHeight, tree.type.leafTaper, 1);
-
-		double radius = MathHelper.clamp_double(tree.type.leafRad*taper, 1, tree.type.leafRad);
-		double ymin = tree.type.leafYMin;
-		double ymax = tree.type.leafYMax;
-
-
-		for (double yloop = ymin; yloop < ymax; yloop++){
-
-			double sliceRadSq = (radius+1) * (radius+1) - (yloop*yloop);
-			double slicedRadSqSmall = radius * radius - (yloop * yloop);
-
-			if (sliceRadSq > 0){
-
-				for (double xloop = -radius; xloop < radius+1; xloop++){
-					for (double zloop = -radius; zloop < radius+1; zloop++){
-
-						double xzDistanceSq = xloop*xloop + zloop*zloop;
-
-						BlockPos leafPos = new BlockPos(xloop+pos.getX(), yloop+pos.getY(), zloop+pos.getZ());
-
-						if (xzDistanceSq < slicedRadSqSmall){
-							tree.setLeaf(leafPos);
-						}
-						else if (xzDistanceSq < sliceRadSq){
-							if (tree.random.nextBoolean()){
-								tree.setLeaf(leafPos);
-
-
-								if (tree.type.vines > 0 && MathHelper.abs_max(xloop, zloop) > yloop && tree.random.nextBoolean()){
-									genVine(tree, leafPos, xloop, zloop);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}	
+	
 
 
 
-
-	protected static void genVine (TreePos tree, BlockPos pos, double xloop, double zloop){
+	public static void genVine (TreePos tree, BlockPos pos, double xloop, double zloop){
 		IBlockState block = null;
 		if (Math.abs(xloop) > Math.abs(zloop)){
 			if (xloop > 0){

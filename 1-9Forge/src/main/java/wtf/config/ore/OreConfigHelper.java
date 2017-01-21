@@ -2,7 +2,6 @@ package wtf.config.ore;
 
 import java.util.HashMap;
 
-import net.minecraftforge.fml.common.Loader;
 import wtf.Core;
 
 public class OreConfigHelper {
@@ -12,8 +11,8 @@ public class OreConfigHelper {
 		HashMap<String, OreDefReg> defPresets = new HashMap<String, OreDefReg>();
 		
 			defPresets.put("tconstruct:ore@0", new OreDefReg("minecraft:netherrack@0", "vein", new int[]{5, 95}, new int[]{-30, 60}, true).setDensity(75)
-					.setVeinDimensions(new int[]{16,1,1}).setVeinPitch(0.45F).setDimensionIDs(-1)); 
-			defPresets.put("tconstruct:ore@1", new OreDefReg("minecraft:netherrack@0", "cloud", new int[]{5, 95}, new int[]{-30, 60}, true).setDensity(16).setCloudDiameter(14)); 
+					.setVeinDimensions(new int[]{16,1,1}).setVeinPitch(0.45F).setDimensionIDs(-1).setTextureLoc("ore_cobalt").setSurfaces("floor & ceiling & wall")); 
+			defPresets.put("tconstruct:ore@1", new OreDefReg("minecraft:netherrack@0", "cloud", new int[]{5, 95}, new int[]{-30, 60}, true).setDensity(15).setCloudDiameter(14).setTextureLoc("ore_ardite")); 
 	
 		String defStone = "minecraft:stone@0";
 		if (Core.UBC){
@@ -38,13 +37,13 @@ public class OreConfigHelper {
 		
 		defPresets.put("minecraft:diamond_ore@0", new OreDefReg(defStone+", minecraft:obsidian@0", "cluster", new int[]{1, 25}, new int[]{-17, 23}, true).setDensity(50).setBiomeTags("jungle@150, swamp@50")); 
 		
-		defPresets.put("minecraft:quartz_ore@0", new OreDefReg("minecraft:netherrack@0", "cave&cluster", new int[]{5, 95}, new int[]{60, 120}, true).setDensity(75).setDimensionIDs(new int[]{-1}).setSurfaces("floor,ceiling,wall"));
+		defPresets.put("minecraft:quartz_ore@0", new OreDefReg("minecraft:netherrack@0", "cave&cluster", new int[]{5, 95}, new int[]{60, 120}, true).setDensity(75).setDimensionIDs(new int[]{-1}).setSurfaces("floor & ceiling & wall"));
 		
 		defPresets.put("wtfcore:nitre_ore@0", new OreDefReg(defStone, "cave@single", new int[]{15, 95}, new int[]{-10, 10}, true).setSurfaces("floor"));
 		
 		defPresets.put("wtfcore:oreSandGold@0", new OreDefReg("minecraft:sand@0", "underwater@single", new int[]{90, 110}, new int[]{-10, 10}, true).setTextureLoc("gold_ore").setReqBiomes("river"));
 		
-		defPresets.put("WTFBlockType:cracked", new OreDefReg(defStone, "cave@single", new int[]{10, 110}, new int[]{-25, 110}, false).setSurfaces("ceiling, wall").setVeinDimensions(new int[]{10,2,1}).setVeinPitch(0).setDensity(50));
+		defPresets.put("WTFBlockType:cracked", new OreDefReg(defStone, "cave@single", new int[]{10, 110}, new int[]{-25, 110}, false).setSurfaces("ceiling & wall").setVeinDimensions(new int[]{10,2,1}).setVeinPitch(0).setDensity(50));
 	
 		return defPresets;
 		

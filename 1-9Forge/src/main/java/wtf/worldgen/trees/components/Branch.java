@@ -88,14 +88,6 @@ public class Branch {
 		return new BlockPos(x, y, z);
 	}
 	
-	public BlockPos getAdjacent1(){
-		return vecX > vecZ ? pos().north() : pos().east();
-	}
-
-	public BlockPos getAdjacent2(){
-		return vecX > vecZ ? pos().south() : pos().west();
-	}
-	
 	public int getCount(){
 		return count;
 	}

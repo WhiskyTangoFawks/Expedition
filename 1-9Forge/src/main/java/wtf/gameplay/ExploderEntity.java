@@ -1,7 +1,6 @@
 package wtf.gameplay;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityTNTPrimed;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
@@ -13,8 +12,8 @@ import net.minecraft.world.World;
 
 public class ExploderEntity extends Entity{
 
-	 private static final DataParameter<Integer> FUSE = EntityDataManager.<Integer>createKey(EntityTNTPrimed.class, DataSerializers.VARINT);
-	
+	private static final DataParameter<Integer> FUSE = EntityDataManager.<Integer>createKey(EntityTNTPrimed.class, DataSerializers.VARINT);
+
 	public ExploderEntity(World worldIn, BlockPos pos, float str) {
 		super(worldIn);
 		fuse = 2;
@@ -24,68 +23,89 @@ public class ExploderEntity extends Entity{
 		this.posZ=pos.getZ();
 	}
 
+	public ExploderEntity(World worldIn, Vec3d pos, float str, int fuse) {
+		super(worldIn);
+		this.fuse = fuse;
+		this.str = str;
+		this.posX=pos.xCoord;
+		this.posY=pos.yCoord;
+		this.posZ=pos.zCoord;
+	}
+
 	//I should be able to modify this to actually do the explosion as well-
 	//which allows me to modify the time between increments, and overall slow the explosion down
-	
+
 	private float str;
 	private int fuse;
-	
 
-	  public void onUpdate()
-	    {
-	      
-	      if (fuse > 0){  
-		  fuse--;
-	      }
+	CustomExplosion explosion;
 
-	        if (fuse < 1)
-	        {
-	            this.setDead();
+	@Override
+	public void onUpdate()
+	{
 
-	            if (!this.worldObj.isRemote)
-	            {
-	            	 new CustomExplosion(null, this.worldObj, new Vec3d(this.posX, this.posY, this.posZ), str);;
-	            }
-	        }
-	       
-	    }
+		if (!this.worldObj.isRemote){
+			if (fuse == 0){
+				explosion = new CustomExplosion(null, this.worldObj, new Vec3d(this.posX, this.posY, this.posZ), str);
+				explosion.incrementVectorList();
+				explosion.update();
+			}
+			else if (fuse < 0){
+				if (explosion.vecList.size() > 0){
+					explosion.incrementVectorList();
+					explosion.update();
+				}
+				else {
+					this.setDead();
+					explosion.update();
+				}
 
-
-	  protected void entityInit()
-	    {
-	        this.dataManager.register(FUSE, Integer.valueOf(10));
-	    }
-
-	    /**
-	     * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
-	     * prevent them from trampling crops
-	     */
-	    protected boolean canTriggerWalking()
-	    {
-	        return false;
-	    }
-
-	    /**
-	     * Returns true if other Entities should be prevented from moving through this Entity.
-	     */
-	    public boolean canBeCollidedWith()
-	    {
-	    	  return false;
-	    }
+			}
+			fuse--;
+		}
+	}
 
 
-	    protected void writeEntityToNBT(NBTTagCompound compound)
-	    {
-	        compound.setShort("Fuse", (short)fuse);
-	    }
+	@Override
+	protected void entityInit()
+	{
+		this.dataManager.register(FUSE, Integer.valueOf(10));
+	}
 
-	    /**
-	     * (abstract) Protected helper method to read subclass entity data from NBT.
-	     */
-	    protected void readEntityFromNBT(NBTTagCompound compound)
-	    {
-	        fuse=(compound.getShort("Fuse"));
-	    }
+	/**
+	 * returns if this entity triggers Block.onEntityWalking on the blocks they walk on. used for spiders and wolves to
+	 * prevent them from trampling crops
+	 */
+	@Override
+	protected boolean canTriggerWalking()
+	{
+		return false;
+	}
+
+	/**
+	 * Returns true if other Entities should be prevented from moving through this Entity.
+	 */
+	@Override
+	public boolean canBeCollidedWith()
+	{
+		return false;
+	}
+
+
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound compound)
+	{
+		compound.setShort("Fuse", (short)fuse);
+	}
+
+	/**
+	 * (abstract) Protected helper method to read subclass entity data from NBT.
+	 */
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound compound)
+	{
+		fuse=(compound.getShort("Fuse"));
+	}
 
 
 }

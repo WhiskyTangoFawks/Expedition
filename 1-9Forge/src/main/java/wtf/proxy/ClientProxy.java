@@ -3,18 +3,19 @@ package wtf.proxy;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.ResourcePackRepository;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import wtf.Core;
 import wtf.crafting.render.WCICTESR;
 import wtf.crafting.render.WCICTileEntity;
+import wtf.utilities.blockstatewriters.BlockstateWriter;
+import wtf.utilities.blockstatewriters.LangFileWriter;
 
 
 public class ClientProxy extends CommonProxy {
@@ -23,7 +24,7 @@ public class ClientProxy extends CommonProxy {
 	@Override
 	public void enableBlockstateTexturePack(){
 		
-		System.out.println("Attempting to parse resource packs");
+		Core.coreLog.info("Attempting to parse resource packs");
 		
 		ResourcePackRepository repo = Minecraft.getMinecraft().getResourcePackRepository();
 		List<ResourcePackRepository.Entry> rpEnabled = repo.getRepositoryEntries();
@@ -37,10 +38,10 @@ public class ClientProxy extends CommonProxy {
 		}
 		
 		if (wtfResourcePack==null){
-			System.out.println("Resource pack not found- please enable manually");
+			Core.coreLog.info("WARNING: Resource pack not found- something is wrong with the blockstate writer- likely it is unable to find the default files due to an advanced setup");
 		}
 		else{
-			System.out.println("Resource pack found- attempting to enable "+ wtfResourcePack.getResourcePackName());
+			Core.coreLog.info("Resource pack found- attempting to enable "+ wtfResourcePack.getResourcePackName());
 		
 		}
 		// Choose which one you want and remove the other lines.
@@ -52,9 +53,10 @@ public class ClientProxy extends CommonProxy {
 		newlist.addAll(rpEnabled);
 		
 		if (!newlist.contains(wtfResourcePack)){
+			Core.coreLog.info("Crash Warning: WTF Expedition has enabled the blockstate resource pack.  If this is the first time the game has been run to generate the options.txt file, it will crash.  This crash can be safely ignored afterwards, just restart the game and it should be fine.  To stop seeing this warning, manually enable the WTFExpedition resource pack");
 			newlist.add(wtfResourcePack);
 			repo.setRepositories(newlist);
-			System.out.println("Crash Warning: WTF Expedition has enabled the blockstate resource pack.  If this is the first time the game has been run to generate the options.txt file, it will crash.  This crash can be safely ignored afterwards, just restart the game and it should be fine.  To stop seeing this warning, manually enable the WTFExpedition resource pack");
+			
 		}
 
 	}
@@ -82,6 +84,44 @@ public class ClientProxy extends CommonProxy {
 	}
 
 
+	@Override
+	public void writeResourcePack(){
+		BlockstateWriter.writeResourcePack();
+	}
 
+	@Override
+	public void writeSpeleothemBlockstate(IBlockState backState, String regName){
+		BlockstateWriter.writeSpeleothemBlockstate(backState, regName);
+	}
+	
+	@Override
+	public void writeDenseOreBlockstate(IBlockState backState, String regName, String orestring, String stoneString){
+		BlockstateWriter.writeDenseOreBlockstate(backState, regName, orestring, stoneString);
+	}
+	
+	@Override
+	public void writeDecoAnimBlockstate(IBlockState backState, String regName){
+		BlockstateWriter.writeDecoAnimBlockstate(backState, regName);
+	}
+	
+	@Override
+	public void writeDecoStaticBlockstate(IBlockState backState, String regName){
+		BlockstateWriter.writeDecoStaticBlockstate(backState, regName);
+	}
+	
+	@Override
+	public void loadLangFile(){
+		LangFileWriter.loadLangFile();
+	}
+	
+	@Override
+	public void addName(String regName, String localName){
+		LangFileWriter.addName(regName, localName);
+	}
+	
+	@Override
+	public void finishLangFile(){
+		LangFileWriter.finishLangFile();
+	}
 
 }

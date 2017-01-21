@@ -4,7 +4,7 @@ import net.minecraft.world.Explosion;
 import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import wtf.gameplay.CustomExplosion;
+import wtf.gameplay.ExploderEntity;
 
 public class ListenerCustomExplosion {
 
@@ -12,7 +12,8 @@ public class ListenerCustomExplosion {
 	public void explosion(ExplosionEvent.Start event){
 			Explosion explosion = event.getExplosion();
 			float size = ObfuscationReflectionHelper.getPrivateValue(Explosion.class, explosion, 8);
-			new CustomExplosion(explosion.getExplosivePlacedBy(), event.getWorld(), explosion.getPosition(), size);
+			ExploderEntity entity = new ExploderEntity(event.getWorld(), explosion.getPosition(), size, 0);
+			event.getWorld().spawnEntityInWorld(entity);
 		event.setCanceled(true);
 		}
 	

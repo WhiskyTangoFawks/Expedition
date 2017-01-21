@@ -143,7 +143,7 @@ public class CaveBiomeGenMethods{
 	}
 	public void setLavaPatch(BlockPos pos){
 		
-		if (getBlockState(pos.up()).getBlock().hashCode() == airHash){
+		if (BlockSets.ReplaceHashset.contains(getBlockState(pos).getBlock()) && getBlockState(pos.up()).getBlock().hashCode() == airHash){
 			//System.out.println("Setting lava patch");
 			blocksToSet.put(pos.up(), WTFBlocks.lavaPatch.getDefaultState());
 		}

@@ -17,7 +17,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import wtf.Core;
-import wtf.gameplay.StoneFractureMethods;
 import wtf.init.BlockSets;
 
 public class BlockPatchFluid extends BlockLiquid{
@@ -82,9 +81,6 @@ public class BlockPatchFluid extends BlockLiquid{
 		for (BlockPos adj : sides){
 			IBlockState state = world.getBlockState(adj);
 			if (water.contains(state.getBlock()) && state.getValue(BlockLiquid.LEVEL) < 7 || lava.contains(state.getBlock()) && state.getValue(BlockLiquid.LEVEL) < 6){
-				if (this.getDefaultState().getMaterial() == Material.LAVA){
-					StoneFractureMethods.frac(world, pos.down(), -1);
-				}
 				return false;
 			}
 		}

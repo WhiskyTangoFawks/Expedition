@@ -2,9 +2,10 @@ package wtf.config.ore;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import org.apache.commons.lang3.text.WordUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFalling;
@@ -18,6 +19,7 @@ import wtf.blocks.BlockDenseOre;
 import wtf.blocks.BlockDenseOreFalling;
 import wtf.blocks.redstone.DenseRedstoneOre;
 import wtf.config.ConfigMaster;
+import wtf.config.WTFStoneRegistry;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
 import wtf.init.WTFBlocks;
@@ -32,7 +34,7 @@ import wtf.ores.oregenerators.OreGenSingle;
 import wtf.ores.oregenerators.OreGenUnderWater;
 import wtf.ores.oregenerators.OreGenVanilla;
 import wtf.ores.oregenerators.OreGenVein;
-import wtf.utilities.blockstatewriters.BlockstateWriter;
+import wtf.utilities.UBC.UBCOreReplacer;
 import wtf.utilities.wrappers.StoneAndOre;
 
 public class WTFOresNewConfig extends ConfigMaster{
@@ -62,7 +64,7 @@ public class WTFOresNewConfig extends ConfigMaster{
 
 
 		String[] defOres = {"minecraft:coal_ore@0 #vein", "minecraft:iron_ore@0 #vein", "minecraft:gold_ore@0 #cloud", "minecraft:lapis_ore@0 #cluster", "minecraft:redstone_ore@0 #vein", "minecraft:emerald_ore@0 #single", "minecraft:diamond_ore@0 #single",
-				"wtfcore:nitre_ore@0 #cave&single", "wtfcore:oreSandGold@0 #underwater&single", "WTFBlockType:cracked #vein"};
+				"minecraft:quartz_ore@0 #cave&cluster", "wtfcore:nitre_ore@0 #cave&single", "wtfcore:oreSandGold@0 #underwater&single", "WTFBlockType:cracked #vein"};
 
 		if (Loader.isModLoaded("tconstruct")){
 			defOres = appendArray(defOres, "tconstruct:ore@0 #vein" );
@@ -78,9 +80,16 @@ public class WTFOresNewConfig extends ConfigMaster{
 
 			if (oreGenString.length() > 1){
 
+				String category = "Config for " +oreGenString;
+				
+				if (!oreGenString.contains("#")){
+					config.get(category, "Generation type missing", "please delete this entry, and include a generation type in the master config string for "+oreGenString);
+					continue;
+				}
+				
 				String oreString = oreGenString.split("#")[0].replaceAll("\\s","");
 				String genString = oreGenString.split("#")[1].replaceAll("\\s","");
-				String category = "Config for " +oreGenString;
+			
 				
 				//Piece of code for backwards compatibility or previously generated ore strings
 				if (oreString == " wtfcore:stone0DecoStatic@2"){
@@ -129,6 +138,15 @@ public class WTFOresNewConfig extends ConfigMaster{
 				ArrayList<IBlockState> stoneArray = getBlockStateArray(stoneStringList);
 	
 				int[] genRange = config.get(category, "2 Generation height range (min % surface height, max % surface height)", preset.genRange).getIntList();
+				try {
+					if (genRange[1]-genRange[0] < 1){
+						throw new Exception();
+					}
+				}
+				catch (Exception e){
+					throw new Exception("Ore Config Parsing Exception while trying to parse  : " + oreString + " ***** Generation height range is not valid, max range must be greater than min range");
+				}
+				
 				int[] orePerChunk = config.get(category, "1 Amount of ore to attempt to generate per chunk (min, max)", preset.orePerChunk).getIntList();
 				boolean denseBlock = config.get(category, "4 Use dense versions of this ore block", modifier == null ? preset.denseBlock : false).getBoolean();
 
@@ -150,7 +168,8 @@ public class WTFOresNewConfig extends ConfigMaster{
 				generator.setVeinDensity(density);
 
 				String[] biomeModTags = config.get(category, "7 Percent ore generation in biome type", preset.biomeTags).getString().replaceAll("\\s","").toLowerCase().split(",");
-
+				//The block doesn't get added based on this- but maybe it should?
+				//boolean preventPlayerPlacement = config.get(category, "8 Prevent player placement of the ore", true, "prevents infinite abuse of stone mining gameplay tweaks").getBoolean();
 				generator.biomeModifier = new HashMap<BiomeDictionary.Type, Float>();
 
 				if (biomeModTags[0] != "" && biomeModTags.length > 0){
@@ -162,7 +181,7 @@ public class WTFOresNewConfig extends ConfigMaster{
 					}
 				}
 
-				String[] reqBiomes = config.get(category, "8 Required Biome types", "").getString().replaceAll("\\s","").toLowerCase().split(",");
+				String[] reqBiomes = config.get(category, "8 Required Biome types", preset.reqBiomeTypes == null ? "" : preset.reqBiomeTypes).getString().replaceAll("\\s","").toLowerCase().split(",");
 				if (reqBiomes[0] != "" && reqBiomes.length > 0){
 
 					for (String biomestring : reqBiomes){
@@ -186,25 +205,33 @@ public class WTFOresNewConfig extends ConfigMaster{
 						String stoneName = stoneblock.getRegistryName().toString().split(":")[1]+meta;
 						String regName = "dense_"+stoneName+ oreBlockName;
 						
+						String locStoneName =  WordUtils.capitalize(WTFStoneRegistry.stoneReg.get(stone).textureLocation.split("/")[1].replaceAll("_", " "));
+						String locOreName = WordUtils.capitalize(textureLoc.replaceAll("_", " "));
 						
 						//if (Block.getBlockFromName(dense_"+blockName) == null){
 						if (oreState.getBlock() != Blocks.REDSTONE_ORE){
 							if (stone.getBlock() instanceof BlockFalling){
 								block = WTFBlocks.registerBlock(new BlockDenseOreFalling(stone, oreState), regName);
-								BlockstateWriter.writeDenseOreBlockstate(stone, regName, textureLoc, stoneName);
+								Core.proxy.writeDenseOreBlockstate(stone, regName, textureLoc, stoneName);
+								Core.proxy.addName(regName,  "Dense " + locStoneName + " " + locOreName);
 							}
 							else {
 								block = WTFBlocks.registerBlock(new BlockDenseOre(stone, oreState), regName);
-								BlockstateWriter.writeDenseOreBlockstate(stone, regName, textureLoc, stoneName);
+								Core.proxy.writeDenseOreBlockstate(stone, regName, textureLoc, stoneName);
+								Core.proxy.addName(regName,  "Dense " + locStoneName + " " + locOreName);
 							}
 						}
 						else {
 
 							block = WTFBlocks.registerBlock(new DenseRedstoneOre(false), regName);
-							BlockstateWriter.writeDenseOreBlockstate(stone, regName, textureLoc, stoneName);
+							Core.proxy.writeDenseOreBlockstate(stone, regName, textureLoc, stoneName);
+							Core.proxy.addName(regName,  "Dense " + locStoneName + " " + locOreName);
+							
 							DenseRedstoneOre.denseRedstone_off = block;
 							DenseRedstoneOre.denseRedstone_on = WTFBlocks.registerBlock(new DenseRedstoneOre(true), regName+"_on");
-							BlockstateWriter.writeDenseOreBlockstate(stone, regName+"_on", textureLoc, stoneName);
+							Core.proxy.writeDenseOreBlockstate(stone, regName+"_on", textureLoc, stoneName);
+							Core.proxy.addName(regName+"_on",  "Dense " + locStoneName + " " + locOreName);
+							
 						}
 
 						BlockSets.stoneAndOre.put(new StoneAndOre(stone, oreState), block.getDefaultState());
@@ -213,7 +240,12 @@ public class WTFOresNewConfig extends ConfigMaster{
 					}
 					else if (modifier == null){
 						BlockSets.stoneAndOre.put(new StoneAndOre(stone, oreState), oreState);
-						new OreReplacer(oreState.getBlock());
+						if (Core.UBC){
+							new UBCOreReplacer(oreState.getBlock());
+						}
+						else {
+							new OreReplacer(oreState.getBlock());
+						}
 					}
 				}
 
@@ -253,7 +285,7 @@ public class WTFOresNewConfig extends ConfigMaster{
 		case cave:
 			//Get the surfaces for gen
 			ArrayList<OreGenCaveFloor.surface> surfacelist = new ArrayList<OreGenCaveFloor.surface>();
-			String[] surfacestrings = config.get("Config for " +oreString, "Surfaces in which to generates: floor, ceiling, wall", preset.surfaces).getString().split("&");
+			String[] surfacestrings = config.get("Config for " +oreString, "Surfaces in which to generates: floor, ceiling, wall, seperated by a &", preset.surfaces).getString().replaceAll("\\s","").split("&");
 			for (String string : surfacestrings){
 				try {
 					surfacelist.add(OreGenCaveFloor.surface.valueOf(string.toLowerCase()));
