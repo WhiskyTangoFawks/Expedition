@@ -34,7 +34,7 @@ public class SwampTree extends TreeVars {
 
 	@Override
 	public double getBranchRotation(double scale, double numBranches) {
-		return 0.1;
+		return numBranches*Math.PI*2+1;
 	}
 
 	@Override

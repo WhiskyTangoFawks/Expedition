@@ -112,7 +112,7 @@ public class GenTree {
 			
 			while (nodeHeight < tree.trunkHeight+crownLoops){
 				
-				int branches = tree.type.getBranchesPerNode(nodeHeight/tree.trunkHeight, tree.scale);
+				int branches = tree.type.getBranchesPerNode(0.1, tree.scale);
 				
 				for (int loopMultiBranches = 0; loopMultiBranches < branches; loopMultiBranches++){
 					float offSetForBranch = (float)(offset + PIx2/branches*loopMultiBranches); 
@@ -135,7 +135,9 @@ public class GenTree {
 		else {
 
 			for (double topLoop = tree.type.topLimitUp; topLoop < tree.type.topLimitDown; topLoop+=tree.type.topLimitIncrement){	//Top Loop
-				int branches =  tree.type.getBranchesPerNode(1, tree.scale);
+				
+				
+				int branches =  tree.type.getBranchesPerNode(0.1, tree.scale);
 				offset+=tree.type.getBranchRotation(tree.scale, branches);
 
 				for (int loopMultiBranches = 0; loopMultiBranches < branches; loopMultiBranches++){
@@ -173,7 +175,12 @@ public class GenTree {
 		int lowestBranch = MathHelper.floor_double(tree.trunkHeight*tree.type.getLowestBranchRatio());
 		while (nodeHeight > lowestBranch){
 			
-			int branches = tree.type.getBranchesPerNode(nodeHeight/tree.trunkHeight, tree.scale);
+			double bottom = tree.type.getLowestBranchRatio()*tree.trunkHeight;
+			double distFromBottom = nodeHeight - bottom;
+			double branchSectionLength = tree.trunkHeight-bottom;
+			double taper = 1 - MathHelper.clamp_double(distFromBottom/branchSectionLength, 0.1, 1);
+			
+			int branches = tree.type.getBranchesPerNode(taper, tree.scale);
 			
 			for (int loopMultiBranches = 0; loopMultiBranches < branches; loopMultiBranches++){
 				float offSetForBranch = (float)(offset + PIx2/branches*loopMultiBranches); 

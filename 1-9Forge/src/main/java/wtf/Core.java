@@ -29,6 +29,7 @@ import wtf.init.WTFArmor;
 import wtf.init.WTFBiomes;
 import wtf.init.WTFBlocks;
 import wtf.init.WTFEntities;
+import wtf.init.WTFFood;
 import wtf.init.WTFItems;
 import wtf.init.WTFRecipes;
 import wtf.init.WTFSubstitutions;
@@ -104,6 +105,7 @@ public class Core {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		
 		WTFSubstitutions.init();
+		WTFFood.initFood();
 
 		proxy.finishLangFile();
 	}

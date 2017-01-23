@@ -16,6 +16,7 @@ import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 import wtf.gameplay.fracturing.EntityStoneCrack;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
@@ -33,12 +34,6 @@ public class BlockDecoStatic extends AbstractBlockDerivative{
 		
 		if (state.getMaterial() == Material.ROCK || state.getMaterial() == Material.GROUND){
 			BlockSets.blockTransformer.put(new StateAndModifier(state, BlockSets.Modifier.MOSSY), this.getDefaultState());
-			//I want to put the be able to cobbilify the mossy states too
-			//the simplest way to do this, is to just make sure that the cobblestone version of the block is processed first
-			//that way, I can just get the cobble version of the stone, then get the mossified version of the cobble
-			//because I can get a cobble version from a stone, but It's harder to get a stone version from a cobble
-			
-			//So- we've already done cobble and this is not the stone pass
 			IBlockState cobble = BlockSets.getTransformedState(state, Modifier.COBBLE);
 			if (cobble != null){
 				IBlockState mossyCobble = BlockSets.getTransformedState(cobble, Modifier.MOSSY);
@@ -60,6 +55,7 @@ public class BlockDecoStatic extends AbstractBlockDerivative{
 			BlockSets.fallingBlocks.put(this, BlockSets.fallingBlocks.get(state.getBlock()));
 		}
 		BlockSets.ReplaceHashset.add(this);
+	//	OreDictionary.registerOre("moss", new ItemStack(this, 1, 0));
 	}
 
 	@Override

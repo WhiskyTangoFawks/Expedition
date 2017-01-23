@@ -244,17 +244,19 @@ public class CustomExplosion extends Explosion{
 	private float setModifier(float dir, float totalAssigned) {
 		float ret  = dir / (totalAssigned/6F);
 		return ret;
-
-
 	}
 
 	int airHash = Blocks.AIR.hashCode();
+	
 	
 	void update(){
 		for (BlockPos pos: this.getAffectedBlockPositions()){
 			//System.out.println("neightbor changed");
 			IBlockState iblockstate = world.getBlockState(pos);
 			iblockstate.neighborChanged(world, pos, iblockstate.getBlock());
+			if (GameplayConfig.gravity){
+				GravityMethods.checkPos(world, pos);
+			}
 		}
 		this.clearAffectedBlockPositions();
 	}

@@ -30,16 +30,17 @@ public class RedwoodTree extends TreeVars{
 	//and I can delete most of the leaf varaibles that I don't need for the
 	
 	@Override
-	public int getBranchesPerNode(double nodeHeight, double scale) {
+	public int getBranchesPerNode(double taper, double scale) {
 	//I should theoretically be able to calculate the number of spokes required to join up branches of a given distance
-		double taper = 1 - nodeHeight;
+		
 		double branches = 7+5*scale;
 		return (int) (branches + branches*taper);
+		
 	}
 
 	@Override
 	public double getBranchRotation(double scale, double numBranches) {
-		return Math.PI/(numBranches+1);
+		return Math.PI*2/(numBranches+1);
 	}
 
 	@Override
@@ -54,8 +55,11 @@ public class RedwoodTree extends TreeVars{
 
 	@Override
 	public double getBranchLength(double scale, double trunkHeight, double nodeHeight) {
-		double taper = 1 - MathHelper.clamp_double(nodeHeight/(trunkHeight), 0.05, 1);
-		return  trunkHeight/5+(trunkHeight/5)*taper;
+		double bottom = this.getLowestBranchRatio()*trunkHeight;
+		double distFromBottom = nodeHeight - bottom;
+		double branchSectionLength = trunkHeight-bottom;
+		double taper = 1 - MathHelper.clamp_double(distFromBottom/branchSectionLength, 0.1, 1);
+		return  trunkHeight/4*taper;
 	}
 
 	@Override
@@ -88,7 +92,7 @@ public class RedwoodTree extends TreeVars{
 	}
 	@Override
 	public double getLowestBranchRatio() {
-		return 0.8;
+		return 0.6;
 	}
 
 	@Override

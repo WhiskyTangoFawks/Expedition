@@ -48,12 +48,12 @@ public class ExploderEntity extends Entity{
 			if (fuse == 0){
 				explosion = new CustomExplosion(null, this.worldObj, new Vec3d(this.posX, this.posY, this.posZ), str);
 				explosion.incrementVectorList();
-				explosion.update();
+				//explosion.update();
 			}
 			else if (fuse < 0){
 				if (explosion.vecList.size() > 0){
 					explosion.incrementVectorList();
-					explosion.update();
+					//explosion.update();
 				}
 				else {
 					this.setDead();

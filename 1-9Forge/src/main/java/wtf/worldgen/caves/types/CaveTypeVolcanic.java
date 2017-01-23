@@ -58,7 +58,7 @@ public class CaveTypeVolcanic extends AbstractCaveType{
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 0.1F) >= 2){
+		if (getNoise(gen.chunk.getWorld(), pos, 5, 1F) >= 2){
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
 	}

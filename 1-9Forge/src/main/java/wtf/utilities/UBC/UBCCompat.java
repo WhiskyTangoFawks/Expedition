@@ -36,6 +36,7 @@ public class UBCCompat {
 		Core.coreLog.info("Getting UBC stones");
 		
 		//new ReplacerVanillaStone();
+		
 
 		System.out.println("Registering UBC Sedimentary Sand");
 		WTFBlocks.ubcSand = WTFBlocks.registerBlockItemSubblocks(new UBCSand(), 7, "ubcSand");
@@ -80,7 +81,7 @@ public class UBCCompat {
 			WTFStoneRegistry.defCobble.put(MetamorphicStone[loop], MetamorphicCobblestone[loop].getBlock().getRegistryName().toString()+"@"+loop);
 			UBCStoneList.add(MetamorphicCobblestone[loop].getBlock().getRegistryName()+"@"+loop);
 			WTFStoneRegistry.defTextureLocations.put(MetamorphicCobblestone[loop], "undergroundbiomes:blocks/"+IgneousStoneList[loop]+"_cobble");
-			WTFStoneRegistry.defBlockStateLocations.put(MetamorphicCobblestone[loop], "undergroundbiomes:metamorphic_cobble#type="+IgneousStoneList[loop]);
+			WTFStoneRegistry.defBlockStateLocations.put(MetamorphicCobblestone[loop], "undergroundbiomes:metamorphic_cobble#type="+MetamorphicStoneList[loop]);
 		}
 
 		SedimentaryStone = new IBlockState[8];
@@ -107,6 +108,9 @@ public class UBCCompat {
 		GameRegistry.addSmelting(new ItemStack(WTFBlocks.ubcSand, 1, 6), new ItemStack(Blocks.STAINED_GLASS, 1, 7), 0F);
 		GameRegistry.addSmelting(new ItemStack(WTFBlocks.ubcSand, 1, 7), new ItemStack(Blocks.STAINED_GLASS, 1, 12), 0F);
 		//GameRegistry.addSmelting(new ItemStack(Blocks.SAND, 1, 1), new ItemStack(Blocks.STAINED_GLASS, 1, 14), 0F);
+		
+		new ReplacerUBCMossyCobble();
+		
 	}
 
 

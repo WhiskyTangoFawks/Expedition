@@ -8,7 +8,6 @@ import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockVine;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityMobSpawner;
@@ -93,6 +92,17 @@ public class CaveBiomeGenMethods{
 	 **Used to replace a block.  Checks that the block is replaceable first
 	 **/
 	public boolean replaceBlock(BlockPos pos, IBlockState state){
+		
+		if (BlockSets.ReplaceHashset.contains(getBlockState(pos).getBlock())){
+			blocksToSet.put(pos, state);
+			return true;
+		}
+		return false;
+	}
+	/**
+	 **Used to replace a block without checking that the block is replaceable first
+	 **/
+	public boolean overrideBlock(BlockPos pos, IBlockState state){
 		
 		if (BlockSets.ReplaceHashset.contains(getBlockState(pos).getBlock())){
 			blocksToSet.put(pos, state);

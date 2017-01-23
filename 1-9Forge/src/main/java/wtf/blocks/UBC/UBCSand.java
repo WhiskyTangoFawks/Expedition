@@ -1,14 +1,14 @@
 package wtf.blocks.UBC;
 
 import net.minecraft.block.BlockFalling;
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.material.Material;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import wtf.Core;
 
 import java.util.List;
@@ -22,7 +22,8 @@ public class UBCSand extends BlockFalling{
 	public UBCSand(){
 		this.setCreativeTab(Core.wtfTab);
 		 this.setDefaultState(this.blockState.getBaseState().withProperty(VARIANT, SedimentaryVariant.LIMESTONE));
-		 
+		 //OreDictionary.registerOre("sand", this);
+		 this.setSoundType(SoundType.SAND);
 	}
 	
 	@Override

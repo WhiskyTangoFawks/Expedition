@@ -12,6 +12,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import wtf.Core;
 import wtf.blocks.BlockDecoAnim;
 import wtf.blocks.BlockFoxfire;
@@ -154,6 +155,10 @@ public class WTFBlocks{
 		GameRegistry.registerTileEntity(WCICTileEntity.class, "WCICTable");
 
 		BlockWTFTorch.torch_off = new BlockWTFTorch(false);
+		
+		
+		OreDictionary.registerOre("moss", Blocks.MOSSY_COBBLESTONE);
+		OreDictionary.registerOre("sand", Blocks.SAND);
 		
 	}
 

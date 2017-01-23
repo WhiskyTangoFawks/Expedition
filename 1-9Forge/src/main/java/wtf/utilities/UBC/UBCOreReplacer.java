@@ -4,8 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
-import wtf.init.BlockSets;
-import wtf.utilities.wrappers.StoneAndOre;
 import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class UBCOreReplacer extends ReplacerUBCAbstract{
@@ -19,7 +17,7 @@ public class UBCOreReplacer extends ReplacerUBCAbstract{
 	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen, IBlockState oldState) {
 		IBlockState state = getUBCStone(pos);
 		//IBlockState newBlock = BlockSets.stoneAndOre.get(new StoneAndOre(state, oldState));
-		setBlock(chunk.getWorld(), pos, state);
+		gen.overrideBlock(pos, state);
 		return false;
 	}
 

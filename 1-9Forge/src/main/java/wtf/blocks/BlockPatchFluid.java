@@ -116,7 +116,7 @@ public class BlockPatchFluid extends BlockLiquid{
 	@Override
 	public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand)
 	{
-		
+		/*
 		boolean foundThis = false;
 		ArrayList<BlockPos> airPos = new ArrayList<BlockPos>();
 		for (int xloop = -1; xloop < 2; xloop++){
@@ -140,7 +140,7 @@ public class BlockPatchFluid extends BlockLiquid{
 		}
 
 		worldIn.setBlockState(pos, otherState);
-		
+		*/
 		if (this.blockMaterial == Material.LAVA)
 		{
 			if (worldIn.getGameRules().getBoolean("doFireTick"))
