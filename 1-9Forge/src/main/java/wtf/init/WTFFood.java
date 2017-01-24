@@ -29,6 +29,9 @@ public class WTFFood {
 		for (int loop = 0; loop < meats.length; loop++){
 			GameRegistry.addShapelessRecipe(new ItemStack(wich, 1, loop), meats[loop], new ItemStack(Items.BREAD));
 		}
+		
+		
+		
 				
 		
 	}
