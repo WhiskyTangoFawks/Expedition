@@ -3,10 +3,9 @@ package wtf.init;
 import net.minecraftforge.common.MinecraftForge;
 import wtf.Core;
 import wtf.api.WTFWorldGen;
-import wtf.config.CoreConfig;
+import wtf.config.MasterConfig;
 import wtf.config.GameplayConfig;
 import wtf.config.OverworldGenConfig;
-import wtf.entities.EntitySpawnListener;
 import wtf.gameplay.eventlisteners.ListenerBlockNameGetter;
 import wtf.gameplay.eventlisteners.ListenerChickenDrops;
 import wtf.gameplay.eventlisteners.ListenerCustomExplosion;
@@ -17,6 +16,7 @@ import wtf.gameplay.eventlisteners.ListenerOreFrac;
 import wtf.gameplay.eventlisteners.ListenerPlantGrowth;
 import wtf.gameplay.eventlisteners.ListenerStoneFrac;
 import wtf.gameplay.eventlisteners.ListenerWaterSpawn;
+import wtf.gameplay.eventlisteners.ZombieListener;
 import wtf.ores.OreGenerator;
 import wtf.ores.VanillOreGenCatcher;
 import wtf.worldgen.DungeonPopulator;
@@ -31,9 +31,15 @@ public class EventListenerRegistry {
 
 		MinecraftForge.EVENT_BUS.register(new CoreWorldGenListener());
 		MinecraftForge.TERRAIN_GEN_BUS.register(new CoreWorldGenListener());
+
+		if (MasterConfig.dungeonGeneration){
+			WTFWorldGen.addGen(new DungeonPopulator());
+		}
+	
+		
 		WTFWorldGen.addGen(new PopulationDecorator());
 		
-		if (CoreConfig.gameplaytweaks){
+		if (MasterConfig.gameplaytweaks){
 			if (GameplayConfig.miningSpeedEnabled){
 				MinecraftForge.EVENT_BUS.register(new ListenerMiningSpeed());
 				Core.coreLog.info("mining speed listener registered");
@@ -75,20 +81,17 @@ public class EventListenerRegistry {
 			MinecraftForge.EVENT_BUS.register(new LootEventListener());
 		}
 		
-		if (CoreConfig.dungeonGeneration){
-			WTFWorldGen.addGen(new DungeonPopulator());
-		}
-	
-		if (CoreConfig.mobReplacement){
-			MinecraftForge.EVENT_BUS.register(new EntitySpawnListener());
+
+		if (GameplayConfig.childZombie){
+			MinecraftForge.EVENT_BUS.register(new ZombieListener());
 		}
 
-		if (CoreConfig.enableOreGen){
+		if (MasterConfig.enableOreGen){
 			MinecraftForge.ORE_GEN_BUS.register(new VanillOreGenCatcher());
 			WTFWorldGen.addGen(new OreGenerator());
 		}
 		
-		if (CoreConfig.enableOverworldGeneration){
+		if (MasterConfig.enableOverworldGeneration){
 			if (OverworldGenConfig.genTrees){
 				MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenTreeCancel());
 				//MinecraftForge.EVENT_BUS.register(new WorldGenTreeCancel());
@@ -96,14 +99,18 @@ public class EventListenerRegistry {
 		}
 
 		
-		if (CoreConfig.enableOverworldGeneration){
+		if (MasterConfig.enableOverworldGeneration){
 				WTFWorldGen.addGen(new OverworldGen());
 		}
 
-		if(CoreConfig.enableNameGetter){
+		if(MasterConfig.enableNameGetter){
 			MinecraftForge.EVENT_BUS.register(new ListenerBlockNameGetter());
+			Core.coreLog.info("Registery name getter enabled");
 		}
+		
 
+
+		
 	}
 
 }

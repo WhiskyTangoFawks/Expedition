@@ -8,7 +8,7 @@ import wtf.Core;
 import wtf.utilities.UBC.ReplacerUBCSand;
 import wtf.utilities.UBC.ReplacerUBCSandstone;
 
-public class OverworldGenConfig extends ConfigMaster{
+public class OverworldGenConfig extends AbstractConfig{
 
 	public static boolean genTrees;
 	public static boolean modifySurface;

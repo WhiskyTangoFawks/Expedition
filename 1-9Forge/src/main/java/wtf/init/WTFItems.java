@@ -3,7 +3,7 @@ package wtf.init;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import wtf.Core;
-import wtf.config.CoreConfig;
+import wtf.config.MasterConfig;
 import wtf.config.GameplayConfig;
 import wtf.items.HomeScroll;
 import wtf.items.SimpleItem;
@@ -17,7 +17,7 @@ public class WTFItems {
 	public static void initItems(){
 		sulfur = registerItem(new SimpleItem(), "itemSulfur");
 		nitre = registerItem(new SimpleItem(), "itemNitre");
-		if (CoreConfig.gameplaytweaks && GameplayConfig.homescroll){
+		if (MasterConfig.gameplaytweaks && GameplayConfig.homescroll){
 			homescroll = registerItem(new HomeScroll(), "home_scroll");
 		}
 	}

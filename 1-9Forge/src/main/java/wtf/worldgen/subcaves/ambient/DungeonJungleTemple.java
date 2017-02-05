@@ -16,12 +16,12 @@ import wtf.worldgen.caves.CaveBiomeGenMethods;
 public class DungeonJungleTemple extends AbstractDungeonType{
 
 	public DungeonJungleTemple(String name) {
-		super(name, 5, 0, false);
+		super(name, 5, 0);
 	}
 	
 	@Override
 	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 6) && isHeight(cave, 4) && cave.getAvgFloor() > 48;
+		return isHeight(cave, 4) && cave.getAvgFloor() > 36;
 	}
 	
 	@Override
@@ -35,7 +35,7 @@ public class DungeonJungleTemple extends AbstractDungeonType{
 
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < 1.5){
+		if (getNoise(gen.getWorld(), pos, 5, 1) < 1.5){
 			gen.replaceBlock(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED));
 		}
 		else {
@@ -47,7 +47,7 @@ public class DungeonJungleTemple extends AbstractDungeonType{
 
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < 1.5){
+		if (getNoise(gen.getWorld(), pos, 5, 1) < 1.5){
 			gen.replaceBlock(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED));
 		}
 		else {
@@ -59,7 +59,7 @@ public class DungeonJungleTemple extends AbstractDungeonType{
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < 1.5){
+		if (getNoise(gen.getWorld(), pos, 5, 1) < 1.5){
 			gen.replaceBlock(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CHISELED));
 		}
 		else {
@@ -94,9 +94,10 @@ public class DungeonJungleTemple extends AbstractDungeonType{
 	
 	@Override
 	public void generateAdjacentWall(CaveBiomeGenMethods gen, Random random, AdjPos pos, float depth, int height){
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < depth*1.5){	
+		if (getNoise(gen.getWorld(), pos, 5, 1) < depth*1.5){	
 			gen.GenVines(pos, pos.getFace(random));
 		}
 	}
+
 
 }

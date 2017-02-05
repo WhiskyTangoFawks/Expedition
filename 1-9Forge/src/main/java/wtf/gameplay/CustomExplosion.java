@@ -35,6 +35,7 @@ public class CustomExplosion extends Explosion{
 	Random random = new Random();
 	public Entity sourceEntity;
 	boolean isSmoking = false;
+	public boolean flaming = false;
 
 	public HashMap<BlockPos, Block> fluids = new HashMap<BlockPos, Block>(); 
 
@@ -54,8 +55,22 @@ public class CustomExplosion extends Explosion{
 		this.counterMod = 0;
 		populateVectorList(new BlockPos(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord), str);
 		doExplosionB(origin, str);
-		
 
+	}
+	
+	public CustomExplosion(Entity entity, World world, Vec3d vec3d, float str, boolean fire) {
+		super(world, entity, vec3d.xCoord, vec3d.yCoord, vec3d.zCoord, str, false, false);
+		flaming = fire;
+		isSmoking = fire;
+		this.world = world;
+		BlockPos origin = new BlockPos(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord);
+		this.sourceEntity = entity;
+		this.counterMod = 0;
+		populateVectorList(new BlockPos(vec3d.xCoord, vec3d.yCoord, vec3d.zCoord), str);
+		doExplosionB(origin, str);
+		
+		
+		
 	}
 
 	/**

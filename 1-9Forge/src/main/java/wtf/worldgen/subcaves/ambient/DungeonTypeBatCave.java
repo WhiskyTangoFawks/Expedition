@@ -13,13 +13,13 @@ import wtf.worldgen.caves.CaveBiomeGenMethods;
 public class DungeonTypeBatCave  extends AbstractDungeonType{
 
 	public DungeonTypeBatCave(String name, int ceilingAddonPercentChance, int floorAddonPercentChance) {
-		super(name, ceilingAddonPercentChance, floorAddonPercentChance, true);
+		super(name, ceilingAddonPercentChance, floorAddonPercentChance);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 5) && isHeight(cave, 4);
+		return isHeight(cave, 4);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class DungeonTypeBatCave  extends AbstractDungeonType{
 	@Override
 	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 		gen.setCeilingAddon(pos, Modifier.COBBLE);
-		gen.spawnVanillaSpawner(pos.up(), "Bat", 15);
+		gen.spawnVanillaSpawner(pos.up(), "Bat", 6);
 		
 		
 		

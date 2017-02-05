@@ -17,7 +17,7 @@ public class CaveTypeRocky extends AbstractCaveType{
 
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (random.nextBoolean() && getNoise(gen.chunk.getWorld(), pos, 2, 0.2F) < 1){
+		if (random.nextBoolean() && getNoise(gen.getWorld(), pos, 2, 0.2F) < 1){
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
 		
@@ -25,7 +25,7 @@ public class CaveTypeRocky extends AbstractCaveType{
 
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (random.nextBoolean() && getNoise(gen.chunk.getWorld(), pos, 5, 1F) < 1){
+		if (random.nextBoolean() && getNoise(gen.getWorld(), pos, 5, 1F) < 1){
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
 		
@@ -54,15 +54,15 @@ public class CaveTypeRocky extends AbstractCaveType{
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		if (random.nextBoolean() && getNoise(gen.chunk.getWorld(), pos, 5, 1) < 1.5){
+		if (random.nextBoolean() && getNoise(gen.getWorld(), pos, 5, 1) < 1.5){
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
 
 	}
 	public void setTopBlock(CaveBiomeGenMethods gen, Random random, SurfacePos pos){
-		if (getNoise(gen.chunk.getWorld(), pos, 0.05, 1) < OverworldGenConfig.mountainFracChunkPercent){
+		if (getNoise(gen.getWorld(), pos, 0.05, 1) < OverworldGenConfig.mountainFracChunkPercent){
 			//and if the blockpos simplex is > than the frac frequency
-			if (getNoise(gen.chunk.getWorld(), pos, 1, 1F) < OverworldGenConfig.mountainFracFreq){
+			if (getNoise(gen.getWorld(), pos, 1, 1F) < OverworldGenConfig.mountainFracFreq){
 				gen.transformBlock(pos, Modifier.COBBLE);
 			}
 		}

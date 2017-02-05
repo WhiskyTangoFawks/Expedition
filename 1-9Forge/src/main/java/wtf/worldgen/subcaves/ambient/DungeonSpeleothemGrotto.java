@@ -10,24 +10,27 @@ import wtf.worldgen.caves.CaveBiomeGenMethods;
 
 public class DungeonSpeleothemGrotto extends AbstractDungeonType{
 
-
-
 	public DungeonSpeleothemGrotto(String name, int ceilingAddonPercentChance, int floorAddonPercentChance) {
-		super(name, ceilingAddonPercentChance, floorAddonPercentChance, false);
+		super(name, ceilingAddonPercentChance, floorAddonPercentChance);
 		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 5) && isHeight(cave, 6);
+		return  isHeight(cave, 4);
 	}
+
 
 	@Override
 	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		gen.genStalactite(pos.down(), -random.nextInt(4), false);
+		if (simplex.get2DRandom(gen.getWorld(), pos) < 0.5){
+			gen.genStalactite(pos.down(), -random.nextInt(4), false);
+		}
 	}
 	@Override
 	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		gen.genStalagmite(pos, -random.nextInt(4), false);
+		if (simplex.get2DRandom(gen.getWorld(), pos) < 0.5){
+			gen.genStalagmite(pos, -random.nextInt(4), false);
+		}
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -71,7 +72,7 @@ public abstract class AbstractBlockDerivative extends Block{
     @Override
 	public float getExplosionResistance(Entity exploder)
     {
-        return parentBackground.getBlock().getExplosionResistance(exploder);
+        return parentBackground.getBlock().getExplosionResistance(exploder)/2.5F;
     }
     
     int airHash = Blocks.AIR.hashCode();
@@ -127,6 +128,11 @@ public abstract class AbstractBlockDerivative extends Block{
 	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face)
     {
         return parentBackground.getBlock().getFlammability(world, pos, face);
+    }
+    
+    public boolean canDropFromExplosion(Explosion explosionIn)
+    {
+        return this.parentBackground.getBlock().canDropFromExplosion(explosionIn);
     }
        
 }

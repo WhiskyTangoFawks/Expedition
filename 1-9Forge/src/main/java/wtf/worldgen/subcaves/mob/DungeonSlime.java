@@ -3,60 +3,46 @@ package wtf.worldgen.subcaves.mob;
 import java.util.Random;
 
 import net.minecraft.block.BlockStoneBrick;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
+import wtf.init.BlockSets;
+import wtf.init.BlockSets.Modifier;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
-import wtf.worldgen.AbstractDungeonType;
 import wtf.worldgen.caves.CaveBiomeGenMethods;
 
-public class DungeonSlime extends AbstractDungeonType{
-
-
+public class DungeonSlime extends DungeonAbstractSimple{
 
 	public DungeonSlime(String name) {
-		super(name, 0, 0, false);
-		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 7) && isHeight(cave, 4);
+		super(name);
 	}
 	
 	@Override
 	public void generateCenter(CaveBiomeGenMethods gen, Random rand, CavePosition pos, float depth) {
-		gen.spawnVanillaSpawner(pos.getFloorPos().up(), "Slime", 1);
-		
+		gen.spawnVanillaSpawner(pos.getFloorPos().up(), "Slime", 2);	
+	}
+	
+	IBlockState block = null;
+	
+	@Override
+	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
+		IBlockState temp = BlockSets.getTransformedState(gen.getBlockState(cave.centerpos.getFloorPos()), Modifier.COBBLE);
+		block = BlockSets.getTransformedState(temp, Modifier.MOSSY);
+		if (block==null){
+			block = Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.MOSSY);
+		}
+		return true;
 	}
 
-	@Override
-	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		gen.replaceBlock(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED));
-	}
-
-	@Override
-	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		gen.replaceBlock(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED));
-	}
-
-	@Override
-	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		gen.replaceBlock(pos, Blocks.STONEBRICK.getDefaultState().withProperty(BlockStoneBrick.VARIANT, BlockStoneBrick.EnumType.CRACKED));
+	public void generate(CaveBiomeGenMethods gen, Random random, BlockPos pos) {
+			gen.replaceBlock(pos, block);
 	}
 
 	@Override
 	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		// TODO Auto-generated method stub
+		gen.replaceBlock(pos, Blocks.SLIME_BLOCK.getDefaultState());
 		
 	}
-
-	@Override
-	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		// TODO Auto-generated method stub
-		
-	}
-
 
 }

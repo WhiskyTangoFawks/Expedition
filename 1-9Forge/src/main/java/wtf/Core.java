@@ -5,7 +5,6 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -16,7 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import wtf.config.CaveBiomesConfig;
-import wtf.config.CoreConfig;
+import wtf.config.MasterConfig;
 import wtf.config.GameplayConfig;
 import wtf.config.OverworldGenConfig;
 import wtf.config.WTFStoneRegistry;
@@ -25,11 +24,9 @@ import wtf.crafting.GuiHandler;
 import wtf.crafting.RecipeParser;
 import wtf.init.BlockSets;
 import wtf.init.EventListenerRegistry;
-import wtf.init.WTFArmor;
 import wtf.init.WTFBiomes;
 import wtf.init.WTFBlocks;
 import wtf.init.WTFEntities;
-import wtf.init.WTFFood;
 import wtf.init.WTFItems;
 import wtf.init.WTFRecipes;
 import wtf.init.WTFSubstitutions;
@@ -41,7 +38,7 @@ import wtf.utilities.UBC.UBCCompat;
 
 public class Core {
 	public static  final String coreID = "wtfcore";
-	public static final String version = "1.10.2_v1.3";
+	public static final String version = "1.10.2_v1.4";
 
 	@SidedProxy(clientSide="wtf.proxy.ClientProxy", serverSide="wtf.proxy.CommonProxy")
 	public static CommonProxy proxy;
@@ -73,7 +70,7 @@ public class Core {
 		
 		UBC = Loader.isModLoaded("undergroundbiomes");
 	
-		CoreConfig.loadConfig();
+		MasterConfig.loadConfig();
 		
 		
 		CaveBiomesConfig.customConfig();
@@ -91,41 +88,45 @@ public class Core {
 		WTFBlocks.initBlocks();
 		proxy.initWCICRender();
 		WTFItems.initItems();
-		WTFArmor.initArmor();
 		WTFEntities.initEntites();
 		WTFRecipes.initRecipes();
-		if (CoreConfig.enableOverworldGeneration){
+		
+		if (MasterConfig.enableOverworldGeneration){
 			WTFBiomes.init();
 		}
 		
-		if (CoreConfig.enableOreGen){
+		if (MasterConfig.enableOreGen){
 			WTFOresNewConfig.loadConfig();
 		}
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, new GuiHandler());
 		
 		WTFSubstitutions.init();
-		WTFFood.initFood();
 
 		proxy.finishLangFile();
 	}
 	
 	@EventHandler public void load(FMLInitializationEvent event) throws Exception
 	{
+		
 		EventListenerRegistry.initListeners();
+		
+
 		
 	}
 	
 	@EventHandler
 	public void PostInit(FMLPostInitializationEvent postEvent) throws Exception{
 
-		if (CoreConfig.doResourcePack){
+		if (MasterConfig.doResourcePack){
 			proxy.enableBlockstateTexturePack();
 		}
 
 		if (GameplayConfig.wcictable){
 			RecipeParser.init();
 		}
+		
+
 	}	
 
 

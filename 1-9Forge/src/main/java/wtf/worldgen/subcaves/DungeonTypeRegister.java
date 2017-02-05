@@ -9,41 +9,53 @@ import wtf.config.CaveBiomesConfig;
 import wtf.init.BlockSets.Modifier;
 import wtf.worldgen.AbstractDungeonType;
 import wtf.worldgen.subcaves.ambient.DungeonJungleTemple;
-import wtf.worldgen.subcaves.ambient.DungeonMine;
 import wtf.worldgen.subcaves.ambient.DungeonSpeleothemGrotto;
 import wtf.worldgen.subcaves.ambient.DungeonTypeBatCave;
 import wtf.worldgen.subcaves.ambient.DungeonTypeCaveIn;
 import wtf.worldgen.subcaves.ambient.DungeonTypeFoxfire;
 import wtf.worldgen.subcaves.ambient.DungeonTypeFrozenSolid;
-import wtf.worldgen.subcaves.ambient.DungeonTypeNetherPortal;
 import wtf.worldgen.subcaves.ambient.DungeonTypePrismarine;
 import wtf.worldgen.subcaves.ambient.DungeonTypeRain;
 import wtf.worldgen.subcaves.ambient.DungeonTypeSoulsand;
-import wtf.worldgen.subcaves.mob.DungeonClassicMob;
-import wtf.worldgen.subcaves.mob.DungeonClassicSpider;
+import wtf.worldgen.subcaves.mob.DungeonBogLantern;
+import wtf.worldgen.subcaves.mob.DungeonFireElemental;
+import wtf.worldgen.subcaves.mob.DungeonSimpleSpider;
+import wtf.worldgen.subcaves.mob.DungeonMine;
+import wtf.worldgen.subcaves.mob.DungeonSimpleHusk;
+import wtf.worldgen.subcaves.mob.DungeonSimpleMagma;
+import wtf.worldgen.subcaves.mob.DungeonSimpleSkeleton;
+import wtf.worldgen.subcaves.mob.DungeonSimpleSkeletonKnight;
+import wtf.worldgen.subcaves.mob.DungeonSimpleStray;
+import wtf.worldgen.subcaves.mob.DungeonSimpleZombie;
 import wtf.worldgen.subcaves.mob.DungeonSlime;
 import wtf.worldgen.subcaves.mob.DungeonTypeDerangedGolem;
-import wtf.worldgen.subcaves.mob.DungeonTypePharohTomb;
+import wtf.worldgen.subcaves.mob.DungeonTypeMummy;
+import wtf.worldgen.subcaves.mob.DungeonTypeNetherPortal;
 import wtf.worldgen.subcaves.mob.DungeonTypeSkeletonMage;
+import wtf.worldgen.subcaves.mob.DungeonAbstractSimple;
+import wtf.worldgen.subcaves.mob.DungeonBlaze;
 
 public class DungeonTypeRegister {
 	
-	private static AbstractDungeonType Skeleton = new DungeonClassicMob("SkeletonClassic", Blocks.MOSSY_COBBLESTONE.getDefaultState(), "Skeleton");
-	private static AbstractDungeonType Zombie = new DungeonClassicMob("ZombieClassic", Blocks.MOSSY_COBBLESTONE.getDefaultState(), "Zombie");
-	private static AbstractDungeonType MagmaSlime = new DungeonClassicMob("MagmaSlime", Modifier.LAVA_CRUST, "LavaSlime");
-	private static AbstractDungeonType Blaze = new DungeonClassicMob("Blaze", Blocks.NETHER_BRICK.getDefaultState(), "Blaze").setSpawnRate(2);
-	private static AbstractDungeonType Pigman = new DungeonClassicMob("ZombiePigman", Blocks.NETHERRACK.getDefaultState(), "PigZombie").setSpawnRate(6);
-	private static AbstractDungeonType Mummy = new DungeonClassicMob("Mummy", Blocks.SANDSTONE.getDefaultState(), Core.coreID+".ZombieMummy").setStripe(Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.CHISELED));	
-	private static AbstractDungeonType SkeletonKnight = new DungeonClassicMob("SkeletonKnight", Blocks.STONEBRICK.getDefaultState(), "Skeleton");
-	//private static AbstractDungeonType Spider = new DungeonClassicSpider("ClassicSpider");
+	private static AbstractDungeonType Skeleton = new DungeonSimpleSkeleton("SkeletonClassic");
+	private static AbstractDungeonType Zombie = new DungeonSimpleZombie("ZombieClassic");
+	private static AbstractDungeonType MagmaSlime = new DungeonSimpleMagma("MagmaSlime");
+	private static AbstractDungeonType Blaze = new DungeonBlaze("Blaze");
+	private static AbstractDungeonType Stray = new DungeonSimpleStray("Stray");
+	private static AbstractDungeonType Husk = new DungeonSimpleHusk("Husk");
+	
+	private static AbstractDungeonType SkeletonKnight = new DungeonSimpleSkeletonKnight("SkeletonKnight");
+	private static AbstractDungeonType Spider = new DungeonSimpleSpider("ClassicSpider");
 	private static AbstractDungeonType Slime = new DungeonSlime("Slime");
-	public static AbstractDungeonType Pharaoh = new DungeonTypePharohTomb("PharohsTomb");
-	//private static AbstractDungeonType Golem = new DungeonTypeDerangedGolem("DerangedGolem");
+	public static AbstractDungeonType Mummy = new DungeonTypeMummy("Mummy");
+	private static AbstractDungeonType Golem = new DungeonTypeDerangedGolem("DerangedGolem");
 	public static AbstractDungeonType Bat = new DungeonTypeBatCave("BatCave", 10, 0);
 	
 	public static AbstractDungeonType CaveIn = new DungeonTypeCaveIn("Cavein");
 	public static AbstractDungeonType Grotto = new DungeonSpeleothemGrotto("SpeleothemGrotto", 50, 50);
 	public static AbstractDungeonType Mine = new DungeonMine("Mine");
+	public static AbstractDungeonType BogLantern = new DungeonBogLantern("BogLangern");
+	public static AbstractDungeonType ZombieFarm = new DungeonZombieFarmer("ZombieFarm");
 
 	private static AbstractDungeonType Foxfire = new DungeonTypeFoxfire("Foxfire", 10, 10);
 	private static AbstractDungeonType Frozen = new DungeonTypeFrozenSolid("FrozenSolid");
@@ -57,14 +69,15 @@ public class DungeonTypeRegister {
 	private static AbstractDungeonType Prismarine = new DungeonTypePrismarine("Prismarine", 5, 5);
 
 	private static AbstractDungeonType NetherPortal = new DungeonTypeNetherPortal("NetherPortal");
-	//
+	private static AbstractDungeonType FireElemental = new DungeonFireElemental("FireElemental");
+	
 	public static ArrayList<AbstractDungeonType> defaultlist(){
 		ArrayList<AbstractDungeonType> list = new ArrayList<AbstractDungeonType>();
 		if (CaveBiomesConfig.enableAmbientDungeons){
 			list.add(CaveIn);
 			list.add(Grotto);
 			list.add(Bat);
-			list.add(Mine);					
+					
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
 			list.add(Skeleton);
@@ -80,8 +93,8 @@ public class DungeonTypeRegister {
 			list.add(Foxfire);
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
-			//list.add(Spider);
-			//list.add(Witch);
+			list.add(Spider);
+			list.add(ZombieFarm);
 		}
 		return list;
 	}
@@ -92,7 +105,7 @@ public class DungeonTypeRegister {
 			list.add(Frozen);
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
-			//none available currently
+			list.add(Stray);
 		}
 		return list;
 	}
@@ -102,6 +115,7 @@ public class DungeonTypeRegister {
 		if (CaveBiomesConfig.enableAmbientDungeons){
 			list.add(Rainstone);
 			list.add(Prismarine);
+			list.add(BogLantern);
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
 			list.add(Slime);
@@ -116,6 +130,7 @@ public class DungeonTypeRegister {
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
 			list.add(MagmaSlime);
+			list.add(FireElemental);
 		}
 		return list;
 	}
@@ -126,8 +141,8 @@ public class DungeonTypeRegister {
 			list.add(Soulsand);
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
+			list.add(Husk);
 			list.add(Mummy);
-			list.add(Pharaoh);
 		}
 		return list;
 	}
@@ -135,11 +150,10 @@ public class DungeonTypeRegister {
 	public static ArrayList<AbstractDungeonType> netherList(){
 		ArrayList<AbstractDungeonType> list = new ArrayList<AbstractDungeonType>();
 		if (CaveBiomesConfig.enableAmbientDungeons){
-			list.add(NetherPortal);
 			list.add(Soulsand);
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
-			list.add(Pigman);
+			list.add(NetherPortal);
 			list.add(Blaze);
 			list.add(SkeletonKnight);
 			list.add(SkeletonMage);
@@ -153,7 +167,8 @@ public class DungeonTypeRegister {
 
 		}
 		if (CaveBiomesConfig.enableMobDungeons){
-			//list.add(Golem);
+			list.add(Golem);
+			list.add(Mine);			
 		}
 		return list;
 	}

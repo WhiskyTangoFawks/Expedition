@@ -21,7 +21,7 @@ import wtf.init.BlockSets.Modifier;
 import wtf.utilities.UBC.UBCCompat;
 import wtf.utilities.wrappers.StateAndModifier;
 
-public class WTFStoneRegistry extends ConfigMaster {
+public class WTFStoneRegistry extends AbstractConfig {
 
 	static Random rand = new Random();
 	public static Configuration config = new Configuration(new File(configPath+"WTFStoneRegistry.cfg"));
@@ -135,7 +135,7 @@ public class WTFStoneRegistry extends ConfigMaster {
 				boolean animDeco =  config.get(stateString, "Generate animated deco blocks (Lava crust, dripping, ect)", state.getMaterial() ==Material.ROCK).getBoolean();
 				boolean cracked = config.get(stateString, "Allow cracked version to spawn in world (requires static deco blocks, and cracked stone ore generation)", state.getMaterial() ==Material.ROCK && !state.getBlock().getRegistryName().toString().contains("cobble")).getBoolean();
 				boolean frac = false;
-				if (CoreConfig.gameplaytweaks){
+				if (MasterConfig.gameplaytweaks){
 					int speed = config.get(stateString, "Gameplay: Percentage speed modifier to mine (100% disables)", defSpeed.get(state.getBlock())!= null ? defSpeed.get(state.getBlock()) : 100 ).getInt();
 					BlockSets.blockMiningSpeed.put(state, speed/100F);
 				

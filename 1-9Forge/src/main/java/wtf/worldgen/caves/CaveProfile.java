@@ -24,13 +24,13 @@ public class CaveProfile {
 		caveShallow = shallowType;
 	}
 	
-	public AbstractCaveType getCave(CavePosition cave, int surface){
+	public AbstractCaveType getCave(double d){
 
-		float height = ((float)cave.floor)/((float)surface);
-		if (height < 0.33){
+		//float height = ((float)cave.floor)/((float)surface);
+		if (d < 0.33){
 			return caveDeep;
 		}
-		else if (height < 0.66){
+		else if (d < 0.66){
 			return 
 					caveMid;
 		}

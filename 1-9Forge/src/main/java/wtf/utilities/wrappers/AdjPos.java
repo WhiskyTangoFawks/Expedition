@@ -1,7 +1,6 @@
 package wtf.utilities.wrappers;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
 
 import net.minecraft.util.EnumFacing;

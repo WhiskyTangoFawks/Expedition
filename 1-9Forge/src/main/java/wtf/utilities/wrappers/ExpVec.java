@@ -21,7 +21,7 @@ public class ExpVec extends Vec{
 	private final World world;
 	private double str;
 	float attenuation = 0.75F;
-
+	private final boolean flaming;
 
 
 	private final CustomExplosion explosion;
@@ -33,6 +33,8 @@ public class ExpVec extends Vec{
 		this.world = world;
 		this.str = vecStr;
 		this.explosion = explosion;
+		this.flaming = explosion.flaming;
+				
 
 	}
 
@@ -78,7 +80,12 @@ public class ExpVec extends Vec{
 				else {
 					block.onBlockDestroyedByExplosion(world, pos, explosion);
 				}
-				world.setBlockState(pos, air, 2);
+				if (flaming){
+					world.setBlockState(pos, Blocks.FIRE.getDefaultState(), 2);
+				}
+				else {
+					world.setBlockState(pos, air, 2);
+				}
 			} 
 			else if (GameplayConfig.explosionFractures){
 				str -= resistance/3;

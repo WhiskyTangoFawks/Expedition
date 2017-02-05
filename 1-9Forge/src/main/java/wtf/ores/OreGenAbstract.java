@@ -31,7 +31,6 @@ public abstract class OreGenAbstract{
 	public int minPerChunk;
 	public Float veinDensity = 1F;
 	private final SimplexHelper simplex;
-	private int seed = 0;
 	public boolean genDenseOres;
 	public final ArrayList<BiomeDictionary.Type> reqBiomeTypes = new ArrayList<BiomeDictionary.Type>();
 		

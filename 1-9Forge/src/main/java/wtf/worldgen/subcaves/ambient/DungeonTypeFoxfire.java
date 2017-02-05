@@ -15,13 +15,13 @@ public class DungeonTypeFoxfire extends AbstractDungeonType {
 
 
 	public DungeonTypeFoxfire(String name, int ceilingAddonPercentChance, int floorAddonPercentChance) {
-		super(name, ceilingAddonPercentChance, floorAddonPercentChance, true);
+		super(name, ceilingAddonPercentChance, floorAddonPercentChance);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 7) && isHeight(cave, 4);
+		return isHeight(cave, 4);
 	}
 
 	@Override

@@ -16,7 +16,7 @@ public class CaveTypeIceRocky extends AbstractCaveType{
 
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		double noise = getNoise(gen.chunk.getWorld(), pos, 5, 1);
+		double noise = getNoise(gen.getWorld(), pos, 5, 1);
 		if (noise > depth*5){
 			gen.replaceBlock(pos, Blocks.PACKED_ICE.getDefaultState());
 		}
@@ -29,7 +29,7 @@ public class CaveTypeIceRocky extends AbstractCaveType{
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 
-		double noise = getNoise(gen.chunk.getWorld(), pos, 5, 1);
+		double noise = getNoise(gen.getWorld(), pos, 5, 1);
 		if (noise > depth*5){
 			gen.replaceBlock(pos, Blocks.PACKED_ICE.getDefaultState());
 		}
@@ -57,7 +57,7 @@ public class CaveTypeIceRocky extends AbstractCaveType{
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		double noise = getNoise(gen.chunk.getWorld(), pos, 5, 1);
+		double noise = getNoise(gen.getWorld(), pos, 5, 1);
 		if (noise > depth*5){
 			gen.replaceBlock(pos, Blocks.PACKED_ICE.getDefaultState());
 		}

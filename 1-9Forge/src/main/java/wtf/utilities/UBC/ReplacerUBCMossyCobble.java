@@ -29,6 +29,8 @@ public class ReplacerUBCMossyCobble extends ReplacerUBCAbstract{
 		if (mossy != null){		
 			gen.overrideBlock(pos, mossy);
 		}
+		//else spawn something striking to test
+		
 
 		//}
 		return false;

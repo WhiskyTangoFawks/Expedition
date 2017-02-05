@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import net.minecraft.block.state.IBlockState;
-import wtf.config.CoreConfig;
+import wtf.config.MasterConfig;
 import wtf.config.StoneRegEntry;
 import wtf.config.WTFStoneRegistry;
 
@@ -134,7 +134,7 @@ public class BlockstateWriter {
 		BufferedWriter writer;
 		try {
 			writer = new BufferedWriter(new FileWriter(path));
-			if (CoreConfig.fancyBlockStates){
+			if (MasterConfig.fancyBlockStates){
 				FancyBlockstateWriter.writeDenseOreBlockstate(writer, backState, regName, orestring, entry);
 			}
 			else {
@@ -155,7 +155,7 @@ public class BlockstateWriter {
 
 			StoneRegEntry entry =WTFStoneRegistry.stoneReg.get(backState); 
 
-			if (CoreConfig.fancyBlockStates){
+			if (MasterConfig.fancyBlockStates){
 				try {
 					FancyBlockstateWriter.writeDecoAnimBlockstate(writer, backState, regName, entry);
 				} catch (IOException e) {
@@ -179,7 +179,7 @@ public class BlockstateWriter {
 
 			StoneRegEntry entry =WTFStoneRegistry.stoneReg.get(backState); 
 
-			if (CoreConfig.fancyBlockStates){
+			if (MasterConfig.fancyBlockStates){
 				try {
 					FancyBlockstateWriter.writeDecoStaticBlockstate(writer, backState, regName, entry);
 				} catch (IOException e) {

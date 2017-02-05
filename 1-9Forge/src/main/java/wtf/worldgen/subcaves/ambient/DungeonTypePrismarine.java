@@ -15,13 +15,13 @@ public class DungeonTypePrismarine extends AbstractDungeonType {
 
 
 	public DungeonTypePrismarine(String name, int ceilingAddonPercentChance, int floorAddonPercentChance) {
-		super(name, ceilingAddonPercentChance, floorAddonPercentChance, false);
+		super(name, ceilingAddonPercentChance, floorAddonPercentChance);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 5) && isHeight(cave, 3)  && cave.getAvgFloor()<42;
+		return cave.getAvgFloor()<48;
 	}
 
 	@Override

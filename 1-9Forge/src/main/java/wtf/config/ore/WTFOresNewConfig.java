@@ -18,7 +18,7 @@ import wtf.Core;
 import wtf.blocks.BlockDenseOre;
 import wtf.blocks.BlockDenseOreFalling;
 import wtf.blocks.redstone.DenseRedstoneOre;
-import wtf.config.ConfigMaster;
+import wtf.config.AbstractConfig;
 import wtf.config.WTFStoneRegistry;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
@@ -37,7 +37,7 @@ import wtf.ores.oregenerators.OreGenVein;
 import wtf.utilities.UBC.UBCOreReplacer;
 import wtf.utilities.wrappers.StoneAndOre;
 
-public class WTFOresNewConfig extends ConfigMaster{
+public class WTFOresNewConfig extends AbstractConfig{
 
 
 	public static HashSet<IBlockState> cancelOres = new HashSet<IBlockState>(); 

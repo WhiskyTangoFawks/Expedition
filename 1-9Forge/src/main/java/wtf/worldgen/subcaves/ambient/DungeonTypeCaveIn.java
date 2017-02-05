@@ -1,10 +1,10 @@
 package wtf.worldgen.subcaves.ambient;
 
+import java.util.ArrayList;
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import wtf.init.BlockSets;
+import wtf.init.BlockSets.Modifier;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
 import wtf.worldgen.AbstractDungeonType;
@@ -15,56 +15,60 @@ public class DungeonTypeCaveIn extends AbstractDungeonType {
 
 
 	public DungeonTypeCaveIn(String name) {
-		super(name, 0, 0, false);
-		// TODO Auto-generated constructor stub
+		super(name, 0, 0);
+		this.genAir = true;
 	}
-	
+
 	@Override
 	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 3);
+		return true;
 	}
 
 	@Override
 	public void generateCenter(CaveBiomeGenMethods gen, Random rand, CavePosition pos, float depth) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		for (int loop = 1; BlockSets.nonSolidBlockSet.contains(gen.getBlockState(pos.down(loop)).getBlock()); loop++){
-			if (random.nextBoolean()){
-				gen.replaceBlock(pos.down(loop), Blocks.COBBLESTONE.getDefaultState());
-			}
-			else {
-				gen.replaceBlock(pos.down(loop), Blocks.GRAVEL.getDefaultState());
-			}
-		}
-		
+
 	}
 
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 		// TODO Auto-generated method stub
-		
+
 	}
+
+	@Override
+	public void generateAir(CaveBiomeGenMethods gen, Random random, BlockPos floating, float depth){
+		double noise = simplex.get3DNoise(gen.getWorld(), floating.getX(), floating.getY(), floating.getZ());
+
+		if (noise < 0.5){
+			gen.genFloatingStone(floating);
+			gen.transformBlock(floating, Modifier.COBBLE);
+		}
+	}
+
+
 
 }

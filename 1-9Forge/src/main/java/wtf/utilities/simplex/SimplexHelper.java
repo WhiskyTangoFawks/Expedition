@@ -16,6 +16,10 @@ public class SimplexHelper{
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
+	public SimplexHelper(String simplexName, boolean boo) {
+		name = simplexName;
+	}
+	
 
 	//I could make a simplex wrapper, to hold the simplex, and control the interface for it.
 	//Then, it's a simple matter of having it register itself as a listener
@@ -40,8 +44,20 @@ public class SimplexHelper{
 		}
 	}
 	
+	public double get2DRandom(World world, BlockPos pos){
+		return get2DNoise(world, pos.getX()*1000, pos.getZ()*1000);
+	}
+	
+	public double get3DRandom(World world, BlockPos pos){
+		return get3DNoise(world, pos.getX()*1000, pos.getY()*1000, pos.getZ()*1000);
+	}
+	
 	public double get3DNoise(World world, BlockPos pos){
 		return get3DNoise(world, pos.getX(), pos.getY(), pos.getZ());
+	}
+	
+	public double get3dNoiseShifted(World world, BlockPos pos, int shift){
+		return get3DNoise(world, pos.getX()+shift, pos.getY()+shift, pos.getZ()+shift);
 	}
 
 	public double get3DNoise(World world, double d, double y, double f){

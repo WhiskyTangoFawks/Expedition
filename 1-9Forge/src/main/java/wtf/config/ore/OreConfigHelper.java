@@ -12,7 +12,7 @@ public class OreConfigHelper {
 		
 			defPresets.put("tconstruct:ore@0", new OreDefReg("minecraft:netherrack@0", "vein", new int[]{5, 95}, new int[]{-30, 60}, true).setDensity(75)
 					.setVeinDimensions(new int[]{16,1,1}).setVeinPitch(0.45F).setDimensionIDs(-1).setTextureLoc("ore_cobalt").setSurfaces("floor & ceiling & wall")); 
-			defPresets.put("tconstruct:ore@1", new OreDefReg("minecraft:netherrack@0", "cloud", new int[]{5, 95}, new int[]{-30, 60}, true).setDensity(15).setCloudDiameter(14).setTextureLoc("ore_ardite")); 
+			defPresets.put("tconstruct:ore@1", new OreDefReg("minecraft:netherrack@0", "cloud", new int[]{5, 95}, new int[]{-30, 60}, true).setDensity(15).setCloudDiameter(14).setTextureLoc("ore_ardite").setDimensionIDs(-1)); 
 	
 		String defStone = "minecraft:stone@0";
 		if (Core.UBC){

@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 
 public class CommonProxy {
 
+	public void registerEntityRenderers(){}
+	
 	public void registerItemRenderer(Block block){
 		
 	}

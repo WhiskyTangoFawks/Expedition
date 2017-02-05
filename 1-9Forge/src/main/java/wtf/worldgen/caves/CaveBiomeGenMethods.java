@@ -44,6 +44,10 @@ public class CaveBiomeGenMethods{
 		this.random = random;
 	}
 
+	public World getWorld(){
+		return chunk.getWorld();
+	}
+	
 	/**
 	 * Used to get a block in the world.  Checks the hashmap of blocks to be set
 	 */
@@ -147,21 +151,29 @@ public class CaveBiomeGenMethods{
 	
 	public void setWaterPatch(BlockPos pos){
 		
+		
 		if (getBlockState(pos.up()).getBlock().hashCode() == airHash){
 			blocksToSet.put(pos.up(), WTFBlocks.waterPatch.getDefaultState());
 		}
 	}
+	
+	int rockHash = Material.ROCK.hashCode();
 	public void setLavaPatch(BlockPos pos){
 		
-		if (BlockSets.ReplaceHashset.contains(getBlockState(pos).getBlock()) && getBlockState(pos.up()).getBlock().hashCode() == airHash){
-			//System.out.println("Setting lava patch");
+		IBlockState state = getBlockState(pos);
+		if (BlockSets.ReplaceHashset.contains(state.getBlock()) &&
+				state.getMaterial().hashCode() == Material.ROCK.hashCode() &&
+				getBlockState(pos.up()).getBlock().hashCode() == airHash)
+			
+		{
+			
 			blocksToSet.put(pos.up(), WTFBlocks.lavaPatch.getDefaultState());
 		}
 	}
 
-	public void genFloatingStone(World world, BlockPos pos, Block block){
+	public void genFloatingStone(BlockPos pos){
 		//When implementing non-vanilla stone, this method needs to call the UBifier
-		blocksToSet.put(pos, block.getDefaultState());
+		blocksToSet.put(pos, Blocks.STONE.getDefaultState());
 	}
 
 	/**
@@ -357,8 +369,8 @@ public class CaveBiomeGenMethods{
 			spawner.getSpawnerBaseLogic().setEntityName(entityName);
 			NBTTagCompound nbt = new NBTTagCompound();
 			spawner.writeToNBT(nbt);
-			nbt.setShort("spawnCount",(short)count);
-			nbt.setShort("MinSpawnDelay",(short)(1000/count));
+			nbt.setShort("SpawnCount",(short)count);
+			nbt.setShort("SpawnRange", (short)2);
 			spawner.readFromNBT(nbt);
 		}
 		else{
@@ -366,11 +378,12 @@ public class CaveBiomeGenMethods{
 		}
 
 	}
-
+	
 	public boolean isChunkEdge(BlockPos pos){
 		int x = pos.getX() &15;
 		int z = pos.getZ() & 15;
 		return x==0 || x==15 || z == 0 || z == 15;
 	}
+
 
 }

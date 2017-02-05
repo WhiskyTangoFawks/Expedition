@@ -25,7 +25,7 @@ public class CaveTypeWet extends AbstractCaveType {
 
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		double noise = getNoise(gen.chunk.getWorld(), pos, 6, 0.2F);
+		double noise = getNoise(gen.getWorld(), pos, 6, 0.2F);
 		if (random.nextFloat()<0.25){
 			gen.transformBlock(pos, BlockSets.Modifier.WATER_DRIP);
 		}
@@ -36,7 +36,7 @@ public class CaveTypeWet extends AbstractCaveType {
 
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		double noise = getNoise(gen.chunk.getWorld(), pos, 6, 0.2F);
+		double noise = getNoise(gen.getWorld(), pos, 6, 0.2F);
 		if (noise < 2){
 			gen.setWaterPatch(pos);
 		}
@@ -59,7 +59,7 @@ public class CaveTypeWet extends AbstractCaveType {
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		double noise = getNoise(gen.chunk.getWorld(), pos, 6, 0.2F);
+		double noise = getNoise(gen.getWorld(), pos, 6, 0.2F);
 		if (random.nextBoolean() && noise < 3*depth){
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
@@ -68,8 +68,8 @@ public class CaveTypeWet extends AbstractCaveType {
 	int gravelHash = Blocks.GRAVEL.hashCode();
 	public void setTopBlock(CaveBiomeGenMethods gen, Random random, SurfacePos pos){
 
-		if (Biome.getIdForBiome(gen.chunk.getWorld().getBiome(pos)) == 7
-				&& getNoise(gen.chunk.getWorld(), pos, 1, 0.05F) < OverworldGenConfig.riverFracChunkPercent && getNoise(gen.chunk.getWorld(), pos, 1, 1) < OverworldGenConfig.riverFracFreq){
+		if (Biome.getIdForBiome(gen.getWorld().getBiome(pos)) == 7
+				&& getNoise(gen.getWorld(), pos, 1, 0.05F) < OverworldGenConfig.riverFracChunkPercent && getNoise(gen.getWorld(), pos, 1, 1) < OverworldGenConfig.riverFracFreq){
 			if (gen.getBlockState(pos).getBlock().hashCode() == gravelHash){
 				gen.replaceBlock(pos, Blocks.COBBLESTONE.getDefaultState());
 			}

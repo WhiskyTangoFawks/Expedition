@@ -13,13 +13,13 @@ import wtf.worldgen.caves.CaveBiomeGenMethods;
 public class DungeonTypeSoulsand extends AbstractDungeonType{
 
 	public DungeonTypeSoulsand(String name, int ceilingAddonPercentChance, int floorAddonPercentChance) {
-		super(name, ceilingAddonPercentChance, floorAddonPercentChance, true);
+		super(name, ceilingAddonPercentChance, floorAddonPercentChance);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 5) && isHeight(cave, 3);
+		return true;
 	}
 	
 	@Override

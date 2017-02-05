@@ -12,7 +12,8 @@ import net.minecraft.world.World;
 
 public class ExploderEntity extends Entity{
 
-	private static final DataParameter<Integer> FUSE = EntityDataManager.<Integer>createKey(EntityTNTPrimed.class, DataSerializers.VARINT);
+	private static final DataParameter<Integer> FUSE = EntityDataManager.<Integer>createKey(ExploderEntity.class, DataSerializers.VARINT);
+	private boolean flaming;
 
 	public ExploderEntity(World worldIn, BlockPos pos, float str) {
 		super(worldIn);
@@ -32,6 +33,16 @@ public class ExploderEntity extends Entity{
 		this.posZ=pos.zCoord;
 	}
 
+	public ExploderEntity(World worldIn, Vec3d pos, float str, int fuse, boolean fire) {
+		super(worldIn);
+		this.fuse = fuse;
+		this.str = str;
+		this.posX=pos.xCoord;
+		this.posY=pos.yCoord;
+		this.posZ=pos.zCoord;
+		this.flaming = fire;
+	}
+
 	//I should be able to modify this to actually do the explosion as well-
 	//which allows me to modify the time between increments, and overall slow the explosion down
 
@@ -46,7 +57,7 @@ public class ExploderEntity extends Entity{
 
 		if (!this.worldObj.isRemote){
 			if (fuse == 0){
-				explosion = new CustomExplosion(null, this.worldObj, new Vec3d(this.posX, this.posY, this.posZ), str);
+				explosion = new CustomExplosion(null, this.worldObj, new Vec3d(this.posX, this.posY, this.posZ), str, flaming);
 				explosion.incrementVectorList();
 				//explosion.update();
 			}
@@ -64,6 +75,7 @@ public class ExploderEntity extends Entity{
 			fuse--;
 		}
 	}
+
 
 
 	@Override
@@ -105,6 +117,29 @@ public class ExploderEntity extends Entity{
 	protected void readEntityFromNBT(NBTTagCompound compound)
 	{
 		fuse=(compound.getShort("Fuse"));
+	}
+
+
+	public void setFuse(int fuseIn)
+	{
+		this.dataManager.set(FUSE, Integer.valueOf(fuseIn));
+		this.fuse = fuseIn;
+	}
+
+	public void notifyDataManagerChange(DataParameter<?> key)
+	{
+		if (FUSE.equals(key))
+		{
+			this.fuse = this.getFuseDataManager();
+		}
+	}
+
+	/**
+	 * Gets the fuse from the data manager
+	 */
+	public int getFuseDataManager()
+	{
+		return ((Integer)this.dataManager.get(FUSE)).intValue();
 	}
 
 

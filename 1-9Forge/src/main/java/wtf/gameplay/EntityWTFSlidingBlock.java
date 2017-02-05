@@ -17,7 +17,7 @@ public class EntityWTFSlidingBlock extends EntityWTFFallingBlock{
 		
 		worldIn.spawnEntityInWorld(this);
 		worldIn.setBlockToAir(pos);
-		System.out.println("New sliding block created");
+	
 	}
 
 	@Override

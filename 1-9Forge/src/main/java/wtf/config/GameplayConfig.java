@@ -12,7 +12,7 @@ import wtf.utilities.UBC.UBCCompat;
 
 	
 
-public class GameplayConfig extends ConfigMaster {
+public class GameplayConfig extends AbstractConfig {
 	
 	public static int torchLifespan;
 	public static int torchRange;
@@ -59,7 +59,6 @@ public class GameplayConfig extends ConfigMaster {
 	public static double explosionDamageMod;
 	public static double explosionForceMod;
 	public static boolean fracSimple;
-	public static boolean deHelmet;
 
 	public static void loadConfig() throws Exception{
 	config.load();
@@ -166,7 +165,6 @@ public class GameplayConfig extends ConfigMaster {
 	
 	waterControl = config.get("Other", "Prevent infinite water source blocks outside biomes with the WET type", false).getBoolean();
 	childZombie = config.get("Other", "Prevent spawning of baby zombies", false).getBoolean();
-	deHelmet = config.get("Other", "remove helmets from entities- used to stop ruins from generating entities with strange heads", false).getBoolean();
 	
 	config.save();
 	}

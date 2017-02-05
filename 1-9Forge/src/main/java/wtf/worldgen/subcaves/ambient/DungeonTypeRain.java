@@ -17,13 +17,13 @@ public class DungeonTypeRain extends AbstractDungeonType{
 
 
 	public DungeonTypeRain(String name, int ceilingAddonPercentChance, int floorAddonPercentChance) {
-		super(name, ceilingAddonPercentChance, floorAddonPercentChance, false);
+		super(name, ceilingAddonPercentChance, floorAddonPercentChance);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 5) && isHeight(cave, 3);
+		return true;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class DungeonTypeRain extends AbstractDungeonType{
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 		if (gen.transformBlock(pos, BlockSets.Modifier.WATER_DRIP) && random.nextBoolean()){
-			((BlockDecoAnim)gen.getBlockState(pos).getBlock()).setFast(gen.chunk.getWorld(), pos);
+			((BlockDecoAnim)gen.getBlockState(pos).getBlock()).setFast(gen.getWorld(), pos);
 		}
 		else {
 			int var = random.nextInt(3);

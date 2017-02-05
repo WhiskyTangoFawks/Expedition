@@ -14,13 +14,13 @@ public class DungeonTypeFrozenSolid extends AbstractDungeonType{
 
 
 	public DungeonTypeFrozenSolid(String name) {
-		super(name, 0, 0, false);
+		super(name, 0, 0);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean canGenerateAt(CaveBiomeGenMethods gen, CaveListWrapper cave) {
-		return isSize(cave, 3);
+		return true;
 	}
 	
 	@Override

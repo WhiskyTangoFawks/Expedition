@@ -34,8 +34,8 @@ public class CaveTypeSwamp extends AbstractCaveType {
 
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		double noise = getNoise(gen.chunk.getWorld(), pos, 5, 0.5F);
-		double mossNoise = getNoise(gen.chunk.getWorld(), pos, 5, 2F);
+		double noise = getNoise(gen.getWorld(), pos, 5, 0.5F);
+		double mossNoise = getNoise(gen.getWorld(), pos, 5, 2F);
 		if (noise < 2.5){
 			gen.setWaterPatch(pos);
 		}
@@ -52,7 +52,7 @@ public class CaveTypeSwamp extends AbstractCaveType {
 
 	@Override
 	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < depth*3 && !gen.isChunkEdge(pos) && gen.setCeilingAddon(pos, Modifier.COBBLE)){
+		if (getNoise(gen.getWorld(), pos, 5, 1) < depth*3 && !gen.isChunkEdge(pos) && gen.setCeilingAddon(pos, Modifier.COBBLE)){
 			for (int loop = random.nextInt(3)+1; loop > -1; loop--){
 				gen.GenVines(pos.east().down(loop), EnumFacing.WEST);
 			}
@@ -75,7 +75,7 @@ public class CaveTypeSwamp extends AbstractCaveType {
 
 	@Override
 	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < depth*3 && !gen.isChunkEdge(pos) && gen.setFloorAddon(pos, Modifier.COBBLE)){
+		if (getNoise(gen.getWorld(), pos, 5, 1) < depth*3 && !gen.isChunkEdge(pos) && gen.setFloorAddon(pos, Modifier.COBBLE)){
 				gen.GenVines(pos.east(), EnumFacing.WEST);
 				gen.GenVines(pos.west(), EnumFacing.EAST);
 				gen.GenVines(pos.north(), EnumFacing.SOUTH);
@@ -90,7 +90,7 @@ public class CaveTypeSwamp extends AbstractCaveType {
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
 		
-		double mossNoise = getNoise(gen.chunk.getWorld(), pos, 5, 2F);
+		double mossNoise = getNoise(gen.getWorld(), pos, 5, 2F);
 		if (mossNoise < 2*depth && random.nextBoolean()){
 			gen.transformBlock(pos, Modifier.COBBLE);
 			
@@ -103,7 +103,7 @@ public class CaveTypeSwamp extends AbstractCaveType {
 
 	@Override
 	public void generateAdjacentWall(CaveBiomeGenMethods gen, Random random, AdjPos pos, float depth, int height){
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < depth*1.5){	
+		if (getNoise(gen.getWorld(), pos, 5, 1) < depth*1.5){	
 			gen.GenVines(pos, pos.getFace(random));
 		}
 	}

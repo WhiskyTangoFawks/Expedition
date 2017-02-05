@@ -21,17 +21,17 @@ public class CaveTypeHell extends AbstractCaveType{
 
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		getSubType(random, pos).cavetype.generateCeiling(gen, random, pos, depth);
+		getSubType(pos).cavetype.generateCeiling(gen, random, pos, depth);
 	}
 
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		getSubType(random, pos).cavetype.generateFloor(gen, random, pos, depth);	
+		getSubType(pos).cavetype.generateFloor(gen, random, pos, depth);	
 	}
 
 	@Override
 	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		hellBiome type = getSubType(random, pos);
+		hellBiome type = getSubType(pos);
 		if (random.nextInt(100) < type.cavetype.ceilingaddonchance){
 			type.cavetype.generateCeilingAddons(gen, random, pos, depth);
 		}
@@ -40,7 +40,7 @@ public class CaveTypeHell extends AbstractCaveType{
 
 	@Override
 	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		hellBiome type = getSubType(random, pos);
+		hellBiome type = getSubType(pos);
 		if (random.nextInt(100) < type.cavetype.flooraddonchance){
 			type.cavetype.generateFloorAddons(gen, random, pos, depth);
 		}
@@ -48,13 +48,13 @@ public class CaveTypeHell extends AbstractCaveType{
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		getSubType(random, pos).cavetype.generateWall(gen, random, pos, depth, height);
+		getSubType(pos).cavetype.generateWall(gen, random, pos, depth, height);
 		
 	}
 	
 	@Override
 	public void generateAdjacentWall(CaveBiomeGenMethods gen, Random random, AdjPos pos, float depth, int height){
-		getSubType(random, pos).cavetype.generateAdjacentWall(gen, random, pos, depth, height);
+		getSubType(pos).cavetype.generateAdjacentWall(gen, random, pos, depth, height);
 	}
 	
 	public enum hellBiome{
@@ -74,7 +74,7 @@ public class CaveTypeHell extends AbstractCaveType{
 	};
 
 
-	public hellBiome getSubType(Random random, BlockPos pos){
+	public hellBiome getSubType(BlockPos pos){
 		
 		return hellBiome.NORMAL;
 		

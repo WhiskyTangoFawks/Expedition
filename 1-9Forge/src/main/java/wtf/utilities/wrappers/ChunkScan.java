@@ -12,13 +12,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.Biome;
-import net.minecraft.world.chunk.Chunk;
 import wtf.init.WTFBlocks;
 import wtf.worldgen.trees.TreePos;
-import wtf.worldgen.trees.TreeVars;
 import wtf.worldscan.CoreWorldGenListener;
-import wtf.worldscan.WorldScanner;
+import wtf.worldscan.UnsortedChunkCaves;
 
 
 
@@ -32,17 +29,17 @@ public class ChunkScan {
 	public final double surfaceAvg;
 
 
-	public final ArrayList<CaveListWrapper> caveset;
+	public final UnsortedChunkCaves caveset;
 
 	private final ArrayList<BlockPos> underwater;
 
-	public ChunkScan(World world, SurfacePos[][] var, int x, int z, int avg, ArrayList<CaveListWrapper> caveareas, ArrayList<BlockPos> water){
+	public ChunkScan(World world, SurfacePos[][] var, int x, int z, int avg, UnsortedChunkCaves unsortedcavepos, ArrayList<BlockPos> water){
 		this.surface = var;
 		this.chunkX = x;
 		this.chunkZ = z;
 		this.surfaceAvg = avg;
 		this.world = world;
-		this.caveset = caveareas;
+		this.caveset = unsortedcavepos;
 		this.underwater = water;
 	}
 

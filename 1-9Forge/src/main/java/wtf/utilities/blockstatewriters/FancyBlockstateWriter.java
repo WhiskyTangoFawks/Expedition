@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import net.minecraft.block.state.IBlockState;
-import wtf.config.CoreConfig;
+import wtf.config.MasterConfig;
 import wtf.config.StoneRegEntry;
 import wtf.config.WTFStoneRegistry;
 import wtf.config.ore.WTFOresNewConfig;
@@ -30,7 +30,7 @@ public class FancyBlockstateWriter extends BlockstateWriter{
 			writer.write("\"dense"+loop+"\": [\n");
 			writer.write("{\"model\": \"minecraft:cube_all\", \"textures\": { \"all\": \"wtfcore:overlays/"+orestring+loop+"\" }},\n");
 			writer.write("{\"model\": \"minecraft:cube_all\", \"y\":180, \"x\":180, \"textures\": { \"all\": \"wtfcore:overlays/"+orestring+loop+"\" }}\n");				
-			if (!CoreConfig.rotate180only){
+			if (!MasterConfig.rotate180only){
 				writer.write(",\n");
 				writer.write("{\"model\": \"minecraft:cube_all\", \"y\":90, \"x\":90, \"textures\": { \"all\": \"wtfcore:overlays/"+orestring+loop+"\" }},\n");
 				writer.write("{\"model\": \"minecraft:cube_all\", \"y\":270, \"x\":270, \"textures\": { \"all\": \"wtfcore:overlays/"+orestring+loop+"\" }}\n");

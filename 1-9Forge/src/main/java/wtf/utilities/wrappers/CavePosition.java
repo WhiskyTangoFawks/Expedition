@@ -1,5 +1,8 @@
 package wtf.utilities.wrappers;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 import net.minecraft.util.math.BlockPos;
 
 public class CavePosition{
@@ -9,7 +12,10 @@ public class CavePosition{
     public final int x;
     public final int z;
 
-    public boolean alreadyGenerated = false;
+    public ArrayList<AdjPos> adj = new ArrayList<AdjPos>();
+    public ArrayList<BlockPos> wall = new ArrayList<BlockPos>();
+    
+    //public boolean alreadyGenerated = false;
     
 	@Override
 	public int hashCode() {
@@ -30,6 +36,9 @@ public class CavePosition{
 		return new BlockPos(x, ceiling, z);
 	}
 	
+	public XZ xz(){
+		return new XZ(this.x, this.z);
+	}
 	
 	@Override
 	public boolean equals(Object obj) {
@@ -58,6 +67,27 @@ public class CavePosition{
 		this.floor = p_i45363_3_;
 		this.z = p_i45363_4_;
 
+	}
+
+	public BlockPos getRandomWall(Random random) {
+		if (this.wall.size() > 1){
+			return wall.get(random.nextInt(wall.size()));
+		}
+		return null;
+	}
+	
+	public BlockPos getMidPos(){
+		return new BlockPos(this.x, (ceiling-floor/2)+floor, this.z);
+	}
+	
+	public ArrayList<BlockPos> getAirPos(){
+		ArrayList<BlockPos> list= new ArrayList<BlockPos>();
+		BlockPos pos = getFloorPos().up();
+		while (pos.getY() < this.ceiling){
+			list.add(pos);
+			pos=pos.up();
+		}
+		return list;
 	}
 
 }

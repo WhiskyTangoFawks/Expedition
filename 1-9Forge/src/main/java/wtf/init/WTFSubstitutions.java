@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import wtf.blocks.substitution.BlockWTFTorch;
 import wtf.blocks.substitution.CustomNewLeaves;
 import wtf.blocks.substitution.CustomOldLeaves;
-import wtf.config.CoreConfig;
+import wtf.config.MasterConfig;
 import wtf.config.GameplayConfig;
 import wtf.config.OverworldGenConfig;
 
@@ -20,7 +20,7 @@ public class WTFSubstitutions {
 		
 		BlockWTFTorch.torch_on = WTFBlocks.registerBlock(new BlockWTFTorch(true), "torch_on");
 		
-		if (CoreConfig.gameplaytweaks && GameplayConfig.replaceTorch){
+		if (MasterConfig.gameplaytweaks && GameplayConfig.replaceTorch){
 			
 			
 

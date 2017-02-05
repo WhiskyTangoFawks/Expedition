@@ -12,6 +12,8 @@ import wtf.blocks.UBC.UBCSand;
 import wtf.config.WTFStoneRegistry;
 import wtf.init.BlockSets;
 import wtf.init.WTFBlocks;
+import wtf.utilities.wrappers.StateAndModifier;
+import wtf.init.BlockSets.Modifier;
 
 public class UBCCompat {
 
@@ -25,8 +27,10 @@ public class UBCCompat {
 
 	public static IBlockState[] IgneousStone;
 	public static IBlockState[] IgneousCobblestone;
+	public static IBlockState[] IgneousBrick;
 	public static IBlockState[] MetamorphicStone;
 	public static IBlockState[] MetamorphicCobblestone;
+	public static IBlockState[] MetamorphicBrick;
 	public static IBlockState[] SedimentaryStone;
 
 	public static ArrayList<String> UBCStoneList = new ArrayList<String>();
@@ -66,6 +70,12 @@ public class UBCCompat {
 			WTFStoneRegistry.defTextureLocations.put(IgneousCobblestone[loop], "undergroundbiomes:blocks/"+IgneousStoneList[loop]+"_cobble");
 			WTFStoneRegistry.defBlockStateLocations.put(IgneousCobblestone[loop], "undergroundbiomes:igneous_cobble#type="+IgneousStoneList[loop]);
 		}
+		
+		IgneousBrick = new IBlockState[8];
+		for (int loop = 0; loop < 8; loop++){
+			IgneousBrick[loop] = API.IGNEOUS_BRICK.getBlock().getStateFromMeta(loop);
+			BlockSets.blockTransformer.put(new StateAndModifier(IgneousStone[loop], Modifier.BRICK), IgneousBrick[loop]);
+		}
 
 		MetamorphicStone = new IBlockState[8];
 		for (int loop = 0; loop < 8; loop++){
@@ -83,6 +93,12 @@ public class UBCCompat {
 			WTFStoneRegistry.defTextureLocations.put(MetamorphicCobblestone[loop], "undergroundbiomes:blocks/"+IgneousStoneList[loop]+"_cobble");
 			WTFStoneRegistry.defBlockStateLocations.put(MetamorphicCobblestone[loop], "undergroundbiomes:metamorphic_cobble#type="+MetamorphicStoneList[loop]);
 		}
+		
+		MetamorphicBrick = new IBlockState[8];
+		for (int loop = 0; loop < 8; loop++){
+			MetamorphicBrick[loop] = API.METAMORPHIC_BRICK.getBlock().getStateFromMeta(loop);
+			BlockSets.blockTransformer.put(new StateAndModifier(MetamorphicStone[loop], Modifier.BRICK), MetamorphicBrick[loop]);
+		}
 
 		SedimentaryStone = new IBlockState[8];
 		for (int loop = 0; loop < 8; loop++){
@@ -97,6 +113,7 @@ public class UBCCompat {
 			WTFStoneRegistry.defBlockStateLocations.put(SedimentaryStone[loop], "undergroundbiomes:sedimentary_stone#type="+SedimentaryStoneList[loop]);
 		}
 
+		
 		//StainedGlass
 
 		GameRegistry.addSmelting(new ItemStack(WTFBlocks.ubcSand, 1, 0), new ItemStack(Blocks.STAINED_GLASS, 1, 9), 0F);

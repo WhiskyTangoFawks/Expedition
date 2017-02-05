@@ -12,7 +12,7 @@ import net.minecraft.world.gen.feature.WorldGenShrub;
 import net.minecraft.world.gen.feature.WorldGenerator;
 import wtf.Core;
 import wtf.api.PopulationGenerator;
-import wtf.config.CoreConfig;
+import wtf.config.MasterConfig;
 import wtf.config.OverworldGenConfig;
 import wtf.utilities.UBC.UBCCavebiomesGenMethods;
 import wtf.utilities.simplex.SimplexHelper;
@@ -67,7 +67,7 @@ public class OverworldGen extends PopulationGenerator{
 
 		gen.blocksToSet.setBlockSet();
 
-		if (CoreConfig.enableOverworldGeneration && OverworldGenConfig.genTrees){
+		if (MasterConfig.enableOverworldGeneration && OverworldGenConfig.genTrees){
 			genTrees(world, chunkcoords, random, chunkscan);
 		}
 	}

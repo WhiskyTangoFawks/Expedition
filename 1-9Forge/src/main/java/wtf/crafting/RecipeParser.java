@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import wtf.Core;
-import wtf.config.CoreConfig;
+import wtf.config.MasterConfig;
 import wtf.config.GameplayConfig;
 
 public class RecipeParser {
@@ -38,14 +38,14 @@ public class RecipeParser {
 		
 			ItemStack stack = recipe != null ? recipe.getRecipeOutput() : null;
 			Item output = stack != null ? stack.getItem() : null;
-			if (CoreConfig.gameplaytweaks && GameplayConfig.removeVanillaTools && Loader.isModLoaded("tconstruct") && 
+			if (MasterConfig.gameplaytweaks && GameplayConfig.removeVanillaTools && Loader.isModLoaded("tconstruct") && 
 					  (output instanceof ItemAxe || output instanceof ItemHoe || output instanceof ItemPickaxe|| output instanceof ItemSpade || output instanceof ItemSword)) {
 				Core.coreLog.info("Removing recipe for " + recipe.getRecipeOutput().getUnlocalizedName());
 				iterator.remove();
 				
 			}
 
-			else if (GameplayConfig.wcictable && CoreConfig.gameplaytweaks){
+			else if (GameplayConfig.wcictable && MasterConfig.gameplaytweaks){
 
 				RecipeWrapper wrappedRecipe = null;
 				if (recipe.getRecipeOutput() != null){

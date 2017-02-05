@@ -1,20 +1,15 @@
 package wtf.worldgen;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.gen.feature.WorldGenAbstractTree;
-import wtf.utilities.simplex.Simplex;
 import wtf.utilities.simplex.SimplexHelper;
 import wtf.utilities.wrappers.AdjPos;
 import wtf.utilities.wrappers.CavePosition;
-import wtf.utilities.wrappers.ChunkCoords;
-import wtf.utilities.wrappers.ChunkScan;
 import wtf.utilities.wrappers.SurfacePos;
 import wtf.worldgen.caves.CaveBiomeGenMethods;
-import wtf.worldgen.trees.TreeTypeGetter;
-import wtf.worldgen.trees.TreeVars;
 
 public abstract class AbstractCaveType
 {
@@ -46,6 +41,11 @@ public abstract class AbstractCaveType
 	public abstract void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height);
 	
 	public void generateAdjacentWall(CaveBiomeGenMethods gen, Random random, AdjPos pos, float depth, int height){
+		
+	}
+	
+	protected boolean genAir = false;
+	public void generateAir(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth){
 		
 	}
 	

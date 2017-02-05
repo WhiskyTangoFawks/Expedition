@@ -1,14 +1,11 @@
 package wtf.worldgen.replacers;
 
-import java.util.Random;
-
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import wtf.api.Replacer;
-import wtf.init.BlockSets.Modifier;
 import wtf.utilities.simplex.SimplexHelper;
 import wtf.worldgen.caves.CaveBiomeGenMethods;
 import wtf.worldgen.caves.CaveTypeRegister;
@@ -22,14 +19,12 @@ public class NetherrackReplacer extends Replacer{
 	}
 
 	private static SimplexHelper simplex = new SimplexHelper("NetherrackReplacer");
-	Random random = new Random();
-	
 	@Override
 	public  boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen,IBlockState oldState) {
 		
 
 		
-		hellBiome biome = CaveTypeRegister.nether.getSubType(random, pos);
+		hellBiome biome = CaveTypeRegister.nether.getSubType(pos);
 
 		switch (biome){
 		case DEADFOREST:
@@ -43,6 +38,7 @@ public class NetherrackReplacer extends Replacer{
 		case NORMAL:
 			break;
 		case SOULDESERT:
+			/*
 			double noise = desertNoise(chunk.getWorld(), pos); 
 			if (noise < 0.3){
 				gen.replaceBlock(pos, Blocks.SANDSTONE.getDefaultState());
@@ -56,7 +52,7 @@ public class NetherrackReplacer extends Replacer{
 					gen.transformBlock(pos, Modifier.SOUL);
 				}
 			}
-			
+			*/
 		default:
 			break;
 	

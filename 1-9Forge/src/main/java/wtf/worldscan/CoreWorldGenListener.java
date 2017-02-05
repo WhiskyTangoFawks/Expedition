@@ -55,23 +55,28 @@ public class CoreWorldGenListener {
 		doChunk(world, random, coords);
 	}
 
-	private static int totalTime = 0;
-	private static int count = 0;
+	//private static int totalTime = 0;
+	//private static int count = 0;
 	
 	public static void doChunk(World world, Random random, ChunkCoords coords) throws Exception{
 
 		WorldScanner scanner = null;//new WorldScanner();
-		switch (world.provider.getDimension()){
-		case 0:
-			scanner = new WorldScanner();
-			break;
-		case -1:
+		switch (world.provider.getDimensionType()){
+		case NETHER:
 			scanner = new NetherScanner();
 			break;
-		case 1:
-			//scanner = new SkyworldScanner();
+		case OVERWORLD:
+			scanner = new WorldScanner();
 			break;
+		case THE_END:
+			scanner = new NetherScanner();
+			break;
+		default:
+			break;
+	
 		}
+		
+		
 		if (scanner != null){
 			//long pre = System.nanoTime();
 			

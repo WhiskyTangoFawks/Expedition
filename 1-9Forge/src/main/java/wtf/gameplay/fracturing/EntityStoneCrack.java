@@ -30,7 +30,6 @@ public class EntityStoneCrack extends Entity{
 		this.posY=pos.getY();
 		this.posZ=pos.getZ();
 		this.ori = pos;
-		System.out.println("Crack Initialised");
 	}
 	
 	public static void crackStone(World world, BlockPos pos){

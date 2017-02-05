@@ -31,10 +31,10 @@ public class CaveTypeDirtWater extends AbstractCaveType{
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 		
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 0.1F) < 0.65 ){
+		if (getNoise(gen.getWorld(), pos, 5, 0.1F) < 0.65 ){
 			gen.setWaterPatch(pos);
 		}
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 1F) < 1 ){
+		if (getNoise(gen.getWorld(), pos, 5, 1F) < 1 ){
 			gen.replaceBlock(pos, Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, BlockDirt.DirtType.COARSE_DIRT));
 		}
 
@@ -57,7 +57,7 @@ public class CaveTypeDirtWater extends AbstractCaveType{
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
 
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 0.5F) < height/2 ){ //dirt
+		if (getNoise(gen.getWorld(), pos, 5, 0.5F) < height/2 ){ //dirt
 			gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
 		}
 

@@ -4,7 +4,7 @@ import java.io.File;
 
 import net.minecraftforge.common.config.Configuration;
 
-public class CaveBiomesConfig extends ConfigMaster{
+public class CaveBiomesConfig extends AbstractConfig{
 
 	public static float dungeonChance;
 	public static boolean logDungeons;

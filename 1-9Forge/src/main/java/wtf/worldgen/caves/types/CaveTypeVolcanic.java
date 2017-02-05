@@ -18,7 +18,7 @@ public class CaveTypeVolcanic extends AbstractCaveType{
 	@Override
 	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 0.1F) < 1){
+		if (getNoise(gen.getWorld(), pos, 5, 0.1F) < 1){
 			gen.transformBlock(pos, Modifier.LAVA_DRIP);
 		}
 	}
@@ -27,7 +27,7 @@ public class CaveTypeVolcanic extends AbstractCaveType{
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
 		
 		
-		double noise = getNoise(gen.chunk.getWorld(), pos, 8, 1F);
+		double noise = getNoise(gen.getWorld(), pos, 8, 1F);
 		//System.out.println(noise);
 		if (noise < 2){
 			if (CaveBiomesConfig.enableLavaPools){
@@ -51,14 +51,14 @@ public class CaveTypeVolcanic extends AbstractCaveType{
 
 	@Override
 	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(gen.chunk.getWorld(), pos.down(), 5, 0.1F) >= 2){
+		if (getNoise(gen.getWorld(), pos.down(), 5, 0.1F) >= 2){
 			gen.setFloorAddon(pos, Modifier.COBBLE);
 		}
 	}
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 1F) >= 2){
+		if (getNoise(gen.getWorld(), pos, 5, 1F) >= 2){
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
 	}

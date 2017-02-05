@@ -2,17 +2,24 @@ itemGroup.WTFBlocks=WTF's Blocks
 
 tile.wcic_table.name=Recipe Guide Crafting Table
 
-tile.oreNitre.name=Nitre Ore
+tile.nitre_ore.name=Nitre Ore
 item.itemNitre.name=Saltpetre
 tile.oreSandGold.name=Gold Nugget Ore
 tile.torch_on.name=Lit Torch
 tile.torch_off.name=Unlit Torch
-tile.icePatch.name=Ice Patch
+tile.patchIce.name=Ice Patch
+tile.patchWater.name=Water
+tile.patchLava.name=Lava
+tile.patchWaterStatic.name=Puddle
+tile.patchLavaStatic.name=Lava Puddle
 tile.icicle.0.name=Icicle
 tile.icicle.1.name=Icicle
 tile.icicle.2.name=Icicle
 tile.icicle.3.name=Icicle
 tile.foxfire.name=Fox Fire
+tile.red_cactus.name=Red Cactus
+tile.mycorrack.name=Mycorrack
+
 
 tile.roots.0.name=Oak Roots
 tile.roots.1.name=Spruce Roots
@@ -30,16 +37,6 @@ tile.roots.11.name=Frozen Acacia Roots
 item.itemSulfur.name=Sulphur
 item.home_scroll.name=Home Scroll
 
-item.mummy_helmet.name=Mummy Wrap Helmet
-item.mummy_chestplate.name=Mummy Wrap Chestplate
-item.mummy_leggings.name=Mummy Wrap Leggings
-item.mummy_boots.name=Mummy Wrap Boots
-
-item.pharaoh_helmet.name=Pharaoh Helmet
-item.pharaoh_chestplate.name=Pharaoh Chestplate
-item.pharaoh_leggings.name=Pharaoh Leggings
-item.pharaoh_boots.name=Pharaoh Boots
-
 tile.ubcSand.0.name=Limestone Sand
 tile.ubcSand.1.name=Chalk Sand
 tile.ubcSand.2.name=Shale San
@@ -48,3 +45,17 @@ tile.ubcSand.4.name=Lignite Sand
 tile.ubcSand.5.name=Dolomite Sand
 tile.ubcSand.6.name=Greywacke Sand
 tile.ubcSand.7.name=Chert Sand
+
+entity.wtfcore.BlockHead.name=Steve
+entity.wtfcore.SkeletonMage.name=Skeleton Mage
+entity.wtfcore.BlockHead.name=Steve
+entity.wtfcore.DerangedIronGolem.name=Defective Iron Golem
+entity.wtfcore.FlyingFlame.name=Bog Lantern
+entity.wtfcore.Ghost.name=Cursed Armour
+entity.wtfcore.FireElemental.name=Fire Elemental
+entity.wtfcore.Mummy.name=Mummy
+entity.wtfcore.Husk.name=Husk
+entity.wtfcore.ZombieMiner.name=Zombie Miner
+entity.wtfcore.Stray.name=Stray
+entity.wtfcore.Wither.name=Wither Skeleton
+entity.wtfcore.SkeletonKnight.name=Skeleton Knight

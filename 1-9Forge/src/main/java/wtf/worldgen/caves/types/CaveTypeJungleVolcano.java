@@ -26,7 +26,7 @@ public class CaveTypeJungleVolcano extends AbstractCaveType{
 
 	@Override
 	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		double noise = getNoise(gen.chunk.getWorld(), pos, 6, 0.4F);
+		double noise = getNoise(gen.getWorld(), pos, 6, 0.4F);
 		if (noise < depth*3)
 		{
 			gen.replaceBlock(pos, Blocks.GRASS.getDefaultState());
@@ -66,7 +66,7 @@ public class CaveTypeJungleVolcano extends AbstractCaveType{
 
 	@Override
 	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		double noise = getNoise(gen.chunk.getWorld(), pos.down(), 6, 0.2F);
+		double noise = getNoise(gen.getWorld(), pos.down(), 6, 0.2F);
 		if (noise < depth*4)
 		{
 			gen.replaceBlock(pos, Blocks.TALLGRASS.getDefaultState().withProperty(BlockTallGrass.TYPE, BlockTallGrass.EnumType.FERN));
@@ -82,7 +82,7 @@ public class CaveTypeJungleVolcano extends AbstractCaveType{
 
 	@Override
 	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		double mossNoise = getNoise(gen.chunk.getWorld(), pos, 5, 2F);
+		double mossNoise = getNoise(gen.getWorld(), pos, 5, 2F);
 		if (mossNoise < 2*depth && random.nextBoolean()){
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
@@ -93,7 +93,7 @@ public class CaveTypeJungleVolcano extends AbstractCaveType{
 
 	@Override
 	public void generateAdjacentWall(CaveBiomeGenMethods gen, Random random, AdjPos pos, float depth, int height){
-		if (getNoise(gen.chunk.getWorld(), pos, 5, 1) < depth*1.5){	
+		if (getNoise(gen.getWorld(), pos, 5, 1) < depth*1.5){	
 			gen.GenVines(pos, pos.getFace(random));
 		}
 	}
