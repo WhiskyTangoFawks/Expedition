@@ -30,11 +30,11 @@ public class UnsortedChunkCaves {
 		XZ xz = new XZ(adj.getX(), adj.getZ());
 		ArrayList<CavePosition> list = unsortedCavePos.get(xz);
 
-		//if (list == null){
-//			return false;
+		if (list == null){
+			return false;
 			
-	//	}
-		//else {
+		}
+		else {
 		for (CavePosition pos : list){
 			if (pos.floor < adj.getY() && pos.ceiling > adj.getY()){
 				//System.out.println("cave pos found");
@@ -43,7 +43,7 @@ public class UnsortedChunkCaves {
 				return true;
 			}
 		}
-		//}
+		}
 		//System.out.println("Cave not found");
 		return false;
 	}
