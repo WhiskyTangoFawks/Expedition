@@ -313,7 +313,9 @@ public class WorldScanner {
 
 	protected ArrayList<ExtendedBlockStorage> getStorageList(Chunk chunk){
 		ArrayList<ExtendedBlockStorage> list = new ArrayList<ExtendedBlockStorage>();
-		for (int loop = 0; chunk.getBlockStorageArray()[loop] != null; loop++){
+		for (int loop = 0; loop < chunk.getBlockStorageArray().length; loop++){
+			if (chunk.getBlockStorageArray()[loop] == null)
+				break;
 			list.add(chunk.getBlockStorageArray()[loop]);
 		}
 		return list;
