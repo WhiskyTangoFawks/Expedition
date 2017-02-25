@@ -4,14 +4,14 @@ package wtf.worldgen.trees;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent;
 import net.minecraftforge.event.terraingen.DecorateBiomeEvent.Decorate;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
-import wtf.worldgen.OverworldGen;
+import wtf.worldgen.generators.TreeGenerator;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class WorldGenTreeCancel {
 
 	@SubscribeEvent
 	public void decorate(DecorateBiomeEvent.Decorate event){
-		if (event.getType() == Decorate.EventType.TREE  && OverworldGen.replaceTreeGen(event.getWorld(), event.getRand(), event.getPos())){	
+		if (event.getType() == Decorate.EventType.TREE  && TreeGenerator.shouldTreePosGenerate(event.getWorld(), event.getRand(), event.getPos())){	
 			event.setResult(Result.DENY);
 		}
 	}

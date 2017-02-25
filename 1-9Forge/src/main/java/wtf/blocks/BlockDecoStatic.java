@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import wtf.gameplay.fracturing.EntityStoneCrack;
@@ -148,5 +149,6 @@ public class BlockDecoStatic extends AbstractBlockDerivative{
 	{
 		return new BlockStateContainer(this, new IProperty[] {TYPE});
 	}
+
 
 }

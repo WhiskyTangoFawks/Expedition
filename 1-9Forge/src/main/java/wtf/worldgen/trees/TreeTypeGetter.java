@@ -23,15 +23,11 @@ import net.minecraft.world.gen.feature.WorldGenTaiga1;
 import net.minecraft.world.gen.feature.WorldGenTaiga2;
 import net.minecraft.world.gen.feature.WorldGenTrees;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import net.minecraftforge.fml.common.Loader;
-import rtg.world.gen.feature.tree.rtg.TreeRTGBetulaPapyrifera;
-import wtf.config.OverworldGenConfig;
-import wtf.worldgen.OverworldGen;
+import wtf.worldgen.trees.types.AbstractTreeType;
 import wtf.worldgen.trees.types.AcaciaTree;
 import wtf.worldgen.trees.types.BigTree;
 import wtf.worldgen.trees.types.JungleGiant;
 import wtf.worldgen.trees.types.JungleTree;
-import wtf.worldgen.trees.types.PoplarTree;
 import wtf.worldgen.trees.types.RedwoodTree;
 import wtf.worldgen.trees.types.DarkOakTree;
 import wtf.worldgen.trees.types.SimpleTree;
@@ -41,7 +37,7 @@ import wtf.worldgen.trees.types.Taiga2Tree;
 
 public class TreeTypeGetter {
 
-	public static HashMap<WorldGenerator, TreeVars> treeTypes = new HashMap<WorldGenerator, TreeVars>();
+	public static HashMap<WorldGenerator, AbstractTreeType> treeTypes = new HashMap<WorldGenerator, AbstractTreeType>();
 
 	final static IBlockState woodOak = Blocks.LOG.getDefaultState();
 	final static IBlockState woodSpruce = Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE);
@@ -57,7 +53,7 @@ public class TreeTypeGetter {
 	final static IBlockState leavesAcacia = Blocks.LEAVES2.getDefaultState().withProperty(BlockNewLeaf.VARIANT, BlockPlanks.EnumType.ACACIA).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
 	final static IBlockState leavesDarkOak = Blocks.LEAVES2.getDefaultState().withProperty(BlockNewLeaf.VARIANT, BlockPlanks.EnumType.DARK_OAK).withProperty(BlockLeaves.CHECK_DECAY, Boolean.valueOf(false));
 
-	public static TreeVars getTree(World world, WorldGenerator oldTree){
+	public static AbstractTreeType getTree(World world, WorldGenerator oldTree){
 
 
 
@@ -68,10 +64,6 @@ public class TreeTypeGetter {
 		if (oldTree instanceof WorldGenShrub){
 			treeTypes.put(oldTree, null);
 			return null;
-		}
-
-		if (oldTree instanceof WorldGenCustomTree){
-			treeTypes.put(oldTree, ((WorldGenCustomTree)oldTree).type);
 		}
 
 		if (oldTree instanceof WorldGenTrees){

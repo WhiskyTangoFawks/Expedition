@@ -13,6 +13,7 @@ import net.minecraft.block.BlockStone;
 import net.minecraft.block.BlockDirt.DirtType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.Configuration;
 import wtf.Core;
@@ -105,6 +106,7 @@ public class WTFStoneRegistry extends AbstractConfig {
 			IBlockState state = getBlockState(stateString);
 
 			if (state != null){
+				
 				String locBlockstate = config.get(stateString, "BlockState resource location", defBlockStateLocations.get(state) == null ? state.getBlock().getRegistryName().toString() : defBlockStateLocations.get(state).toString()).getString();
 				String locTexture = config.get(stateString, "Stone texture resource location", defTextureLocations.get(state) == null ? "null" : defTextureLocations.get(state).toString()).getString();
 

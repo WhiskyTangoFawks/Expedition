@@ -5,11 +5,10 @@ import java.util.Random;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import wtf.ores.ChunkDividedOreMap;
 import wtf.ores.OreGenAbstract;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
-import wtf.utilities.wrappers.OrePos;
+import wtf.worldgen.GeneratorMethods;
 
 public class OreGenCluster extends OreGenAbstract {
 
@@ -21,7 +20,7 @@ public class OreGenCluster extends OreGenAbstract {
 	}
 
 	@Override
-	public void doOreGen(World world, ChunkDividedOreMap map, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception {
+	public void doOreGen(World world, GeneratorMethods gen, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception {
 
 		int blocksPerChunk = this.getBlocksPerChunk(world, coords, random, chunkscan.surfaceAvg);
 
@@ -32,40 +31,40 @@ public class OreGenCluster extends OreGenAbstract {
 			int y = this.getGenStartHeight(chunkscan.surfaceAvg, random);
 			int z = coords.getWorldZ()+random.nextInt(16);
 
-			blocksPerChunk -= genVein(world, map, random, chunkscan, new BlockPos(x,y,z));
+			blocksPerChunk -= genVein(world, gen, random, chunkscan, new BlockPos(x,y,z));
 						
 		}
 	}
 
 	@Override
-	public int genVein(World world, ChunkDividedOreMap map, Random random, ChunkScan chunkscan, BlockPos pos) throws Exception {
+	public int genVein(World world, GeneratorMethods gen, Random random, ChunkScan chunkscan, BlockPos pos) throws Exception {
 		int blocksPerChunk=0;
 		
 
 		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos, chunkscan.surfaceAvg);
+			blocksPerChunk += genStarPosition(gen, world, random, pos, chunkscan.surfaceAvg);
 		}
 		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos.up(), chunkscan.surfaceAvg);
+			blocksPerChunk += genStarPosition(gen, world, random, pos.up(), chunkscan.surfaceAvg);
 		}
-		blocksPerChunk += genStarPosition(map, world, random, pos.down(), chunkscan.surfaceAvg);
+		blocksPerChunk += genStarPosition(gen, world, random, pos.down(), chunkscan.surfaceAvg);
 		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos.north(), chunkscan.surfaceAvg);
-		}
-		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos.south(), chunkscan.surfaceAvg);
+			blocksPerChunk += genStarPosition(gen, world, random, pos.north(), chunkscan.surfaceAvg);
 		}
 		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos.east(), chunkscan.surfaceAvg);
+			blocksPerChunk += genStarPosition(gen, world, random, pos.south(), chunkscan.surfaceAvg);
 		}
 		if (random.nextFloat() < this.veinDensity){
-			blocksPerChunk += genStarPosition(map, world, random, pos.west(), chunkscan.surfaceAvg);
+			blocksPerChunk += genStarPosition(gen, world, random, pos.east(), chunkscan.surfaceAvg);
+		}
+		if (random.nextFloat() < this.veinDensity){
+			blocksPerChunk += genStarPosition(gen, world, random, pos.west(), chunkscan.surfaceAvg);
 		}
 		return blocksPerChunk;
 
 	}
 
-	private int genStarPosition(ChunkDividedOreMap map, World world, Random random, BlockPos pos, double surface) throws Exception {
+	private int genStarPosition(GeneratorMethods gen, World world, Random random, BlockPos pos, double surface) throws Exception {
 		int densityToSet;
 		if (genDenseOres){
 			densityToSet = getDensityToSet(random, pos.getY(), surface);
@@ -74,7 +73,7 @@ public class OreGenCluster extends OreGenAbstract {
 			densityToSet = 0;
 		}
 
-		map.put(new OrePos(pos, densityToSet), this.oreBlock);
+		gen.setOreBlock(new BlockPos(pos), this.oreBlock, densityToSet);
 		return densityToSet+1;
 	}
 

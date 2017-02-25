@@ -24,7 +24,6 @@ import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
 import wtf.init.WTFBlocks;
 import wtf.ores.OreGenAbstract;
-import wtf.ores.OreGenerator;
 import wtf.ores.OreReplacer;
 import wtf.ores.VanillOreGenCatcher;
 import wtf.ores.oregenerators.OreGenCaveFloor;
@@ -36,6 +35,7 @@ import wtf.ores.oregenerators.OreGenVanilla;
 import wtf.ores.oregenerators.OreGenVein;
 import wtf.utilities.UBC.UBCOreReplacer;
 import wtf.utilities.wrappers.StoneAndOre;
+import wtf.worldgen.generators.OreGenerator;
 
 public class WTFOresNewConfig extends AbstractConfig{
 

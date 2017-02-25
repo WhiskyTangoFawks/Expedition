@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSand;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -18,11 +19,14 @@ import wtf.blocks.BlockDecoAnim;
 import wtf.blocks.BlockFoxfire;
 import wtf.blocks.BlockIcicle;
 import wtf.blocks.BlockDecoStatic;
-import wtf.blocks.BlockPatchFluid;
+import wtf.blocks.BlockClaySlab;
+import wtf.blocks.BlockCustomSlab;
 import wtf.blocks.BlockPatchIce;
+import wtf.blocks.BlockPuddle;
 import wtf.blocks.BlockRedCactus;
 import wtf.blocks.BlockRoots;
 import wtf.blocks.BlockSpeleothem;
+import wtf.blocks.GenPlaceHolder;
 import wtf.blocks.BlockMycorrack;
 import wtf.blocks.OreNitre;
 import wtf.blocks.substitution.BlockWTFTorch;
@@ -45,26 +49,29 @@ public class WTFBlocks{
 	public static Block icePatch;
 	public static BlockIcicle icicle;
 	public static Block foxfire;
-	public static Block mossyDirt;
 	public static BlockRoots roots;
 	public static Block red_cactus;
 	
-	public static BlockPatchFluid waterPatch;
-	public static BlockPatchFluid lavaPatch;
-	public static BlockPatchFluid waterPatchStatic;
-	public static BlockPatchFluid lavaPatchStatic;
+
 	public static Block wcicTable;
 	public static Block mycorrack;
 	public static Block fireLeaves;
 	public static Block ubcSand;
+	public static Block puddle;
+	public static Block dirtSlab;
+	public static Block sandSlab;
+	public static Block redSandSlab;
+	public static Block gravelSlab;
+	public static Block mossyDirtSlab;
+	public static Block claySlab;
+	public static Block podzolSlab;
+	
+	public static Block genMarker;
 	
 	public static void initBlocks(){	
 		/*
 		 * Replacers
-		 */
-		
-		
-		
+		 */		
 		new NetherrackReplacer();
 		
 		oreNitre =  registerBlock(new OreNitre(), "nitre_ore");
@@ -74,28 +81,26 @@ public class WTFBlocks{
 		roots = (BlockRoots) registerBlockItemSubblocks(new BlockRoots(), 4, "roots");
 		oreSandGold = registerBlock(new OreSandGoldNugget(), "oreSandGold");
 		
-		mossyDirt = Block.getBlockFromName("dirt0decoStatic");
+		
 		//BlockstateWriter.writeDecoStaticBlockstate(Blocks.DIRT.getDefaultState(), "dirt0DecoStatic");
 		
 		red_cactus =  registerBlock(new BlockRedCactus(), "red_cactus");
 		mycorrack = registerBlock(new BlockMycorrack().setHardness(0.4F), "mycorrack");
 		//fireLeaves = registerBlock(new BlockFireLeaves(), "fireLeaves");
 		
-		
-		waterPatch = (BlockPatchFluid) registerBlock(new BlockPatchFluid(Material.WATER), "patchWater");
-		lavaPatch = (BlockPatchFluid) registerBlock(new BlockPatchFluid(Material.LAVA), "patchLava");
-		waterPatchStatic = (BlockPatchFluid) registerBlock(new BlockPatchFluid(Material.WATER), "patchWaterStatic");
-		lavaPatchStatic = (BlockPatchFluid) registerBlock(new BlockPatchFluid(Material.LAVA), "patchLavaStatic");
-		
-		waterPatch.otherState = waterPatchStatic.getDefaultState();
-		lavaPatch.otherState = lavaPatchStatic.getDefaultState();
-		waterPatchStatic.otherState = waterPatch.getDefaultState();
-		lavaPatchStatic.otherState = lavaPatch.getDefaultState();
-		
-		
 		//this is done so that the game "sees" base.json, which is used by all the other auto generated jsons
 		registerBlock(new Block(Material.AIR), "base");
 		
+		puddle = registerBlock(new BlockPuddle(), "patchWater");
+		dirtSlab = registerBlock(new BlockCustomSlab(Blocks.DIRT.getDefaultState()), "slabDirt");
+		sandSlab = registerBlock(new BlockCustomSlab(Blocks.SAND.getDefaultState()), "slabSand");
+		redSandSlab = registerBlock(new BlockCustomSlab(Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND)), "slabRedsand");
+		gravelSlab = registerBlock(new BlockCustomSlab(Blocks.GRAVEL.getDefaultState()), "slabGravel");
+		mossyDirtSlab = registerBlock(new BlockCustomSlab(Blocks.DIRT.getDefaultState()), "slabMossyDirt");
+		podzolSlab = registerBlock(new BlockCustomSlab(Blocks.DIRT.getDefaultState()), "slabPodzol");
+		claySlab = registerBlock(new BlockClaySlab(), "slabClay");
+		
+		genMarker = registerBlock(new GenPlaceHolder(), "genMarker");
 		
 		for(Entry<IBlockState, StoneRegEntry> entry : WTFStoneRegistry.stoneReg.entrySet()){
 			
@@ -156,10 +161,7 @@ public class WTFBlocks{
 
 		BlockWTFTorch.torch_off = new BlockWTFTorch(false);
 		
-		
-		OreDictionary.registerOre("moss", Blocks.MOSSY_COBBLESTONE);
-		OreDictionary.registerOre("sand", Blocks.SAND);
-		
+				
 	}
 
 	public static Block registerBlock(Block block, String name){

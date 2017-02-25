@@ -3,8 +3,8 @@ package wtf.worldgen.caves.types.nether;
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
-import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
+import wtf.worldgen.caves.AbstractCaveType;
 
 public class NetherFrozen extends AbstractCaveType{
 
@@ -17,31 +17,31 @@ public class NetherFrozen extends AbstractCaveType{
 	}
 
 	@Override
-	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+	public void generateCeiling(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+	public void generateFloor(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+	public void generateCeilingAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+	public void generateFloorAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
+	public void generateWall(GeneratorMethods gen, Random random, BlockPos pos, float depth, int height) {
 		// TODO Auto-generated method stub
 		
 	}

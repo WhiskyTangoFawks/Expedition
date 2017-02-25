@@ -6,11 +6,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
 import scala.util.Random;
-import wtf.api.Replacer;
 import wtf.blocks.BlockDenseOre;
 import wtf.init.BlockSets;
 import wtf.utilities.wrappers.StoneAndOre;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
+import wtf.worldgen.replacers.Replacer;
 
 public class OreReplacer extends Replacer{
 
@@ -21,10 +21,10 @@ public class OreReplacer extends Replacer{
 	Random random = new Random();
 
 	@Override
-	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos,CaveBiomeGenMethods gen, IBlockState oldState){
+	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos,GeneratorMethods gen, IBlockState oldState){
 		IBlockState state = BlockSets.stoneAndOre.get(new StoneAndOre(Blocks.STONE.getDefaultState(), oldState));
 		if (state != null && state.getBlock() instanceof BlockDenseOre){
-			setBlock(chunk.getWorld(), pos, state.withProperty(BlockDenseOre.DENSITY, random.nextInt(3)));
+			gen.overrideBlock(pos, state.withProperty(BlockDenseOre.DENSITY, random.nextInt(3)));
 		}
 		return false;
 	}

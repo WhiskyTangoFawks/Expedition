@@ -164,7 +164,6 @@ public class CaveListWrapper {
 
 	public double getCenterScore(){
 		CavePosition bestpos = null;
-		//double olddist = 100000;
 		double bestscore = 10;
 		for (CavePosition checkpos : this.cavelist){
 
@@ -180,7 +179,6 @@ public class CaveListWrapper {
 				else if (checkpos.ceiling-checkpos.floor == bestpos.ceiling-bestpos.floor){
 					//System.out.println("still equivelant");
 				}
-				//try comparing with a larger area
 			}
 		}
 		
@@ -192,7 +190,7 @@ public class CaveListWrapper {
 	public double getClearance(CavePosition pos){
 		
 		
-		if (pos.ceiling - pos.floor < 3){
+		if (4 > pos.ceiling - pos.floor){
 			return 100;
 		}
 	
@@ -253,6 +251,9 @@ public class CaveListWrapper {
 		double failScore = this.getCenterScore();
 		if (this.centerpos == null){ //has at 5x5 block area that is totally clear
 			//System.out.println("get centeredPos failed ");
+			return 0;
+		}
+		if (4 > this.centerpos.ceiling-this.centerpos.floor || 4 > this.getAvgCeiling()-this.getAvgFloor()){
 			return 0;
 		}
 		

@@ -5,8 +5,8 @@ import java.util.Random;
 
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
-import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.AbstractDungeonType;
+import wtf.worldgen.GeneratorMethods;
+import wtf.worldgen.dungeoncaves.AbstractDungeonType;
 
 public class CaveProfile {
 
@@ -70,7 +70,7 @@ public class CaveProfile {
 		return null;
 	}
 
-	public AbstractDungeonType getDungeonForCave(CaveBiomeGenMethods gen, Random random, CaveListWrapper cave, int surface) {
+	public AbstractDungeonType getDungeonForCave(GeneratorMethods gen, Random random, CaveListWrapper cave, int surface) {
 
 		for (int loop = 0; loop < 5; loop++){
 		float height = (float)cave.getAvgFloor()/(surface);

@@ -7,12 +7,12 @@ import java.util.Random;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import wtf.ores.ChunkDividedOreMap;
 import wtf.ores.OreGenAbstract;
 import wtf.utilities.wrappers.CaveListWrapper;
 import wtf.utilities.wrappers.CavePosition;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
+import wtf.worldgen.GeneratorMethods;
 
 
 public class OreGenCaveFloor extends OreGenAbstract{
@@ -38,7 +38,7 @@ public class OreGenCaveFloor extends OreGenAbstract{
 
 	
 	@Override
-	public void doOreGen(World world, ChunkDividedOreMap map, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception {
+	public void doOreGen(World world, GeneratorMethods gen, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception {
 		
 		if (chunkscan.caveset.size() > 0){
 			
@@ -51,13 +51,13 @@ public class OreGenCaveFloor extends OreGenAbstract{
 			int blockReqs = this.blocksReq();
 			while (blocksPerChunk > blockReqs || (blocksPerChunk > 0 && random.nextInt(blockReqs) < blocksPerChunk)){
 				
-				surface gen = surfaceList.get(random.nextInt(surfaceList.size()));
+				surface surfaceGen = surfaceList.get(random.nextInt(surfaceList.size()));
 				BlockPos pos = null;
 				CaveListWrapper cave = chunkscan.caveset.getRandomCave(random);
 				CavePosition cavepos = cave.getRandomPosition(random);
 				
 				if (cavepos != null) {
-					switch (gen){
+					switch (surfaceGen){
 					case ceiling:
 						//System.out.println("ceiling");
 						cavepos.getCeilingPos();
@@ -77,7 +77,7 @@ public class OreGenCaveFloor extends OreGenAbstract{
 					}
 
 					if (pos != null){
-						blocksPerChunk-=veinType.genVein(world, map, random, chunkscan, pos);
+						blocksPerChunk-=veinType.genVein(world, gen, random, chunkscan, pos);
 					}
 				}
 			}
@@ -87,7 +87,7 @@ public class OreGenCaveFloor extends OreGenAbstract{
 	}
 
 	@Override
-	public int genVein(World world, ChunkDividedOreMap map, Random random, ChunkScan scan, BlockPos pos)
+	public int genVein(World world, GeneratorMethods gen, Random random, ChunkScan scan, BlockPos pos)
 			throws Exception {
 		// TODO Auto-generated method stub
 		return 0;

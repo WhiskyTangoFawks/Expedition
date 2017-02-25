@@ -1,0 +1,18 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "textures": {
+         	"all": "blocks/dirt_podzol_top"
+        },
+        "model": "wtfcore:patch",
+        "uvlock": true
+    },
+    "variants": {
+        "normal": [{
+
+        }],
+        "inventory": [{
+        
+        }]
+    }
+}

@@ -10,7 +10,7 @@ import net.minecraftforge.common.BiomeDictionary.Type;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
 import wtf.utilities.wrappers.StateAndModifier;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
 
 public class ReplacerUBCSand extends ReplacerUBCAbstract{
 
@@ -21,7 +21,7 @@ public class ReplacerUBCSand extends ReplacerUBCAbstract{
 	}
 
 	@Override
-	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen, IBlockState oldState) {
+	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, GeneratorMethods gen, IBlockState oldState) {
 		if (!BiomeDictionary.isBiomeOfType(chunk.getWorld().getBiome(pos), Type.SANDY)){
 
 			double noise =getSimplexSand(chunk.getWorld(), pos);

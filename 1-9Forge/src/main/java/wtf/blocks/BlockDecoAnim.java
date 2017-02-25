@@ -67,7 +67,7 @@ public class BlockDecoAnim extends AbstractBlockDerivative{
 		}
 		//Update lit value for this position
 		if (state.getValue(TYPE).ID==0){
-			return 12;
+			return 3;
 		}
 		return 0;
 	}

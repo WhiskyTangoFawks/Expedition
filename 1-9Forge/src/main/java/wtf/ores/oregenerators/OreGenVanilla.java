@@ -6,11 +6,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.ores.ChunkDividedOreMap;
 import wtf.ores.OreGenAbstract;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
-import wtf.utilities.wrappers.OrePos;
+import wtf.worldgen.GeneratorMethods;
 
 
 public class OreGenVanilla extends OreGenAbstract{
@@ -25,7 +24,7 @@ public class OreGenVanilla extends OreGenAbstract{
 
 
 	@Override
-	public void doOreGen(World world, ChunkDividedOreMap map, Random random, ChunkCoords coords, ChunkScan scan) throws Exception {
+	public void doOreGen(World world, GeneratorMethods gen, Random random, ChunkCoords coords, ChunkScan scan) throws Exception {
 		
 		int blocksPerChunk = getBlocksPerChunk(world, coords, random, scan.surfaceAvg);
 		//System.out.println("vanilla gen");
@@ -36,13 +35,13 @@ public class OreGenVanilla extends OreGenAbstract{
 		while (blocksPerChunk > blocksReq || (blocksPerChunk > 0 && random.nextInt(blocksReq) < blocksPerChunk)){
 			int genHeight = getGenStartHeight(scan.surfaceAvg, random);
 			
-			blocksPerChunk -= genVein(world, map, random, scan, new BlockPos(coords.getWorldX() + 8, genHeight, coords.getWorldZ() + 8));
+			blocksPerChunk -= genVein(world, gen, random, scan, new BlockPos(coords.getWorldX() + 8, genHeight, coords.getWorldZ() + 8));
 			
 		}
 	}
 
 	@Override
-	public int genVein(World world, ChunkDividedOreMap map, Random random, ChunkScan scan, BlockPos pos)
+	public int genVein(World world, GeneratorMethods gen, Random random, ChunkScan scan, BlockPos pos)
 			throws Exception {
 		float f = random.nextFloat() * (float)Math.PI;
 		int blocksSet = 0;
@@ -90,7 +89,7 @@ public class OreGenVanilla extends OreGenAbstract{
 								}
 								if (random.nextFloat() < this.veinDensity){
 									blocksSet +=densityToSet+1;
-									map.put(new OrePos(k2, l2, i3, densityToSet), this.oreBlock);
+									gen.setOreBlock(new BlockPos(k2, l2, i3), this.oreBlock, densityToSet);
 								}
 								
 							}

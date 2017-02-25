@@ -4,12 +4,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.worldgen.trees.GenTree;
-import wtf.worldgen.trees.TreePos;
-import wtf.worldgen.trees.TreeVars;
+import wtf.worldgen.trees.TreeGenMethods;
+import wtf.worldgen.trees.TreeInstance;
 import wtf.worldgen.trees.components.Branch;
 
-public class BigTree extends TreeVars{
+public class BigTree extends AbstractTreeType{
 
 	public BigTree(World world, IBlockState wood, IBlockState branch, IBlockState leaf) {
 		super(world, wood, branch, leaf);
@@ -18,7 +17,10 @@ public class BigTree extends TreeVars{
 	}
 	@Override
 	public double getBranchLength(double scale, double trunkHeight, double nodeHeight) {
-		double taper = 1-nodeHeight/trunkHeight;
+		double bottom = this.getLowestBranchRatio()*trunkHeight;
+		double distFromBottom = nodeHeight - bottom;
+		double branchSectionLength = trunkHeight-bottom;
+		double taper = 1 - MathHelper.clamp_double(distFromBottom/branchSectionLength, 0.1, 0.9);
 		double halfLength = trunkHeight/4;
 		return halfLength*taper+halfLength;
 	}
@@ -35,7 +37,7 @@ public class BigTree extends TreeVars{
 	}
 	@Override
 	public int getBranchesPerNode(double nodeHeight, double scale) {
-		return random.nextInt(3)+3;
+		return 3;//random.nextInt(3)+3;
 	}
 
 	@Override
@@ -45,7 +47,7 @@ public class BigTree extends TreeVars{
 
 	@Override
 	public double getBranchSeperation(double scale) {
-		return 2;
+		return 2+random.nextInt(2);
 	}
 
 	@Override
@@ -72,7 +74,7 @@ public class BigTree extends TreeVars{
 		return random.nextInt(3)+3;
 	}
 	@Override
-	public void doLeafNode(TreePos tree, Branch branch, BlockPos pos) {
+	public void doLeafNode(TreeInstance tree, Branch branch, BlockPos pos) {
 		double height = pos.getY()-tree.y;
 		double taper = MathHelper.clamp_double((tree.type.leafTaper) * (tree.trunkHeight-height)/tree.trunkHeight, tree.type.leafTaper, 1);
 
@@ -104,7 +106,7 @@ public class BigTree extends TreeVars{
 
 
 								if (tree.type.vines > 0 && MathHelper.abs_max(xloop, zloop) > yloop && tree.random.nextBoolean()){
-									GenTree.genVine(tree, leafPos, xloop, zloop);
+									TreeGenMethods.genVine(tree, leafPos, xloop, zloop);
 								}
 							}
 						}

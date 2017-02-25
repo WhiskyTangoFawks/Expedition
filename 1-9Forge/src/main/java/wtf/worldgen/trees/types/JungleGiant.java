@@ -8,12 +8,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.worldgen.trees.GenTree;
-import wtf.worldgen.trees.TreePos;
-import wtf.worldgen.trees.TreeVars;
+import wtf.worldgen.trees.TreeGenMethods;
+import wtf.worldgen.trees.TreeInstance;
 import wtf.worldgen.trees.components.Branch;
 
-public class JungleGiant extends TreeVars{
+public class JungleGiant extends AbstractTreeType{
 
 	public JungleGiant(World world) {
 		super(world, Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE), Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.JUNGLE),
@@ -36,53 +35,63 @@ public class JungleGiant extends TreeVars{
 
 	@Override
 	public int getBranchesPerNode(double nodeHeight, double scale) {
-		return (int) MathHelper.clamp_double(random.nextInt(5-3), 1, 2);
+		return 3;//(int) MathHelper.clamp_double(random.nextInt(5), 1, 2);
 	}
 
 	@Override
 	public double getBranchRotation(double scale, double numBranches) {
-		return numBranches;
+		return Math.PI*2/(numBranches+1); 
 	}
 
 	@Override
 	public double getBranchSeperation(double scale) {
-		return random.nextInt(4)+4;
+		return random.nextInt(3)+2;
 	}
 
 	@Override
 	public double getBranchPitch(double scale) {
-		return 0.5;
+		return 0.3+random.nextFloat()/5;
 	}
 
 	@Override
 	public double getBranchLength(double scale, double trunkHeight, double nodeHeight) {
-		double taper = 1-nodeHeight/trunkHeight;
-		return trunkHeight/taper;
+		double bottom = this.getLowestBranchRatio()*trunkHeight;
+		double distFromBottom = nodeHeight - bottom;
+		double branchSectionLength = trunkHeight-bottom;
+		double taper = 1D - MathHelper.clamp_double(distFromBottom/branchSectionLength, 0.1, 0.9);
+		return trunkHeight/3*taper;
 	}
 
 	@Override
 	public double getTrunkHeight(double scale) {
-		return 57 + random.nextInt(22) + 22*scale;
+		return 37 + random.nextInt(16) + 16*scale;
 	}
 
 	@Override
 	public double getRootLength(double trunkHeight) {
-		return trunkHeight/4;
+		return trunkHeight/3;
 	}
 
 	@Override
 	public double getTrunkDiameter(double scale) {
-		return 1.6+scale;
+		return 2+2*scale;
 	}
 
 	@Override
 	public int getTrunkColumnHeight(double trunkHeight, double currentRadius, double maxRadius) {
-		return (int) trunkHeight;
+		if (currentRadius > 1){
+			double thirdHeight = trunkHeight/3;
+			double rad = 1-(currentRadius/maxRadius);
+			return (int) (thirdHeight + 2*(thirdHeight*rad) + random.nextInt(5)-2);
+		}
+		else {
+			return MathHelper.ceiling_double_int(trunkHeight);
+		}
 	}
 
 	@Override
 	public double getLowestBranchRatio() {
-		return random.nextFloat()/2+0.25;
+		return 0.25+random.nextFloat()/5;
 	}
 
 
@@ -92,7 +101,7 @@ public class JungleGiant extends TreeVars{
 	}
 
 	@Override
-	public void doLeafNode(TreePos tree, Branch branch, BlockPos pos) {
+	public void doLeafNode(TreeInstance tree, Branch branch, BlockPos pos) {
 		double height = pos.getY()-tree.y;
 		double taper = MathHelper.clamp_double((tree.type.leafTaper) * (tree.trunkHeight-height)/tree.trunkHeight, tree.type.leafTaper, 1);
 
@@ -124,7 +133,7 @@ public class JungleGiant extends TreeVars{
 
 
 								if (tree.type.vines > 0 && MathHelper.abs_max(xloop, zloop) > yloop && tree.random.nextBoolean()){
-									GenTree.genVine(tree, leafPos, xloop, zloop);
+									TreeGenMethods.genVine(tree, leafPos, xloop, zloop);
 								}
 							}
 						}

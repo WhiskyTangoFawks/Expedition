@@ -34,11 +34,11 @@ import wtf.proxy.CommonProxy;
 import wtf.utilities.UBC.UBCCompat;
 
 
-@Mod (modid = Core.coreID, name = Core.coreID, version = Core.version, dependencies = "after:undergroundbiomes")
+@Mod (modid = Core.coreID, name = "WTFs Expedition", version = Core.version, dependencies = "after:undergroundbiomes")
 
 public class Core {
 	public static  final String coreID = "wtfcore";
-	public static final String version = "1.10.2_v1.4";
+	public static final String version = "1.10.2_v1.5";
 
 	@SidedProxy(clientSide="wtf.proxy.ClientProxy", serverSide="wtf.proxy.CommonProxy")
 	public static CommonProxy proxy;
@@ -72,7 +72,7 @@ public class Core {
 	
 		MasterConfig.loadConfig();
 		
-		
+
 		CaveBiomesConfig.customConfig();
 
 		if (UBC){
@@ -108,6 +108,7 @@ public class Core {
 	
 	@EventHandler public void load(FMLInitializationEvent event) throws Exception
 	{
+	
 		
 		EventListenerRegistry.initListeners();
 		
@@ -125,6 +126,8 @@ public class Core {
 		if (GameplayConfig.wcictable){
 			RecipeParser.init();
 		}
+		
+		
 		
 
 	}	

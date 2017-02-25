@@ -8,15 +8,14 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.worldgen.trees.GenTree;
-import wtf.worldgen.trees.TreePos;
-import wtf.worldgen.trees.TreeVars;
-import wtf.worldgen.trees.TreeVars.LeafStyle;
+import wtf.worldgen.trees.TreeGenMethods;
+import wtf.worldgen.trees.TreeInstance;
 import wtf.worldgen.trees.components.Branch;
+import wtf.worldgen.trees.types.AbstractTreeType.LeafStyle;
 
 
 
-public class PoplarTree extends TreeVars{
+public class PoplarTree extends AbstractTreeType{
 
 	public PoplarTree(World world) {
 		super(world, Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.BIRCH), 
@@ -84,7 +83,7 @@ public class PoplarTree extends TreeVars{
 	}
 
 	@Override
-	public void doLeafNode(TreePos tree, Branch branch, BlockPos pos) {
+	public void doLeafNode(TreeInstance tree, Branch branch, BlockPos pos) {
 		double height = pos.getY()-tree.y;
 		double taper = MathHelper.clamp_double((tree.type.leafTaper) * (tree.trunkHeight-height)/tree.trunkHeight, tree.type.leafTaper, 1);
 
@@ -116,7 +115,7 @@ public class PoplarTree extends TreeVars{
 
 
 								if (tree.type.vines > 0 && MathHelper.abs_max(xloop, zloop) > yloop && tree.random.nextBoolean()){
-									GenTree.genVine(tree, leafPos, xloop, zloop);
+									TreeGenMethods.genVine(tree, leafPos, xloop, zloop);
 								}
 							}
 						}

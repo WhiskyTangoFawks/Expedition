@@ -12,7 +12,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import wtf.config.OverworldGenConfig;
 import wtf.utilities.simplex.Simplex;
 import wtf.utilities.wrappers.ChunkScan;
-import wtf.worldgen.OverworldGen;
+import wtf.worldgen.generators.TreeGenerator;
 
 public class BiomeAutumnForest extends BiomeForest implements SubBiome{
 

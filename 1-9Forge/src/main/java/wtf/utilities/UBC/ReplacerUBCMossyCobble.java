@@ -1,15 +1,12 @@
 package wtf.utilities.UBC;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.BiomeDictionary;
-import net.minecraftforge.common.BiomeDictionary.Type;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
 
 public class ReplacerUBCMossyCobble extends ReplacerUBCAbstract{
 
@@ -18,7 +15,7 @@ public class ReplacerUBCMossyCobble extends ReplacerUBCAbstract{
 	}
 
 	@Override
-	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen, IBlockState oldState) {
+	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, GeneratorMethods gen, IBlockState oldState) {
 		
 		IBlockState cobble = BlockSets.getTransformedState(getUBCStone(pos), Modifier.COBBLE);
 		IBlockState mossy = BlockSets.getTransformedState(cobble, Modifier.MOSSY);

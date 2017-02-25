@@ -2,6 +2,7 @@ package wtf.config;
 
 import java.io.File;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraftforge.common.config.Configuration;
 import wtf.Core;
@@ -81,7 +82,8 @@ public class GameplayConfig extends AbstractConfig {
 	String[] oresFrac = config.get("Mining", "Blocks which fracture adjacent stone when mined", defaultOres).getStringList();
 	if (miningOreFractures){
 		for (String string : oresFrac){
-			BlockSets.oreAndFractures.add(getBlockFromString(string));
+			Block state = getBlockFromString(string);
+			BlockSets.oreAndFractures.add(state);
 		}
 	}
 

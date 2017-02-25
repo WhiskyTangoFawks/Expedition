@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.Chunk;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
 
 public class ReplacerUBCSandstone extends ReplacerUBCAbstract{
 
@@ -14,7 +14,7 @@ public class ReplacerUBCSandstone extends ReplacerUBCAbstract{
 	}
 
 	@Override
-	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen, IBlockState oldState) {
+	public boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, GeneratorMethods gen, IBlockState oldState) {
 		/*
 		IBlockState state = getUBCStone(pos);
 		if (state.getBlock().hashCode() == sedHash){

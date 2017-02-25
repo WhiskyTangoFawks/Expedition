@@ -5,9 +5,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import wtf.api.Replacer;
 import wtf.utilities.simplex.SimplexHelper;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
 import wtf.worldgen.caves.CaveTypeRegister;
 import wtf.worldgen.caves.types.CaveTypeHell.hellBiome;
 
@@ -20,7 +19,7 @@ public class NetherrackReplacer extends Replacer{
 
 	private static SimplexHelper simplex = new SimplexHelper("NetherrackReplacer");
 	@Override
-	public  boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen,IBlockState oldState) {
+	public  boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, GeneratorMethods gen,IBlockState oldState) {
 		
 
 		

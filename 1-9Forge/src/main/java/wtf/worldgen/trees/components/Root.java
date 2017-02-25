@@ -1,16 +1,16 @@
 package wtf.worldgen.trees.components;
 
 import net.minecraft.util.math.BlockPos;
-import wtf.worldgen.trees.TreePos;
+import wtf.worldgen.trees.TreeInstance;
 
 public class Root extends Branch{
 
-	public Root(double oriX, double oriY, double oriZ, double x, double y, double z, double rootLength) {
-		super(oriX, oriY, oriZ, x, y, z, rootLength);
+	public Root(TreeInstance tree, double oriX, double oriY, double oriZ, double x, double y, double z, double rootLength) {
+		super(tree, oriX, oriY, oriZ, x, y, z, rootLength);
 
 	}
 
-	public void growDown(TreePos tree){
+	public void growDown(TreeInstance tree){
 		y -= vecY;
 		x += vecX/tree.type.rootAirDivisor;
 		z += vecZ/tree.type.rootAirDivisor;

@@ -16,6 +16,7 @@ import wtf.config.ore.WTFOresNewConfig;
 import wtf.utilities.simplex.SimplexHelper;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
+import wtf.worldgen.GeneratorMethods;
 
 public abstract class OreGenAbstract{
 	
@@ -47,7 +48,7 @@ public abstract class OreGenAbstract{
 	}
 	
 
-	public final void generate(World world, ChunkDividedOreMap map, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception{
+	public final void generate(World world, GeneratorMethods gen, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception{
 		if (this.dimension.contains(world.provider.getDimension())){
 			Biome biome = world.getBiomeForCoordsBody(new BlockPos(coords.getWorldX(), 100, coords.getWorldZ()));
 			if (reqBiomeTypes.size() > 0){
@@ -60,13 +61,13 @@ public abstract class OreGenAbstract{
 			}
 			
 			
-			doOreGen(world, map, random, coords, chunkscan);
+			doOreGen(world, gen, random, coords, chunkscan);
 		}
 	}
 	
-	public abstract void doOreGen(World world, ChunkDividedOreMap map,Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception;
+	public abstract void doOreGen(World world, GeneratorMethods gen,Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception;
 	
-	public abstract int genVein(World world, ChunkDividedOreMap map, Random random,	ChunkScan scan, BlockPos pos) throws Exception;
+	public abstract int genVein(World world, GeneratorMethods gen, Random random,	ChunkScan scan, BlockPos pos) throws Exception;
 	
 	public abstract int blocksReq();
 	

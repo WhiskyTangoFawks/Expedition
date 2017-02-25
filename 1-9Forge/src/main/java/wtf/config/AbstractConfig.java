@@ -32,7 +32,7 @@ public abstract class AbstractConfig {
 			Block block = Block.getBlockFromName(string);
 			if (block == null){
 				try {
-					throw new Exception ("Unable to find block for " + string);
+					throw new NoBlockRegistryFoundForStringException ("Unable to find block for " + string);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -50,7 +50,7 @@ public abstract class AbstractConfig {
 
 		if (block == null){
 			try {
-				throw new Exception("Unable to find block for " + stringArray[0]);
+				throw new NoBlockRegistryFoundForStringException("Unable to find block for " + stringArray[0]);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -106,5 +106,14 @@ public abstract class AbstractConfig {
 		
 		
 	}
-	
+	public static class NoBlockRegistryFoundForStringException extends Exception{
+		
+		public NoBlockRegistryFoundForStringException(String string){
+			super(string);
+		}
+
+		private static final long serialVersionUID = 1L;
+		
+		
+	}
 }

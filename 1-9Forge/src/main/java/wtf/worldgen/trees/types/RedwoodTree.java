@@ -8,12 +8,11 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.worldgen.trees.TreePos;
-import wtf.worldgen.trees.TreeVars;
-import wtf.worldgen.trees.TreeVars.LeafStyle;
+import wtf.worldgen.trees.TreeInstance;
 import wtf.worldgen.trees.components.Branch;
+import wtf.worldgen.trees.types.AbstractTreeType.LeafStyle;
 
-public class RedwoodTree extends TreeVars{
+public class RedwoodTree extends AbstractTreeType{
 	public RedwoodTree(World world) {
 		super(world, Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE), 
 				Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE), 
@@ -58,7 +57,7 @@ public class RedwoodTree extends TreeVars{
 		double bottom = this.getLowestBranchRatio()*trunkHeight;
 		double distFromBottom = nodeHeight - bottom;
 		double branchSectionLength = trunkHeight-bottom;
-		double taper = 1 - MathHelper.clamp_double(distFromBottom/branchSectionLength, 0.1, 1);
+		double taper = 1 - MathHelper.clamp_double(distFromBottom/branchSectionLength, 0.1, 0.9);
 		return  trunkHeight/4*taper;
 	}
 
@@ -101,7 +100,7 @@ public class RedwoodTree extends TreeVars{
 	}
 
 	@Override
-	public void doLeafNode(TreePos tree, Branch branch, BlockPos pos) {
+	public void doLeafNode(TreeInstance tree, Branch branch, BlockPos pos) {
 		
 		if (pos.getY() < tree.trunkHeight+tree.y){
 			tree.setBranch(pos, branch.axis);
@@ -112,7 +111,7 @@ public class RedwoodTree extends TreeVars{
 			double vecY = branch.vecY + random.nextFloat()-0.25;
 			double vecZ = branch.vecZ + random.nextFloat()-0.5;
 			
-			Branch twig = new Branch(pos.getX(), pos.getY(), pos.getZ(), vecX, vecY, vecZ, 2);
+			Branch twig = new Branch(tree, pos.getX(), pos.getY(), pos.getZ(), vecX, vecY, vecZ, 2);
 			
 			while (twig.hasNext()){
 				tree.setLeaf(twig.next());

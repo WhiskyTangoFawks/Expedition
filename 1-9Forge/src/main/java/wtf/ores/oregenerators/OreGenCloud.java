@@ -6,11 +6,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.ores.ChunkDividedOreMap;
 import wtf.ores.OreGenAbstract;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
-import wtf.utilities.wrappers.OrePos;
+import wtf.worldgen.GeneratorMethods;
 
 public class OreGenCloud extends OreGenAbstract {
 
@@ -30,7 +29,7 @@ public OreGenCloud(IBlockState blockstate, int[] genRange, int[] minmaxPerChunk,
 
 	
 	@Override
-	public void doOreGen(World world, ChunkDividedOreMap map, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception {
+	public void doOreGen(World world, GeneratorMethods gen, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception {
 
 		int blocksPerChunk = this.getBlocksPerChunk(world, coords, random, chunkscan.surfaceAvg);
 
@@ -41,7 +40,7 @@ public OreGenCloud(IBlockState blockstate, int[] genRange, int[] minmaxPerChunk,
 			int oriZ = coords.getWorldZ() + random.nextInt(16);
 			int oriY = this.getGenStartHeight(chunkscan.surfaceAvg, random);
 			
-			blocksPerChunk -= genVein(world, map, random, chunkscan, new BlockPos(oriX, oriY, oriZ));
+			blocksPerChunk -= genVein(world, gen, random, chunkscan, new BlockPos(oriX, oriY, oriZ));
 
 		}
 
@@ -49,7 +48,7 @@ public OreGenCloud(IBlockState blockstate, int[] genRange, int[] minmaxPerChunk,
 
 
 	@Override
-	public int genVein(World world, ChunkDividedOreMap map, Random random, ChunkScan scan, BlockPos pos)
+	public int genVein(World world, GeneratorMethods gen, Random random, ChunkScan scan, BlockPos pos)
 			throws Exception {
 
 		int blocksSet=0;
@@ -69,7 +68,7 @@ public OreGenCloud(IBlockState blockstate, int[] genRange, int[] minmaxPerChunk,
 
 						if (random.nextFloat() < this.veinDensity/2 + (1-distance/radius)/2){
 							blocksSet+=densityToSet+1;
-							map.put(new OrePos(pos.getX() + xloop, pos.getY() + yloop, pos.getZ() + zloop, densityToSet), this.oreBlock);
+							gen.setOreBlock(new BlockPos(pos.getX() + xloop, pos.getY() + yloop, pos.getZ() + zloop), this.oreBlock, densityToSet);
 						}
 					}
 				}

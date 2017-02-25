@@ -176,11 +176,13 @@ public class EntityStoneCrack extends Entity{
 				else if (state.getBlock() instanceof BlockDecoStatic && state.getValue(BlockDecoStatic.TYPE) == BlockDecoStatic.DecoType.CRACKED){
 					BlockDecoStatic block = (BlockDecoStatic) state.getBlock();
 					cobble = BlockSets.getTransformedState(block.parentBackground, Modifier.COBBLE);
-					worldObj.setBlockState(pos, cobble);
-					if (GameplayConfig.gravity){
-						GravityMethods.dropBlock(worldObj, pos, true);
+					if (cobble != null){
+						worldObj.setBlockState(pos, cobble);
+						if (GameplayConfig.gravity){
+							GravityMethods.dropBlock(worldObj, pos, true);
+						}
+						addAllAdj(pos);
 					}
-					addAllAdj(pos);
 				}
 				else if (cobble != null){
 					//if has cobble, then frac and drop the block

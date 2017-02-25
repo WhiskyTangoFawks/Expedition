@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
+import wtf.worldgen.caves.AbstractCaveType;
 
 public class CaveTypeFungal extends AbstractCaveType{
 
@@ -17,8 +17,8 @@ public class CaveTypeFungal extends AbstractCaveType{
 	}
 
 	@Override
-	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(gen.getWorld(), pos, 2, 0.5F) > 1){
+	public void generateCeiling(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		if (simplex.get3DNoiseScaled(gen.getWorld(), pos, 0.33) < 0.33){
 			gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
 		}
 
@@ -26,8 +26,8 @@ public class CaveTypeFungal extends AbstractCaveType{
 
 
 	@Override
-	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(gen.getWorld(), pos, 2, 0.1F) > 1){
+	public void generateFloor(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		if (simplex.get3DNoise(gen.getWorld(), pos.getX()/3, pos.getY(), pos.getZ()/3) <0.33){
 			gen.replaceBlock(pos, Blocks.MYCELIUM.getDefaultState());
 		}
 		
@@ -36,19 +36,14 @@ public class CaveTypeFungal extends AbstractCaveType{
 
 
 	@Override
-	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(gen.getWorld(), pos.up(), 2, 0.5F) > 1){
-			gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
-		}
-		else {
-			gen.genStalactite(pos, depth, false);
-		}
+	public void generateCeilingAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+			gen.genSpeleothem(pos, getSpelSize(random, depth), depth, false);
 	}
 
 
 	@Override
-	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(gen.getWorld(), pos.down(), 2, 0.1F) > 1){
+	public void generateFloorAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		if (random.nextBoolean()){
 		if (pos.getY() < 53){
 			gen.replaceBlock(pos, Blocks.BROWN_MUSHROOM.getDefaultState());
 		}
@@ -57,15 +52,15 @@ public class CaveTypeFungal extends AbstractCaveType{
 		}
 		}
 		else {
-			gen.genStalagmite(pos, depth, false);
+			gen.genSpeleothem(pos, getSpelSize(random, depth), depth, false);
 		}
 
 	}
 
 
 	@Override
-	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		if (getNoise(gen.getWorld(), pos, 2, 0.5F) > 1){
+	public void generateWall(GeneratorMethods gen, Random random, BlockPos pos, float depth, int height) {
+		if (simplex.get3DNoiseScaled(gen.getWorld(), pos, 0.33) < 0.33){
 			gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
 		}
 

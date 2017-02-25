@@ -56,8 +56,14 @@ public class SimplexHelper{
 		return get3DNoise(world, pos.getX(), pos.getY(), pos.getZ());
 	}
 	
-	public double get3dNoiseShifted(World world, BlockPos pos, int shift){
+	
+	
+	public double get3DNoiseShifted(World world, BlockPos pos, int shift){
 		return get3DNoise(world, pos.getX()+shift, pos.getY()+shift, pos.getZ()+shift);
+	}
+	
+	public double get3DNoiseScaled(World world, BlockPos pos, double multiplier) {
+		return get3DNoise(world, pos.getX()*multiplier, pos.getY()*multiplier, pos.getZ()*multiplier);
 	}
 
 	public double get3DNoise(World world, double d, double y, double f){
@@ -77,6 +83,9 @@ public class SimplexHelper{
 			System.out.println("Clearing world variable for simplex " + this.name);
 			simplex = null;
 		}
+		MinecraftForge.EVENT_BUS.unregister(this);
 	}
+
+
 	
 }

@@ -13,6 +13,7 @@ import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import wtf.config.GameplayConfig;
+import wtf.config.MasterConfig;
 
 public class LootEventListener {
 
@@ -50,13 +51,13 @@ public class LootEventListener {
 	@SubscribeEvent
 	public void lootTableLoad(LootTableLoadEvent event){
 		
-		if (GameplayConfig.homescroll){
+		if (GameplayConfig.homescroll && MasterConfig.gameplaytweaks){
 			for (NameAndPool entry : teleportScrollList){
 				entry.trySet(event, teleportScroll);
 			}
 		}
 		
-		if (GameplayConfig.wcictable){
+		if (GameplayConfig.wcictable && MasterConfig.gameplaytweaks){
 			blacksmith.trySet(event, wcicTable);
 		}
 	}

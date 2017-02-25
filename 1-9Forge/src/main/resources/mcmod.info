@@ -1,11 +1,11 @@
 [
 {
   "modid": "wtfcore",
-  "name": "WTFs-Expedition",
+  "name": "WTFs Expedition",
   "description": "WTFs-Expedition",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "",
+  "version": "1.5",
+  "mcversion": "1.10.2",
+  "url": "none",
   "updateUrl": "",
   "authorList": ["WhiskyTangoFox"],
   "credits": "",

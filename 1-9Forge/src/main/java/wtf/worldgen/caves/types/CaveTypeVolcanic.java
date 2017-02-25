@@ -3,10 +3,9 @@ package wtf.worldgen.caves.types;
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
-import wtf.config.CaveBiomesConfig;
 import wtf.init.BlockSets.Modifier;
-import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
+import wtf.worldgen.caves.AbstractCaveType;
 
 public class CaveTypeVolcanic extends AbstractCaveType{
 
@@ -16,54 +15,67 @@ public class CaveTypeVolcanic extends AbstractCaveType{
 	}
 
 	@Override
-	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+	public void generateCeiling(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 
-		if (getNoise(gen.getWorld(), pos, 5, 0.1F) < 1){
-			gen.transformBlock(pos, Modifier.LAVA_DRIP);
-		}
-	}
-
-	@Override
-	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		
-		
-		double noise = getNoise(gen.getWorld(), pos, 8, 1F);
-		//System.out.println(noise);
-		if (noise < 2){
-			if (CaveBiomesConfig.enableLavaPools){
-				gen.setLavaPatch(pos);
-			}
+		double noise = simplex.get3DNoise(gen.getWorld(), pos);
+		 if (noise < 0.2){
 			gen.transformBlock(pos, Modifier.LAVA_CRUST);
 		}
-		else if (noise < 3){
-			gen.transformBlock(pos, Modifier.LAVA_CRUST);
-		}
-		else if (noise < 4){
+		else if (noise < 0.4){
 				gen.transformBlock(pos, Modifier.COBBLE);						
 		}
 		
 	}
 
 	@Override
-	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-			gen.setCeilingAddon(pos, Modifier.COBBLE);
+	public void generateFloor(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		
+		double noise = simplex.get3DNoise(gen.getWorld(), pos);
+		 if (noise < 0.2){
+			gen.transformBlock(pos, Modifier.LAVA_CRUST);
 		}
-
-	@Override
-	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (getNoise(gen.getWorld(), pos.down(), 5, 0.1F) >= 2){
-			gen.setFloorAddon(pos, Modifier.COBBLE);
+		else if (noise < 0.4){
+				gen.transformBlock(pos, Modifier.COBBLE);						
 		}
+		
 	}
 
 	@Override
-	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		if (getNoise(gen.getWorld(), pos, 5, 1F) >= 2){
-			gen.transformBlock(pos, Modifier.COBBLE);
+	public void generateCeilingAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		double noise = simplex.get3DNoise(gen.getWorld(), pos.up());
+		 if (noise < 0.2){
+			 gen.setCeilingAddon(pos, Modifier.COBBLE);
+		}
+		else {
+			gen.genSpeleothem(pos, getSpelSize(random, depth), depth, false);						
+		}	
+		gen.setCeilingAddon(pos, Modifier.COBBLE);
+	}
+
+	@Override
+	public void generateFloorAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		double noise = simplex.get3DNoise(gen.getWorld(), pos.down());
+		 if (noise < 0.2){
+			 gen.setFloorAddon(pos, Modifier.COBBLE);
+		}
+		else {
+			gen.genSpeleothem(pos, getSpelSize(random, depth), depth, false);						
+		}	
+		gen.setFloorAddon(pos, Modifier.COBBLE);
+	}
+
+	@Override
+	public void generateWall(GeneratorMethods gen, Random random, BlockPos pos, float depth, int height) {
+		double noise = simplex.get3DNoise(gen.getWorld(), pos);
+		 if (noise < 0.2){
+			gen.transformBlock(pos, Modifier.LAVA_CRUST);
+		}
+		else if (noise < 0.4){
+				gen.transformBlock(pos, Modifier.COBBLE);						
 		}
 	}
 	
-	public void generateAdjacentWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height){
+	public void generateAdjacentWall(GeneratorMethods gen, Random random, BlockPos pos, float depth, int height){
 
 	}
 

@@ -16,18 +16,18 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import wtf.api.Replacer;
 import wtf.config.MasterConfig;
 import wtf.utilities.wrappers.StateAndModifier;
 import wtf.utilities.wrappers.StoneAndOre;
 import wtf.worldgen.replacers.LavaReplacer;
-import wtf.worldscan.NonSolidNoReplace;
+import wtf.worldgen.replacers.NonSolidNoReplace;
+import wtf.worldgen.replacers.Replacer;
 
 
 public class BlockSets {
 
 	public enum Modifier {
-		COBBLE, CRACKED, LAVA_CRUST, MOSSY, WATER_DRIP, LAVA_DRIP, FROZEN, SOUL, BRICK
+		COBBLE, CRACKED, LAVA_CRUST, MOSSY, WATER_DRIP, LAVA_DRIP, FROZEN, SOUL, BRICK, PUDDLE
 	}
 
 	
@@ -114,9 +114,9 @@ public class BlockSets {
 			if (block.getDefaultState().getMaterial() == Material.WATER){
 				liquidBlockSet.add(block);
 				nonSolidBlockSet.add(block);
-				//if (!isNonSolidAndCheckReplacement.containsKey(block)){
-				//	new NonSolidNoReplace(block);
-				//}
+				if (!isNonSolidAndCheckReplacement.containsKey(block)){
+					new NonSolidNoReplace(block);
+				}
 			}
 			if (block.getDefaultState().getMaterial() == Material.LAVA){
 				nonSolidBlockSet.add(block);
@@ -131,10 +131,13 @@ public class BlockSets {
 					new NonSolidNoReplace(block);
 				}
 			}
-
+			if (block.getDefaultState().getMaterial() == Material.PLANTS){
+				ReplaceHashset.add(block);
+			}
 			try{
 					if (block.isReplaceable(null, null)){
 						treeReplaceableBlocks.add(block);
+						ReplaceHashset.add(block);
 					}
 				}
 				catch (Exception e){

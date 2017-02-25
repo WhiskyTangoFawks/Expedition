@@ -28,7 +28,7 @@ public abstract class AbstractBlockDerivative extends Block{
 	public final IBlockState parentBackground;
 	protected final IBlockState parentForeground;
 	
-
+	
 	/**
 	 * This class is used to create blocks whose properties are derivative of other blocks
 	 * backState is used to determine the properties of the block

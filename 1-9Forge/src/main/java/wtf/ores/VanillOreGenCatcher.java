@@ -5,10 +5,11 @@ import net.minecraft.init.Blocks;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import wtf.Core;
 
 public class VanillOreGenCatcher {
 	
-	
+
 	private static boolean iron = true;
 	private static boolean coal = true;
 	private static boolean diamond = true;
@@ -48,7 +49,6 @@ public class VanillOreGenCatcher {
 			if (!redstone){event.setResult(Event.Result.DENY);}
 			break;
 		default:
-			event.setResult(Event.Result.DEFAULT);
 			break;
 		}
 

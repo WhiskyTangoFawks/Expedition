@@ -8,11 +8,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.worldgen.trees.TreePos;
-import wtf.worldgen.trees.TreeVars;
+import wtf.worldgen.trees.TreeInstance;
 import wtf.worldgen.trees.components.Branch;
 
-public class Taiga1Tree extends TreeVars{
+public class Taiga1Tree extends AbstractTreeType{
 
 	public Taiga1Tree(World world) {
 		super(world, Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE), 
@@ -52,7 +51,10 @@ public class Taiga1Tree extends TreeVars{
 
 	@Override
 	public double getBranchLength(double scale, double trunkHeight, double nodeHeight) {
-		double taper = 1-nodeHeight/trunkHeight;
+		double bottom = this.getLowestBranchRatio()*trunkHeight;
+		double distFromBottom = nodeHeight - bottom;
+		double branchSectionLength = trunkHeight-bottom;
+		double taper = 1 - MathHelper.clamp_double(distFromBottom/branchSectionLength, 0.1, 0.9);
 		return  1+(trunkHeight/5)*taper;
 	}
 
@@ -86,7 +88,7 @@ public class Taiga1Tree extends TreeVars{
 	}
 	
 	@Override
-	public void doLeafNode(TreePos tree, Branch branch, BlockPos pos) {
+	public void doLeafNode(TreeInstance tree, Branch branch, BlockPos pos) {
 		tree.setLeaf(pos.up());
 		tree.setLeaf(pos.north());
 		tree.setLeaf(pos.east());

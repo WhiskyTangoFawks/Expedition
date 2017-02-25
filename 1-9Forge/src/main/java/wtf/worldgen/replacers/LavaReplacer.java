@@ -9,10 +9,9 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import wtf.api.Replacer;
 import wtf.init.BlockSets.Modifier;
 import wtf.utilities.simplex.SimplexHelper;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
 import wtf.worldgen.caves.CaveTypeRegister;
 import wtf.worldgen.caves.types.CaveTypeHell.hellBiome;
 
@@ -26,10 +25,10 @@ public class LavaReplacer extends Replacer{
 	private static SimplexHelper simplex = new SimplexHelper("LavaReplacer");
 	
 	@Override
-	public  boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, CaveBiomeGenMethods gen, IBlockState oldState) {
+	public  boolean isNonSolidAndReplacement(Chunk chunk, BlockPos pos, GeneratorMethods gen, IBlockState oldState) {
 		//if (pos.getY() < 11){
 			
-			double noise = simplex.get3DNoise(chunk.getWorld(), pos);
+			double n = simplex.get3DNoiseScaled(gen.getWorld(),pos, 0.33);
 	
 			
 			World world = chunk.getWorld();
@@ -41,19 +40,17 @@ public class LavaReplacer extends Replacer{
 			}
 			else if (BiomeDictionary.isBiomeOfType(biome,BiomeDictionary.Type.SNOWY)){
 		
-				if (noise < 0.3){
+				if (n < 0.33){
+					return true;
+				}
+				else if (n < 0.66) {
 					gen.replaceBlock(pos, Blocks.OBSIDIAN.getDefaultState());
-				}
-				else if (noise < 0.6) {
-					gen.genFloatingStone(pos);
-				}
-				else if (noise < 0.9){
-					gen.genFloatingStone(pos);
-					gen.transformBlock(pos, Modifier.COBBLE);
-				}
-				if (simplex.get3DNoise(world, pos.getX()*3, pos.getY(), pos.getZ()*3) < 0.5){
 					gen.transformBlock(pos, Modifier.LAVA_CRUST);
 				}
+				else {
+					gen.replaceBlock(pos, Blocks.OBSIDIAN.getDefaultState());
+				}
+				
 				
 			}
 			else if (BiomeDictionary.isBiomeOfType(biome, Type.NETHER)){

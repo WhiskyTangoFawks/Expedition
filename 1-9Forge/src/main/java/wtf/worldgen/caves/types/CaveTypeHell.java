@@ -4,8 +4,8 @@ import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
 import wtf.utilities.wrappers.AdjPos;
-import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
+import wtf.worldgen.caves.AbstractCaveType;
 import wtf.worldgen.caves.types.nether.NetherDeadForest;
 import wtf.worldgen.caves.types.nether.NetherFireForest;
 import wtf.worldgen.caves.types.nether.NetherFrozen;
@@ -20,17 +20,17 @@ public class CaveTypeHell extends AbstractCaveType{
 	}
 
 	@Override
-	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+	public void generateCeiling(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		getSubType(pos).cavetype.generateCeiling(gen, random, pos, depth);
 	}
 
 	@Override
-	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+	public void generateFloor(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		getSubType(pos).cavetype.generateFloor(gen, random, pos, depth);	
 	}
 
 	@Override
-	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+	public void generateCeilingAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		hellBiome type = getSubType(pos);
 		if (random.nextInt(100) < type.cavetype.ceilingaddonchance){
 			type.cavetype.generateCeilingAddons(gen, random, pos, depth);
@@ -39,7 +39,7 @@ public class CaveTypeHell extends AbstractCaveType{
 	}
 
 	@Override
-	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+	public void generateFloorAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		hellBiome type = getSubType(pos);
 		if (random.nextInt(100) < type.cavetype.flooraddonchance){
 			type.cavetype.generateFloorAddons(gen, random, pos, depth);
@@ -47,13 +47,13 @@ public class CaveTypeHell extends AbstractCaveType{
 	}
 
 	@Override
-	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
+	public void generateWall(GeneratorMethods gen, Random random, BlockPos pos, float depth, int height) {
 		getSubType(pos).cavetype.generateWall(gen, random, pos, depth, height);
 		
 	}
 	
 	@Override
-	public void generateAdjacentWall(CaveBiomeGenMethods gen, Random random, AdjPos pos, float depth, int height){
+	public void generateAdjacentWall(GeneratorMethods gen, Random random, AdjPos pos, float depth, int height){
 		getSubType(pos).cavetype.generateAdjacentWall(gen, random, pos, depth, height);
 	}
 	

@@ -26,7 +26,7 @@ public class BlockPatchIce extends BlockBreakable{
 
 	public BlockPatchIce()
 	{
-		super(Material.ICE, false);
+		super(Material.CARPET, false);
 		this.slipperiness = 0.98F;
 
 		this.setSoundType(SoundType.GLASS);

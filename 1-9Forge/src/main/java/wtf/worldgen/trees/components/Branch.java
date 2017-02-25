@@ -3,6 +3,7 @@ package wtf.worldgen.trees.components;
 import net.minecraft.block.BlockLog;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import wtf.worldgen.trees.TreeInstance;
 
 public class Branch {
 
@@ -23,7 +24,18 @@ public class Branch {
 	
 	public final BlockLog.EnumAxis axis;
 	
-	public Branch(double oriX, double oriY, double oriZ, double x, double y, double z, double rootLength) {
+	
+	public Branch(TreeInstance tree, double oriX, double oriY, double oriZ, double x, double y, double z, double rootLength) {
+		/*
+		if (rootLength*(1-pitch) > 32){
+			try {
+				throw new Exception("Branch length > 32 ="+ rootLength + " "+ tree.type.getClass().toString());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		*/
 		this.oriX = oriX;
 		this.oriY = oriY;
 		this.oriZ = oriZ;
@@ -32,19 +44,22 @@ public class Branch {
 		vecY = y;
 		vecZ = z;
 		this.length=rootLength+1;
-		//System.out.println("Branch block pos = " + pos.getX() + " " + pos.getY() + " " + pos.getZ());
+		
 		this.x = oriX;
 		this.y = oriY;
 		this.z = oriZ;
-
 		
-		 axis = Math.abs(vecY) < MathHelper.abs_max(vecX, vecZ) ? (Math.abs(vecX) > Math.abs(vecZ) ? BlockLog.EnumAxis.X : BlockLog.EnumAxis.Z) : BlockLog.EnumAxis.Y;
+		axis = Math.abs(vecY) < MathHelper.abs_max(vecX, vecZ) ? (Math.abs(vecX) > Math.abs(vecZ) ? BlockLog.EnumAxis.X : BlockLog.EnumAxis.Z) : BlockLog.EnumAxis.Y;
 	}
 	 
 	public boolean hasNext(){
 		double xlength = x - oriX;
 		double ylength = y - oriY;
 		double zlength = z - oriZ;
+		if (length > 100){
+			//System.out.println("Infinite caught");	
+		}
+		
 		return length > 0 ? (xlength * xlength + ylength*ylength + zlength*zlength) < length*length : false;
 		//return count<length;
 	}

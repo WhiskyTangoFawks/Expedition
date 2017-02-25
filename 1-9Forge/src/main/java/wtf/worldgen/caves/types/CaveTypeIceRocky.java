@@ -2,12 +2,10 @@ package wtf.worldgen.caves.types;
 
 import java.util.Random;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
-import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
 
-public class CaveTypeIceRocky extends AbstractCaveType{
+public class CaveTypeIceRocky extends CaveTypeRocky{
 
 	public CaveTypeIceRocky(String name, int ceilingAddonPercentChance, int floorAddonPercentChance) {
 		super(name, ceilingAddonPercentChance, floorAddonPercentChance);
@@ -15,54 +13,10 @@ public class CaveTypeIceRocky extends AbstractCaveType{
 	}
 
 	@Override
-	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		double noise = getNoise(gen.getWorld(), pos, 5, 1);
-		if (noise > depth*5){
-			gen.replaceBlock(pos, Blocks.PACKED_ICE.getDefaultState());
-		}
-		else if (random.nextBoolean() && noise < depth*3){
-			gen.replaceBlock(pos, Blocks.COBBLESTONE.getDefaultState());
-		}
-
-	}
-
-	@Override
-	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-
-		double noise = getNoise(gen.getWorld(), pos, 5, 1);
-		if (noise > depth*5){
-			gen.replaceBlock(pos, Blocks.PACKED_ICE.getDefaultState());
-		}
-		else if (random.nextBoolean() && noise < depth*3){
-			gen.replaceBlock(pos, Blocks.COBBLESTONE.getDefaultState());
-		}
-		gen.setIcePatch(pos);
-
-	}
-
-	@Override
-	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (!gen.genStalactite(pos, depth, true)){
-			gen.replaceBlock(pos, Blocks.PACKED_ICE.getDefaultState());
-		}
-	}
-
-	@Override
-	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (!gen.genStalagmite(pos, depth, true)){
-			gen.replaceBlock(pos, Blocks.PACKED_ICE.getDefaultState());
-		}
-
-	}
-
-	@Override
-	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		double noise = getNoise(gen.getWorld(), pos, 5, 1);
-		if (noise > depth*5){
-			gen.replaceBlock(pos, Blocks.PACKED_ICE.getDefaultState());
-		}
-		else if (random.nextBoolean() &&noise < depth*3){
-			gen.replaceBlock(pos, Blocks.COBBLESTONE.getDefaultState());
+	public void generateFloor(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		super.generateFloor(gen, random, pos, depth);
+		if (simplex.get3DNoiseScaled(gen.getWorld(),pos, 0.2) < 0.5 ){
+			gen.setIcePatch(pos);
 		}
 	}
 

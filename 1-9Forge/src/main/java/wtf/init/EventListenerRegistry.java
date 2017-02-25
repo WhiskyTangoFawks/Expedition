@@ -1,8 +1,8 @@
 package wtf.init;
 
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import wtf.Core;
-import wtf.api.WTFWorldGen;
 import wtf.config.MasterConfig;
 import wtf.config.GameplayConfig;
 import wtf.config.OverworldGenConfig;
@@ -17,13 +17,10 @@ import wtf.gameplay.eventlisteners.ListenerPlantGrowth;
 import wtf.gameplay.eventlisteners.ListenerStoneFrac;
 import wtf.gameplay.eventlisteners.ListenerWaterSpawn;
 import wtf.gameplay.eventlisteners.ZombieListener;
-import wtf.ores.OreGenerator;
 import wtf.ores.VanillOreGenCatcher;
-import wtf.worldgen.DungeonPopulator;
-import wtf.worldgen.OverworldGen;
-import wtf.worldgen.PopulationDecorator;
+import wtf.worldgen.CoreWorldGenListener;
+import wtf.worldgen.generators.TickGenBuffer;
 import wtf.worldgen.trees.WorldGenTreeCancel;
-import wtf.worldscan.CoreWorldGenListener;
 
 public class EventListenerRegistry {
 
@@ -31,13 +28,8 @@ public class EventListenerRegistry {
 
 		MinecraftForge.EVENT_BUS.register(new CoreWorldGenListener());
 		MinecraftForge.TERRAIN_GEN_BUS.register(new CoreWorldGenListener());
-
-		if (MasterConfig.dungeonGeneration){
-			WTFWorldGen.addGen(new DungeonPopulator());
-		}
-	
 		
-		WTFWorldGen.addGen(new PopulationDecorator());
+		MinecraftForge.EVENT_BUS.register(new TickGenBuffer());
 		
 		if (MasterConfig.gameplaytweaks){
 			if (GameplayConfig.miningSpeedEnabled){
@@ -81,16 +73,15 @@ public class EventListenerRegistry {
 			MinecraftForge.EVENT_BUS.register(new LootEventListener());
 		}
 		
+		if (MasterConfig.enableOreGen){
+			MinecraftForge.ORE_GEN_BUS.register(new VanillOreGenCatcher());
+		}
 
 		if (GameplayConfig.childZombie){
 			MinecraftForge.EVENT_BUS.register(new ZombieListener());
 		}
 
-		if (MasterConfig.enableOreGen){
-			MinecraftForge.ORE_GEN_BUS.register(new VanillOreGenCatcher());
-			WTFWorldGen.addGen(new OreGenerator());
-		}
-		
+	
 		if (MasterConfig.enableOverworldGeneration){
 			if (OverworldGenConfig.genTrees){
 				MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenTreeCancel());
@@ -98,10 +89,6 @@ public class EventListenerRegistry {
 			}
 		}
 
-		
-		if (MasterConfig.enableOverworldGeneration){
-				WTFWorldGen.addGen(new OverworldGen());
-		}
 
 		if(MasterConfig.enableNameGetter){
 			MinecraftForge.EVENT_BUS.register(new ListenerBlockNameGetter());

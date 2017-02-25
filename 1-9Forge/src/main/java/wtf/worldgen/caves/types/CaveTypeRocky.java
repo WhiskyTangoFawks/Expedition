@@ -3,11 +3,9 @@ package wtf.worldgen.caves.types;
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
-import wtf.config.OverworldGenConfig;
 import wtf.init.BlockSets.Modifier;
-import wtf.utilities.wrappers.SurfacePos;
-import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
+import wtf.worldgen.caves.AbstractCaveType;
 
 public class CaveTypeRocky extends AbstractCaveType{
 
@@ -16,57 +14,54 @@ public class CaveTypeRocky extends AbstractCaveType{
 	}
 
 	@Override
-	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (random.nextBoolean() && getNoise(gen.getWorld(), pos, 2, 0.2F) < 1){
+	public void generateCeiling(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		double noise = simplex.get3DNoise(gen.getWorld(), pos);
+		if (noise < 0.05){
+			gen.transformBlock(pos, Modifier.CRACKED);
+		}
+		else if (noise > 0.75){
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
-		
 	}
 
 	@Override
-	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (random.nextBoolean() && getNoise(gen.getWorld(), pos, 5, 1F) < 1){
+	public void generateFloor(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		double noise = simplex.get3DNoise(gen.getWorld(), pos);
+		if (noise < 0.05){
+			gen.transformBlock(pos, Modifier.CRACKED);
+		}
+		else if (noise > 0.75){
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
-		
 	}
 
 	@Override
-	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (random.nextFloat() < depth && gen.genStalactite(pos, depth, false)){
-			
-		}
-		else {
-			gen.setCeilingAddon(pos, Modifier.COBBLE);
-		}
-		
+	public void generateCeilingAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		gen.genSpeleothem(pos, getSpelSize(random, depth), depth, false);
 	}
 
 	@Override
-	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (random.nextFloat() < depth && gen.genStalagmite(pos, depth, false)){
-			
+	public void generateFloorAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		if (random.nextBoolean()){
+			gen.genSpeleothem(pos, getSpelSize(random, depth), depth, false);
 		}
+				
 		else {
 			gen.setFloorAddon(pos, Modifier.COBBLE);
 		}
 	}
 
 	@Override
-	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
-		if (random.nextBoolean() && getNoise(gen.getWorld(), pos, 5, 1) < 1.5){
+	public void generateWall(GeneratorMethods gen, Random random, BlockPos pos, float depth, int height) {
+		double noise = simplex.get3DNoise(gen.getWorld(), pos);
+		if (noise < 0.05){
+			gen.transformBlock(pos, Modifier.CRACKED);
+		}
+		else if (noise > 0.75){
 			gen.transformBlock(pos, Modifier.COBBLE);
 		}
+	}
 
-	}
-	public void setTopBlock(CaveBiomeGenMethods gen, Random random, SurfacePos pos){
-		if (getNoise(gen.getWorld(), pos, 0.05, 1) < OverworldGenConfig.mountainFracChunkPercent){
-			//and if the blockpos simplex is > than the frac frequency
-			if (getNoise(gen.getWorld(), pos, 1, 1F) < OverworldGenConfig.mountainFracFreq){
-				gen.transformBlock(pos, Modifier.COBBLE);
-			}
-		}
-	}
 
 
 }

@@ -6,11 +6,10 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import wtf.ores.ChunkDividedOreMap;
 import wtf.ores.OreGenAbstract;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.ChunkScan;
-import wtf.utilities.wrappers.OrePos;
+import wtf.worldgen.GeneratorMethods;
 
 public class OreGenVein extends OreGenAbstract {
 
@@ -32,7 +31,7 @@ public class OreGenVein extends OreGenAbstract {
 	}
 
 	@Override
-	public void doOreGen(World world, ChunkDividedOreMap map, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception {
+	public void doOreGen(World world, GeneratorMethods gen, Random random, ChunkCoords coords, ChunkScan chunkscan) throws Exception {
 
 	
 		int blocksPerChunk = this.getBlocksPerChunk(world, coords, random, chunkscan.surfaceAvg);
@@ -47,7 +46,7 @@ public class OreGenVein extends OreGenAbstract {
 			int z = coords.getWorldZ() +random.nextInt(16);
 			int y = this.getGenStartHeight(chunkscan.surfaceAvg, random);
 
-			blocksPerChunk -= genVein(world, map, random, chunkscan, new BlockPos(x, y, z));
+			blocksPerChunk -= genVein(world, gen, random, chunkscan, new BlockPos(x, y, z));
 			
 			//The core issue, is that using the density function makes exponentially dense veins
 		}
@@ -56,7 +55,7 @@ public class OreGenVein extends OreGenAbstract {
 	}
 
 	@Override
-	public int genVein(World world, ChunkDividedOreMap map, Random random, ChunkScan scan, BlockPos pos)
+	public int genVein(World world, GeneratorMethods gen, Random random, ChunkScan scan, BlockPos pos)
 			throws Exception {
 		
 		int length = veinLength *  + random.nextInt(5)-2;
@@ -94,7 +93,7 @@ public class OreGenVein extends OreGenAbstract {
 					
 					if (random.nextFloat() < this.veinDensity){
 						blocksSet+= densityToSet+1;
-						map.put(new OrePos(xpos, ypos, zpos, densityToSet), this.oreBlock);
+						gen.setOreBlock(new BlockPos(xpos, ypos, zpos), this.oreBlock, densityToSet);
 					}
 						
 					xpos+=vecX;

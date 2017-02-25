@@ -3,8 +3,8 @@ package wtf.worldgen.caves.types;
 import java.util.Random;
 
 import net.minecraft.util.math.BlockPos;
-import wtf.worldgen.AbstractCaveType;
-import wtf.worldgen.caves.CaveBiomeGenMethods;
+import wtf.worldgen.GeneratorMethods;
+import wtf.worldgen.caves.AbstractCaveType;
 
 public class CaveTypeIce extends AbstractCaveType{
 
@@ -16,40 +16,42 @@ public class CaveTypeIce extends AbstractCaveType{
 
 
 	@Override
-	public void generateCeiling(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
+	public void generateCeiling(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		// TODO Auto-generated method stub
 		
 	}
 
 
 	@Override
-	public void generateFloor(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		gen.setIcePatch(pos);
+	public void generateFloor(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		
-	}
-
-
-	@Override
-	public void generateCeilingAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		if (random.nextBoolean()){
-			gen.genStalactite(pos, depth, true);
+		if (simplex.get3DNoiseScaled(gen.getWorld(),pos, 0.2) < 0.5 ){
+			//in shallow caves, depth = 0 to 0.33
+			if (simplex.get3DNoiseScaled(gen.getWorld(), pos, 0.1)/3 > depth){
+				gen.setIcePatch(pos);
+			}
+			else {
+				gen.setSnowPatch(pos);
+			}
 		}
-		else {
-			gen.genIcicle(pos);
-		}
+	}
+
+
+	@Override
+	public void generateCeilingAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		gen.genIcicle(pos);
+	}
+
+
+	@Override
+	public void generateFloorAddons(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
+		
 		
 	}
 
 
 	@Override
-	public void generateFloorAddons(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth) {
-		gen.genStalagmite(pos, depth, true);
-		
-	}
-
-
-	@Override
-	public void generateWall(CaveBiomeGenMethods gen, Random random, BlockPos pos, float depth, int height) {
+	public void generateWall(GeneratorMethods gen, Random random, BlockPos pos, float depth, int height) {
 		// TODO Auto-generated method stub
 		
 	}

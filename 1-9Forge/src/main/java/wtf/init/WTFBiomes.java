@@ -3,6 +3,7 @@ package wtf.init;
 import java.util.Collections;
 
 import net.minecraft.init.Biomes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeBeach;
 import net.minecraft.world.biome.BiomeDesert;
@@ -31,10 +32,11 @@ import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.BiomeManager.BiomeEntry;
 import net.minecraftforge.common.BiomeManager.BiomeType;
 import wtf.config.OverworldGenConfig;
-import wtf.worldgen.OverworldGen;
+import wtf.worldgen.caves.CaveTypeRegister;
+import wtf.worldgen.generators.SubBiomeGenerator;
+import wtf.worldgen.generators.TreeGenerator;
 import wtf.worldgen.subbiomes.BiomeAutumnForest;
 import wtf.worldgen.subbiomes.SubBiome;
-import wtf.worldgen.subbiomes.SubBiomeMangroveSwamp;
 
 public class WTFBiomes {
 
@@ -51,6 +53,11 @@ public class WTFBiomes {
 	//public static SubBiomeMeadow meadow;
 	
 	public static void init(){
+		System.out.println("Initialising cave biomes ");
+		for (ResourceLocation location : Biome.REGISTRY.getKeys()){
+			CaveTypeRegister.getCaveProfile(Biome.REGISTRY.getObject(location));
+		}
+	
 		
 		if (OverworldGenConfig.autumnForestID > 0){
 			autumnForest = new BiomeAutumnForest(Type.NORMAL, new BiomeProperties("Autumn Forest").setTemperature(0.4F).setRainfall(0.8F), Biomes.FOREST);
@@ -96,7 +103,7 @@ public class WTFBiomes {
 		BiomeManager.removeBiome(BiomeType.COOL, entry);
 		biome.setRegistryName(name);
 		Biome.registerBiome(id, name, biome);
-		OverworldGen.subBiomeRegistry.put((byte)parentBiome, subbiome);
+		SubBiomeGenerator.subBiomeRegistry.put((byte)parentBiome, subbiome);
 		return biome;
 	}
 	

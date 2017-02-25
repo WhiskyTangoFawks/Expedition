@@ -10,12 +10,11 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import wtf.blocks.BlockFoxfire;
 import wtf.init.WTFBlocks;
-import wtf.worldgen.trees.GenTree;
-import wtf.worldgen.trees.TreePos;
-import wtf.worldgen.trees.TreeVars;
+import wtf.worldgen.trees.TreeGenMethods;
+import wtf.worldgen.trees.TreeInstance;
 import wtf.worldgen.trees.components.Branch;
 
-public class DarkOakTree extends TreeVars{
+public class DarkOakTree extends AbstractTreeType{
 
 	public DarkOakTree(World world) {
 		super(world,  Blocks.LOG2.getDefaultState().withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.DARK_OAK),
@@ -56,8 +55,13 @@ public class DarkOakTree extends TreeVars{
 
 	@Override
 	public double getBranchLength(double scale, double trunkHeight, double nodeHeight) {
-		double taper = 1-nodeHeight/trunkHeight;
+		
+		double bottom = this.getLowestBranchRatio()*trunkHeight;
+		double distFromBottom = nodeHeight - bottom;
+		double branchSectionLength = trunkHeight-bottom;
+		double taper = 1 - MathHelper.clamp_double(distFromBottom/branchSectionLength, 0.1, 0.9);
 		return trunkHeight/2+trunkHeight/2*taper;
+		
 	}
 
 	@Override
@@ -101,7 +105,7 @@ public class DarkOakTree extends TreeVars{
 	}
 
 	@Override
-	public void doLeafNode(TreePos tree, Branch branch, BlockPos pos) {
+	public void doLeafNode(TreeInstance tree, Branch branch, BlockPos pos) {
 		double height = pos.getY()-tree.y;
 		double taper = MathHelper.clamp_double((tree.type.leafTaper) * (tree.trunkHeight-height)/tree.trunkHeight, tree.type.leafTaper, 1);
 
@@ -133,7 +137,7 @@ public class DarkOakTree extends TreeVars{
 
 
 								if (tree.type.vines > 0 && MathHelper.abs_max(xloop, zloop) > yloop && tree.random.nextBoolean()){
-									GenTree.genVine(tree, leafPos, xloop, zloop);
+									TreeGenMethods.genVine(tree, leafPos, xloop, zloop);
 								}
 							}
 						}
