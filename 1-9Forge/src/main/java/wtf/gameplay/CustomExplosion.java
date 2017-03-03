@@ -179,10 +179,11 @@ public class CustomExplosion extends Explosion{
 							double d11 = 1;
 							if (entity instanceof EntityLivingBase){
 								d11 = EnchantmentProtection.getBlastDamageReduction((EntityLivingBase)entity, damage);
+								if (vec.getStr() > 0.5){
+									entity.attackEntityFrom(DamageSource.causeExplosionDamage(this), (float) (d11*damage*GameplayConfig.explosionDamageMod));
+								}
 							}
-							if (vec.getStr() > 0.5){
-								entity.attackEntityFrom(DamageSource.causeExplosionDamage(this), (float) (d11*damage*GameplayConfig.explosionDamageMod));
-							}							
+													
 							entity.addVelocity(vec.strX()/10*GameplayConfig.explosionForceMod, vec.strY()/10*GameplayConfig.explosionForceMod, vec.strZ()/10*GameplayConfig.explosionForceMod);
 							entity.velocityChanged=true;
 

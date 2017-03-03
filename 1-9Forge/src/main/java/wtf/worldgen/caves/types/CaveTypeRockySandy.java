@@ -18,7 +18,7 @@ public class CaveTypeRockySandy extends CaveTypeRocky{
 	public CaveTypeRockySandy(String name, int ceilingAddonPercentChance, int floorAddonPercentChance, boolean redSand) {
 		super(name, ceilingAddonPercentChance, floorAddonPercentChance);
 		this.sand = redSand ?  Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND) : Blocks.SAND.getDefaultState();
-		this.sandstone = redSand? Blocks.RED_SANDSTONE.getDefaultState() : Blocks.SANDSTONE.getDefaultState();
+		this.sandstone = redSand? WTFBlocks.natRedSandStone.getDefaultState() : WTFBlocks.natSandStone.getDefaultState();
 		this.slab = redSand? WTFBlocks.redSandSlab.getDefaultState() : WTFBlocks.sandSlab.getDefaultState();
 	}
 
@@ -27,7 +27,7 @@ public class CaveTypeRockySandy extends CaveTypeRocky{
 	public void generateFloor(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
 		super.generateFloor(gen, random, pos, depth);		
 		if (simplex.get3DNoiseScaled(gen.getWorld(),pos, 0.2) < 0.5 ){
-			gen.replaceBlock(pos.up(), slab);
+			gen.setPatch(pos, slab);
 		}
 	}
 	@Override

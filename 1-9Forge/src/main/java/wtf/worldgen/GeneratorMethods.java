@@ -1,28 +1,20 @@
 package wtf.worldgen;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockNewLog;
-import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.BlockVine;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityMobSpawner;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
-import wtf.Core;
-import wtf.blocks.BlockDenseOre;
-import wtf.blocks.BlockDenseOreFalling;
 import wtf.blocks.BlockRoots;
 import wtf.blocks.BlockSpeleothem;
 import wtf.blocks.BlockIcicle.IcicleType;
@@ -34,7 +26,6 @@ import wtf.init.WTFBlocks;
 import wtf.utilities.wrappers.BlockMap;
 import wtf.utilities.wrappers.ChunkCoords;
 import wtf.utilities.wrappers.StateAndModifier;
-import wtf.utilities.wrappers.StoneAndOre;
 import wtf.worldgen.generators.queuedgen.QMobSpawner;
 import wtf.worldgen.generators.queuedgen.QModify;
 import wtf.worldgen.generators.queuedgen.QOreGen;
@@ -107,32 +98,21 @@ public class GeneratorMethods{
 		return false;
 
 	}
-
-
-	/**
-	 **Used to set an ice patch above the given block, checks that it's a normal block first
-	 **/
-	public void setIcePatch(BlockPos pos){
-
-		int hash = getWorld().getBlockState(pos).getMaterial().hashCode();
-		
-		if (isAir(pos.up())  && hash != Material.SNOW.hashCode() && hash != Material.ICE.hashCode() && hash != Material.PACKED_ICE.hashCode() && hash != Material.LAVA.hashCode()){
-			replaceBlock(pos.up(), WTFBlocks.icePatch.getDefaultState());
-		}
-	}
-	public void setSnowPatch(BlockPos pos){
-
-		int hash = getWorld().getBlockState(pos).getMaterial().hashCode();
-		
-		if (isAir(pos.up())  && hash != Material.SNOW.hashCode() && hash != Material.ICE.hashCode() && hash != Material.PACKED_ICE.hashCode() && hash != Material.LAVA.hashCode()){
-			replaceBlock(pos.up(), Blocks.SNOW_LAYER.getDefaultState());
-		}
-	}
-
-
+	
 	public void setWaterPatch(BlockPos pos){
-		if (CaveBiomesConfig.enablePuddles && getWorld().getBlockState(pos.up()).getMaterial().isSolid()){
-			replaceBlock(pos.up(), WTFBlocks.puddle.getDefaultState());
+		if (CaveBiomesConfig.enablePuddles){
+			setPatch(pos, WTFBlocks.puddle.getDefaultState());
+		}
+	}
+	
+	
+	private Material[] repset = {Material.SNOW, Material.ICE, Material.PACKED_ICE, Material.LAVA, Material.WATER, Material.AIR, Material.GRASS};
+	private HashSet<Material> rephashset = new HashSet<Material>(Arrays.asList(repset));
+	
+	public void setPatch(BlockPos pos, IBlockState patch){
+
+		if (isAir(pos.up())  && !rephashset.contains(getWorld().getBlockState(pos).getMaterial())){
+			replaceBlock(pos.up(), patch);
 		}
 	}
 
@@ -184,6 +164,10 @@ public class GeneratorMethods{
 			}
 
 			return false;	
+		}
+		
+		if (depth > 1){
+			return false;
 		}
 
 		if (frozen){

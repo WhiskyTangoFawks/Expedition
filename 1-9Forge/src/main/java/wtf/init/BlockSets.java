@@ -1,6 +1,5 @@
 package wtf.init;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,15 +7,12 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockRedSandstone;
 import net.minecraft.block.BlockSand;
-import net.minecraft.block.BlockSandStone;
 import net.minecraft.block.BlockStone;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
-import wtf.config.MasterConfig;
 import wtf.utilities.wrappers.StateAndModifier;
 import wtf.utilities.wrappers.StoneAndOre;
 import wtf.worldgen.replacers.LavaReplacer;
@@ -27,7 +23,7 @@ import wtf.worldgen.replacers.Replacer;
 public class BlockSets {
 
 	public enum Modifier {
-		COBBLE, CRACKED, LAVA_CRUST, MOSSY, WATER_DRIP, LAVA_DRIP, FROZEN, SOUL, BRICK, PUDDLE
+		COBBLE, CRACKED, LAVA_CRUST, MOSSY, WATER_DRIP, LAVA_DRIP, FROZEN, SOUL, BRICK
 	}
 
 	
@@ -36,8 +32,8 @@ public class BlockSets {
 	private static Block[] defOres = {Blocks.IRON_ORE, Blocks.DIAMOND_ORE, Blocks.LAPIS_ORE, Blocks.GOLD_ORE, Blocks.EMERALD_ORE, Blocks.REDSTONE_ORE, Blocks.LIT_REDSTONE_ORE, Blocks.COAL_ORE};
 	public static HashSet<Block> oreAndFractures = new HashSet<Block>(Arrays.asList(defOres));
 
-	private static IBlockState[] defOreStates = {Blocks.IRON_ORE.getDefaultState(), Blocks.DIAMOND_ORE.getDefaultState(), Blocks.LAPIS_ORE.getDefaultState(), Blocks.GOLD_ORE.getDefaultState(),
-			Blocks.EMERALD_ORE.getDefaultState(), Blocks.REDSTONE_ORE.getDefaultState(), Blocks.LIT_REDSTONE_ORE.getDefaultState(), Blocks.COAL_ORE.getDefaultState()};
+	//private static IBlockState[] defOreStates = {Blocks.IRON_ORE.getDefaultState(), Blocks.DIAMOND_ORE.getDefaultState(), Blocks.LAPIS_ORE.getDefaultState(), Blocks.GOLD_ORE.getDefaultState(),
+	//		Blocks.EMERALD_ORE.getDefaultState(), Blocks.REDSTONE_ORE.getDefaultState(), Blocks.LIT_REDSTONE_ORE.getDefaultState(), Blocks.COAL_ORE.getDefaultState()};
 	public static HashMap<StoneAndOre, IBlockState> stoneAndOre = new HashMap<StoneAndOre, IBlockState>();
 
 	public static HashMap<Block, Float> explosiveBlocks = new HashMap<Block, Float>();
@@ -50,10 +46,10 @@ public class BlockSets {
 
 	//WorldGenHashSets
 
-	private static Block[] listReplaceBlocks = {Blocks.STONE, Blocks.SANDSTONE, Blocks.DIRT, Blocks.GRAVEL, Blocks.SAND, Blocks.AIR, Blocks.LAVA, Blocks.COBBLESTONE, Blocks.FLOWING_LAVA, Blocks.OBSIDIAN, Blocks.WATER, Blocks.FLOWING_WATER, WTFBlocks.icePatch, Blocks.NETHERRACK};
+	private static Block[] listReplaceBlocks = {Blocks.STONE, WTFBlocks.natSandStone, WTFBlocks.natRedSandStone, Blocks.DIRT, Blocks.GRAVEL, Blocks.SAND, Blocks.AIR, Blocks.LAVA, Blocks.FLOWING_LAVA, Blocks.OBSIDIAN, Blocks.WATER, Blocks.FLOWING_WATER, WTFBlocks.icePatch, Blocks.NETHERRACK, Blocks.SNOW, Blocks.SNOW_LAYER};
 	public static HashSet<Block> ReplaceHashset = new HashSet<Block>(Arrays.asList(listReplaceBlocks));
 
-	private static Block[] listSurfaceBlocks = {Blocks.DIRT, Blocks.SAND, Blocks.SANDSTONE, Blocks.GRASS, Blocks.STONE, Blocks.GRAVEL, Blocks.CLAY, Blocks.HARDENED_CLAY, Blocks.STAINED_HARDENED_CLAY};
+	private static Block[] listSurfaceBlocks = {Blocks.DIRT, Blocks.SAND, WTFBlocks.natSandStone, WTFBlocks.natRedSandStone, Blocks.GRASS, Blocks.STONE, Blocks.GRAVEL, Blocks.CLAY, Blocks.HARDENED_CLAY, Blocks.STAINED_HARDENED_CLAY};
 	public static HashSet<Block> surfaceBlocks = new HashSet<Block>(Arrays.asList(listSurfaceBlocks));
 
 	public static HashSet<Block> treeReplaceableBlocks = new HashSet<Block>();
@@ -154,9 +150,6 @@ public class BlockSets {
 		new NonSolidNoReplace(Blocks.LEAVES);
 		new NonSolidNoReplace(Blocks.LEAVES2);
 
-		
-		
-
 		explosiveBlocks.put(Blocks.TNT, 4F);
 		explosiveBlocks.put(Blocks.REDSTONE_ORE, 2F);
 		explosiveBlocks.put(Blocks.LIT_REDSTONE_ORE, 3F);
@@ -175,10 +168,8 @@ public class BlockSets {
 		blockTransformer.put(new StateAndModifier(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE), Modifier.BRICK), Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE_SMOOTH));
 		blockTransformer.put(new StateAndModifier(Blocks.DIRT.getDefaultState(), Modifier.BRICK), Blocks.BRICK_BLOCK.getDefaultState());
 		blockTransformer.put(new StateAndModifier(Blocks.GRAVEL.getDefaultState(), Modifier.BRICK), Blocks.STONEBRICK.getDefaultState());
-		blockTransformer.put(new StateAndModifier(Blocks.SANDSTONE.getDefaultState(), Modifier.BRICK), Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.CHISELED));
-		blockTransformer.put(new StateAndModifier(Blocks.SAND.getDefaultState(), Modifier.BRICK), Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.CHISELED));
-		blockTransformer.put(new StateAndModifier(Blocks.RED_SANDSTONE.getDefaultState(), Modifier.BRICK), Blocks.RED_SANDSTONE.getDefaultState().withProperty(BlockRedSandstone.TYPE, BlockRedSandstone.EnumType.CHISELED));
-		blockTransformer.put(new StateAndModifier(Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND), Modifier.BRICK), Blocks.RED_SANDSTONE.getDefaultState().withProperty(BlockRedSandstone.TYPE, BlockRedSandstone.EnumType.CHISELED));
+		blockTransformer.put(new StateAndModifier(Blocks.SAND.getDefaultState(), Modifier.BRICK), Blocks.SANDSTONE.getDefaultState());
+		blockTransformer.put(new StateAndModifier(Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND), Modifier.BRICK), Blocks.RED_SANDSTONE.getDefaultState());
 		
 		for (Entry<StateAndModifier, IBlockState> entry : blockTransformer.entrySet()){
 			if (entry.getKey().modifier == Modifier.COBBLE){

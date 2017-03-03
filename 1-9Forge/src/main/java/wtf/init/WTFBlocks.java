@@ -8,6 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockSand;
+import net.minecraft.block.BlockSandStone;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
@@ -28,6 +30,7 @@ import wtf.blocks.BlockRoots;
 import wtf.blocks.BlockSpeleothem;
 import wtf.blocks.GenPlaceHolder;
 import wtf.blocks.BlockMycorrack;
+import wtf.blocks.BlockNaturalSandstone;
 import wtf.blocks.OreNitre;
 import wtf.blocks.substitution.BlockWTFTorch;
 import wtf.config.StoneRegEntry;
@@ -68,10 +71,10 @@ public class WTFBlocks{
 	
 	public static Block genMarker;
 	
-	public static void initBlocks(){	
-		/*
-		 * Replacers
-		 */		
+	public static Block natSandStone;
+	public static Block natRedSandStone;
+	
+	public static void initSimpleBlocks(){
 		new NetherrackReplacer();
 		
 		oreNitre =  registerBlock(new OreNitre(), "nitre_ore");
@@ -80,7 +83,8 @@ public class WTFBlocks{
 		foxfire = registerBlock(new BlockFoxfire(), "foxfire");
 		roots = (BlockRoots) registerBlockItemSubblocks(new BlockRoots(), 4, "roots");
 		oreSandGold = registerBlock(new OreSandGoldNugget(), "oreSandGold");
-		
+		natSandStone = registerBlock(new BlockNaturalSandstone(Blocks.SANDSTONE.getDefaultState()), "natSandStone");
+		natRedSandStone = registerBlock(new BlockNaturalSandstone(Blocks.RED_SANDSTONE.getDefaultState()), "natRedSandStone");
 		
 		//BlockstateWriter.writeDecoStaticBlockstate(Blocks.DIRT.getDefaultState(), "dirt0DecoStatic");
 		
@@ -101,6 +105,17 @@ public class WTFBlocks{
 		claySlab = registerBlock(new BlockClaySlab(), "slabClay");
 		
 		genMarker = registerBlock(new GenPlaceHolder(), "genMarker");
+		
+		wcicTable = registerBlock(new WCICTable(), "wcic_table");
+		GameRegistry.registerTileEntity(WCICTileEntity.class, "WCICTable");
+
+		BlockWTFTorch.torch_off = new BlockWTFTorch(false);
+		
+				
+		
+	}
+	
+	public static void initDependentBlocks(){	
 		
 		for(Entry<IBlockState, StoneRegEntry> entry : WTFStoneRegistry.stoneReg.entrySet()){
 			
@@ -156,12 +171,7 @@ public class WTFBlocks{
 		//registerBlockItemSubblocks(new RedstoneStalactite(false).setFrozen("redstoneSpeleothem_on"), 6, "redstoneSpeleothem_on");// .setFrozen("stoneSpeleothem");
 		//BlockstateWriter.writeSpeleothemBlockstate(Blocks.LIT_REDSTONE_ORE.getDefaultState(), "redstoneSpeleothem_on");
 		
-		wcicTable = registerBlock(new WCICTable(), "wcic_table");
-		GameRegistry.registerTileEntity(WCICTileEntity.class, "WCICTable");
-
-		BlockWTFTorch.torch_off = new BlockWTFTorch(false);
-		
-				
+	
 	}
 
 	public static Block registerBlock(Block block, String name){

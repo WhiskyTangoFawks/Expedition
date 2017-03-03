@@ -35,7 +35,7 @@ public class CaveTypeDirtWater extends AbstractCaveType{
 			gen.setWaterPatch(pos);
 		}
 		else if (simplex.get3DNoiseScaled(gen.getWorld(), pos, 0.2) > 0.66){
-			gen.replaceBlock(pos.up(), WTFBlocks.dirtSlab.getDefaultState());		
+			gen.setPatch(pos, WTFBlocks.dirtSlab.getDefaultState());		
 		}
 		
 

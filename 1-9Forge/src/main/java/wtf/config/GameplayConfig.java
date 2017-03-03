@@ -42,6 +42,7 @@ public class GameplayConfig extends AbstractConfig {
 
 	public static int featherDrop;
 	public static int stickDrop;
+	public static int mobDropsReqPlayer;
 	
 	public static double appleCoreConstant;
 	public static boolean plantGrowthMod;
@@ -148,6 +149,7 @@ public class GameplayConfig extends AbstractConfig {
 	 */
 	featherDrop = config.get("Drops", "Average number of minutes between chickens dropping feathers", 30).getInt()*20*60;
 	stickDrop = config.get("Drops", "Percentage of leaf blocks that drop sticks", 50).getInt();
+	mobDropsReqPlayer = config.get("Drops", "When not killed by a player, mobs only drop items this percentage of the time", 25).getInt();
 
 	/**
 	 * AppleCore options

@@ -13,6 +13,9 @@ public class CaveBiomesConfig extends AbstractConfig{
 
 	public static boolean enablePuddles;
 	
+	public static boolean replaceSandstone;
+	public static boolean updateSandstone;
+	
 	public static void customConfig() {
 
 		Configuration config = new Configuration(new File(configPath+"WTFCaveBiomesConfig.cfg"));
@@ -27,6 +30,8 @@ public class CaveBiomesConfig extends AbstractConfig{
 		
 		enablePuddles = config.get("Cave Options", "Allow generation of puddles in wet cave biomes", true).getBoolean();
 	
+		replaceSandstone = config.get("Block Replacement", "Replace sandstone during world gen- prevents stalactites forming in pyramid ruins", true).getBoolean();
+		updateSandstone = config.get("Block Replacement", "Update sandstone after replacement- required only if you've changed the texture of naturalised sandstone", true).getBoolean();
 		
 		config.save();
 		

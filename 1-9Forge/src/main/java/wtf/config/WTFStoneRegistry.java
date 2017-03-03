@@ -19,6 +19,7 @@ import net.minecraftforge.common.config.Configuration;
 import wtf.Core;
 import wtf.init.BlockSets;
 import wtf.init.BlockSets.Modifier;
+import wtf.init.WTFBlocks;
 import wtf.utilities.UBC.UBCCompat;
 import wtf.utilities.wrappers.StateAndModifier;
 
@@ -41,8 +42,8 @@ public class WTFStoneRegistry extends AbstractConfig {
 		defBlockStateLocations.put(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE), "granite#normal");
 		defBlockStateLocations.put(Blocks.SAND.getDefaultState(), "sand#normal");
 		defBlockStateLocations.put(Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND), "red_sand#normal");
-		defBlockStateLocations.put(Blocks.SANDSTONE.getDefaultState(), "sandstone#normal");
-		defBlockStateLocations.put(Blocks.RED_SANDSTONE.getDefaultState(), "red_sandstone#normal");
+		defBlockStateLocations.put(WTFBlocks.natSandStone.getDefaultState(), "sandstone#normal");
+		defBlockStateLocations.put(WTFBlocks.natRedSandStone.getDefaultState(), "red_sandstone#normal");
 		defBlockStateLocations.put(Blocks.DIRT.getDefaultState(), "dirt#normal");
 		defBlockStateLocations.put(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, DirtType.COARSE_DIRT), "coarse_dirt#normal");
 		defBlockStateLocations.put(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, DirtType.PODZOL), "podzol#normal");
@@ -56,8 +57,8 @@ public class WTFStoneRegistry extends AbstractConfig {
 		defTextureLocations.put(Blocks.STONE.getDefaultState().withProperty(BlockStone.VARIANT, BlockStone.EnumType.GRANITE), "minecraft:blocks/stone_granite");
 		defTextureLocations.put(Blocks.SAND.getDefaultState(), "minecraft:blocks/sand");
 		defTextureLocations.put(Blocks.SAND.getDefaultState().withProperty(BlockSand.VARIANT, BlockSand.EnumType.RED_SAND), "minecraft:blocks/red_sand");
-		defTextureLocations.put(Blocks.SANDSTONE.getDefaultState(), "minecraft:blocks/sandstone_top");
-		defTextureLocations.put(Blocks.RED_SANDSTONE.getDefaultState(), "minecraft:blocks/red_sandstone_top");
+		defTextureLocations.put(WTFBlocks.natSandStone.getDefaultState(), "minecraft:blocks/sandstone_top");
+		defTextureLocations.put(WTFBlocks.natRedSandStone.getDefaultState(), "minecraft:blocks/red_sandstone_top");
 		defTextureLocations.put(Blocks.DIRT.getDefaultState(), "minecraft:blocks/dirt");
 		defTextureLocations.put(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, DirtType.COARSE_DIRT), "minecraft:blocks/coarse_dirt");
 		defTextureLocations.put(Blocks.DIRT.getDefaultState().withProperty(BlockDirt.VARIANT, DirtType.PODZOL), "minecraft:blocks/podzol");
@@ -65,12 +66,12 @@ public class WTFStoneRegistry extends AbstractConfig {
 		defTextureLocations.put(Blocks.GRAVEL.getDefaultState(), "minecraft:blocks/gravel");
 		defTextureLocations.put(Blocks.NETHERRACK.getDefaultState(), "minecraft:blocks/netherrack");
 		
-		defCobble.put(Blocks.SANDSTONE.getDefaultState(), "minecraft:sand@0");
-		defCobble.put(Blocks.RED_SANDSTONE.getDefaultState(), "minecraft:sand@1");
+		defCobble.put(WTFBlocks.natSandStone.getDefaultState(), "minecraft:sand@0");
+		defCobble.put(WTFBlocks.natRedSandStone.getDefaultState(), "minecraft:sand@1");
 		
 		defSpeed.put(Blocks.STONE, 15);
-		defSpeed.put(Blocks.SANDSTONE, 30);
-		defSpeed.put(Blocks.RED_SANDSTONE, 30);
+		defSpeed.put(WTFBlocks.natSandStone, 30);
+		defSpeed.put(WTFBlocks.natRedSandStone, 30);
 		if (Core.UBC){
 			defSpeed.put(UBCCompat.IgneousStone[0].getBlock(), 5);
 			defSpeed.put(UBCCompat.MetamorphicStone[0].getBlock(), 20);
@@ -82,7 +83,7 @@ public class WTFStoneRegistry extends AbstractConfig {
 		loadOverrideMap();
 		config.load();
 
-		String[] defstone = {"minecraft:stone@0", "minecraft:stone@1", "minecraft:stone@3", "minecraft:stone@5","minecraft:sandstone@0", "minecraft:red_sandstone@0", "minecraft:obsidian@0", "minecraft:dirt@0", 
+		String[] defstone = {"minecraft:stone@0", "minecraft:stone@1", "minecraft:stone@3", "minecraft:stone@5","wtfcore:natSandStone@0", "wtfcore:natRedSandStone@0", "minecraft:obsidian@0", "minecraft:dirt@0", 
 				"minecraft:sand@0", "minecraft:sand@1", "minecraft:gravel@0", "minecraft:netherrack@0"};
 				
 		

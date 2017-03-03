@@ -21,7 +21,6 @@ public class SwampTree extends AbstractTreeType {
 		vines = 6;
 		leafYMax=3;
 		topLimitDown = Math.PI/2;
-		this.setWaterGen(3);
 		this.genBuffer = -10;
 		
 		}
@@ -33,7 +32,7 @@ public class SwampTree extends AbstractTreeType {
 
 	@Override
 	public double getBranchRotation(double scale, double numBranches) {
-		return numBranches*Math.PI*2+1;
+		return Math.PI*2/5;
 	}
 
 	@Override

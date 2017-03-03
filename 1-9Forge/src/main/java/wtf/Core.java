@@ -83,9 +83,10 @@ public class Core {
 		}
 		OverworldGenConfig.loadConfig();
 		GameplayConfig.loadConfig();
+		WTFBlocks.initSimpleBlocks();
 		WTFStoneRegistry.loadStoneReg();
 		BlockSets.initBlockSets();
-		WTFBlocks.initBlocks();
+		WTFBlocks.initDependentBlocks();
 		proxy.initWCICRender();
 		WTFItems.initItems();
 		WTFEntities.initEntites();

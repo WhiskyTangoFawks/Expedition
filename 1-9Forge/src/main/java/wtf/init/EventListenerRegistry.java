@@ -2,13 +2,16 @@ package wtf.init;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import wtf.Core;
 import wtf.config.MasterConfig;
+import wtf.config.CaveBiomesConfig;
 import wtf.config.GameplayConfig;
 import wtf.config.OverworldGenConfig;
 import wtf.gameplay.eventlisteners.ListenerBlockNameGetter;
 import wtf.gameplay.eventlisteners.ListenerChickenDrops;
 import wtf.gameplay.eventlisteners.ListenerCustomExplosion;
+import wtf.gameplay.eventlisteners.ListenerEntityDrops;
 import wtf.gameplay.eventlisteners.ListenerGravity;
 import wtf.gameplay.eventlisteners.ListenerLeafDrops;
 import wtf.gameplay.eventlisteners.ListenerMiningSpeed;
@@ -19,6 +22,7 @@ import wtf.gameplay.eventlisteners.ListenerWaterSpawn;
 import wtf.gameplay.eventlisteners.ZombieListener;
 import wtf.ores.VanillOreGenCatcher;
 import wtf.worldgen.CoreWorldGenListener;
+import wtf.worldgen.SandstoneNaturaliser;
 import wtf.worldgen.generators.TickGenBuffer;
 import wtf.worldgen.trees.WorldGenTreeCancel;
 
@@ -69,6 +73,9 @@ public class EventListenerRegistry {
 				MinecraftForge.EVENT_BUS.register(new ListenerPlantGrowth());
 				Core.coreLog.info("Plang growth speed modifier listener registered");
 			}
+			if (GameplayConfig.mobDropsReqPlayer > 0){
+				MinecraftForge.EVENT_BUS.register(new ListenerEntityDrops());
+			}		
 			
 			MinecraftForge.EVENT_BUS.register(new LootEventListener());
 		}
@@ -85,10 +92,18 @@ public class EventListenerRegistry {
 		if (MasterConfig.enableOverworldGeneration){
 			if (OverworldGenConfig.genTrees){
 				MinecraftForge.TERRAIN_GEN_BUS.register(new WorldGenTreeCancel());
-				//MinecraftForge.EVENT_BUS.register(new WorldGenTreeCancel());
 			}
 		}
+		
+		if (CaveBiomesConfig.replaceSandstone){
 
+			
+			MinecraftForge.TERRAIN_GEN_BUS.register(new SandstoneNaturaliser());
+			MinecraftForge.EVENT_BUS.register(new SandstoneNaturaliser());
+			//GameRegistry.registerWorldGenerator(new SandstoneNaturaliser(), 0);
+			//Core.coreLog.info("Sandstone Naturaliser Registered");
+			
+		}
 
 		if(MasterConfig.enableNameGetter){
 			MinecraftForge.EVENT_BUS.register(new ListenerBlockNameGetter());

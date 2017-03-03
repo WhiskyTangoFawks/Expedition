@@ -2,8 +2,7 @@
     "forge_marker": 1,
     "defaults": {
         "textures": {
-            "particle": "blocks/water_still",
-        	"texture": "blocks/water_still"
+            "all": "blocks/water_still"
         },
         "model": "wtfcore:patch",
         "uvlock": true

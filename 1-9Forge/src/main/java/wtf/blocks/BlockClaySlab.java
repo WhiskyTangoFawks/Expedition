@@ -1,5 +1,6 @@
 package wtf.blocks;
 
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.BlockColored;
@@ -7,8 +8,12 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -29,6 +34,12 @@ public class BlockClaySlab extends BlockColored{
 	protected static final AxisAlignedBB height1 = new AxisAlignedBB(0.0D, 0.0D, 0.0D, 1.0D, 0.0625D, 1.0D);
 	private IBlockState state = Blocks.STAINED_HARDENED_CLAY.getDefaultState();
 
+    @SideOnly(Side.CLIENT)
+    public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
+    {
+        
+    }
+	
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
 	{
 		return height1;
@@ -69,16 +80,7 @@ public class BlockClaySlab extends BlockColored{
         return state.getBlock().getExplosionResistance(exploder)/2.5F;
     }
     
-  
 
-    
-    @Override
-	@SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer()
-    {
-        return state.getBlock().getBlockLayer();
-    }
-    
     @Override
 	public SoundType getSoundType()
     {
@@ -97,11 +99,4 @@ public class BlockClaySlab extends BlockColored{
         return this.state.getBlock().canDropFromExplosion(explosionIn);
     }
     
-  /*
-    public MapColor getMapColor(IBlockState state)
-    {
-        return MapColor.ADOBE;
-    }
-    */
-	
 }

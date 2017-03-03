@@ -1,40 +1,18 @@
 package wtf.init;
 
-import java.util.Collections;
-
 import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.BiomeBeach;
-import net.minecraft.world.biome.BiomeDesert;
-import net.minecraft.world.biome.BiomeEnd;
-import net.minecraft.world.biome.BiomeForest;
-import net.minecraft.world.biome.BiomeForestMutated;
-import net.minecraft.world.biome.BiomeHell;
-import net.minecraft.world.biome.BiomeHills;
-import net.minecraft.world.biome.BiomeJungle;
-import net.minecraft.world.biome.BiomeMesa;
-import net.minecraft.world.biome.BiomeMushroomIsland;
-import net.minecraft.world.biome.BiomeOcean;
-import net.minecraft.world.biome.BiomePlains;
-import net.minecraft.world.biome.BiomeRiver;
-import net.minecraft.world.biome.BiomeSavanna;
-import net.minecraft.world.biome.BiomeSavannaMutated;
-import net.minecraft.world.biome.BiomeSnow;
-import net.minecraft.world.biome.BiomeStoneBeach;
-import net.minecraft.world.biome.BiomeSwamp;
-import net.minecraft.world.biome.BiomeTaiga;
-import net.minecraft.world.biome.BiomeVoid;
 import net.minecraft.world.biome.Biome.BiomeProperties;
 import net.minecraft.world.biome.BiomeForest.Type;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeManager;
 import net.minecraftforge.common.BiomeManager.BiomeEntry;
 import net.minecraftforge.common.BiomeManager.BiomeType;
+import wtf.config.MasterConfig;
 import wtf.config.OverworldGenConfig;
 import wtf.worldgen.caves.CaveTypeRegister;
 import wtf.worldgen.generators.SubBiomeGenerator;
-import wtf.worldgen.generators.TreeGenerator;
 import wtf.worldgen.subbiomes.BiomeAutumnForest;
 import wtf.worldgen.subbiomes.SubBiome;
 
@@ -55,11 +33,11 @@ public class WTFBiomes {
 	public static void init(){
 		System.out.println("Initialising cave biomes ");
 		for (ResourceLocation location : Biome.REGISTRY.getKeys()){
-			CaveTypeRegister.getCaveProfile(Biome.REGISTRY.getObject(location));
+			Biome biome = Biome.REGISTRY.getObject(location);
+			CaveTypeRegister.getCaveProfile(biome);
 		}
-	
-		
-		if (OverworldGenConfig.autumnForestID > 0){
+
+		if (MasterConfig.enableOverworldGeneration && OverworldGenConfig.autumnForestID > 0){
 			autumnForest = new BiomeAutumnForest(Type.NORMAL, new BiomeProperties("Autumn Forest").setTemperature(0.4F).setRainfall(0.8F), Biomes.FOREST);
 			registerSubBiome(autumnForest, "AutumnForest", OverworldGenConfig.autumnForestID, 4);
 			BiomeDictionary.registerBiomeType(autumnForest, BiomeDictionary.Type.FOREST);

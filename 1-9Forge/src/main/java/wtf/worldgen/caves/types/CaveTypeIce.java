@@ -2,7 +2,9 @@ package wtf.worldgen.caves.types;
 
 import java.util.Random;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
+import wtf.init.WTFBlocks;
 import wtf.worldgen.GeneratorMethods;
 import wtf.worldgen.caves.AbstractCaveType;
 
@@ -28,10 +30,10 @@ public class CaveTypeIce extends AbstractCaveType{
 		if (simplex.get3DNoiseScaled(gen.getWorld(),pos, 0.2) < 0.5 ){
 			//in shallow caves, depth = 0 to 0.33
 			if (simplex.get3DNoiseScaled(gen.getWorld(), pos, 0.1)/3 > depth){
-				gen.setIcePatch(pos);
+				gen.setPatch(pos, WTFBlocks.icePatch.getDefaultState());
 			}
 			else {
-				gen.setSnowPatch(pos);
+				gen.setPatch(pos, Blocks.SNOW_LAYER.getDefaultState());
 			}
 		}
 	}

@@ -9,7 +9,7 @@
 
         }],
         "inventory": [{
-        
+       	 "textures" : { "all" : "blocks/hardened_clay"}
         }],
         "color" : {
         	"black" : { "textures" : { "all" : "blocks/hardened_clay"} },
@@ -28,24 +28,9 @@
        		"silver" : { "textures" : { "all" : "blocks/hardened_clay_stained_silver"} },
        		"white" : { "textures" : { "all" : "blocks/hardened_clay_stained_white"} },
        		"yellow" : { "textures" : { "all" : "blocks/hardened_clay_stained_yellow"} }
-		},
+		}
 		
-		 "inventory0": [{"textures" : { "all" : "blocks/hardened_clay"}}],
-        "inventory1": [{"textures" : { "all" : "blocks/hardened_clay_stained_blue"}}],
-        "inventory2": [{"textures" : { "all" : "blocks/hardened_clay_stained_brown"}}],
-        "inventory3": [{"textures" : { "all" : "blocks/hardened_clay_stained_cyan"}}],
-        "inventory4": [{"textures" : { "all" : "blocks/hardened_clay_stained_gray"}}],
-        "inventory5": [{"textures" : { "all" : "blocks/hardened_clay_stained_green"}}],
-        "inventory6": [{"textures" : { "all" : "blocks/hardened_clay_stained_light_blue"}}],
-        "inventory7": [{"textures" : { "all" : "blocks/hardened_clay_stained_lime"}}],
-        "inventory8": [{"textures" : { "all" : "blocks/hardened_clay_stained_magenta"}}],
-        "inventory9": [{"textures" : { "all" : "blocks/hardened_clay_stained_orange"}}],
-        "inventory10": [{"textures" : { "all" : "blocks/hardened_clay_stained_pink"}}],
-        "inventory11": [{"textures" : { "all" : "blocks/hardened_clay_stained_purple"}}],
-        "inventory12": [{"textures" : { "all" : "blocks/hardened_clay_stained_red"}}],
-        "inventory13": [{"textures" : { "all" : "blocks/hardened_clay_stained_silver"}}],
-        "inventory14": [{"textures" : { "all" : "blocks/hardened_clay_stained_white"}}],
-        "inventory15": [{"textures" : { "all" : "blocks/hardened_clay_stained_yellow"}}]
-        
+		
     }
+    
 }

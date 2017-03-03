@@ -7,6 +7,8 @@ import java.util.concurrent.Executors;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
+import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID;
+import net.minecraftforge.event.terraingen.ChunkGeneratorEvent.ReplaceBiomeBlocks;
 import net.minecraftforge.event.terraingen.PopulateChunkEvent;
 import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -25,6 +27,10 @@ public class CoreWorldGenListener {
 	public CoreWorldGenListener(){
 		executor = Executors.newFixedThreadPool(5); 
 		masterMap = new HashMap<Integer, GenScanMap>();
+	}
+	
+	public void onVillageSelectBlock(GetVillageBlockID event) {
+		
 	}
 	
 	@SubscribeEvent(priority=EventPriority.LOWEST)

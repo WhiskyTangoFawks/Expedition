@@ -2,6 +2,7 @@ package wtf.worldgen.caves.types;
 
 import java.util.Random;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import wtf.init.BlockSets.Modifier;
 import wtf.init.WTFBlocks;
@@ -16,21 +17,28 @@ public class CaveTypeMossy extends AbstractCaveType{
 
 	@Override
 	public void generateCeiling(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
-
-		if (simplex.get3DNoise(gen.getWorld(), pos) > 0.66){
+		boolean mossy = simplex.get3DNoise(gen.getWorld(), pos) > 0.5;
+		if (mossy){
 			gen.transformBlock(pos, Modifier.MOSSY);
 		}
 	}
 
 	@Override
 	public void generateFloor(GeneratorMethods gen, Random random, BlockPos pos, float depth) {
-		if (simplex.get3DNoiseScaled(gen.getWorld(), pos, 0.2) < 0.3){
-			gen.replaceBlock(pos.up(), WTFBlocks.dirtSlab.getDefaultState());
-		}
-		else {
-			if (simplex.get3DNoise(gen.getWorld(), pos) > 0.66){
-				gen.transformBlock(pos, Modifier.MOSSY);
+		double noise = simplex.get3DNoiseScaled(gen.getWorld(), pos, 0.1);
+		boolean mossy = simplex.get3DNoise(gen.getWorld(), pos) > 0.5;
+		
+		if (noise < 0.33){
+			if (mossy){
+				gen.setPatch(pos, WTFBlocks.mossyDirtSlab.getDefaultState());
 			}
+			else {
+				gen.setPatch(pos, WTFBlocks.dirtSlab.getDefaultState());
+			}
+		}
+		
+		if (mossy){	
+			gen.transformBlock(pos, Modifier.MOSSY);
 		}
 	}
 
@@ -48,7 +56,17 @@ public class CaveTypeMossy extends AbstractCaveType{
 	@Override
 	public void generateWall(GeneratorMethods gen, Random random, BlockPos pos, float depth, int height) {
 
-		if (simplex.get3DNoise(gen.getWorld(), pos) > 0.66){
+		double noise = simplex.get3DNoiseScaled(gen.getWorld(), pos, 0.1);
+		boolean mossy = simplex.get3DNoise(gen.getWorld(), pos) > 0.5;
+		
+		if (height < 3 && noise < 0.33){
+			gen.replaceBlock(pos, Blocks.DIRT.getDefaultState());
+			if (mossy){
+				gen.transformBlock(pos, Modifier.MOSSY);
+			}
+		}
+		
+		if (mossy){	
 			gen.transformBlock(pos, Modifier.MOSSY);
 		}
 	}

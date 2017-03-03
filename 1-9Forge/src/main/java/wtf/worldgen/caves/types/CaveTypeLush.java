@@ -54,10 +54,10 @@ public class CaveTypeLush extends AbstractCaveType{
 		}
 		if (simplex.get3DNoiseShifted(gen.getWorld(), pos, -100) > 0.66){
 			if (mossy){
-				gen.replaceBlock(pos.up(), WTFBlocks.mossyDirtSlab.getDefaultState());
+				gen.setPatch(pos, WTFBlocks.mossyDirtSlab.getDefaultState());
 			}
 			else {
-				gen.replaceBlock(pos.up(), WTFBlocks.dirtSlab.getDefaultState());
+				gen.setPatch(pos, WTFBlocks.dirtSlab.getDefaultState());
 			}
 		}
 		
